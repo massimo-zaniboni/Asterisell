@@ -1,0 +1,63 @@
+<%
+=begin
+  This is a template for generating the RSS feed for the blog.
+
+  The following variables are available for use in this template:
+  * BLOG        => data from the blog configuration file
+  * LANG        => interface to translation file
+  * ENTRIES     => an array of all available blog entries
+  * TAGS        => a Chapter containing one Page per tag
+  * ARCHIVES    => a Chapter containing one Page per archive
+  * CHAPTERS    => an array of Chapter objects
+=end
+%>
+<?xml version="1.0" encoding="<%= BLOG.encoding %>"?>
+<rss version="2.0">
+<channel>
+  <title><%=h BLOG.name %></title>
+  <link><%= BLOG.url %></link>
+  <description><%=h BLOG.info %></description>
+  <language><%=h BLOG.language %></language>
+  <lastBuildDate><%= DateTime.now.rfc822 %></lastBuildDate>
+  <generator>Rassmalog</generator>
+<%
+  ENTRIES.each do |entry|
+    url = File.join BLOG.url, u(entry.url)
+    html = entry.text.to_html
+
+    # resolve relative URLs into absolute URLs
+    # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+      html.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
+        a, b = "#{$1}#{$2}", "#{$3}#{$4}"
+
+        case $3
+          # already absolute
+          when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://}
+            match
+
+          # relative to this entry
+          when /^#/
+            a + url + b
+
+          # relative to this blog
+          else
+            a + BLOG.url + b
+        end
+      end
+%>
+  <item>
+    <title><%=h entry.name %></title>
+    <link><%= url %></link>
+    <description><%=h html %></description>
+    <pubDate><%= entry.date.rfc822 %></pubDate>
+  <% entry.tags.each do |tag| %>
+    <category><%=h tag %></category>
+  <% end %>
+    <guid><%= url %></guid>
+  <% if BLOG.email %>
+    <comments><%= entry.comment_url %></comments>
+  <% end %>
+  </item>
+<% end %>
+</channel>
+</rss>

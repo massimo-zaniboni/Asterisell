@@ -1,0 +1,19 @@
+fillin:
+  enabled: true
+
+fields:
+  ar_invoice{nr}:
+    required:
+      msg: Required
+
+  ar_invoice{ar_cdr_from}:
+    required:
+      msg: Required
+
+  ar_invoice{ar_cdr_to}:
+    required:
+      msg: Required
+
+  ar_invoice{ar_party_id}:
+    required:
+      msg: Required

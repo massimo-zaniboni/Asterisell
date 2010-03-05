@@ -1,0 +1,20 @@
+fillin:
+  enabled: true
+
+fields:
+  first_nr: 
+    required:
+      msg: Specify the first invoice number to use
+    sfNumberValidator:        
+
+  invoice_date: 
+    required:
+      msg: Specify the invoice date to use
+
+  ar_cdr_from:  
+    required:
+      msg: Specify starting date 
+
+    ar_cdr_to:    
+      required:
+        msg: Specify ending date 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>render_with (ERB)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rassmalog.rb, line 56</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_with</span> <span class="ruby-operator">&amp;</span><span class="ruby-identifier">aBlock</span>
+    <span class="ruby-identifier">dummy</span> = <span class="ruby-constant">Object</span>.<span class="ruby-identifier">new</span>
+    <span class="ruby-identifier">dummy</span>.<span class="ruby-identifier">instance_eval</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">aBlock</span>)
+    <span class="ruby-identifier">result</span> <span class="ruby-identifier">dummy</span>.<span class="ruby-identifier">instance_eval</span> {<span class="ruby-identifier">binding</span>}
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

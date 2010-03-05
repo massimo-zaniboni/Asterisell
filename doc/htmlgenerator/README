@@ -1,0 +1,23 @@
+= Personalization =
+
+  * config/blog.yaml contains the Asterisell parameters;
+  * config/html.erb contains:
+    * code generating Java Analytics Scripts;
+    * code generating header;
+    * code generating footer;
+    * code generating menu and all left sidebar content;
+  * input/styles/common contains:
+    * #header tag;
+    * #personalization of footer with text-size: small;
+    
+= TODO =
+
+  * mark with "modified from Massimo Zaniboni" the changes inside RassMalog code;
+  * semplificare alcune pagine;
+  * avere una LANDING PAGE con una NEWS corrente e la description del progetto sotto;
+  * verificare in INTENSE-DEBATE di essere notificato dell'arrivo di nuovi messaggi;
+  * fare VALIDATE del codice HTML prodotto che mi sembra non corretto;
+  * aggiungere link ai FEED;
+  * change project description also on FRESHMEAT, VOIP e WEB-SITE viewing to showing;
+  * far risaltare i miglioramenti passati nella versione GPL a quella a pagamento;
+  

@@ -1,0 +1,26 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArTelephonePrefix
+    theme:            default
+
+    fields:
+      prefix: { name: Telephone Prefix }
+      
+      operator_type: { name: Connection Type }
+      
+      name: { name: Operator Name }
+      
+      geographic_location: { name: Geographic Location }
+
+    list:
+      title: Telephone Prefixes
+
+      display: [=prefix, operator_type, geographic_location, name]
+
+      filters: [prefix, operator_type, geographic_location, name]
+      sort: [prefix, asc]
+
+    edit:
+      title: Telephone Prefix
+      fields: [prefix, operator_type, name, geographic_location]

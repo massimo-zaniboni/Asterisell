@@ -1,0 +1,24 @@
+exportToCsvSuccess:
+  has_layout: off
+  http_metas:
+    cache-control: private
+    pragma: private
+    content-type: text/csv
+    content-disposition: inline; filename="export.csv"
+
+exportToExcelSuccess:
+  has_layout: off
+  http_metas:
+    cache-control: private
+    pragma: private
+    content-type: application/msexcel
+    content-disposition: inline; filename="export.csv"
+
+# NOTE:
+#
+# cache-control "private" and pragma "private" are needed
+# as a workaround for bug
+#
+# http://support.microsoft.com/kb/323308/en-us
+
+

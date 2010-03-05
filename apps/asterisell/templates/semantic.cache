@@ -1,0 +1,16 @@
+;; Object templates/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "templates/"
+  :tables (list 
+   (semanticdb-table "asterisell_layout.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [316 358]) ("$logoImageName" variable (:default-value "sfConfig::get('app_asterisell_template_header_icon')" :type "int") nil [360 430]) ("$headerText" variable (:default-value "sfConfig::get('app_asterisell_template_header_text')" :type "int") nil [431 497]) ("$footerText" variable (:default-value "sfConfig::get('app_asterisell_template_footer_text')" :type "int") nil [498 564]) ("image_tag" function (:prototype-flag t :arguments (("" variable (:type ("$logoImageName" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [637 652])) :type ("echo" type (:type "class") nil nil)) nil [622 653]) ("$headerText" variable (:type ("echo" type (:type "class") nil nil)) nil [1148 1165]) ("$footerText" variable (:type ("echo" type (:type "class") nil nil)) nil [2540 2557]))
+    :file "asterisell_layout.php"
+    :pointmax 2586
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

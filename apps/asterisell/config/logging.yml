@@ -1,0 +1,25 @@
+prod:
+  level:   err
+  rotate:  on
+  period:  7     ## Log files are rotated every 7 days by default
+  history: 10    ## A maximum history of 10 log files is kept
+
+# NOTE: you must use the command
+#
+# > symfony log-rotate myapp prod
+# 
+# to effectively rotate and purge the log files
+
+dev:
+  enabled: on
+  level:   debug
+  rotate:  on
+  purge:   off
+
+#all:
+#  enabled: on
+#  level:   debug
+#  rotate:  off
+#  period:  7
+#  history: 10
+#  purge:   on

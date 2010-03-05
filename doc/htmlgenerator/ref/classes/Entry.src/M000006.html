@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_html (Entry)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rassmalog.rb, line 110</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span> <span class="ruby-identifier">aSummarize</span> = <span class="ruby-keyword kw">false</span>
+    <span class="ruby-identifier">old</span> = <span class="ruby-identifier">text</span>
+
+    <span class="ruby-comment cmt"># summarize the entry body</span>
+      <span class="ruby-identifier">paras</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp re">/(?:\r?\n){2,}/</span><span class="ruby-identifier">m</span>)
+
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">aSummarize</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">paras</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">text</span> = <span class="ruby-node">&quot;#{paras.first}\n\n#{to_link LANG[&quot;Read more...&quot;]}&quot;</span>
+      <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-comment cmt"># transform the entry into HTML</span>
+      <span class="ruby-identifier">entry</span> = <span class="ruby-keyword kw">self</span>
+      <span class="ruby-identifier">html</span> = <span class="ruby-constant">ENTRY_TEMPLATE</span>.<span class="ruby-identifier">render_with</span> {<span class="ruby-ivar">@entry</span> = <span class="ruby-identifier">entry</span>}
+
+    <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">text</span> = <span class="ruby-identifier">old</span>
+    <span class="ruby-identifier">html</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

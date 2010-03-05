@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: TemplateMixin</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href=".././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">TemplateMixin</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../files/rassmalog_rb.html">
+                rassmalog.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+In order to mix-in this module, an object must:
+</p>
+<ol>
+<li>have an associated <a href="TemplateMixin.html#M000042">template</a> file
+(whose basename is specified by <a
+href="TemplateMixin.html#M000041">template_name</a>) in the config/
+directory.
+
+<p>
+A default <a href="TemplateMixin.html#M000041">template_name</a>, which
+uses the name of the mixer&#8216;s class, is provided.
+</p>
+</li>
+<li>define a <a href="TemplateMixin.html#M000044">url</a> method which returns
+a relative URL to it.
+
+</li>
+</ol>
+<pre>
+  A default #url, which uses #name, is provided.
+</pre>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000046">parent_url</a>&nbsp;&nbsp;
+      <a href="#M000048">render</a>&nbsp;&nbsp;
+      <a href="#M000042">template</a>&nbsp;&nbsp;
+      <a href="#M000043">template_ivar</a>&nbsp;&nbsp;
+      <a href="#M000041">template_name</a>&nbsp;&nbsp;
+      <a href="#M000047">to_html</a>&nbsp;&nbsp;
+      <a href="#M000049">to_link</a>&nbsp;&nbsp;
+      <a href="#M000045">uri_fragment</a>&nbsp;&nbsp;
+      <a href="#M000044">url</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000046" class="method-detail">
+        <a name="M000046"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000046.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000046.html');return false;">
+          <span class="method-name">parent_url</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a URL to the parent page which takes you directly to this item
+inside the parent page.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000048" class="method-detail">
+        <a name="M000048"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000048.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000048.html');return false;">
+          <span class="method-name">render</span><span class="method-args">(aOpts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Renders a complete HTML page for this object.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000042" class="method-detail">
+        <a name="M000042"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000042.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000042.html');return false;">
+          <span class="method-name">template</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the <a href="TemplateMixin.html#M000042">template</a> used to <a
+href="TemplateMixin.html#M000048">render</a> objects of this class.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000043" class="method-detail">
+        <a name="M000043"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000043.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000043.html');return false;">
+          <span class="method-name">template_ivar</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the name of the instance variable for objects of this class. This
+variable is used in the <a href="TemplateMixin.html#M000042">template</a>
+of this class.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000041" class="method-detail">
+        <a name="M000041"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000041.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000041.html');return false;">
+          <span class="method-name">template_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Basename of the <a href="TemplateMixin.html#M000042">template</a> file,
+which resides in the config/ directory, used to <a
+href="TemplateMixin.html#M000048">render</a> objects of this class.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000047" class="method-detail">
+        <a name="M000047"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000047.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000047.html');return false;">
+          <span class="method-name">to_html</span><span class="method-args">(aOpts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Transforms this object into HTML.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000049" class="method-detail">
+        <a name="M000049"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000049.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000049.html');return false;">
+          <span class="method-name">to_link</span><span class="method-args">(aOpts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a relative link to this object, customized by the following
+options:
+</p>
+<table>
+<tr><td valign="top">frag:</td><td>a URI fragment that is appended to the URL, if given.
+
+</td></tr>
+<tr><td valign="top">body:</td><td>sets the body of the link (the &lt;a&gt; tag), if given.
+
+</td></tr>
+<tr><td valign="top">nbsp:</td><td>makes spaces in the link body non-breaking, if true.
+
+</td></tr>
+</table>
+        </div>
+      </div>
+
+      <div id="method-M000045" class="method-detail">
+        <a name="M000045"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000045.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000045.html');return false;">
+          <span class="method-name">uri_fragment</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a URI fragment for this object.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000044" class="method-detail">
+        <a name="M000044"></a>
+
+        <div class="method-heading">
+          <a href="TemplateMixin.src/M000044.html" target="Code" class="method-signature"
+            onclick="popupCode('TemplateMixin.src/M000044.html');return false;">
+          <span class="method-name">url</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Path (relative to the output/ directory) to the HTML output file of this
+object.
+</p>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

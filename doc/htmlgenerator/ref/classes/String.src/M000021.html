@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_html (String)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/format.rb, line 43</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span>
+    <span class="ruby-identifier">text</span> = <span class="ruby-identifier">dup</span>
+
+    <span class="ruby-comment cmt"># prevent the content of these tags from being transformed by Textile</span>
+    <span class="ruby-comment cmt"># for example, Textile transforms quotation marks in code into curly ones (&amp;#8192;) -- this ruins any source code in the content of the tags!</span>
+      <span class="ruby-constant">PRESERVED_TAGS</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-node">%r{&lt;#{tag}(.*?)&gt;(.*?)&lt;/#{tag}&gt;}</span><span class="ruby-identifier">m</span>, <span class="ruby-node">%{&lt;pre tag=#{tag.inspect}\\1&gt;\\2&lt;/pre&gt;}</span>
+      <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">html</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">redcloth</span>
+
+    <span class="ruby-comment cmt"># restore the original tags for the preserved tags</span>
+      <span class="ruby-comment cmt"># unescape content of &lt;pre&gt; tags because they may contain nested preserved tags (redcloth escapes the content of &lt;pre&gt; tags)</span>
+        <span class="ruby-identifier">html</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-regexp re">%r{(&lt;pre&gt;)(.*?)(&lt;/pre&gt;)}</span><span class="ruby-identifier">m</span> <span class="ruby-keyword kw">do</span>
+          <span class="ruby-identifier">$1</span> <span class="ruby-operator">+</span> <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">unescapeHTML</span>(<span class="ruby-identifier">$2</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">$3</span>
+        <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-constant">PRESERVED_TAGS</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">html</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-node">%r{&lt;pre tag=#{tag.inspect}(.*?)&gt;(.*?)&lt;/pre&gt;}</span><span class="ruby-identifier">m</span>, <span class="ruby-node">%{&lt;#{tag}\\1&gt;\\2&lt;/#{tag}&gt;}</span>
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-comment cmt"># assume that indented text in Textile is NOT source code</span>
+        <span class="ruby-identifier">html</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-regexp re">%r{(&lt;pre&gt;)\s*&lt;code&gt;(.*?)\s*&lt;/code&gt;\s*(&lt;/pre&gt;)}</span><span class="ruby-identifier">m</span>, <span class="ruby-value str">'\1\2\3'</span>
+
+      <span class="ruby-comment cmt"># escape content of &lt;pre&gt; tags, because we un-escaped it above</span>
+        <span class="ruby-identifier">html</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-regexp re">%r{(&lt;pre&gt;)(.*?)(&lt;/pre&gt;)}</span><span class="ruby-identifier">m</span> <span class="ruby-keyword kw">do</span>
+          <span class="ruby-identifier">$1</span> <span class="ruby-operator">+</span> <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">escapeHTML</span>(<span class="ruby-identifier">$2</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">$3</span>
+        <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">html</span>.<span class="ruby-identifier">coderay</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

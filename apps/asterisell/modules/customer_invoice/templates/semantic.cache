@@ -1,0 +1,60 @@
+;; Object templates/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "templates/"
+  :tables (list 
+   (semanticdb-table "_my_total.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 34]) ("format_for_currency" function (:prototype-flag t :arguments (("" variable (:type ("$ar_invoice" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62 74]) ("" variable (:type ("getTotal" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [75 85]) ("" variable (:type ("$ar_invoice" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [87 99]) ("" variable (:type ("getCurrency" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [100 113])) :type ("echo" type (:type "class") nil nil)) nil [37 115]))
+    :file "_my_total.php"
+    :pointmax 118
+    )
+   (semanticdb-table "_my_total_vat.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 34]) ("format_for_currency" function (:prototype-flag t :arguments (("" variable (:type ("$ar_invoice" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62 74]) ("" variable (:type ("getTotalVat" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [75 88]) ("" variable (:type ("$ar_invoice" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [90 102]) ("" variable (:type ("getCurrency" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [103 116])) :type ("echo" type (:type "class") nil nil)) nil [37 118]))
+    :file "_my_total_vat.php"
+    :pointmax 121
+    )
+   (semanticdb-table "_my_total_without_tax.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 34]) ("format_for_currency" function (:prototype-flag t :arguments (("" variable (:type ("$ar_invoice" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [62 74]) ("" variable (:type ("getTotalWithoutTax" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [75 95]) ("" variable (:type ("$ar_invoice" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [97 109]) ("" variable (:type ("getCurrency" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [110 123])) :type ("echo" type (:type "class") nil nil)) nil [37 125]))
+    :file "_my_total_without_tax.php"
+    :pointmax 128
+    )
+   (semanticdb-table "_my_vat_perc.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 32]) ("format_according_currency" function (:prototype-flag t :arguments (("" variable (:type ("$ar_invoice" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [64 76]) ("" variable (:type ("getVatPerc" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [77 89]) ("" variable (:type ("$ar_invoice" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [91 103]) ("" variable (:type ("getCurrency" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [104 117])) :type ("echo" type (:type "class") nil nil)) nil [33 119]))
+    :file "_my_vat_perc.php"
+    :pointmax 132
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_my_details.php"
+    :major-mode 'php-mode
+    :tags '(("getHtmlDetails" function (:prototype-flag t :type "int") nil [26 43]))
+    :file "_my_details.php"
+    :pointmax 48
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_creation_actions.php"
+    :major-mode 'php-mode
+    :tags '(("submit_tag" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [26 50]) ("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [52 89])) :type ("echo" type (:type "class") nil nil)) nil [10 91]) ("submit_tag" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [121 149]) ("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [151 192])) :type ("echo" type (:type "class") nil nil)) nil [105 194]))
+    :file "_creation_actions.php"
+    :pointmax 197
+    )
+   (semanticdb-table "_list_footer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 31]) ("insertHelp" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [157 603]))
+    :file "_list_footer.php"
+    :pointmax 612
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_edit_footer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 31]) ("insertHelp" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [157 406]))
+    :file "_edit_footer.php"
+    :pointmax 415
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

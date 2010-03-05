@@ -1,0 +1,45 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArParty
+    theme:            default
+
+    fields:
+      customer_or_vendor:   { name: C/V } 
+      mycv:                 { name: Type, sort_on_column: customer_or_vendor }
+      name:                 { name: Name }
+      external_crm_code:    { name: CRM Code }
+      vat:                  { name: VAT }
+      legal_address:        { name: Address }
+      legal_city:           { name: City }
+      legal_zipcode:        { name: ZIP }
+      legal_state_province: { name: Province }
+      legal_country:        { name: Country }
+      email:                { name: email }
+      phone:                { name: Telephon 1 }
+      phone2:               { name: Telephon 2 }
+      fax:                  { name: Fax }
+      ar_rate_category_id:  { name: Price Category }
+      ar_rate_category:     { name: Price Category }
+      language:             { name: Language } 
+      filter_on_cv:         { name: Type, filter_criteria_disabled: true }
+      my_max_limit:         { name: Max admitted calls cost for the last 30 days }	
+
+    list:
+      title: Customers and Vendors
+      display: [_mycv, ar_rate_category, =name, external_crm_code, legal_city, legal_state_province, legal_country, _my_max_limit]
+      filters: [_filter_on_cv, name, external_crm_code, legal_city, legal_state_province]
+
+    edit:
+      title: Customer or Vendor
+
+      fields:
+        editcv:      { name: Type }
+        insert_money_value:   { name: Limit }
+
+      display:
+        NONE: [_editcv, name, vat, external_crm_code, ar_rate_category_id]
+        Address: [legal_address, legal_city, legal_zipcode, legal_state_province, legal_country]
+        Contacts: [email, phone, phone2, fax]
+        Calls Cost Limit for last 30 days: [_insert_money_value]
+

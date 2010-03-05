@@ -1,0 +1,23 @@
+<%
+=begin
+  This is a template for generating a listing of Entry objects.
+
+  The following variables are available for use in this template:
+  * BLOG        => data from the blog configuration file
+  * LANG        => interface to translation file
+  * ENTRIES     => an array of all available blog entries
+  * TAGS        => a Chapter containing one Page per tag
+  * ARCHIVES    => a Chapter containing one Page per archive
+  * CHAPTERS    => an array of Chapter objects
+  * @page       => a Page for which we are generating HTML
+=end
+%>
+<h1><%= @page.name %></h1>
+
+<%= @page.prev.to_link %> &larr; <%= @page.chapter.to_link %> &rarr; <%= @page.next.to_link %>
+
+<br/><br/>
+
+<% @page.entries.each do |entry| %>
+  <%= entry.to_html BLOG.summarize_entries && :summary %>
+<% end %>

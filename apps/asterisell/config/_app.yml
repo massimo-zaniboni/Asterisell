@@ -1,0 +1,183 @@
+#
+# Copyright (C) 2007, 2008, 2009
+# by Massimo Zaniboni <massimo.zaniboni@profitoss.com>
+#
+#    This file is part of Asterisell.
+#
+#    Asterisell is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Asterisell is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Asterisell; if not, write to the Free Software
+#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+
+
+# !!! I M P O R T A N T: if you change these values then execute "./symfony cc" !!! #
+# !!!                                                                           !!! #
+# !!! I M P O R T A N T: use only SPACES, not TABS                              !!! #
+
+all:
+  available:
+
+    # The PhpRate class available during the setup of a rate plan.
+    # The class are located in apps/asterisell/lib/ directory.
+    # You can add your own classed.
+    #
+    phpRates: 
+      PhpRateByDuration: By Duration
+      # PhpRateImportFromCSV: Import from CSV File
+      # available only on "supported" version
+
+  # The format to use for date display in CDR call report.
+  # The format is specified using PHP "date" function format:
+  #    http://www.php.net/manual/en/function.date.php
+  #
+  date_format: "F d, Y G:i:s"
+    # "r" for something like "Thu, 21 Dec 2000 16:01:07 +0200"
+    # "c" for something like "2004-02-12T15:19:21+00:00"
+    # "F d, Y G:i:s" for something like "Dec 21, 2000 16:01:07"
+
+  # the default currency used for rates, cost and incomes.
+  #
+  currency: EUR
+
+  # the default culture to use for formatting numbers, dates and so on.
+  #
+  # en_US
+  # it_IT
+  # ...
+  #
+  culture: en_US
+
+  # decimal places of costs and incomes stored in the database CDR table.
+  #
+  # NOTE: if you change this value then force a re-rate of all calls
+  # because already rated calls will be in an inconsisten format.
+  #
+  # NOTE: math calculations are performed using 
+  # a double precision respect this number, so they are
+  # accurate enough.
+  #
+  currency_decimal_places: 4
+
+  # decimal places to use in an invoice
+  #
+  currency_decimal_places_in_invoices: 2
+
+  # VAT percentual to apply to invoices
+  #
+  vat_perc: 19
+
+  # how to recognize the cdr to bill...
+  # (NOTE: only CDR to bill are showed to the user)
+  #
+  billable_cdr:
+
+    # ...first test the disposition field...
+    #
+    disposition:
+      - ANSWERED
+    
+    # ...if the disposition field is billable then check 
+    # AMAFLAGS configurations 
+    # If it is one of these values then the cdr is billable.
+    #
+    # AMAFLAGS is an "Automated Message Accounting flags",
+    # wich permits to classify the CDR as DOCUMENTATION, BILL, IGNORE ecc..
+    #
+    # NOTE: in theory AMAFLAGS value meaning depends from the CDR channel,
+    # but in Asterisell it is a unique value with a fixed meaning for
+    # all channels.
+    #
+    amaflags:
+      - 0
+      - 3
+
+  # How to recognize the cdr not to bill.
+  # Because there are money transactions a safe approach is taken:
+  # a cdr must be listed or in billable_cdr or in no_billable_cdr.
+  #
+  # NOTE: in order to ensure complete and correct CDR processing, 
+  # Cdrs that are in none of the two billale categories or in both are not rated and 
+  # they are signaled in the ar_problem table.
+  #
+  no_billable_cdr:
+    disposition:
+      - NO ANSWERED
+      - NO ANSWER
+      - BUSY
+      - FAILED
+
+    # If the disposition field is billable and amaflags is one of these values 
+    # then the cdr is not billable
+    #
+    amaflags:
+     - 5
+     - 1
+
+  # A billable call has a "call end point type" corresponding typical 
+  # to the telephone operator of the call destinator.
+  # The vendor used to route the call can apply different rates according
+  # the "call end point type".
+  # The ar_from_number_to_end_point table contains the destination number
+  # prefixes mapped to the corresponding "call end point type".
+  # In the cdr-table there are two fields that can contain the destination
+  # telephone numbers:
+  #   - dst
+  #   - lastapp + lastdata
+  # 
+  # If the vale of this setting is [] then the cdr.dst field is used as
+  # ar_from_number_to_end_point.number_prefix external key.
+  #
+  # If the value of this setting is a list of values then for each billable call 
+  # its lastapp must be a value inside the list, otherwise the call is not rated
+  # and the problem is signaled to the administrator. If the cdr.lastapp value
+  # is one of accepted values then the cdr.lastdata field is used as externel key
+  # of ar_from_number_to_end_point.number_prefix instead of cdr.dst field.
+  # 
+  lastapp_accepted_values: []
+
+  # True if the bills sent to costumers must
+  # include partial totals on telephone prefixes
+  # types/geographical location.
+  #
+  # False if only the grand-total must be dispayed.
+  #
+  bills_with_partial_totals: true
+
+  # The class email generator to use.
+  # It is typically a file in "apps/asterisell/lib/" directory
+  # 
+  email_with_invoice_generator: StandardMailWithInvoiceGenerator
+
+  # The name of the provider of the service.  
+  # This is the entity wich provides VoIP services to its customers.
+  #
+  service_provider_name: ACME 
+
+  service_provider_mail: info@example.com
+    
+  # The web site of the service provider company.
+  # Note: this is the company web site, not where Asterisell is installed.
+  #
+  service_provider_web_address: http://www.example.com
+
+  # The web site where the user can retrieve info about its telephone traffics. 
+  # In other word where Asterisell is installed.
+  #
+  service_provider_customer_web_address: http://asterisell.example.com
+
+  # Header and footer of Asterisell pages
+  #
+  asterisell_template:
+    header_icon: asterisell_small.png
+    header_text: "<h1><a href=\"http://asterisell.profitoss.com\">Asterisell</a></h1>"
+    footer_text: "<center>Send comments to <A HREF=\"mailto:asterisell@profitoss.com?subject=Feedback\">asterisell@profitoss.com</A></center>"

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+<channel>
+  <title>Asterisell</title>
+  <link>http://asterisell.profitoss.com</link>
+  <description>&lt;p&gt;open source web application for rating, showing to customers, and billing Asterisk VoIP calls.&lt;/p&gt;</description>
+  <language>en-us</language>
+  <lastBuildDate>Thu, 05 Nov 2009 14:31:56 +0100</lastBuildDate>
+  <generator>Rassmalog 12.0.1</generator>
+    <item>
+      <title>Minor Bug Found</title>
+      <link>http://asterisell.profitoss.com/2009-11-05-minor-bug-found.html</link>
+      <guid>http://asterisell.profitoss.com/2009-11-05-minor-bug-found.html</guid>
+      <pubDate>Thu, 05 Nov 2009 00:00:00 +0100</pubDate>
+      <description>&lt;p&gt;&lt;a href=&quot;http://code.google.com/p/asterisell/issues/detail?id=1&quot;&gt;A non critical bug&lt;/a&gt; was found.&lt;/p&gt;
+&lt;p&gt;I will fix it only if there will be a &lt;a href=&quot;http://asterisell.profitoss.com/paid-support.html&quot;&gt;free donation or a buy of a commercial version.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Up to date I&amp;#8217;m developing an improved &amp;#8220;asterisell-testing-3.0.0&amp;#8221; release, for my main customer. He is still using &amp;#8220;asterisell-stable-0.9.12&amp;#8221;, that is not affected from the bug.&lt;/p&gt;</description>
+
+
+        <comments>mailto:&#97;&#115;&#116;&#101;&#114;&#105;&#115;&#101;&#108;&#108;&#105;&#110;&#102;&#111;&#64;&#112;&#114;&#111;&#102;&#105;&#116;&#111;&#115;&#115;&#46;&#99;&#111;&#109;?subject=Minor%20Bug%20Found&amp;body=http%3A%2F%2Fasterisell.profitoss.com%2F2009-11-05-minor-bug-found.html</comments>
+    </item>
+    <item>
+      <title>Source code repository</title>
+      <link>http://asterisell.profitoss.com/2009-10-17-source-code-repository.html</link>
+      <guid>http://asterisell.profitoss.com/2009-10-17-source-code-repository.html</guid>
+      <pubDate>Sat, 17 Oct 2009 00:00:00 +0200</pubDate>
+      <description>&lt;p&gt;I created a source code repository on Google Code: &lt;a href=&quot;http://code.google.com/p/asterisell/&quot;&gt;http://code.google.com/p/asterisell&lt;/a&gt;&lt;/p&gt;</description>
+
+
+        <comments>mailto:&#97;&#115;&#116;&#101;&#114;&#105;&#115;&#101;&#108;&#108;&#105;&#110;&#102;&#111;&#64;&#112;&#114;&#111;&#102;&#105;&#116;&#111;&#115;&#115;&#46;&#99;&#111;&#109;?subject=Source%20code%20repository&amp;body=http%3A%2F%2Fasterisell.profitoss.com%2F2009-10-17-source-code-repository.html</comments>
+    </item>
+    <item>
+      <title>Release of asterisell-stable-2.1.0</title>
+      <link>http://asterisell.profitoss.com/2009-10-08-release-of-asterisell-stable-2-1-0.html</link>
+      <guid>http://asterisell.profitoss.com/2009-10-08-release-of-asterisell-stable-2-1-0.html</guid>
+      <pubDate>Thu, 08 Oct 2009 00:00:00 +0200</pubDate>
+      <description>&lt;p&gt;This new release of Asterisell introduces many internal (source code) and external (features) improvements.&lt;/p&gt;
+&lt;p&gt;Differences/improvements respect asterisell-stable-0.9.11 version are:&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;6x speedup of the previous commercial-only version is now part of the free &lt;span class=&quot;caps&quot;&gt;GPL&lt;/span&gt; version;&lt;/li&gt;
+	&lt;li&gt;&amp;#8220;exception rates&amp;#8221; with higher priority respect &amp;#8220;normal rates&amp;#8221;; this allows supporting more complex rate plans;&lt;/li&gt;
+	&lt;li&gt;telephone prefixes can be associated to connection-type (mobile/fixed) and typical geographic location (Italy, Denmark, etc..);&lt;/li&gt;
+	&lt;li&gt;telephone-operator table was removed and data moved to telephone prefix table: user interface simplified, queries are faster;&lt;/li&gt;
+	&lt;li&gt;the display of &lt;span class=&quot;caps&quot;&gt;CDR&lt;/span&gt; now include information about the connection-type and the geographical-location of the call destination;&lt;/li&gt;
+	&lt;li&gt;the administrator can specify a custom date format to use inside &lt;span class=&quot;caps&quot;&gt;CDR&lt;/span&gt; report;&lt;/li&gt;
+	&lt;li&gt;generated invoices can include partial sums on geographical-locations/connection-types of called telephone numbers;&lt;/li&gt;
+	&lt;li&gt;the user can load data about all the world telephone prefixes;&lt;/li&gt;
+	&lt;li&gt;imports of rates and telephone prefixes from a &lt;span class=&quot;caps&quot;&gt;CSV&lt;/span&gt; file instead of manual entry (note: this feature is only part of the commercial/supported version);&lt;/li&gt;
+	&lt;li&gt;multi currencies support was removed because this feature was not really needed; as benefit the user interface is simplified, and queries are faster;&lt;/li&gt;
+	&lt;li&gt;automatic regression tests on different rate methods and related calculations;&lt;/li&gt;
+	&lt;li&gt;website improvements;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This new version uses a different database format respect version 0.9.11. So the upgrade from previous running installation is not immediate:&lt;/p&gt;
+&lt;ul&gt;
+	&lt;li&gt;rates must be re-inserted;&lt;/li&gt;
+	&lt;li&gt;&lt;span class=&quot;caps&quot;&gt;CDR&lt;/span&gt; table must be altered;&lt;/li&gt;
+	&lt;li&gt;old &lt;span class=&quot;caps&quot;&gt;CDR&lt;/span&gt; calls must be recalculated;&lt;br /&gt;
+Please contact me on the Asterisell forum in order to figure out the needed steps.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The configuration file is changed respect 0.9.11 version so check &amp;#8220;apps/asterisell/config/_app.yml&amp;#8221; template in order to discover the few differences and enable/disable new features. Remember to execute &amp;#8220;./symfony cc&amp;#8221; after every change of the parameters.&lt;/p&gt;</description>
+
+
+        <comments>mailto:&#97;&#115;&#116;&#101;&#114;&#105;&#115;&#101;&#108;&#108;&#105;&#110;&#102;&#111;&#64;&#112;&#114;&#111;&#102;&#105;&#116;&#111;&#115;&#115;&#46;&#99;&#111;&#109;?subject=Release%20of%20asterisell-stable-2.1.0&amp;body=http%3A%2F%2Fasterisell.profitoss.com%2F2009-10-08-release-of-asterisell-stable-2-1-0.html</comments>
+    </item>
+</channel>
+</rss>

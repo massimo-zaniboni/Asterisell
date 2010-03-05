@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>table_of_contents (String)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/format.rb, line 122</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">table_of_contents</span>
+    <span class="ruby-identifier">headings</span> = []
+
+    <span class="ruby-comment cmt"># parse document structure and insert anchors (so that the table of contents can link directly to these headings) where necessary</span>
+      <span class="ruby-identifier">text</span> = <span class="ruby-identifier">gsub</span> <span class="ruby-regexp re">%r{^(\s*h(\d))(.*)$}</span> <span class="ruby-keyword kw">do</span>
+        <span class="ruby-identifier">head</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">rest</span> = <span class="ruby-identifier">$1</span>, <span class="ruby-identifier">$2</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">$3</span>
+
+        <span class="ruby-comment cmt"># parse title and class attributes</span>
+          <span class="ruby-identifier">rest</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^([\{\(\[].*?[\]\)\}])?\.(.*)$/</span>
+          <span class="ruby-identifier">atts</span>, <span class="ruby-identifier">title</span> = <span class="ruby-identifier">$1</span>, <span class="ruby-identifier">$2</span>.<span class="ruby-identifier">strip</span>
+
+        <span class="ruby-comment cmt"># put heading index in title</span>
+          <span class="ruby-identifier">prevDepth</span> = <span class="ruby-identifier">headings</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">depth</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-value">0</span>
+          <span class="ruby-identifier">prevIndex</span> = <span class="ruby-identifier">headings</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">index</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-value str">&quot;&quot;</span>
+          <span class="ruby-identifier">depthDiff</span> = (<span class="ruby-identifier">depth</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">prevDepth</span>).<span class="ruby-identifier">abs</span>
+
+          <span class="ruby-identifier">index</span> =
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">prevDepth</span>
+              <span class="ruby-identifier">s</span> = <span class="ruby-identifier">prevIndex</span> <span class="ruby-operator">+</span> (<span class="ruby-value str">'.1'</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">depthDiff</span>)
+              <span class="ruby-identifier">s</span>.<span class="ruby-identifier">sub</span> <span class="ruby-regexp re">/^\./</span>, <span class="ruby-value str">''</span>
+
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">prevDepth</span>
+              <span class="ruby-identifier">s</span> = <span class="ruby-identifier">prevIndex</span>.<span class="ruby-identifier">sub</span> <span class="ruby-node">/(\.\d+){#{depthDiff}}$/</span>, <span class="ruby-value str">''</span>
+              <span class="ruby-identifier">s</span>.<span class="ruby-identifier">next</span>
+
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-identifier">prevIndex</span>.<span class="ruby-identifier">next</span>
+            <span class="ruby-keyword kw">end</span>
+
+          <span class="ruby-identifier">rest</span> = <span class="ruby-node">&quot;#{atts}. #{index} &amp;nbsp; #{title}&quot;</span>
+
+        <span class="ruby-comment cmt"># parse and insert anchor if necessary</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">atts</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/#(.*?)\)/</span>
+            <span class="ruby-identifier">anchor</span> = <span class="ruby-identifier">$1</span>
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-identifier">anchor</span> = <span class="ruby-node">&quot;anchor#{@@anchorNum += 1}&quot;</span>
+            <span class="ruby-identifier">rest</span>.<span class="ruby-identifier">insert</span> <span class="ruby-value">0</span>, <span class="ruby-node">&quot;(##{anchor})&quot;</span>
+          <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-identifier">headings</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Heading</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">anchor</span>, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">index</span>)
+
+        <span class="ruby-identifier">head</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">rest</span>
+      <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-comment cmt"># generate table of contents</span>
+      <span class="ruby-identifier">toc</span> = <span class="ruby-identifier">headings</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span>
+        <span class="ruby-node">%{#{'*' * h.depth} #{h.index} &quot;#{h.title}&quot;:##{h.anchor}}</span>
+      <span class="ruby-keyword kw">end</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>).<span class="ruby-identifier">redcloth</span>
+
+    [<span class="ruby-identifier">toc</span>, <span class="ruby-identifier">text</span>]
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

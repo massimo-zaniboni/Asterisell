@@ -1,0 +1,11 @@
+all:
+  propel:
+    class:        sfPropelDatabase
+    param:
+      phptype:    mysql
+      host:       localhost
+      database:   asterisell
+      username:   # replace with the correct user name
+      password:   # replace with the correct password
+      encoding:   utf8
+

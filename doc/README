@@ -1,0 +1,11 @@
+  htmlgenerator/output
+
+contains the website result of Rassmalog generation from source in 
+
+  htmlgenerator/input
+  htmlgenerator/entris
+
+and according configs in
+
+  htmlgenerator/config
+

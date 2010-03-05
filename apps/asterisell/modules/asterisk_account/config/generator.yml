@@ -1,0 +1,25 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArAsteriskAccount
+    theme:            default
+ 
+    fields:
+      name:           { name: User Name }
+      account_code:   { name: Asterisk Code }
+      ar_party:       { name: Customer }
+      ar_party_id:    { name: Customer }
+
+    list:
+      title: Asterisk VoIP Accounts
+      
+      fields:
+        filter_on_party: { name: Customer, filter_criteria_disabled: true }
+
+      display: [=name, ar_party, account_code]
+      filters: [name, _filter_on_party, account_code]
+      
+    edit:
+      title: Asterisk VoIP Account
+
+      display: [name, ar_party_id, account_code]

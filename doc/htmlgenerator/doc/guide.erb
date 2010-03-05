@@ -1,0 +1,630 @@
+<%
+  require 'version'
+
+  # local variables for this document
+  pkg_url = File.join(Rassmalog[:website], 'pkg')
+  src_url = File.join(Rassmalog[:website], 'src')
+  ann_url = File.join(Rassmalog[:website], 'ann')
+  dev_url = File.join(Rassmalog[:website], 'dev')
+  log_url = File.join(Rassmalog[:website], 'log')
+
+  langFiles = Dir['config/lang/*.yaml'].sort
+  pluginFiles = Dir['plugins/*.rb'].sort
+
+  # parameters for the HTML format
+  $title   = "Rassmalog #{Rassmalog[:version]} user guide"
+  $authors = {'Suraj N. Kurapati' => 'http://snk.rubyforge.org'}
+  $feeds   = { ann_url => :rss }
+
+  class String
+    # Marks all two-space indented lines in this
+    # string as <pre> elements for RedCloth 4.0.
+    def indent_to_pre
+      paras.map! {|s| s.sub(/^  /, 'pre. ').gsub(/^  /, '') }.join("\n\n")
+    end
+  end
+
+  # Extracts information about configuration parameters from the given
+  # file and emits the information into sections having the given depth.
+  def dump_param_info aInputFile, aHeadingDepth
+    File.read(aInputFile).scan(/(?:\n#.*)+(?:\n\w+:)?/).map do |s|
+      info, param = s.split /\n(?!#)/
+      info.gsub! /^# ?/, ''
+      info.strip!
+
+      if param
+        param.sub! /:$/, ''
+        emblems, info = info.split(/$/, 2)
+
+        unless emblems =~ /\(.*?\)/
+          info.insert(0, emblems)
+          emblems = ''
+        end
+
+        section "#{param} #{emblems}", "param.#{param}" do
+          info.indent_to_pre
+        end
+      elsif info =~ /^#+$/
+        next
+      end
+    end
+
+    nil
+  end
+
+  intro_paragraph = <<-EOS.strip
+    Rassmalog is a *static blog engine* based on "YAML":http://www.yaml.org/, "eRuby":http://en.wikipedia.org/wiki/Eruby, and "Rake":http://rake.rubyforge.org/. It transforms blog entries written in "Textile":http://whytheluckystiff.net/ruby/redcloth/ or "other formatting systems":#config.format into valid XHTML files that you can view on your computer or upload to your website.
+  EOS
+%>
+
+<% abstract do %>
+  <%= intro_paragraph %>. <%= xref 'Introduction', '[Continue reading...]' %>
+
+  <% paragraph "Resources" do %>
+    * "Preview":../output/index.html - live demonstration of Rassmalog.
+    * "Releases":<%= log_url %> - release notes and project news. "!../output/icons/feed-icon-28x28.png(RSS feed)!":<%= ann_url %>
+    * "Downloads":<%= pkg_url %> - obtain the newest release package.
+    * "Source code":<%= src_url %> - obtain via "Darcs 2":http://darcs.net or browse online.
+    * "Reference":api/index.html - API documentation for source code. "!../output/icons/feed-icon-28x28.png(RSS feed)!":<%= dev_url %>
+
+    To get help or provide feedback, simply <%= xref "License", "contact the author" %>.
+  <% end %>
+<% end %>
+
+<% chapter "Introduction" do %>
+  <%= intro_paragraph %>
+
+  Rassmalog is *open-source software* (see <%= xref "License" %>) inspired by the "Rog":http://rog.rubyforge.org, "hobix":http://hobix.com, and "nanoblogger":http://nanoblogger.sourceforge.net/ blog engines. Its name is derived from the word "Rasmalai":http://dailygirlblog.blogspot.com/2006/09/rasmalai.html and somewhat resembles the words "RSS", "YAML", and "blog".
+
+  <% section "Features" do %>
+    Noteworthy:
+    * Composed of *less than 600 lines* of code!
+    * Supports "any text formatting system":#config.format imaginable!
+    * Automatic "table of contents":#entry.toc for blog entries.
+    * Automatic "syntax coloring":#entry.code for source code.
+    * User-friendly output for "text-only web browsers":http://www.linuxjournal.com/article/8148.
+    * "Foreign language support":#lang for "<%= langFiles.length %> languages":#manifest.lang.
+
+    Standard:
+    * Categorization by tags (also known as "folksonomy":http://en.wikipedia.org/wiki/Folksonomy).
+    * Automatic archives by date, month, year, etc.
+    * Automatic "RSS feeds":http://en.wikipedia.org/wiki/RSS for blog entires, tags, etc.
+    * Automated "blog import":#usage.import from any RSS feed.
+  <% end %>
+
+  <% section "License" do %>
+    <%=h File.read('LICENSE').para_join %>
+  <% end %>
+
+  <% section "Motivation" do %>
+    Although "dynamic blog engines":http://en.wikipedia.org/wiki/Dynamic_web_page are popular nowadays, "static blog engines":http://en.wikipedia.org/wiki/Static_Web_page like Rassmalog are still relevant. The following sections attempt to explain why.
+
+    <% section 'Server requirements' do %>
+      |_. Dynamic blog engine|_. Rassmalog|
+      |*Requires a web server* that supports CGI(Common Gateway Interface) or a server-side scripting language.<br/><br/> Another typical requirement is *access to a relational database*.|*Requires nothing* because _all_ web servers are, by definition, capable of serving files over HTTP(Hypertext Transfer Protocol).<br/><br/> In fact, even a *web server is not necessary* if you just want to view your blog locally, on your own computer.|
+    <% end %>
+
+    <% section 'Content ownership' do %>
+      |_. Dynamic blog engine|_. Rassmalog|
+      |Your *content is locked away* within a relational database, to which you might not have access. Thus, it is *difficult to backup* your content.|Your *content is stored locally*, on _your_ computer. Thus, it is *easy to backup* and share with a good friend.|
+      |You are *vulnerable to data loss* when your web hosting service accidentally crashes or erases your blog.|You are *safe from data loss* when your web hosting service accidentally crashes or erases your blog.|
+    <% end %>
+
+    <% section 'Content portability' do %>
+      |{visibility: hidden;}. &nbsp;|_. Dynamic blog engine|_. Rassmalog|
+      |_. How is your content kept?|Scattered across a _relational_ database on the web server.|In *plain text* files on _your_ computer.|
+      |_. How do you migrate to another blog engine?|Assuming that you have SQL access to your blog's relational database, you must first *understand the database schema* before you can extract your content.<br/><br/> Afterwards, you still need to convert the extracted content into the new blog's format.|Your *content is readily converted* into the new blog's format using standard "text processing tools":http://tldp.org/LDP/abs/html/textproc.html or languages such as "Perl":http://perl.org and "Ruby":http://ruby-lang.org.|
+    <% end %>
+
+    <% section 'Speed and scalability' do %>
+      |_. Dynamic blog engine|_. Rassmalog|
+      |Responsiveness depends on speed of web server _and_ speed of the server-side scripting language in which the blog software is written.|Responsiveness depends _only_ on speed of web server.|
+      |*Scales poorly* because it generates web pages *on demand*.|*Scales perfectly* because all content is generated only _once_ and only _before_ it is ever uploaded to your web server!|
+    <% end %>
+
+    <% section 'Comments and spam control' do %>
+      |_. Dynamic blog engine|_. Rassmalog|
+      |Provides *web-based comments* that typically burden users with "CAPTCHA tests":http://www.captcha.net and/or become vulnerable to "comment spam":http://en.wikipedia.org/wiki/Spam_in_blogs.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.|Provides *e-mail based comments* by default, while taking special care to avoid "e-mail spam":http://en.wikipedia.org/wiki/E-mail_spam by *obfuscating your e-mail address* in such a way that "address harvesters":http://en.wikipedia.org/wiki/E-mail_address_harvesting won't bother trying to figure it out.<br/><br/>*If you prefer web-based comments* instead, see <%= xref 'config.comments' %> for solutions.|
+    <% end %>
+  <% end %>
+
+  <% section "Background" do %>
+    The basic unit of content in Rassmalog is the blog *entry*. Entries are collected into *sections*. Pages are collected into *chapters*.
+
+    As you can see, there is a hierarchical relationship here:
+
+    * Chapter
+    ** Section
+    *** Entry
+
+    For example,
+    * a *chapter* shows all available tags
+    * a *section* shows all entries that have a particular tag
+    * an *entry* just shows its content
+
+    Furthermore, a *listing* is just a list of blog entries.
+  <% end %>
+<% end %>
+
+<% chapter "Setup" do %>
+  <% section "Requirements" do %>
+    Your system needs the following software to run Rassmalog.
+
+    |_. Software                                                  |_. Notes                                                                                                                                                                                         |
+    | "Ruby":http://ruby-lang.org                                 | Version 1.8.x or 1.9.x is required                                                                                                                                                              |
+    | "Rake":http://docs.rubyrake.org                             | Version 0.7 or newer is required                                                                                                                                                                |
+    | "RedCloth":http://whytheluckystiff.net/ruby/redcloth/       | Not required if you want to "use a different formatting system":#config.format.  Otherwise version 4.x.x is required.                                                                           |
+    | "CodeRay":http://coderay.rubychan.de/                       | Not required if you want to "use a different formatting system":#config.format. Otherwise version 0.7 or newer is required.                                                                                                                  |
+    | "ruby-locale":http://raa.ruby-lang.org/project/ruby-locale/ | Required if you want to use the "locale parameter":#param.locale.  This library is also available in "Debian":http://debian.org and "Ubuntu":http://ubuntu.com under the name "liblocale-ruby". |
+
+    If your system has "RubyGems":http://rubygems.org/, then you can install Rake, RedCloth, and CodeRay by running the following command:
+
+    pre. gem install rake RedCloth coderay
+  <% end %>
+
+  <% section "Installation" do %>
+    # Download the newest release package from "the download area":<%= pkg_url %>.
+    # Extract the release package anywhere you want on your system.
+    # Go inside the extracted directory and run the following command: <pre>rake regen</pre>
+
+    If the installation was successful, then you will see output like this: <pre><%=h `rake regen` %></pre>
+  <% end %>
+
+  <% section "Manifest", 'manifest' do %>
+    Now that Rassmalog is installed on your system, let us examine its installation directory. Inside, you will see (among other things) the following items:
+
+    * <tt>rassmalog.rb</tt> - the core of Rassmalog.
+
+    <% section "doc/", "manifest.doc" do %>
+      Documentation for Rassmalog users
+
+      * <tt>doc/guide.erb</tt> - source code of this user guide
+    <% end %>
+
+    <% section "config/", "manifest.config" do %>
+      Directory that contains all configuration files.
+
+      * <tt>config/blog.yaml</tt> - the primary configuration file for your blog.
+      * <tt>config/feed.erb</tt> - template for generating RSS feeds for the blog.
+      * <tt>config/html.erb</tt> - template for generating a complete HTML web page.
+      * <tt>config/chapter.erb</tt> - template for generating HTML for lists of tags and archives.
+      * <tt>config/section.erb</tt> - template for generating HTML for individual tags and archives.
+      *  <tt>config/listing.erb</tt> - template for generating the recent/all lists of blog entries.
+      * <tt>config/entry.erb</tt> - template for generating HTML for a blog entry.
+      * <tt>config/format.rb</tt> - defines how text is transformed into HTML.
+
+      <% section "config/lang/", "manifest.lang" do %>
+        Directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.
+
+        <% langFiles.each do |file| %>
+          * <tt><%= file %></tt> <%= File.readlines(file)[0].chomp.scan(/-(.*)/)[0] %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% section "output/", "manifest.output" do %>
+      Directory that contains your generated blog.
+    <% end %>
+
+    <% section "input/", "manifest.input" do %>
+      Directory that contains (1) source files for blog entries and (2) additional resources, such as images and stylesheets, that are used by your blog. Everything inside this directory, except source files for blog entries, is automatically copied into the <tt>output/</tt> directory (relative paths are preserved) when your blog is generated.
+
+      A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, a source file's corresponding output file has (1) the same name and relative path as the source file but (2) ends with a <tt>.html</tt> extension.
+
+      For example, the <tt>input/foo/bar/moz.yaml</tt> source file's corresponding output file is <tt>output/foo/bar/moz.html</tt>. You can override this default behavior by adding the "*output_file* parameter":#param.output_file to your blog entry.
+
+      * <tt>input/styles/screen.css</tt> - the default CSS stylesheet provided with Rassmalog.
+      * <tt>input/styles/print.css</tt> - the default CSS stylesheet provided with Rassmalog.
+      * <tt>input/rassmalog/entry.yaml</tt> - reference of the blog entry file format.
+    <% end %>
+
+    <% section "entries/", "manifest.entries" do %>
+      Directory that contains blog entry source files whose output files are *automatically calculated* by Rassmalog.
+
+      A blog entry source file's name must end with a <tt>.yaml</tt> extension. By default, all source files in this directory will have a corresponding output file with a name in the form: "_date_-_name_.html".
+
+      For example, the <tt>entries/foo/bar/moz.yaml</tt> source file, which was written on 19 July 2006 and has a name of "hello world", will have a corresponding output file at <tt>output/2006-07-19-hello-world.html</tt>. You can override this default behavior by adding the "*output_file* parameter":#param.output_file to your blog entry.
+
+      As you can see, _unlike_ the blog entries in the <tt>input/</tt> directory, blog entries in the <tt>entries/</tt> directory do not have to worry about their original file name influencing the output file name. As a result, you can organize your blog entry files however you want.
+
+      For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> subdirectory. The names of these subdirectories do not have any special meaning to Rassmalog, so you can name them however you like.
+    <% end %>
+
+    <% section "plugins/", "manifest.plugins" do %>
+      This directory contains Ruby source files which define additional Rake tasks for Rassmalog.
+
+      <% pluginFiles.each do |file| %>
+        <% section file do %>
+          |_. Command |_. Description |
+          <% `rake -f #{file} -T`.split(/\r?\n/)[1..-1].each do |s| %>
+          | <%= s.split('#').join(' | ') %> |
+          <% end %>
+
+          <noformat><%=
+            File.read(file)[/\A.*?(?=^#--)/m].
+            gsub(/^# ?/, '').indent_to_pre.to_html
+          %></noformat>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% section 'Version numbering system' do %>
+    Rassmalog uses the "RubyGems rational versioning policy":http://www.rubygems.org/read/chapter/7 to number its releases. This *major.minor.patch* numbering policy "is summarized":http://ablog.apress.com/?p=738 as follows:
+
+    |/2. What happened? |\3. What are the consequences? |
+    |_. Backwards compatible? |_. New features? |_. Bug fixes? |
+    |_. The _major_ number increased |{background-color: MistyRose}. No | Yes | Yes |
+    |_. The _minor_ number increased | Yes | Yes | Yes |
+    |_. The _patch_ number increased | Yes |{background-color: MistyRose}. No | Yes |
+  <% end %>
+<% end %>
+
+<% chapter "Configuration", 'config' do %>
+  Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments and documentation to help guide you through you the configuration process. Next, proceed to editing "the other files":#manifest in the <tt>config/</tt> directory to suit your taste.
+
+  You are encouraged to "generate your blog":#usage.gen at each step of the configuration process to see how your choices affect the generated output. This gives you a good sense of how Rassmalog works and how your blog can be shaped to suit your specific needs.
+
+  <% section 'Parameters' do |node| %>
+    The following subsections describe the configuration parameters available for use in the  <tt>config/blog.yaml</tt> file.
+
+    <%= dump_param_info('config/blog.yaml', node.depth + 1) %>
+  <% end %>
+
+  <% section 'Localization for foreign languages', 'lang' do %>
+    The core of Rassmalog is easily localized (L10N(Localization) / I18N(Internationalization) / M17N(Multilingualization)) through "translation files":#lang.config, which consist of simple key-value pairs. For instance, the translation file for Spanish appears like this:
+
+    <pre><%= File.read('config/lang/es.yaml') %></pre>
+
+    * English phrases are written on the left and their corresponding Spanish phrases are written on the right.
+    * The @%s@ things are placeholders for arbitrary text.  Think of them as "blanks" on an exam paper that students will "fill in" later on; i.e. to "fill in the blanks".
+
+    <% section 'Enabling a translation file' do %>
+      The <tt>config/lang/</tt> directory contains translation files ("there are <%= langFiles.length %> of them":#manifest.lang, at present) for English text used in the core of Rassmalog. To enable one of these files, set the value of the *language* parameter in the <tt>config/blog.yaml</tt> file to the name of the translation file.
+
+      For example, if you wish to enable the <tt>config/lang/foobar.yaml</tt> translation file, then you would set the *language* parameter as follows:
+
+      pre. language: foobar
+
+      In this manner, you can add or edit translation files for your own languages and use them in your blog. However, please consider "contributing your translation files":http://rubyforge.org/tracker/?group_id=2737 so that other users can also enjoy your translations! :-)
+    <% end %>
+  <% end %>
+
+  <% section 'Using another text formatting system', 'config.format' do %>
+    To use another text formatting system, simply replace the @String.to_html@ and @String.to_inline_html@ methods, which are defined in the <tt>config/format.rb</tt> file, to make use of your desired text formatting scheme.
+
+    For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then all blog entries will appear within red boxes in the output.
+
+    <code>
+    class String
+      # Transforms this string into HTML while ensuring that the
+      # result contains one or more block-level elements at the root.
+      def to_html
+        '<p style="border: thin solid red">' + self + '</p>'
+      end
+
+      # Transforms this string into an *inline* HTML string (one that
+      # does not contain any block-level HTML elements at the root).
+      def to_inline_html
+        self
+      end
+    end
+    </code>
+
+    In this manner, you can make Rassmalog use any formatting system you wish!
+  <% end %>
+
+  <% section 'Using dynamic Javascript-based comments', 'config.comments' do %>
+    There are several JavaScript-based commenting  _services_ available:
+    * "js-kit":http://js-kit.com/comments/
+    * "Disqus":http://disqus.com
+    * "HaloScan":http://www.haloscan.com/
+    * "Intense Debate":http://www.intensedebate.com/
+    * and so on...
+
+    To use these services with Rassmalog, simply replace the default "comments" section of the <tt>config/entry.erb</tt> template (which appears like this: <code lang="rhtml"><%= `sed -n '/BEGIN/,/END/p' config/entry.erb` %></code>) with the activation logic provided by the commenting service.
+
+    For example, to make use of the **js-kit** commenting service in Rassmalog, replace the default "comments" section (shown above) with the following activation logic:
+
+    <code lang="rhtml">
+    <div class="js-kit-comments" path="<%%= @entry.url %>"></div>
+    <script type="text/javascript" src="http://js-kit.com/comments.js"></script>
+    </code>
+
+    Notice that we pass the blog entry's relative URL (obtained by invoking the @url@ method on the @@entry@ object: <code lang="rhtml"><%%= @entry.url %></code>) as a unique identifier to the **js-kit** commenting service.  Other commenting services may require you to do something similar as well.
+  <% end %>
+
+  <% section "Disabling parts of a blog" do %>
+    Suppose you wanted to disable the generation of the RSS feed for your blog. In order to do this,
+
+    # Open the <tt>Rakefile</tt> in your text editor.
+    # You should now see a line of code similar to this:
+      @task :gen => [:copy, :entry, :entry_meta, :entry_list, :feed]@
+    # Remove the @:feed@ element from the line of code.
+
+    In this manner, you can disable other parts of the blog generation process. Furthermore, you can edit the source code in the "output generation stage" section to suit your needs.
+  <% end %>
+
+  <% section "Disabling the search page" do %>
+    The **search** page is just a blog entry; there is nothing special about it.
+
+    # Delete the <tt>input/search.yaml</tt> file.
+    # Regenerate your blog.
+  <% end %>
+
+  <% section "Disabling the about page" do %>
+    The **about** page is just a blog entry; there is nothing special about it.
+
+    # Delete the <tt>input/about.yaml</tt> file.
+    # Regenerate your blog.
+  <% end %>
+<% end %>
+
+<% chapter "Usage" do %>
+  In the location where you installed Rassmalog, run the following command to see a list of available tasks:
+
+  pre. rake -T
+
+  For example, here is the output you would see when you run the above command:
+  <pre><%= `rake -T || rake.bat -T || echo Your system lacks the rake command.` %></pre>
+
+  <% section "Creating a blog entry file" do %>
+    The "_new_ plugin":#plugins-new.rb allows you to easily create a new blog entry source file without having to:
+    * think of and manage unique file names every time
+    * supply the current date and time
+    * remember the entire syntax of a blog entry file
+    * remember the names of all tags you have used thus far
+
+    To use this plugin, run the following command:
+
+    pre. rake new
+
+    After it executes, the command will report the name of the file it created.  You can then edit the created file using your favorite text editor and fill in all the juicy details.
+  <% end %>
+
+  <% section "Generating your blog", 'usage.gen' do %>
+    To generate your blog, run the following command:
+
+    pre. rake
+
+    Or alternatively, you can run:
+
+    pre. rake gen
+
+    To regenerate your blog from _scratch_ (delete all existing output and generate everything again), run the following command:
+
+    pre. rake regen
+  <% end %>
+
+  <% section "Removing generated files" do %>
+    To remove all output files that were generated by Rassmalog, run the following command:
+
+    pre. rake clean
+
+    To remove everything inside the <tt>output/</tt> directory, run the following command:
+
+    pre. rake clobber
+  <% end %>
+
+  <% section "Publishing your blog" do %>
+    To upload your blog to your website, run the following command:
+
+    pre. rake upload
+  <% end %>
+
+  <% section "Preview while you write" do %>
+    To continuously preview a blog entry as you write it, run the following command:
+
+    pre. rake preview
+
+    Now, whenever you save your blog entry file, its HTML page will be generated for preview in your web browser.
+  <% end %>
+
+  <% section "Importing blog entries from RSS feed", 'usage.import' do %>
+    The *import* task allows you to import blog entries from an RSS feed, which must be provided on the standard input stream.
+
+    For example, if you have an RSS feed file named <tt>feed.xml</tt> then you would import it into Rassmalog like this:
+
+    pre. rake import < feed.xml
+  <% end %>
+
+  <% section "Creating RSS feeds" do %>
+    # Open the <tt>Rakefile</tt> in your text editor.
+    # You should now see a some code similar to this:
+      <code><%= File.read('Rakefile').grep(/^feed/).first %></code>
+      This code invokes the @feed@ method to create an RSS feed.
+    # Add your own invocation of the @feed@ method to the bottom of the file (see the API documentation in <%= xref 'hacking.api' %> for help).
+
+    <% example "Adding entries from multiple tags to an RSS feed" do %>
+      The second parameter of the @feed@ method is an arry of @Entry@ objects.  You can take advantage of this fact with some Ruby magic:
+
+      <code>
+      # gather the desired entries
+      entries = TAGS['foo'] + TAGS['bar'] + TAGS['moz']
+
+      # remove duplicate entries
+      entries.uniq!
+
+      # create the feed
+      feed 'example.xml', entries
+      </code>
+
+      Here we gather all blog entries that have the 'foo', 'bar', or 'moz' tag into an array, and keep track of it in the @entries@ variable.
+
+      Next, we call the @uniq@ method on the @entries@ variable to ensure that all entries occur only once in the array (since the same entry could have both 'foo' and 'bar' tags, and would thus appear twice in the array).
+
+      Finally, we create the news feed by calling the @feed@ method.
+    <% end %>
+  <% end %>
+<% end %>
+
+<% chapter "Writing blog entries" do %>
+  This chapter deals with things related to the writing, formatting, and scripting of blog entries.
+
+  <% section "Parameters" do |node| %>
+    The following subsections describe the parameters you can use in a blog entry file. For an example of usage, see the <tt>input/rassmalog/entry.yaml</tt> file.
+
+    <%= dump_param_info('entries/example-entry.yaml', node.depth + 1) %>
+  <% end %>
+
+  <% section "eRuby directives" do %>
+    The body of a blog entry is treated as an eRuby template. Thus, you can use eRuby directives (which appear within @<%%@ and @%>@ tags) in the body of your blog entries.
+
+    For example, putting the following content in a blog entry:
+
+    <code lang="rhtml">
+    <%% 3.times do %>
+
+    * Hello World!
+    <%% end %>
+    </code>
+
+    Produces the following result:
+
+    <% 3.times do %>
+    * Hello World!
+    <% end %>
+
+    <% section "Including the content of another file" do %>
+      To include the content of another file inside the body of a blog entry, you can use the following eRuby directive:
+
+      pre. <%%= File.read('path-to-your-file') %>
+
+      If the included file contains characters that might be interpreted as HTML, then we should properly escape those characters using the @ERB::Util#h@ method:
+
+      pre. <%%= h File.read('path-to-your-file') %>
+    <% end %>
+  <% end %>
+
+  <% section "Relative URLs to output files" do %>
+    Rassmalog adjusts all relative URLs in the final HTML output to be relative to the <tt>output/</tt> directory. This is done to give all blog entries (regardless of how deep they are inside the <tt>input/</tt> directory) a common way to access files. As a result, some extra work is necessary to access files that are relative to a blog entry itself.
+
+    For example, suppose that (1) we have the following directory structure and that (2) the <tt>input/food/fruit/banana.yaml</tt> blog entry contains the <tt>../nuts/walnut.html</tt> relative URL.
+
+    * input/
+    ** food/
+    *** fruit/
+    **** banana.yaml
+    *** nuts/
+    **** walnut.yaml
+
+    * output/
+    ** food/
+    *** fruit/
+    **** banana.html
+    *** nuts/
+    **** walnut.html
+
+    Rassmalog will change <tt>../nuts/walnut.html</tt> into <tt>../../../nuts/walnut.html</tt> by adding a <ins>../../</ins> prefix. As a result, the changed URL is now referring to a nonexistent <tt>nuts/walnut.html</tt> file that resides _one level above_ the <tt>output/</tt> directory!
+
+    One solution is to manually rewrite to rewrite the original URL to be relative to the <tt>output/</tt> directory: <tt>../nuts/walnut.html</tt> becomes <tt>food/nuts/walnut.html</tt>.
+
+    Another solution is to use an eRuby directive to add the blog entry source file's parent directory's path to the relative URL: <tt>../nuts/walnut.html</tt> becomes <pre><%%= File.dirname(@entry.output_url) %>/../nuts/walnut.html</pre>
+  <% end %>
+
+  <% section "Table of contents generation", 'entry.toc' do %>
+    A table of contents is _automatically generated_ from headings (@<h1>@ through @<h6>@ for HTML and @h1.@ through @h6.@ for Textile) found in the body of a blog entry.
+
+    Headings are numbered in the style of LaTeX; these numbers contain a hyperlink back to the table of contents for easier navigation.
+
+    If you want to disable the table of contents for a particular blog entry, then see the "*generate_toc* parameter":#param.generate_toc in the list of parameters above.
+
+    If you want to disable the table of contents _globally_, for all blog entries, then see the *generate_toc* parameter in your <tt>config/blog.yaml</tt> configuration file.
+  <% end %>
+
+  <% section "Syntax coloring for source code", 'entry.code' do %>
+    Syntax coloring is _automatically added_ to source code found inside the *&lt;code&gt;* and *&lt;/code&gt;* HTML tags. Note that in Textile, any text enclosed within a pair of at-signs (&#64; and &#64;) is also considered to be source code.
+
+    The following programming languages are currently supported by "CodeRay":http://coderay.rubychan.de, the default syntax coloring software used in Rassmalog:
+    * Ruby
+    * C
+    * Delphi
+    * HTML
+    * RHTML (Rails)
+    * Nitro-XHTML
+
+    This feature can be disabled or changed by editing the <tt>config/format.rb</tt> file accordingly.
+
+    <% section "Specifying the programming language" do %>
+      Because different programming languages have different syntax coloring schemes, you can specify the language of your source code using the @lang@ attribute to ensure that only the appropriate coloring scheme is used. Note that unless the @lang@ attribute is specified, _Ruby_ is assumed to be the programming language of all source code by default.
+
+      <% sampleCode = %q{
+      # Ruby ###########################
+      def hello
+        puts "Hello world!"
+      end
+
+
+      /* C ****************************/
+      #include <stdio.h>
+      int main(int argc, char **argv) {
+        printf("Hello world!\n");
+        return 0;
+      }
+
+
+      <!-- HTML ----------------------->
+      <html>
+        <body>
+          Hello world!
+        <body>
+      </html>
+      } %>
+
+      For example, here is some source code _without_ the @lang@ attribute:
+
+      <code><%= sampleCode %></code>
+
+      And here is the same source code with a @lang="c"@ attribute:
+
+      <code lang="c"><%= sampleCode %></code>
+
+      And here is the same source code with a @lang="html"@ attribute:
+
+      <code lang="html"><%= sampleCode %></code>
+    <% end %>
+
+    <% section "Smart sizing of source code" do %>
+      Source code is _automatically sized_ to be displayed as either a line or paragraph of text, depending on whether it contains line breaks.
+
+      For example, here is a single line of code:
+
+      <code>life = true or false</code>
+
+      And here is a paragraph of code:
+
+      <code>life =
+      true or false</code>
+
+      This feature can be disabled or changed by editing the <tt>config/format.rb</tt> file accordingly.
+    <% end %>
+  <% end %>
+
+  <% section "Protecting verbatim text", 'entry.verbatim' do %>
+    Sometimes you just need to protect some text from being mangled by the text-to-HTML conversion process (which is governed by <tt>config/format.rb</tt>). In such cases, you can wrap the text you want to proctect within *&lt;noformat&gt;* and *&lt;/noformat&gt;* tags.
+
+    Note that this is a feature of the default <tt>config/format.rb</tt> file provided with Rassmalog.  If you defined your own text-to-HTML conversion scheme, then this feature might not work.
+  <% end %>
+<% end %>
+
+<% chapter "Hacking" do %>
+  You can obtain the latest source code from the "Darcs":http://darcs.net repository:
+
+  pre. darcs get http://rassmalog.rubyforge.org/src/ rassmalog
+
+  <% section "API documentation", 'hacking.api' do %>
+    |_. Method declaration |_. Description |
+    <%
+      # load library for parsing method documentation
+      require 'gerbil/rdoc'
+
+      Dir['{,config/}*.rb'].each do |f|
+        RDoc::TopLevel.parse_file f
+      end
+
+      RDoc::TopLevel.all_methods.each do |m|
+    %>
+    | <code><%= m.decl %></code> | <noformat><%= m.comment_html %></noformat> |
+    <% end %>
+  <% end %>
+<% end %>

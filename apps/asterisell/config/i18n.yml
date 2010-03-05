@@ -1,0 +1,14 @@
+all:
+  default_culture:     en
+  source:              XLIFF
+  untranslated_prefix: [T]
+  untranslated_suffix: [/T]
+
+prod:
+  debug:               off
+  cache:               on
+
+dev:
+  debug:               on
+  cache:               off
+

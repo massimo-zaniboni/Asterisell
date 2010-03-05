@@ -1,0 +1,2525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <meta name="date" content="02 August 2008"/>
+    <meta name="author" content="Suraj N. Kurapati"/>
+    <meta name="generator" content="Gerbil 3.1.0"/>
+    <link rel="alternate" type="application/rss+xml" href="http://rassmalog.rubyforge.org/ann"/>
+    <title>Rassmalog 12.0.1 user guide</title>
+
+
+    <style type="text/css" media="screen">
+    <!--
+      body
+{
+    color               : #000000;
+    background-color    : #FFFFFF;
+    line-height         : 1.5em;
+    font-family         : Calibri, Verdana, sans-serif;
+}
+
+/* emphasis */
+
+  em,
+  blockquote
+  {
+      font-family       : Cambria, Georgia, serif;
+  }
+
+  em
+  {
+      background-color  : #FFFFE0;
+  }
+
+  blockquote
+  {
+      margin            : 2em;
+      color             : #333;
+      font-style        : italic;
+  }
+
+  hr
+  {
+      height            : 0;
+      border            : 0;
+      border-top        : 2px solid #FF0000;
+  }
+
+/* source code */
+
+  tt,
+  code,
+  pre
+  {
+      font-family       : Consolas, "Lucida Console", monospace;
+  }
+
+  tt
+  {
+      background-color  : #F0F8FF;
+  }
+
+  /* output of the syntax coloring library */
+  .code
+  {
+      background-color  : #FFFFF0;
+  }
+
+  pre
+  {
+      cursor            : text;
+      line-height       : normal;
+      border            : 1px dashed #C0C0C0;
+      background-color  : #F5FFDF;
+      padding           : 1em;
+      overflow          : auto;
+  }
+
+/* hyperlinks */
+
+  a > img
+  {
+      border            : none;
+  }
+
+  a img
+  {
+      _border           : none; /* for IE6 */
+  }
+
+  a.here:link,
+  a.here:visited
+  {
+      color             : #000000;
+  }
+
+/* lists */
+
+  #content li:first-child
+  {
+      margin-top        : 1em;
+  }
+
+  #content li
+  {
+      margin-bottom     : 1em;
+  }
+
+/* headings */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .title
+  {
+      font-weight       : lighter;
+      font-family       : Constantia, "Book Antiqua", "URW Bookman L", serif;
+  }
+
+  #lof h1,
+  #lof h2,
+  #lof h3,
+  #lof h4,
+  #lof h5,
+  #lof h6
+  {
+      margin-top        : 1.25em;
+  }
+
+  #content h1,
+  #content h2,
+  #content h3,
+  #content h4,
+  #content h5,
+  #content h6
+  {
+      margin-top        : 2.5em;
+      line-height       : 1.25em;
+  }
+
+  #content h1
+  {
+      font-size         : 2.0em;
+  }
+
+  #content h2
+  {
+      font-size         : 1.8em;
+  }
+
+  #content h3
+  {
+      font-size         : 1.6em;
+  }
+
+  #content h4
+  {
+      font-size         : 1.4em;
+  }
+
+  #content h5
+  {
+      font-size         : 1.2em;
+  }
+
+  #content h6
+  {
+      font-size         : 1.0em;
+  }
+
+/* tables */
+
+  table
+  {
+      border-collapse   : collapse; /* no spacing between cell borders */
+      margin            : auto; /* center horizontally */
+      margin-top        : 1em;
+  }
+
+  th,
+  td
+  {
+      padding           : 1em;
+      border            : 1px solid #bbb;
+      vertical-align    : top;
+      background-color  : inherit;
+      _background-color : #FFFFFF; /* for IE6 */
+  }
+
+  th
+  {
+      background-color  : #F5F5F5;
+  }
+
+/* document structure */
+
+  .nav
+  {
+      text-align        : center;
+      margin-bottom     : 4em;
+  }
+
+  #header
+  {
+      text-align        : center;
+  }
+
+  .header_outside_above,
+  #header,
+  .header_outside_below
+  {
+      margin-bottom     : 5em;
+  }
+
+  .footer_outside_above,
+  #footer,
+  .footer_outside_below
+  {
+      margin-top        : 5em;
+  }
+
+  #header .header_inside_above,
+  #footer .footer_inside_above
+  {
+      margin-bottom     : 4em;
+  }
+
+  #header .header_inside_below,
+  #footer .footer_inside_below
+  {
+      margin-top        : 4em;
+  }
+
+  #Abstract
+  {
+      margin-bottom     : 5em;
+  }
+
+  #Contents li
+  {
+      list-style-type   : none;
+  }
+
+  #Contents li ul
+  {
+      padding-bottom    : 1em;
+      border-left       : thick solid #F5F5F5;
+      _border-left      : none; /* for IE6 */
+  }
+
+  #Contents li ul:hover
+  {
+      border-color      : #DCDCDC;
+  }
+
+  #Contents > ul
+  {
+      padding-left      : 1em;
+  }
+
+  #References
+  {
+      margin-top        : 5em;
+  }
+
+  #footer
+  {
+      border-top        : thick dotted #DCDCDC;
+      padding-top       : 1em;
+      text-align        : center;
+  }
+
+  #footer-credits
+  {
+      margin-top        : 2em;
+  }
+
+/* document nodes */
+
+  .part    > .title,
+  .chapter > .title
+  {
+      padding-bottom    : 0.5em;
+  }
+
+  .part    > .title > big,
+  .chapter > .title > big
+  {
+      display           : block;
+      margin-top        : 0.25em;
+  }
+
+  .part    .title big,
+  .chapter .title big
+  {
+      _display          : block; /* for IE6 */
+      _margin-top       : 0.25em; /* for IE6 */
+      _margin-bottom    : 0.75em; /* for IE6 */
+  }
+
+  .paragraph > .title,
+  .tip       > .title,
+  .note      > .title,
+  .caution   > .title,
+  .warning   > .title,
+  .important > .title,
+  .figure    > .title,
+  .table     > .title,
+  .example   > .title,
+  .equation  > .title,
+  .procedure > .title
+  {
+      font-size         : large;
+      margin-top        : 2em;
+  }
+
+  .paragraph .title,
+  .tip       .title,
+  .note      .title,
+  .caution   .title,
+  .warning   .title,
+  .important .title,
+  .figure    .title,
+  .table     .title,
+  .example   .title,
+  .equation  .title,
+  .procedure .title
+  {
+      _font-size        : large; /* for IE6 */
+      _font-weight      : bold; /* large is not bold in IE6 */
+      _margin-top       : 2em; /* for IE6 */
+  }
+
+  .tip      ,
+  .note     ,
+  .caution  ,
+  .warning  ,
+  .important,
+  .figure   ,
+  .table    ,
+  .example  ,
+  .equation ,
+  .procedure
+  {
+      margin            : 3em;
+  }
+
+  .tip       > .icon,
+  .note      > .icon,
+  .caution   > .icon,
+  .warning   > .icon,
+  .important > .icon
+  {
+      float             : left;
+      margin            : 0 1em 1em 0; /* top right bottom left */
+  }
+
+  .tip       .icon,
+  .note      .icon,
+  .caution   .icon,
+  .warning   .icon,
+  .important .icon
+  {
+      _display          : none; /* IE6 cannot display embedded images */
+  }
+
+  .figure > .title
+  {
+      text-align        : center;
+  }
+
+  .figure .title
+  {
+      _text-align       : center; /* for IE6 */
+  }
+
+  .figure > .content img
+  {
+      display           : block;
+      margin            : auto;
+  }
+
+  .figure .content img
+  {
+      _display          : block; /* for IE6 */
+      _margin           : auto; /* for IE6 */
+  }
+
+      body
+{
+    margin              : auto;
+    max-width           : 36em;
+    padding             : 0.5em;
+}
+
+/* hyperlinks */
+
+  a:link
+  {
+      color             : #0000FF;
+      text-decoration   : none;
+  }
+
+  a:visited
+  {
+      color             : #C71585;
+      text-decoration   : none;
+  }
+
+  a:hover
+  {
+      color             : #FF0000;
+      text-decoration   : underline;
+  }
+
+  a:target
+  {
+      color             : #FF0000;
+      font-weight       : bold;
+  }
+
+    -->
+    </style>
+    <style type="text/css" media="print">
+    <!--
+      body
+{
+    color               : #000000;
+    background-color    : #FFFFFF;
+    line-height         : 1.5em;
+    font-family         : Calibri, Verdana, sans-serif;
+}
+
+/* emphasis */
+
+  em,
+  blockquote
+  {
+      font-family       : Cambria, Georgia, serif;
+  }
+
+  em
+  {
+      background-color  : #FFFFE0;
+  }
+
+  blockquote
+  {
+      margin            : 2em;
+      color             : #333;
+      font-style        : italic;
+  }
+
+  hr
+  {
+      height            : 0;
+      border            : 0;
+      border-top        : 2px solid #FF0000;
+  }
+
+/* source code */
+
+  tt,
+  code,
+  pre
+  {
+      font-family       : Consolas, "Lucida Console", monospace;
+  }
+
+  tt
+  {
+      background-color  : #F0F8FF;
+  }
+
+  /* output of the syntax coloring library */
+  .code
+  {
+      background-color  : #FFFFF0;
+  }
+
+  pre
+  {
+      cursor            : text;
+      line-height       : normal;
+      border            : 1px dashed #C0C0C0;
+      background-color  : #F5FFDF;
+      padding           : 1em;
+      overflow          : auto;
+  }
+
+/* hyperlinks */
+
+  a > img
+  {
+      border            : none;
+  }
+
+  a img
+  {
+      _border           : none; /* for IE6 */
+  }
+
+  a.here:link,
+  a.here:visited
+  {
+      color             : #000000;
+  }
+
+/* lists */
+
+  #content li:first-child
+  {
+      margin-top        : 1em;
+  }
+
+  #content li
+  {
+      margin-bottom     : 1em;
+  }
+
+/* headings */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .title
+  {
+      font-weight       : lighter;
+      font-family       : Constantia, "Book Antiqua", "URW Bookman L", serif;
+  }
+
+  #lof h1,
+  #lof h2,
+  #lof h3,
+  #lof h4,
+  #lof h5,
+  #lof h6
+  {
+      margin-top        : 1.25em;
+  }
+
+  #content h1,
+  #content h2,
+  #content h3,
+  #content h4,
+  #content h5,
+  #content h6
+  {
+      margin-top        : 2.5em;
+      line-height       : 1.25em;
+  }
+
+  #content h1
+  {
+      font-size         : 2.0em;
+  }
+
+  #content h2
+  {
+      font-size         : 1.8em;
+  }
+
+  #content h3
+  {
+      font-size         : 1.6em;
+  }
+
+  #content h4
+  {
+      font-size         : 1.4em;
+  }
+
+  #content h5
+  {
+      font-size         : 1.2em;
+  }
+
+  #content h6
+  {
+      font-size         : 1.0em;
+  }
+
+/* tables */
+
+  table
+  {
+      border-collapse   : collapse; /* no spacing between cell borders */
+      margin            : auto; /* center horizontally */
+      margin-top        : 1em;
+  }
+
+  th,
+  td
+  {
+      padding           : 1em;
+      border            : 1px solid #bbb;
+      vertical-align    : top;
+      background-color  : inherit;
+      _background-color : #FFFFFF; /* for IE6 */
+  }
+
+  th
+  {
+      background-color  : #F5F5F5;
+  }
+
+/* document structure */
+
+  .nav
+  {
+      text-align        : center;
+      margin-bottom     : 4em;
+  }
+
+  #header
+  {
+      text-align        : center;
+  }
+
+  .header_outside_above,
+  #header,
+  .header_outside_below
+  {
+      margin-bottom     : 5em;
+  }
+
+  .footer_outside_above,
+  #footer,
+  .footer_outside_below
+  {
+      margin-top        : 5em;
+  }
+
+  #header .header_inside_above,
+  #footer .footer_inside_above
+  {
+      margin-bottom     : 4em;
+  }
+
+  #header .header_inside_below,
+  #footer .footer_inside_below
+  {
+      margin-top        : 4em;
+  }
+
+  #Abstract
+  {
+      margin-bottom     : 5em;
+  }
+
+  #Contents li
+  {
+      list-style-type   : none;
+  }
+
+  #Contents li ul
+  {
+      padding-bottom    : 1em;
+      border-left       : thick solid #F5F5F5;
+      _border-left      : none; /* for IE6 */
+  }
+
+  #Contents li ul:hover
+  {
+      border-color      : #DCDCDC;
+  }
+
+  #Contents > ul
+  {
+      padding-left      : 1em;
+  }
+
+  #References
+  {
+      margin-top        : 5em;
+  }
+
+  #footer
+  {
+      border-top        : thick dotted #DCDCDC;
+      padding-top       : 1em;
+      text-align        : center;
+  }
+
+  #footer-credits
+  {
+      margin-top        : 2em;
+  }
+
+/* document nodes */
+
+  .part    > .title,
+  .chapter > .title
+  {
+      padding-bottom    : 0.5em;
+  }
+
+  .part    > .title > big,
+  .chapter > .title > big
+  {
+      display           : block;
+      margin-top        : 0.25em;
+  }
+
+  .part    .title big,
+  .chapter .title big
+  {
+      _display          : block; /* for IE6 */
+      _margin-top       : 0.25em; /* for IE6 */
+      _margin-bottom    : 0.75em; /* for IE6 */
+  }
+
+  .paragraph > .title,
+  .tip       > .title,
+  .note      > .title,
+  .caution   > .title,
+  .warning   > .title,
+  .important > .title,
+  .figure    > .title,
+  .table     > .title,
+  .example   > .title,
+  .equation  > .title,
+  .procedure > .title
+  {
+      font-size         : large;
+      margin-top        : 2em;
+  }
+
+  .paragraph .title,
+  .tip       .title,
+  .note      .title,
+  .caution   .title,
+  .warning   .title,
+  .important .title,
+  .figure    .title,
+  .table     .title,
+  .example   .title,
+  .equation  .title,
+  .procedure .title
+  {
+      _font-size        : large; /* for IE6 */
+      _font-weight      : bold; /* large is not bold in IE6 */
+      _margin-top       : 2em; /* for IE6 */
+  }
+
+  .tip      ,
+  .note     ,
+  .caution  ,
+  .warning  ,
+  .important,
+  .figure   ,
+  .table    ,
+  .example  ,
+  .equation ,
+  .procedure
+  {
+      margin            : 3em;
+  }
+
+  .tip       > .icon,
+  .note      > .icon,
+  .caution   > .icon,
+  .warning   > .icon,
+  .important > .icon
+  {
+      float             : left;
+      margin            : 0 1em 1em 0; /* top right bottom left */
+  }
+
+  .tip       .icon,
+  .note      .icon,
+  .caution   .icon,
+  .warning   .icon,
+  .important .icon
+  {
+      _display          : none; /* IE6 cannot display embedded images */
+  }
+
+  .figure > .title
+  {
+      text-align        : center;
+  }
+
+  .figure .title
+  {
+      _text-align       : center; /* for IE6 */
+  }
+
+  .figure > .content img
+  {
+      display           : block;
+      margin            : auto;
+  }
+
+  .figure .content img
+  {
+      _display          : block; /* for IE6 */
+      _margin           : auto; /* for IE6 */
+  }
+
+      /* source code */
+
+  tt
+  {
+      background-color  : inherit;
+      font-weight       : normal;
+  }
+
+  pre,
+  .code
+  {
+      border            : none;
+      background-color  : inherit;
+  }
+
+/* headings */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6
+  {
+      font-weight       : normal;
+  }
+
+/* hyperlinks */
+
+  /* blend all hyperlinks with normal text */
+  a:link,
+  a:visited
+  {
+      color             : #000000;
+      text-decoration   : none;
+  }
+
+  /* emphasize external and cross-reference hyperlinks */
+  a:not([href^="#"]):link,
+  a:not([href^="#"]):visited,
+  a.xref[title]:link,
+  a.xref[title]:visited
+  {
+      color             : #0000FF;
+      text-decoration   : underline;
+      font-weight       : bolder;
+  }
+
+  /* show URL of destination for external hyperlinks */
+  a:not([href^="#"]):after
+  {
+      content           : " " attr(href);
+      font-family       : Consolas, "Lucida Console", monospace;
+  }
+
+  /* show name of destination for cross-references */
+  a.xref[title]:after
+  {
+      content           : " " attr(title);
+  }
+
+  a:after
+  {
+      font-weight       : normal;
+      font-size         : smaller;
+  }
+
+/* document structure */
+
+  .nav,
+  #lof
+  {
+      display           : none;
+  }
+
+  #Contents,
+  .part,
+  .chapter,
+  #References
+  {
+      page-break-before : always;
+  }
+
+/* document nodes */
+
+  .part    > .title > big,
+  .chapter > .title > big
+  {
+      padding-bottom    : 0.5em;
+  }
+
+  .part    .title big,
+  .chapter .title big
+  {
+      _padding-bottom   : 0.5em; /* for IE6 */
+  }
+
+    -->
+    </style>
+  </head>
+  <body>
+    <div class="nav">
+      <a href="#Abstract">Abstract</a> &middot; <a href="#Contents">Contents</a> &middot; <a href="#Examples">Examples</a>
+    </div>
+
+    <br style="display: none"/>
+    <hr style="display: none"/>
+    <br style="display: none"/>
+
+    
+    <div id="header">
+    
+      
+      <h1 class="title"><a class="here" href="#">Rassmalog 12.0.1 user guide</a></h1>
+      <h2 class="authors"><a href="http://snk.rubyforge.org">Suraj N. Kurapati</a></h2>
+      <h3 class="date">02 August 2008</h3>
+    
+    </div>
+    
+
+    <div id="Abstract">
+  <h1 class="title"><a class="here" href="#Abstract">Abstract</a></h1>
+  <div class="content"><p>Rassmalog is a <strong>static blog engine</strong> based on <a href="http://www.yaml.org/"><span class="caps">YAML</span></a>, <a href="http://en.wikipedia.org/wiki/Eruby">eRuby</a>, and <a href="http://rake.rubyforge.org/">Rake</a>. It transforms blog entries written in <a href="http://whytheluckystiff.net/ruby/redcloth/">Textile</a> or <a href="#config.format">other formatting systems</a> into valid <span class="caps">XHTML</span> files that you can view on your computer or upload to your website.. <a class="xref" href="#Introduction" title="Chapter 1. Introduction">[Continue reading&#8230;]</a></p>
+<p><div class="paragraph">
+  <p class="title" id="Resources"><a class="here" href="#Resources">Resources</a></p>
+  <div class="content"><ul>
+	<li><a href="../output/index.html">Preview</a> &#8211; live demonstration of Rassmalog.</li>
+	<li><a href="http://rassmalog.rubyforge.org/log">Releases</a> &#8211; release notes and project news. <a href="http://rassmalog.rubyforge.org/ann"><img src="../output/icons/feed-icon-28x28.png" title="RSS feed" alt="RSS feed" /></a></li>
+	<li><a href="http://rassmalog.rubyforge.org/pkg">Downloads</a> &#8211; obtain the newest release package.</li>
+	<li><a href="http://rassmalog.rubyforge.org/src">Source code</a> &#8211; obtain via <a href="http://darcs.net">Darcs 2</a> or browse online.</li>
+	<li><a href="api/index.html">Reference</a> &#8211; <span class="caps">API</span> documentation for source code. <a href="http://rassmalog.rubyforge.org/dev"><img src="../output/icons/feed-icon-28x28.png" title="RSS feed" alt="RSS feed" /></a></li>
+</ul>
+<p>To get help or provide feedback, simply <a class="xref" href="#License" title="Section 1.2. License">contact the author</a>.</p></div>
+</div></p></div>
+</div>
+
+    <br style="display: none"/>
+    <hr style="display: none"/>
+    <br style="display: none"/>
+
+      <div id="Contents">
+        <h1 class="title"><a class="here" href="#Contents">Contents</a></h1>
+        <ul>
+          <li>1&nbsp;&nbsp;<a id="a-606308438" href="#Introduction">Introduction</a><ul><li>1.1&nbsp;&nbsp;<a id="a-606315198" href="#Features">Features</a></li><li>1.2&nbsp;&nbsp;<a id="a-606320288" href="#License">License</a></li><li>1.3&nbsp;&nbsp;<a id="a-606326918" href="#Motivation">Motivation</a><ul><li>1.3.1&nbsp;&nbsp;<a id="a-606331148" href="#Server-requirements">Server requirements</a></li><li>1.3.2&nbsp;&nbsp;<a id="a-606335388" href="#Content-ownership">Content ownership</a></li><li>1.3.3&nbsp;&nbsp;<a id="a-606339788" href="#Content-portability">Content portability</a></li><li>1.3.4&nbsp;&nbsp;<a id="a-606346598" href="#Speed-and-scalability">Speed and scalability</a></li><li>1.3.5&nbsp;&nbsp;<a id="a-606351918" href="#Comments-and-spam-control">Comments and spam control</a></li></ul></li><li>1.4&nbsp;&nbsp;<a id="a-606358978" href="#Background">Background</a></li></ul></li><li>2&nbsp;&nbsp;<a id="a-606366828" href="#Setup">Setup</a><ul><li>2.1&nbsp;&nbsp;<a id="a-606370088" href="#Requirements">Requirements</a></li><li>2.2&nbsp;&nbsp;<a id="a-606374638" href="#Installation">Installation</a></li><li>2.3&nbsp;&nbsp;<a id="a-606380418" href="#manifest">Manifest</a><ul><li>2.3.1&nbsp;&nbsp;<a id="a-606384008" href="#manifest.doc">doc/</a></li><li>2.3.2&nbsp;&nbsp;<a id="a-606389568" href="#manifest.config">config/</a><ul><li>2.3.2.1&nbsp;&nbsp;<a id="a-606393828" href="#manifest.lang">config/lang/</a></li></ul></li><li>2.3.3&nbsp;&nbsp;<a id="a-606407368" href="#manifest.output">output/</a></li><li>2.3.4&nbsp;&nbsp;<a id="a-606410258" href="#manifest.input">input/</a></li><li>2.3.5&nbsp;&nbsp;<a id="a-606414228" href="#manifest.entries">entries/</a></li><li>2.3.6&nbsp;&nbsp;<a id="a-606416988" href="#manifest.plugins">plugins/</a><ul><li>2.3.6.1&nbsp;&nbsp;<a id="a-606419448" href="#plugins-import.rb">plugins/import.rb</a></li><li>2.3.6.2&nbsp;&nbsp;<a id="a-606424598" href="#plugins-new.rb">plugins/new.rb</a></li><li>2.3.6.3&nbsp;&nbsp;<a id="a-606456018" href="#plugins-validate.rb">plugins/validate.rb</a></li></ul></li></ul></li><li>2.4&nbsp;&nbsp;<a id="a-606465538" href="#Version-numbering-system">Version numbering system</a></li></ul></li><li>3&nbsp;&nbsp;<a id="a-606473498" href="#config">Configuration</a><ul><li>3.1&nbsp;&nbsp;<a id="a-606475118" href="#Parameters">Parameters</a><ul><li>3.1.1&nbsp;&nbsp;<a id="a-606477348" href="#param.name">name (eRuby) (HTML)</a></li><li>3.1.2&nbsp;&nbsp;<a id="a-606482008" href="#param.info">info (eRuby) (HTML)</a></li><li>3.1.3&nbsp;&nbsp;<a id="a-606485908" href="#param.author">author (eRuby) (HTML)</a></li><li>3.1.4&nbsp;&nbsp;<a id="a-606492538" href="#param.email">email (eRuby)</a></li><li>3.1.5&nbsp;&nbsp;<a id="a-606497798" href="#param.url">url (eRuby)</a></li><li>3.1.6&nbsp;&nbsp;<a id="a-606502938" href="#param.uploader">uploader (eRuby)</a></li><li>3.1.7&nbsp;&nbsp;<a id="a-606509528" href="#param.encoding">encoding (eRuby)</a></li><li>3.1.8&nbsp;&nbsp;<a id="a-606516808" href="#param.language">language (eRuby)</a></li><li>3.1.9&nbsp;&nbsp;<a id="a-606522168" href="#param.locale">locale (eRuby)</a></li><li>3.1.10&nbsp;&nbsp;<a id="a-606528888" href="#param.entrance">entrance (eRuby)</a></li><li>3.1.11&nbsp;&nbsp;<a id="a-606533138" href="#param.generate_toc">generate_toc </a></li><li>3.1.12&nbsp;&nbsp;<a id="a-606536728" href="#param.date_format">date_format </a></li><li>3.1.13&nbsp;&nbsp;<a id="a-606543278" href="#param.archive_frequency">archive_frequency </a></li></ul></li><li>3.2&nbsp;&nbsp;<a id="a-606552818" href="#lang">Localization for foreign languages</a><ul><li>3.2.1&nbsp;&nbsp;<a id="a-606559088" href="#Enabling-a-translation-file">Enabling a translation file</a></li></ul></li><li>3.3&nbsp;&nbsp;<a id="a-606564168" href="#config.format">Using another text formatting system</a></li><li>3.4&nbsp;&nbsp;<a id="a-606571428" href="#config.comments">Using dynamic Javascript-based comments</a></li><li>3.5&nbsp;&nbsp;<a id="a-606574828" href="#Disabling-parts-of-a-blog">Disabling parts of a blog</a></li><li>3.6&nbsp;&nbsp;<a id="a-606579608" href="#Disabling-the-search-page">Disabling the search page</a></li><li>3.7&nbsp;&nbsp;<a id="a-606584748" href="#Disabling-the-about-page">Disabling the about page</a></li></ul></li><li>4&nbsp;&nbsp;<a id="a-606588198" href="#Usage">Usage</a><ul><li>4.1&nbsp;&nbsp;<a id="a-606590438" href="#Creating-a-blog-entry-file">Creating a blog entry file</a></li><li>4.2&nbsp;&nbsp;<a id="a-606593218" href="#usage.gen">Generating your blog</a></li><li>4.3&nbsp;&nbsp;<a id="a-606595988" href="#Removing-generated-files">Removing generated files</a></li><li>4.4&nbsp;&nbsp;<a id="a-606598718" href="#Publishing-your-blog">Publishing your blog</a></li><li>4.5&nbsp;&nbsp;<a id="a-606601108" href="#Preview-while-you-write">Preview while you write</a></li><li>4.6&nbsp;&nbsp;<a id="a-606603778" href="#usage.import">Importing blog entries from RSS feed</a></li><li>4.7&nbsp;&nbsp;<a id="a-606606638" href="#Creating-RSS-feeds">Creating RSS feeds</a></li></ul></li><li>5&nbsp;&nbsp;<a id="a-606615158" href="#Writing-blog-entries">Writing blog entries</a><ul><li>5.1&nbsp;&nbsp;<a id="a-606617308" href="#Parameters-606708668">Parameters</a><ul><li>5.1.1&nbsp;&nbsp;<a id="a-606620038" href="#param.name-606723928">name (Required) (eRuby) (HTML)</a></li><li>5.1.2&nbsp;&nbsp;<a id="a-606623188" href="#param.date">date (Optional) (eRuby)</a></li><li>5.1.3&nbsp;&nbsp;<a id="a-606642068" href="#param.tags">tags (Optional)</a></li><li>5.1.4&nbsp;&nbsp;<a id="a-606644558" href="#param.output_file">output_file (Optional) (eRuby)</a></li><li>5.1.5&nbsp;&nbsp;<a id="a-606647188" href="#param.hide">hide (Optional)</a></li><li>5.1.6&nbsp;&nbsp;<a id="a-606649818" href="#param.generate_toc-607053978">generate_toc (Optional)</a></li><li>5.1.7&nbsp;&nbsp;<a id="a-606652498" href="#param.summary">summary (Optional) (eRuby) (HTML)</a></li><li>5.1.8&nbsp;&nbsp;<a id="a-606655168" href="#param.your_own_parameter1">your_own_parameter1 (Example)</a></li><li>5.1.9&nbsp;&nbsp;<a id="a-606657908" href="#param.body">body (Required) (eRuby) (HTML)</a></li></ul></li><li>5.2&nbsp;&nbsp;<a id="a-606661018" href="#eRuby-directives">eRuby directives</a><ul><li>5.2.1&nbsp;&nbsp;<a id="a-606662858" href="#Including-the-content-of-another-file">Including the content of another file</a></li></ul></li><li>5.3&nbsp;&nbsp;<a id="a-606665488" href="#Relative-URLs-to-output-files">Relative URLs to output files</a></li><li>5.4&nbsp;&nbsp;<a id="a-606667898" href="#entry.toc">Table of contents generation</a></li><li>5.5&nbsp;&nbsp;<a id="a-606670028" href="#entry.code">Syntax coloring for source code</a><ul><li>5.5.1&nbsp;&nbsp;<a id="a-606671818" href="#Specifying-the-programming-language">Specifying the programming language</a></li><li>5.5.2&nbsp;&nbsp;<a id="a-606673988" href="#Smart-sizing-of-source-code">Smart sizing of source code</a></li></ul></li><li>5.6&nbsp;&nbsp;<a id="a-606676548" href="#entry.verbatim">Protecting verbatim text</a></li></ul></li><li>6&nbsp;&nbsp;<a id="a-606679098" href="#Hacking">Hacking</a><ul><li>6.1&nbsp;&nbsp;<a id="a-606680768" href="#hacking.api">API documentation</a></li></ul></li>
+
+        </ul>
+      </div>
+
+      <div id="lof"><h1 id="Examples" class="title"><a class="here" href="#Examples">Examples</a></h1> <ol><li><a id="a-606611468" href="#Adding-entries-from-multiple-tags-to-an-RSS-feed">Adding entries from multiple tags to an RSS feed</a></li></ol></div>
+
+    <br style="display: none"/>
+    <hr style="display: none"/>
+    <br style="display: none"/>
+
+    <div id="content">
+
+<div class="chapter">
+  <h1 class="title">
+    Chapter
+    <a class="list" id="Introduction" href="#a-606308438">1</a>
+
+    <br/>
+
+    <a class="here" href="#Introduction"><big>Introduction</big></a>
+  </h1>
+
+  <div class="content"><p>Rassmalog is a <strong>static blog engine</strong> based on <a href="http://www.yaml.org/"><span class="caps">YAML</span></a>, <a href="http://en.wikipedia.org/wiki/Eruby">eRuby</a>, and <a href="http://rake.rubyforge.org/">Rake</a>. It transforms blog entries written in <a href="http://whytheluckystiff.net/ruby/redcloth/">Textile</a> or <a href="#config.format">other formatting systems</a> into valid <span class="caps">XHTML</span> files that you can view on your computer or upload to your website.</p>
+<p>Rassmalog is <strong>open-source software</strong> (see <a class="xref" href="#License">Section 1.2. License</a>) inspired by the <a href="http://rog.rubyforge.org">Rog</a>, <a href="http://hobix.com">hobix</a>, and <a href="http://nanoblogger.sourceforge.net/">nanoblogger</a> blog engines. Its name is derived from the word <a href="http://dailygirlblog.blogspot.com/2006/09/rasmalai.html">Rasmalai</a> and somewhat resembles the words &#8220;<span class="caps">RSS</span>&#8221;, &#8220;<span class="caps">YAML</span>&#8221;, and &#8220;blog&#8221;.</p>
+<p><div class="section">
+  <h2 class="title">
+    <a class="list" id="Features" href="#a-606315198">1.1</a>&nbsp;&nbsp;<a class="here" href="#Features">Features</a>
+  </h2>
+  <div class="content"><p>Noteworthy:</p>
+<ul>
+	<li>Composed of <strong>less than 600 lines</strong> of code!</li>
+	<li>Supports <a href="#config.format">any text formatting system</a> imaginable!</li>
+	<li>Automatic <a href="#entry.toc">table of contents</a> for blog entries.</li>
+	<li>Automatic <a href="#entry.code">syntax coloring</a> for source code.</li>
+	<li>User-friendly output for <a href="http://www.linuxjournal.com/article/8148">text-only web browsers</a>.</li>
+	<li><a href="#lang">Foreign language support</a> for <a href="#manifest.lang">13 languages</a>.</li>
+</ul>
+<p>Standard:</p>
+<ul>
+	<li>Categorization by tags (also known as <a href="http://en.wikipedia.org/wiki/Folksonomy">folksonomy</a>).</li>
+	<li>Automatic archives by date, month, year, etc.</li>
+	<li>Automatic <a href="http://en.wikipedia.org/wiki/RSS"><span class="caps">RSS</span> feeds</a> for blog entires, tags, etc.</li>
+	<li>Automated <a href="#usage.import">blog import</a> from any <span class="caps">RSS</span> feed.</li>
+</ul></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="License" href="#a-606320288">1.2</a>&nbsp;&nbsp;<a class="here" href="#License">License</a>
+  </h2>
+  <div class="content"><p>Copyright 2006 Suraj N. Kurapati &lt;<span class="caps">SNK</span> at <span class="caps">GNA</span> dot <span class="caps">ORG</span>&gt;</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+<ul>
+	<li>All copies and substantial portions of the Software (the &quot;Derivatives&quot;)   and their corresponding machine-readable source code (the &quot;Code&quot;) must   include the above copyright notice and this permission notice.</li>
+</ul>
+<ul>
+	<li>Upon distribution, the Derivatives must be accompanied by either the Code   or&#8212;provided that the Code is obtainable for no more than the cost of   distribution plus a nominal fee&#8212;information on how to obtain the Code.</li>
+</ul>
+<p><span class="caps">THE</span> <span class="caps">SOFTWARE</span> IS <span class="caps">PROVIDED</span> &quot;AS IS&quot;, <span class="caps">WITHOUT</span> <span class="caps">WARRANTY</span> OF <span class="caps">ANY</span> <span class="caps">KIND</span>, <span class="caps">EXPRESS</span> OR <span class="caps">IMPLIED</span>, <span class="caps">INCLUDING</span> <span class="caps">BUT</span> <span class="caps">NOT</span> <span class="caps">LIMITED</span> TO <span class="caps">THE</span> <span class="caps">WARRANTIES</span> OF <span class="caps">MERCHANTABILITY</span>, <span class="caps">FITNESS</span> <span class="caps">FOR</span> A <span class="caps">PARTICULAR</span> <span class="caps">PURPOSE</span> <span class="caps">AND</span> <span class="caps">NONINFRINGEMENT</span>. IN NO <span class="caps">EVENT</span> <span class="caps">SHALL</span> <span class="caps">THE</span> <span class="caps">AUTHORS</span> OR <span class="caps">COPYRIGHT</span> <span class="caps">HOLDERS</span> BE <span class="caps">LIABLE</span> <span class="caps">FOR</span> <span class="caps">ANY</span> <span class="caps">CLAIM</span>, <span class="caps">DAMAGES</span> OR <span class="caps">OTHER</span> <span class="caps">LIABILITY</span>, <span class="caps">WHETHER</span> IN AN <span class="caps">ACTION</span> OF <span class="caps">CONTRACT</span>, <span class="caps">TORT</span> OR <span class="caps">OTHERWISE</span>, <span class="caps">ARISING</span> <span class="caps">FROM</span>, <span class="caps">OUT</span> OF OR IN <span class="caps">CONNECTION</span> <span class="caps">WITH</span> <span class="caps">THE</span> <span class="caps">SOFTWARE</span> OR <span class="caps">THE</span> <span class="caps">USE</span> OR <span class="caps">OTHER</span> <span class="caps">DEALINGS</span> IN <span class="caps">THE</span> <span class="caps">SOFTWARE</span>.</p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Motivation" href="#a-606326918">1.3</a>&nbsp;&nbsp;<a class="here" href="#Motivation">Motivation</a>
+  </h2>
+  <div class="content"><p>Although <a href="http://en.wikipedia.org/wiki/Dynamic_web_page">dynamic blog engines</a> are popular nowadays, <a href="http://en.wikipedia.org/wiki/Static_Web_page">static blog engines</a> like Rassmalog are still relevant. The following sections attempt to explain why.</p>
+<p><div class="section">
+  <h3 class="title">
+    <a class="list" id="Server-requirements" href="#a-606331148">1.3.1</a>&nbsp;&nbsp;<a class="here" href="#Server-requirements">Server requirements</a>
+  </h3>
+  <div class="content"><table border="1">
+	<tr>
+		<th>Dynamic blog engine</th>
+		<th>Rassmalog</th>
+	</tr>
+	<tr>
+		<td><strong>Requires a web server</strong> that supports <acronym title="Common Gateway Interface"><span class="caps">CGI</span></acronym> or a server-side scripting language.<br/><br/> Another typical requirement is <strong>access to a relational database</strong>.</td>
+		<td><strong>Requires nothing</strong> because <em>all</em> web servers are, by definition, capable of serving files over <acronym title="Hypertext Transfer Protocol"><span class="caps">HTTP</span></acronym>.<br/><br/> In fact, even a <strong>web server is not necessary</strong> if you just want to view your blog locally, on your own computer.</td>
+	</tr>
+</table></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="Content-ownership" href="#a-606335388">1.3.2</a>&nbsp;&nbsp;<a class="here" href="#Content-ownership">Content ownership</a>
+  </h3>
+  <div class="content"><table border="1">
+	<tr>
+		<th>Dynamic blog engine</th>
+		<th>Rassmalog</th>
+	</tr>
+	<tr>
+		<td>Your <strong>content is locked away</strong> within a relational database, to which you might not have access. Thus, it is <strong>difficult to backup</strong> your content.</td>
+		<td>Your <strong>content is stored locally</strong>, on <em>your</em> computer. Thus, it is <strong>easy to backup</strong> and share with a good friend.</td>
+	</tr>
+	<tr>
+		<td>You are <strong>vulnerable to data loss</strong> when your web hosting service accidentally crashes or erases your blog.</td>
+		<td>You are <strong>safe from data loss</strong> when your web hosting service accidentally crashes or erases your blog.</td>
+	</tr>
+</table></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="Content-portability" href="#a-606339788">1.3.3</a>&nbsp;&nbsp;<a class="here" href="#Content-portability">Content portability</a>
+  </h3>
+  <div class="content"><table border="1">
+	<tr>
+		<td style="visibility: hidden;">&nbsp;</td>
+		<th>Dynamic blog engine</th>
+		<th>Rassmalog</th>
+	</tr>
+	<tr>
+		<th>How is your content kept?</th>
+		<td>Scattered across a <em>relational</em> database on the web server.</td>
+		<td>In <strong>plain text</strong> files on <em>your</em> computer.</td>
+	</tr>
+	<tr>
+		<th>How do you migrate to another blog engine?</th>
+		<td>Assuming that you have <span class="caps">SQL</span> access to your blog&#8217;s relational database, you must first <strong>understand the database schema</strong> before you can extract your content.<br/><br/> Afterwards, you still need to convert the extracted content into the new blog&#8217;s format.</td>
+		<td>Your <strong>content is readily converted</strong> into the new blog&#8217;s format using standard <a href="http://tldp.org/LDP/abs/html/textproc.html">text processing tools</a> or languages such as <a href="http://perl.org">Perl</a> and <a href="http://ruby-lang.org">Ruby</a>.</td>
+	</tr>
+</table></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="Speed-and-scalability" href="#a-606346598">1.3.4</a>&nbsp;&nbsp;<a class="here" href="#Speed-and-scalability">Speed and scalability</a>
+  </h3>
+  <div class="content"><table border="1">
+	<tr>
+		<th>Dynamic blog engine</th>
+		<th>Rassmalog</th>
+	</tr>
+	<tr>
+		<td>Responsiveness depends on speed of web server <em>and</em> speed of the server-side scripting language in which the blog software is written.</td>
+		<td>Responsiveness depends <em>only</em> on speed of web server.</td>
+	</tr>
+	<tr>
+		<td><strong>Scales poorly</strong> because it generates web pages <strong>on demand</strong>.</td>
+		<td><strong>Scales perfectly</strong> because all content is generated only <em>once</em> and only <em>before</em> it is ever uploaded to your web server!</td>
+	</tr>
+</table></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="Comments-and-spam-control" href="#a-606351918">1.3.5</a>&nbsp;&nbsp;<a class="here" href="#Comments-and-spam-control">Comments and spam control</a>
+  </h3>
+  <div class="content"><table border="1">
+	<tr>
+		<th>Dynamic blog engine</th>
+		<th>Rassmalog</th>
+	</tr>
+	<tr>
+		<td>Provides <strong>web-based comments</strong> that typically burden users with <a href="http://www.captcha.net"><span class="caps">CAPTCHA</span> tests</a> and/or become vulnerable to <a href="http://en.wikipedia.org/wiki/Spam_in_blogs">comment spam</a>.<br/><br/> You will have to clean up the spam eventually, using a clunky web-based comment management interface.</td>
+		<td>Provides <strong>e-mail based comments</strong> by default, while taking special care to avoid <a href="http://en.wikipedia.org/wiki/E-mail_spam">e-mail spam</a> by <strong>obfuscating your e-mail address</strong> in such a way that <a href="http://en.wikipedia.org/wiki/E-mail_address_harvesting">address harvesters</a> won&#8217;t bother trying to figure it out.<br/><br/><strong>If you prefer web-based comments</strong> instead, see <a class="xref" href="#config.comments">Section 3.4. Using dynamic Javascript-based comments</a> for solutions.</td>
+	</tr>
+</table></div>
+</div></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Background" href="#a-606358978">1.4</a>&nbsp;&nbsp;<a class="here" href="#Background">Background</a>
+  </h2>
+  <div class="content"><p>The basic unit of content in Rassmalog is the blog <strong>entry</strong>. Entries are collected into <strong>sections</strong>. Pages are collected into <strong>chapters</strong>.</p>
+<p>As you can see, there is a hierarchical relationship here:</p>
+<ul>
+	<li>Chapter
+	<ul>
+		<li>Section
+		<ul>
+			<li>Entry</li>
+		</ul></li>
+	</ul></li>
+</ul>
+<p>For example,</p>
+<ul>
+	<li>a <strong>chapter</strong> shows all available tags</li>
+	<li>a <strong>section</strong> shows all entries that have a particular tag</li>
+	<li>an <strong>entry</strong> just shows its content</li>
+</ul>
+<p>Furthermore, a <strong>listing</strong> is just a list of blog entries.</p></div>
+</div></p></div>
+</div>
+<div class="chapter">
+  <h1 class="title">
+    Chapter
+    <a class="list" id="Setup" href="#a-606366828">2</a>
+
+    <br/>
+
+    <a class="here" href="#Setup"><big>Setup</big></a>
+  </h1>
+
+  <div class="content"><p><div class="section">
+  <h2 class="title">
+    <a class="list" id="Requirements" href="#a-606370088">2.1</a>&nbsp;&nbsp;<a class="here" href="#Requirements">Requirements</a>
+  </h2>
+  <div class="content"><p>Your system needs the following software to run Rassmalog.</p>
+<table border="1">
+	<tr>
+		<th>Software                                                  </th>
+		<th>Notes                                                                                                                                                                                         </th>
+	</tr>
+	<tr>
+		<td> <a href="http://ruby-lang.org">Ruby</a>                                 </td>
+		<td> Version 1.8.x or 1.9.x is required                                                                                                                                                              </td>
+	</tr>
+	<tr>
+		<td> <a href="http://docs.rubyrake.org">Rake</a>                             </td>
+		<td> Version 0.7 or newer is required                                                                                                                                                                </td>
+	</tr>
+	<tr>
+		<td> <a href="http://whytheluckystiff.net/ruby/redcloth/">RedCloth</a>       </td>
+		<td> Not required if you want to <a href="#config.format">use a different formatting system</a>.  Otherwise version 4.x.x is required.                                                                           </td>
+	</tr>
+	<tr>
+		<td> <a href="http://coderay.rubychan.de/">CodeRay</a>                       </td>
+		<td> Not required if you want to <a href="#config.format">use a different formatting system</a>. Otherwise version 0.7 or newer is required.                                                                                                                  </td>
+	</tr>
+	<tr>
+		<td> <a href="http://raa.ruby-lang.org/project/ruby-locale/">ruby-locale</a> </td>
+		<td> Required if you want to use the <a href="#param.locale">locale parameter</a>.  This library is also available in <a href="http://debian.org">Debian</a> and <a href="http://ubuntu.com">Ubuntu</a> under the name &#8220;liblocale-ruby&#8221;. </td>
+	</tr>
+</table>
+<p>If your system has <a href="http://rubygems.org/">RubyGems</a>, then you can install Rake, RedCloth, and CodeRay by running the following command:</p>
+<pre>gem install rake RedCloth coderay</pre></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Installation" href="#a-606374638">2.2</a>&nbsp;&nbsp;<a class="here" href="#Installation">Installation</a>
+  </h2>
+  <div class="content"><ol>
+	<li>Download the newest release package from <a href="http://rassmalog.rubyforge.org/pkg">the download area</a>.</li>
+	<li>Extract the release package anywhere you want on your system.</li>
+	<li>Go inside the extracted directory and run the following command: <pre>rake regen</pre></li>
+</ol>
+<p>If the installation was successful, then you will see output like this: <pre>(in /home/sun/src/rassmalog)
+        copy  output/styles/print.css
+        copy  output/styles/common.css
+        copy  output/styles/screen.css
+        copy  output/icons/tango-32x32-actions-go-next.png
+        copy  output/icons/tango-32x32-actions-go-up.png
+        copy  output/icons/tango-32x32-actions-system-search.png
+        copy  output/icons/tango-32x32-apps-internet-group-chat.png
+        copy  output/icons/tango-32x32-actions-go-last.png
+        copy  output/icons/tango-32x32-apps-help-browser.png
+        copy  output/icons/tango-32x32-actions-go-first.png
+        copy  output/icons/tango-32x32-categories-applications-games.png
+        copy  output/icons/tango-32x32-apps-system-users.png
+        copy  output/icons/tango-32x32-apps-office-calendar.png
+        copy  output/icons/tango-32x32-categories-applications-graphics.png
+        copy  output/icons/tango-32x32-actions-go-previous.png
+        copy  output/icons/tango-32x32-actions-go-home.png
+        copy  output/icons/tango-LICENSE
+        copy  output/icons/feed-icon-14x14.png
+        copy  output/icons/feed-icon-28x28.png
+        copy  output/icons/tango-32x32-actions-edit-redo.png
+        copy  output/icons/tango-README
+        copy  output/icons/tango-32x32-actions-mail-mark-junk.png
+        copy  output/icons/tango-32x32-devices-printer.png
+        copy  output/icons/tango-32x32-actions-edit-copy.png
+        copy  output/icons/feed-icon-README
+       Entry  output/example-paths.html
+       Entry  output/about.html
+       Entry  output/2006-12-14-formatting-with-textile.html
+       Entry  output/blog-entry-file-format.html
+       Entry  output/2007-09-25-an-entry-from-the-entries-directory.html
+     Listing  output/entries.html
+    Entrance  output/example-paths.html
+     Section  output/tags-examples.html
+     Section  output/tags-reference.html
+     Chapter  output/tags.html
+     Section  output/archives-december-2006.html
+     Section  output/archives-september-2007.html
+     Chapter  output/archives.html
+       Entry  output/search.html
+        feed  output/feed.xml
+        feed  output/examples.xml
+</pre></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="manifest" href="#a-606380418">2.3</a>&nbsp;&nbsp;<a class="here" href="#manifest">Manifest</a>
+  </h2>
+  <div class="content"><p>Now that Rassmalog is installed on your system, let us examine its installation directory. Inside, you will see (among other things) the following items:</p>
+<ul>
+	<li><tt>rassmalog.rb</tt> &#8211; the core of Rassmalog.</li>
+</ul>
+<p><div class="section">
+  <h3 class="title">
+    <a class="list" id="manifest.doc" href="#a-606384008">2.3.1</a>&nbsp;&nbsp;<a class="here" href="#manifest.doc">doc/</a>
+  </h3>
+  <div class="content"><p>Documentation for Rassmalog users</p>
+<ul>
+	<li><tt>doc/guide.erb</tt> &#8211; source code of this user guide</li>
+</ul></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="manifest.config" href="#a-606389568">2.3.2</a>&nbsp;&nbsp;<a class="here" href="#manifest.config">config/</a>
+  </h3>
+  <div class="content"><p>Directory that contains all configuration files.</p>
+<ul>
+	<li><tt>config/blog.yaml</tt> &#8211; the primary configuration file for your blog.</li>
+	<li><tt>config/feed.erb</tt> &#8211; template for generating <span class="caps">RSS</span> feeds for the blog.</li>
+	<li><tt>config/html.erb</tt> &#8211; template for generating a complete <span class="caps">HTML</span> web page.</li>
+	<li><tt>config/chapter.erb</tt> &#8211; template for generating <span class="caps">HTML</span> for lists of tags and archives.</li>
+	<li><tt>config/section.erb</tt> &#8211; template for generating <span class="caps">HTML</span> for individual tags and archives.</li>
+	<li><tt>config/listing.erb</tt> &#8211; template for generating the recent/all lists of blog entries.</li>
+	<li><tt>config/entry.erb</tt> &#8211; template for generating <span class="caps">HTML</span> for a blog entry.</li>
+	<li><tt>config/format.rb</tt> &#8211; defines how text is transformed into <span class="caps">HTML</span>.</li>
+</ul>
+<p><div class="section">
+  <h4 class="title">
+    <a class="list" id="manifest.lang" href="#a-606393828">2.3.2.1</a>&nbsp;&nbsp;<a class="here" href="#manifest.lang">config/lang/</a>
+  </h4>
+  <div class="content"><p>Directory that contains translations of English text used in the core of Rassmalog. These translations do not include English text used in the templates (<tt>config/*.erb</tt>) because those are already separate from the core of Rassmalog.</p>
+<ul>
+	<li><tt>config/lang/de.yaml</tt>  German</li>
+	<li><tt>config/lang/el.yaml</tt>  Greek</li>
+	<li><tt>config/lang/es.yaml</tt>  Spanish</li>
+	<li><tt>config/lang/fr.yaml</tt>  French</li>
+	<li><tt>config/lang/it.yaml</tt>  Italian</li>
+	<li><tt>config/lang/ja.yaml</tt>  Japanese</li>
+	<li><tt>config/lang/ko.yaml</tt>  Korean</li>
+	<li><tt>config/lang/nl.yaml</tt>  Dutch</li>
+	<li><tt>config/lang/pt.yaml</tt>  Portuguese</li>
+	<li><tt>config/lang/ru.yaml</tt>  Russian</li>
+	<li><tt>config/lang/te.yaml</tt>  Telugu</li>
+	<li><tt>config/lang/zh.yaml</tt>  Chinese-simp</li>
+	<li><tt>config/lang/zt.yaml</tt>  Chinese-trad</li>
+</ul></div>
+</div></p></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="manifest.output" href="#a-606407368">2.3.3</a>&nbsp;&nbsp;<a class="here" href="#manifest.output">output/</a>
+  </h3>
+  <div class="content"><p>Directory that contains your generated blog.</p></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="manifest.input" href="#a-606410258">2.3.4</a>&nbsp;&nbsp;<a class="here" href="#manifest.input">input/</a>
+  </h3>
+  <div class="content"><p>Directory that contains (1) source files for blog entries and (2) additional resources, such as images and stylesheets, that are used by your blog. Everything inside this directory, except source files for blog entries, is automatically copied into the <tt>output/</tt> directory (relative paths are preserved) when your blog is generated.</p>
+<p>A blog entry source file&#8217;s name must end with a <tt>.yaml</tt> extension. By default, a source file&#8217;s corresponding output file has (1) the same name and relative path as the source file but (2) ends with a <tt>.html</tt> extension.</p>
+<p>For example, the <tt>input/foo/bar/moz.yaml</tt> source file&#8217;s corresponding output file is <tt>output/foo/bar/moz.html</tt>. You can override this default behavior by adding the <a href="#param.output_file"><strong>output_file</strong> parameter</a> to your blog entry.</p>
+<ul>
+	<li><tt>input/styles/screen.css</tt> &#8211; the default <span class="caps">CSS</span> stylesheet provided with Rassmalog.</li>
+	<li><tt>input/styles/print.css</tt> &#8211; the default <span class="caps">CSS</span> stylesheet provided with Rassmalog.</li>
+	<li><tt>input/rassmalog/entry.yaml</tt> &#8211; reference of the blog entry file format.</li>
+</ul></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="manifest.entries" href="#a-606414228">2.3.5</a>&nbsp;&nbsp;<a class="here" href="#manifest.entries">entries/</a>
+  </h3>
+  <div class="content"><p>Directory that contains blog entry source files whose output files are <strong>automatically calculated</strong> by Rassmalog.</p>
+<p>A blog entry source file&#8217;s name must end with a <tt>.yaml</tt> extension. By default, all source files in this directory will have a corresponding output file with a name in the form: &#8220;<em>date</em>-<em>name</em>.html&#8221;.</p>
+<p>For example, the <tt>entries/foo/bar/moz.yaml</tt> source file, which was written on 19 July 2006 and has a name of &#8220;hello world&#8221;, will have a corresponding output file at <tt>output/2006-07-19-hello-world.html</tt>. You can override this default behavior by adding the <a href="#param.output_file"><strong>output_file</strong> parameter</a> to your blog entry.</p>
+<p>As you can see, <em>unlike</em> the blog entries in the <tt>input/</tt> directory, blog entries in the <tt>entries/</tt> directory do not have to worry about their original file name influencing the output file name. As a result, you can organize your blog entry files however you want.</p>
+<p>For example, I like to put all blog entry files related to Ruby programming within the <tt>entries/code/ruby/</tt> subdirectory. The names of these subdirectories do not have any special meaning to Rassmalog, so you can name them however you like.</p></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="manifest.plugins" href="#a-606416988">2.3.6</a>&nbsp;&nbsp;<a class="here" href="#manifest.plugins">plugins/</a>
+  </h3>
+  <div class="content"><p>This directory contains Ruby source files which define additional Rake tasks for Rassmalog.</p>
+<p><div class="section">
+  <h4 class="title">
+    <a class="list" id="plugins-import.rb" href="#a-606419448">2.3.6.1</a>&nbsp;&nbsp;<a class="here" href="#plugins-import.rb">plugins/import.rb</a>
+  </h4>
+  <div class="content"><table border="1">
+	<tr>
+		<th>Command </th>
+		<th>Description </th>
+	</tr>
+	<tr>
+		<td> rake import_rss   </td>
+		<td>  Import blog entries from <span class="caps">RSS</span> feed on <span class="caps">STDIN</span>. </td>
+	</tr>
+</table>
+<p><p>Rake tasks for importing blog entries from feeds.</p></p></div>
+</div><div class="section">
+  <h4 class="title">
+    <a class="list" id="plugins-new.rb" href="#a-606424598">2.3.6.2</a>&nbsp;&nbsp;<a class="here" href="#plugins-new.rb">plugins/new.rb</a>
+  </h4>
+  <div class="content"><table border="1">
+	<tr>
+		<th>Command </th>
+		<th>Description </th>
+	</tr>
+	<tr>
+		<td> rake new   </td>
+		<td>  Create a new blog entry file for editing. </td>
+	</tr>
+</table>
+<p><p>Provides a Rake task to facilitate &#8220;Lazy Blogging&#8221; <sup class="footnote"><a href="#fn1">1</a></sup> where you<br />
+can easily create a new blog entry source file without having to:</p>
+<ul>
+	<li>think of and manage unique file names every time</li>
+	<li>supply the current date and time</li>
+	<li>remember the entire syntax of a blog entry file</li>
+	<li>remember the names of all tags you have used thus far</li>
+</ul>
+<p>The name of the created file follows this format:</p>
+<pre>"entries/{today's date}+{serial number}.yaml"</pre>
+<p>To create a new blog entry file that is ready for editing:</p>
+<pre>rake new</pre>
+<p>To override the default values of blog entry fields:</p>
+<pre>rake new name='hello world' date='2008 march 17' tags='foo,bar' body='hey!'</pre>
+<p>To override the tags field (values must be separated by commas):</p>
+<pre>rake new tags='foo,bar,hello world'</pre>
+<p>To override the default location of the created file:</p>
+<pre>rake new file='hello_world.yaml'</pre>
+<p><sup class="footnote"><a href="#fn1">1</a></sup> Josef &#8216;Jupp&#8217; Schugt, &#8220;Lazy Blogging&#8221;, 2008 March 16, available at<br />
+pre.   http://cip.physik.uni-bonn.de/~jupp/2008-03-16-lazy-blogging.html</p></p></div>
+</div><div class="section">
+  <h4 class="title">
+    <a class="list" id="plugins-validate.rb" href="#a-606456018">2.3.6.3</a>&nbsp;&nbsp;<a class="here" href="#plugins-validate.rb">plugins/validate.rb</a>
+  </h4>
+  <div class="content"><table border="1">
+	<tr>
+		<th>Command </th>
+		<th>Description </th>
+	</tr>
+	<tr>
+		<td> rake tidy        </td>
+		<td>  show tidy html validation errors and warnings </td>
+	</tr>
+	<tr>
+		<td> rake tidy:warn   </td>
+		<td>  show tidy diagnostic warnings </td>
+	</tr>
+	<tr>
+		<td> rake validate    </td>
+		<td>  show w3c validation errors and warnings (must be online) </td>
+	</tr>
+</table>
+<p><p>Provides Rake tasks to validate and correct <span class="caps">HTML</span> files.</p>
+<p>This code was adapted by Greg Weber, and is originally by Scott Raymond.<br />
+See http://redgreenblu.com/svn/projects/assert_valid_markup/</p></p></div>
+</div></p></div>
+</div></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Version-numbering-system" href="#a-606465538">2.4</a>&nbsp;&nbsp;<a class="here" href="#Version-numbering-system">Version numbering system</a>
+  </h2>
+  <div class="content"><p>Rassmalog uses the <a href="http://www.rubygems.org/read/chapter/7">RubyGems rational versioning policy</a> to number its releases. This <strong>major.minor.patch</strong> numbering policy <a href="http://ablog.apress.com/?p=738">is summarized</a> as follows:</p>
+<table border="1">
+	<tr>
+		<td rowspan="2">What happened? </td>
+		<td colspan="3">What are the consequences? </td>
+	</tr>
+	<tr>
+		<th>Backwards compatible? </th>
+		<th>New features? </th>
+		<th>Bug fixes? </th>
+	</tr>
+	<tr>
+		<th>The <em>major</em> number increased </th>
+		<td style="background-color: MistyRose;">No </td>
+		<td> Yes </td>
+		<td> Yes </td>
+	</tr>
+	<tr>
+		<th>The <em>minor</em> number increased </th>
+		<td> Yes </td>
+		<td> Yes </td>
+		<td> Yes </td>
+	</tr>
+	<tr>
+		<th>The <em>patch</em> number increased </th>
+		<td> Yes </td>
+		<td style="background-color: MistyRose;">No </td>
+		<td> Yes </td>
+	</tr>
+</table></div>
+</div></p></div>
+</div>
+<div class="chapter">
+  <h1 class="title">
+    Chapter
+    <a class="list" id="config" href="#a-606473498">3</a>
+
+    <br/>
+
+    <a class="here" href="#config"><big>Configuration</big></a>
+  </h1>
+
+  <div class="content"><p>Start by editing the <tt>config/blog.yaml</tt> file. It has plentiful comments and documentation to help guide you through you the configuration process. Next, proceed to editing <a href="#manifest">the other files</a> in the <tt>config/</tt> directory to suit your taste.</p>
+<p>You are encouraged to <a href="#usage.gen">generate your blog</a> at each step of the configuration process to see how your choices affect the generated output. This gives you a good sense of how Rassmalog works and how your blog can be shaped to suit your specific needs.</p>
+<p><div class="section">
+  <h2 class="title">
+    <a class="list" id="Parameters" href="#a-606475118">3.1</a>&nbsp;&nbsp;<a class="here" href="#Parameters">Parameters</a>
+  </h2>
+  <div class="content"><p>The following subsections describe the configuration parameters available for use in the  <tt>config/blog.yaml</tt> file.</p>
+<p><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.name" href="#a-606477348">3.1.1</a>&nbsp;&nbsp;<a class="here" href="#param.name">name (eRuby) (HTML)</a>
+  </h3>
+  <div class="content"><p>The name of your blog.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.info" href="#a-606482008">3.1.2</a>&nbsp;&nbsp;<a class="here" href="#param.info">info (eRuby) (HTML)</a>
+  </h3>
+  <div class="content"><p>Description of your blog.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.author" href="#a-606485908">3.1.3</a>&nbsp;&nbsp;<a class="here" href="#param.author">author (eRuby) (HTML)</a>
+  </h3>
+  <div class="content"><p>The name of the blog author.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.email" href="#a-606492538">3.1.4</a>&nbsp;&nbsp;<a class="here" href="#param.email">email (eRuby)</a>
+  </h3>
+  <div class="content"><p>The e-mail address that will receive comments about your blog entries.</p>
+<p>This address will be obfuscated into <span class="caps">HTML</span> entities so that<br />
+e-mail address harvesters won&#8217;t bother to figure out what it<br />
+is.  For example, the address &#8220;xxx@yyy.zzz&#8221; will be converted<br />
+into the following <strong>before</strong> it is written to a <span class="caps">HTML</span> file:</p>
+<p>&#120;&#120;&#120;&#64;&#121;&#121;&#121;&#46;&#122;&#122;&#122;</p>
+<p>If you do not wish to receive comments about your<br />
+blog entries, or if you absolutely <strong>do not</strong> want<br />
+your e-mail address to be included in the output<br />
+(even in the obfuscated form), then you can<br />
+simply leave this parameter blank, as follows:</p>
+<pre>email:   # nothing here!</pre>
+<p>Examples:</p>
+<pre>email: your@email.here
+email: your+blog@email.here
+email: your+comments@email.here</pre></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.url" href="#a-606497798">3.1.5</a>&nbsp;&nbsp;<a class="here" href="#param.url">url (eRuby)</a>
+  </h3>
+  <div class="content"><p>The <span class="caps">URL</span> of your published blog.</p>
+<p>Examples:</p>
+<pre>url: http://your_host.com/~you/path/to/your/blog/
+url: http://you.your_host.com/path/to/your/blog/</pre></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.uploader" href="#a-606502938">3.1.6</a>&nbsp;&nbsp;<a class="here" href="#param.uploader">uploader (eRuby)</a>
+  </h3>
+  <div class="content"><p>An eRuby template for the command that uploads your blog to your website.</p>
+<p>The following predefined variables are available:</p>
+<pre>&lt;%= whole %&gt; is a path to the output/ directory which must be uploaded.</pre>
+<pre>&lt;%= parts %&gt; is a sequence of quoted paths to files that must be uploaded.
+             For example, the result of this directive is something like:
+             "output/foo" "output/bar" "output/baz qux moz"</pre>
+<p><span class="caps">SSH</span> examples:</p>
+<p>These examples assume that your website is located in a<br />
+directory named &#8220;public_html&#8221; on a server named &#8220;host&#8221;<br />
+that is accessible by a user named &#8220;user&#8221; via <span class="caps">SSH</span> or <span class="caps">SFTP</span>.</p>
+<pre>uploader: scp -prC &lt;%= parts %&gt; user@host:public_html
+uploader: rsync -e ssh -auvz &lt;%= whole %&gt;/ user@host:public_html
+uploader: lftp sftp://user@host -e 'mirror -Ra --ignore-time &lt;%= whole %&gt;/ public_html; exit'</pre>
+<p><span class="caps">FTP</span> examples:</p>
+<p>These examples assume that your website is located in a directory<br />
+named &#8220;public_html&#8221; on a server named &#8220;host&#8221; that is accessible<br />
+by a user named &#8220;user&#8221; with a password of &#8220;password&#8221; via <span class="caps">FTP</span>.</p>
+<pre>uploader: lftp host -u 'user,password' -e 'mirror -Ra --ignore-time &lt;%= whole %&gt;/ public_html; exit'</pre></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.encoding" href="#a-606509528">3.1.7</a>&nbsp;&nbsp;<a class="here" href="#param.encoding">encoding (eRuby)</a>
+  </h3>
+  <div class="content"><p>The character set used in your entries.</p>
+<p>Examples:</p>
+<pre>encoding: utf-8       # Unicode (for all languages)
+encoding: x-sjis      # Shift JIS (for Japanese only)
+encoding: x-iscii-te  # Telugu ISCII (for Telugu only)</pre></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.language" href="#a-606516808">3.1.8</a>&nbsp;&nbsp;<a class="here" href="#param.language">language (eRuby)</a>
+  </h3>
+  <div class="content"><p>The <span class="caps">ISO</span>-639 code and (optionally) the <span class="caps">ISO</span>-3166 country<br />
+code for the primary language used in your entries.</p>
+<p>For a list of <span class="caps">ISO</span>-639 language codes, see:</p>
+<pre>http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes</pre>
+<p>For a list of <span class="caps">ISO</span>-3166 country codes, see:</p>
+<pre>http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Current_codes</pre>
+<p>Examples:</p>
+<pre>language: en    # English
+language: en-us # English (United States)
+language: en-gb # English (Great Britain)</pre></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.locale" href="#a-606522168">3.1.9</a>&nbsp;&nbsp;<a class="here" href="#param.locale">locale (eRuby)</a>
+  </h3>
+  <div class="content"><p>This parameter specifies the locale corresponding to the language<br />
+in which dates, times, and currency will be formatted by Ruby.<br />
+See http://en.wikipedia.org/wiki/Locale for more information.</p>
+<p>Here are some examples of how the choice of<br />
+locale affects the formatting of dates and times:</p>
+<p><pre>
+$ irb -r locale
+&gt;&gt; Time.now
+=&gt; Tue Oct 23 13:12:20 -0700 2007
+
+# in German:
+&gt;&gt; Locale.setlocale(Locale::LC_TIME, &quot;de_DE&quot;); Time.now
+=&gt; Di Okt 23 13:12:32 -0700 2007
+
+# in Spanish:
+&gt;&gt; Locale.setlocale(Locale::LC_TIME, &quot;es_ES&quot;); Time.now
+=&gt; mar oct 23 13:15:19 -0700 2007
+
+# in Italian:
+&gt;&gt; Locale.setlocale(Locale::LC_TIME, &quot;it_IT&quot;); Time.now
+=&gt; mar ott 23 13:15:27 -0700 2007
+</pre></p>
+<p>To use the default <span class="caps">POSIX</span> (U.S. English) locale, leave this parameter blank:</p>
+<pre>locale:   # nothing here!</pre>
+<p>To see a list of available locales on your system, run the following command:</p>
+<pre>locale -a</pre></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.entrance" href="#a-606528888">3.1.10</a>&nbsp;&nbsp;<a class="here" href="#param.entrance">entrance (eRuby)</a>
+  </h3>
+  <div class="content"><p>Path to a file in the output/ directory that should be displayed when<br />
+somebody visits your blog. This is called the &#8220;entrance&#8221; of your blog.</p>
+<p>To use the newest blog entry as the<br />
+entrance, simply leave this parameter blank:</p>
+<pre>entrance:   # nothing here!</pre></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.generate_toc" href="#a-606533138">3.1.11</a>&nbsp;&nbsp;<a class="here" href="#param.generate_toc">generate_toc </a>
+  </h3>
+  <div class="content"><p>Controls whether a table of contents is<br />
+generated, by default, for all blog entries.</p>
+<p>A blog entry can override this parameter by specifying<br />
+its own &#8220;generate_toc&#8221; parameter in its source file.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.date_format" href="#a-606536728">3.1.12</a>&nbsp;&nbsp;<a class="here" href="#param.date_format">date_format </a>
+  </h3>
+  <div class="content"><p>Controls how dates are formatted for display in blog entries.</p>
+<p>To use preferred format for the current system locale, specify:</p>
+<pre>date_format: %c</pre>
+<p>To display some other information, specify your own value:</p>
+<pre>date_format: put your own value here</pre>
+<p>For more information, see the documentation of the Time.strftime method:</p>
+<pre>http://www.ruby-doc.org/docs/ProgrammingRuby/html/ref_c_time.html#Time.strftime</pre></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.archive_frequency" href="#a-606543278">3.1.13</a>&nbsp;&nbsp;<a class="here" href="#param.archive_frequency">archive_frequency </a>
+  </h3>
+  <div class="content"><p>Controls how frequently archives are created.</p>
+<p>To have one archive per unique year, specify:</p>
+<pre>archive_frequency: %Y</pre>
+<p>To have one archive per unique month, specify:</p>
+<pre>archive_frequency: %Y-%m</pre>
+<p>To have one archive per unique day, specify:</p>
+<pre>archive_frequency: %Y-%m-%d</pre>
+<p>To have one archive per some other criteria, specify your own value:</p>
+<pre>archive_frequency: put your own value here</pre>
+<p>For more information, see the documentation of the Time.strftime method:</p>
+<pre>http://www.ruby-doc.org/docs/ProgrammingRuby/html/ref_c_time.html#Time.strftime</pre></div>
+</div></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="lang" href="#a-606552818">3.2</a>&nbsp;&nbsp;<a class="here" href="#lang">Localization for foreign languages</a>
+  </h2>
+  <div class="content"><p>The core of Rassmalog is easily localized (<acronym title="Localization"><span class="caps">L10N</span></acronym> / <acronym title="Internationalization"><span class="caps">I18N</span></acronym> / <acronym title="Multilingualization"><span class="caps">M17N</span></acronym>) through <a href="#lang.config">translation files</a>, which consist of simple key-value pairs. For instance, the translation file for Spanish appears like this:</p>
+<p><pre># es - Spanish
+About: Sobre
+About %s: Sobre %s
+Archives: Archivos
+Author: Autor
+Comments: Comentarios
+Contents: Contenido
+Date: Fecha
+Entries: Entradas
+First: Primero
+Generator: Generador
+Home: Hogar
+Icons: Iconos
+Last: Último
+Name: Nombre
+Next: Después
+Permanent hyperlink to this section: Enlace hipertexto permanente a esta sección
+Previous: Anterior
+RSS feed: Alimentación de RSS
+Read more...: Lea más...
+Return to %s: Vuelva a %s
+Search: Búsqueda
+Size: Tamaño
+Sorted by %s: Clasificado por %s
+Subscribe: Suscriba
+Tags: Etiquetas
+Up: Encima de
+You are now being redirected to %s.: Le ahora están volviendo a dirigir a %s.
+You may {send comments by e-mail}.: Usted puede {envíe los comentarios por el email}.
+</pre></p>
+<ul>
+	<li>English phrases are written on the left and their corresponding Spanish phrases are written on the right.</li>
+	<li>The <code class="code">%s</code> things are placeholders for arbitrary text.  Think of them as &#8220;blanks&#8221; on an exam paper that students will &#8220;fill in&#8221; later on; i.e. to &#8220;fill in the blanks&#8221;.</li>
+</ul>
+<p><div class="section">
+  <h3 class="title">
+    <a class="list" id="Enabling-a-translation-file" href="#a-606559088">3.2.1</a>&nbsp;&nbsp;<a class="here" href="#Enabling-a-translation-file">Enabling a translation file</a>
+  </h3>
+  <div class="content"><p>The <tt>config/lang/</tt> directory contains translation files (<a href="#manifest.lang">there are 13 of them</a>, at present) for English text used in the core of Rassmalog. To enable one of these files, set the value of the <strong>language</strong> parameter in the <tt>config/blog.yaml</tt> file to the name of the translation file.</p>
+<p>For example, if you wish to enable the <tt>config/lang/foobar.yaml</tt> translation file, then you would set the <strong>language</strong> parameter as follows:</p>
+<pre>language: foobar</pre>
+<p>In this manner, you can add or edit translation files for your own languages and use them in your blog. However, please consider <a href="http://rubyforge.org/tracker/?group_id=2737">contributing your translation files</a> so that other users can also enjoy your translations! :-)</p></div>
+</div></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="config.format" href="#a-606564168">3.3</a>&nbsp;&nbsp;<a class="here" href="#config.format">Using another text formatting system</a>
+  </h2>
+  <div class="content"><p>To use another text formatting system, simply replace the <code class="code"><span style="color:#036; font-weight:bold">String</span>.to_html</code> and <code class="code"><span style="color:#036; font-weight:bold">String</span>.to_inline_html</code> methods, which are defined in the <tt>config/format.rb</tt> file, to make use of your desired text formatting scheme.</p>
+<p>For example, if you replace the entire <tt>config/format.rb</tt> file with the following code, then all blog entries will appear within red boxes in the output.</p>
+<p><pre class="code">
+<span style="color:#080; font-weight:bold">class</span> <span style="color:#B06; font-weight:bold">String</span>
+  <span style="color:#888"># Transforms this string into HTML while ensuring that the</span>
+  <span style="color:#888"># result contains one or more block-level elements at the root.</span>
+  <span style="color:#080; font-weight:bold">def</span> <span style="color:#06B; font-weight:bold">to_html</span>
+    <span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">&lt;p style=&quot;border: thin solid red&quot;&gt;</span><span style="color:#710">'</span></span> + <span style="color:#038; font-weight:bold">self</span> + <span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">&lt;/p&gt;</span><span style="color:#710">'</span></span>
+  <span style="color:#080; font-weight:bold">end</span>
+
+  <span style="color:#888"># Transforms this string into an *inline* HTML string (one that</span>
+  <span style="color:#888"># does not contain any block-level HTML elements at the root).</span>
+  <span style="color:#080; font-weight:bold">def</span> <span style="color:#06B; font-weight:bold">to_inline_html</span>
+    <span style="color:#038; font-weight:bold">self</span>
+  <span style="color:#080; font-weight:bold">end</span>
+<span style="color:#080; font-weight:bold">end</span>
+</pre></p>
+<p>In this manner, you can make Rassmalog use any formatting system you wish!</p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="config.comments" href="#a-606571428">3.4</a>&nbsp;&nbsp;<a class="here" href="#config.comments">Using dynamic Javascript-based comments</a>
+  </h2>
+  <div class="content"><p>There are several JavaScript-based commenting  <em>services</em> available:</p>
+<ul>
+	<li><a href="http://js-kit.com/comments/">js-kit</a></li>
+	<li><a href="http://disqus.com">Disqus</a></li>
+	<li><a href="http://www.haloscan.com/">HaloScan</a></li>
+	<li><a href="http://www.intensedebate.com/">Intense Debate</a></li>
+	<li>and so on&#8230;</li>
+</ul>
+<p>To use these services with Rassmalog, simply replace the default &#8220;comments&#8221; section of the <tt>config/entry.erb</tt> template (which appears like this: <pre class="code" lang="rhtml">    <span style="background: #eee"><span style="color:black">&lt;%</span><span style="color:#888"># BEGIN COMMENTS SECTION </span><span style="color:black">%&gt;</span></span>
+      <span style="background: #eee"><span style="color:black">&lt;%</span> <span style="color:#080; font-weight:bold">if</span> <span style="color:#036; font-weight:bold">BLOG</span>.email <span style="color:black">%&gt;</span></span>
+        <span style="color:#070">&lt;br</span><span style="color:#070">/&gt;</span>
+        <span style="background: #eee"><span style="color:black">&lt;%=</span> icon <span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">tango-32x32-apps-internet-group-chat.png</span><span style="color:#710">'</span></span>, <span style="color:#036; font-weight:bold">LANG</span>[<span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">Comments</span><span style="color:#710">'</span></span>] <span style="color:black">%&gt;</span></span>
+        <span style="background: #eee"><span style="color:black">&lt;%=</span>
+          <span style="color:#036; font-weight:bold">LANG</span>[<span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">You may {send comments by e-mail}.</span><span style="color:#710">'</span></span>].
+          sub(<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#04D">\{</span><span style="color:#808">(.*?)</span><span style="color:#04D">\}</span><span style="color:#404">/</span></span>) { link <span style="color:#33B">@entry</span>.comment_url, <span style="color:#d70; font-weight:bold">$1</span> }
+        <span style="color:black">%&gt;</span></span>
+      <span style="background: #eee"><span style="color:black">&lt;%</span> <span style="color:#080; font-weight:bold">end</span> <span style="color:black">%&gt;</span></span>
+    <span style="background: #eee"><span style="color:black">&lt;%</span><span style="color:#888"># END COMMENTS SECTION </span><span style="color:black">%&gt;</span></span>
+</pre>) with the activation logic provided by the commenting service.</p>
+<p>For example, to make use of the <b>js-kit</b> commenting service in Rassmalog, replace the default &#8220;comments&#8221; section (shown above) with the following activation logic:</p>
+<p><pre class="code" lang="rhtml">
+<span style="color:#070">&lt;div</span> <span style="color:#007">class</span>=<span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">js-kit-comments</span><span style="color:#710">&quot;</span></span> <span style="color:#007">path</span>=<span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="background: #eee"><span style="color:black">&lt;%=</span> <span style="color:#33B">@entry</span>.url <span style="color:black">%&gt;</span></span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span><span style="color:#070">&lt;/div&gt;</span>
+<span style="color:#070">&lt;script</span> <span style="color:#007">type</span>=<span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">text/javascript</span><span style="color:#710">&quot;</span></span> <span style="color:#007">src</span>=<span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">http://js-kit.com/comments.js</span><span style="color:#710">&quot;</span></span><span style="color:#070">&gt;</span><span style="color:#070">&lt;/script&gt;</span>
+</pre></p>
+<p>Notice that we pass the blog entry&#8217;s relative <span class="caps">URL</span> (obtained by invoking the <code class="code">url</code> method on the <code class="code"><span style="color:#33B">@entry</span></code> object: <code class="code" lang="rhtml"><span style="background: #eee"><span style="color:black">&lt;%=</span> <span style="color:#33B">@entry</span>.url <span style="color:black">%&gt;</span></span></code>) as a unique identifier to the <b>js-kit</b> commenting service.  Other commenting services may require you to do something similar as well.</p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Disabling-parts-of-a-blog" href="#a-606574828">3.5</a>&nbsp;&nbsp;<a class="here" href="#Disabling-parts-of-a-blog">Disabling parts of a blog</a>
+  </h2>
+  <div class="content"><p>Suppose you wanted to disable the generation of the <span class="caps">RSS</span> feed for your blog. In order to do this,</p>
+<ol>
+	<li>Open the <tt>Rakefile</tt> in your text editor.</li>
+	<li>You should now see a line of code similar to this:<br />
+  <code class="code">task <span style="color:#A60">:gen</span> =&gt; [<span style="color:#A60">:copy</span>, <span style="color:#A60">:entry</span>, <span style="color:#A60">:entry_meta</span>, <span style="color:#A60">:entry_list</span>, <span style="color:#A60">:feed</span>]</code></li>
+	<li>Remove the <code class="code"><span style="color:#A60">:feed</span></code> element from the line of code.</li>
+</ol>
+<p>In this manner, you can disable other parts of the blog generation process. Furthermore, you can edit the source code in the &#8220;output generation stage&#8221; section to suit your needs.</p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Disabling-the-search-page" href="#a-606579608">3.6</a>&nbsp;&nbsp;<a class="here" href="#Disabling-the-search-page">Disabling the search page</a>
+  </h2>
+  <div class="content"><p>The <b>search</b> page is just a blog entry; there is nothing special about it.</p>
+<ol>
+	<li>Delete the <tt>input/search.yaml</tt> file.</li>
+	<li>Regenerate your blog.</li>
+</ol></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Disabling-the-about-page" href="#a-606584748">3.7</a>&nbsp;&nbsp;<a class="here" href="#Disabling-the-about-page">Disabling the about page</a>
+  </h2>
+  <div class="content"><p>The <b>about</b> page is just a blog entry; there is nothing special about it.</p>
+<ol>
+	<li>Delete the <tt>input/about.yaml</tt> file.</li>
+	<li>Regenerate your blog.</li>
+</ol></div>
+</div></p></div>
+</div>
+<div class="chapter">
+  <h1 class="title">
+    Chapter
+    <a class="list" id="Usage" href="#a-606588198">4</a>
+
+    <br/>
+
+    <a class="here" href="#Usage"><big>Usage</big></a>
+  </h1>
+
+  <div class="content"><p>In the location where you installed Rassmalog, run the following command to see a list of available tasks:</p>
+<pre>rake -T</pre>
+<p>For example, here is the output you would see when you run the above command:<br />
+<pre>(in /home/sun/src/rassmalog)
+rake clean       # Remove any temporary products.
+rake clobber     # Remove any generated file.
+rake copy        # Copy files from input/ into output/
+rake entry       # Generate HTML for blog entries.
+rake entry_list  # Generate HTML for recent/all entry lists.
+rake entry_meta  # Generate HTML for tags and archives.
+rake feed        # Generate RSS feeds for the blog.
+rake gen         # Generate the blog.
+rake import_rss  # Import blog entries from RSS feed on STDIN.
+rake new         # Create a new blog entry file for editing.
+rake preview     # Preview your blog while writing.
+rake regen       # Regenerate the blog from scratch.
+rake search      # Generate the blog search page.
+rake upload      # Upload the blog to your website.
+</pre></p>
+<p><div class="section">
+  <h2 class="title">
+    <a class="list" id="Creating-a-blog-entry-file" href="#a-606590438">4.1</a>&nbsp;&nbsp;<a class="here" href="#Creating-a-blog-entry-file">Creating a blog entry file</a>
+  </h2>
+  <div class="content"><p>The <a href="#plugins-new.rb"><em>new</em> plugin</a> allows you to easily create a new blog entry source file without having to:</p>
+<ul>
+	<li>think of and manage unique file names every time</li>
+	<li>supply the current date and time</li>
+	<li>remember the entire syntax of a blog entry file</li>
+	<li>remember the names of all tags you have used thus far</li>
+</ul>
+<p>To use this plugin, run the following command:</p>
+<pre>rake new</pre>
+<p>After it executes, the command will report the name of the file it created.  You can then edit the created file using your favorite text editor and fill in all the juicy details.</p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="usage.gen" href="#a-606593218">4.2</a>&nbsp;&nbsp;<a class="here" href="#usage.gen">Generating your blog</a>
+  </h2>
+  <div class="content"><p>To generate your blog, run the following command:</p>
+<pre>rake</pre>
+<p>Or alternatively, you can run:</p>
+<pre>rake gen</pre>
+<p>To regenerate your blog from <em>scratch</em> (delete all existing output and generate everything again), run the following command:</p>
+<pre>rake regen</pre></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Removing-generated-files" href="#a-606595988">4.3</a>&nbsp;&nbsp;<a class="here" href="#Removing-generated-files">Removing generated files</a>
+  </h2>
+  <div class="content"><p>To remove all output files that were generated by Rassmalog, run the following command:</p>
+<pre>rake clean</pre>
+<p>To remove everything inside the <tt>output/</tt> directory, run the following command:</p>
+<pre>rake clobber</pre></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Publishing-your-blog" href="#a-606598718">4.4</a>&nbsp;&nbsp;<a class="here" href="#Publishing-your-blog">Publishing your blog</a>
+  </h2>
+  <div class="content"><p>To upload your blog to your website, run the following command:</p>
+<pre>rake upload</pre></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Preview-while-you-write" href="#a-606601108">4.5</a>&nbsp;&nbsp;<a class="here" href="#Preview-while-you-write">Preview while you write</a>
+  </h2>
+  <div class="content"><p>To continuously preview a blog entry as you write it, run the following command:</p>
+<pre>rake preview</pre>
+<p>Now, whenever you save your blog entry file, its <span class="caps">HTML</span> page will be generated for preview in your web browser.</p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="usage.import" href="#a-606603778">4.6</a>&nbsp;&nbsp;<a class="here" href="#usage.import">Importing blog entries from RSS feed</a>
+  </h2>
+  <div class="content"><p>The <strong>import</strong> task allows you to import blog entries from an <span class="caps">RSS</span> feed, which must be provided on the standard input stream.</p>
+<p>For example, if you have an <span class="caps">RSS</span> feed file named <tt>feed.xml</tt> then you would import it into Rassmalog like this:</p>
+<pre>rake import &lt; feed.xml</pre></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Creating-RSS-feeds" href="#a-606606638">4.7</a>&nbsp;&nbsp;<a class="here" href="#Creating-RSS-feeds">Creating RSS feeds</a>
+  </h2>
+  <div class="content"><ol>
+	<li>Open the <tt>Rakefile</tt> in your text editor.</li>
+	<li>You should now see a some code similar to this:<br />
+  <pre class="code">feed <span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">feed.xml</span><span style="color:#710">'</span></span>, <span style="color:#036; font-weight:bold">ENTRIES</span>.first(<span style="color:#00D; font-weight:bold">5</span>), <span style="color:#036; font-weight:bold">BLOG</span>.name, <span style="color:#036; font-weight:bold">BLOG</span>.info
+</pre><br />
+  This code invokes the <code class="code">feed</code> method to create an <span class="caps">RSS</span> feed.</li>
+	<li>Add your own invocation of the <code class="code">feed</code> method to the bottom of the file (see the <span class="caps">API</span> documentation in <a class="xref" href="#hacking.api">Section 6.1. API documentation</a> for help).</li>
+</ol>
+<p><div class="example">
+  <p class="title"><a class="list" id="Adding-entries-from-multiple-tags-to-an-RSS-feed" href="#a-606611468">Example 1</a>.&nbsp;&nbsp;<a class="here" href="#Adding-entries-from-multiple-tags-to-an-RSS-feed">Adding entries from multiple tags to an RSS feed</a></p>
+  <div class="content"><p>The second parameter of the <code class="code">feed</code> method is an arry of <code class="code"><span style="color:#036; font-weight:bold">Entry</span></code> objects.  You can take advantage of this fact with some Ruby magic:</p>
+<p><pre class="code">
+<span style="color:#888"># gather the desired entries</span>
+entries = <span style="color:#036; font-weight:bold">TAGS</span>[<span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">foo</span><span style="color:#710">'</span></span>] + <span style="color:#036; font-weight:bold">TAGS</span>[<span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">bar</span><span style="color:#710">'</span></span>] + <span style="color:#036; font-weight:bold">TAGS</span>[<span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">moz</span><span style="color:#710">'</span></span>]
+
+<span style="color:#888"># remove duplicate entries</span>
+entries.uniq!
+
+<span style="color:#888"># create the feed</span>
+feed <span style="background-color:#fff0f0"><span style="color:#710">'</span><span style="color:#D20">example.xml</span><span style="color:#710">'</span></span>, entries
+</pre></p>
+<p>Here we gather all blog entries that have the &#8216;foo&#8217;, &#8216;bar&#8217;, or &#8216;moz&#8217; tag into an array, and keep track of it in the <code class="code">entries</code> variable.</p>
+<p>Next, we call the <code class="code">uniq</code> method on the <code class="code">entries</code> variable to ensure that all entries occur only once in the array (since the same entry could have both &#8216;foo&#8217; and &#8216;bar&#8217; tags, and would thus appear twice in the array).</p>
+<p>Finally, we create the news feed by calling the <code class="code">feed</code> method.</p></div>
+</div></p></div>
+</div></p></div>
+</div>
+<div class="chapter">
+  <h1 class="title">
+    Chapter
+    <a class="list" id="Writing-blog-entries" href="#a-606615158">5</a>
+
+    <br/>
+
+    <a class="here" href="#Writing-blog-entries"><big>Writing blog entries</big></a>
+  </h1>
+
+  <div class="content"><p>This chapter deals with things related to the writing, formatting, and scripting of blog entries.</p>
+<p><div class="section">
+  <h2 class="title">
+    <a class="list" id="Parameters-606708668" href="#a-606617308">5.1</a>&nbsp;&nbsp;<a class="here" href="#Parameters-606708668">Parameters</a>
+  </h2>
+  <div class="content"><p>The following subsections describe the parameters you can use in a blog entry file. For an example of usage, see the <tt>input/rassmalog/entry.yaml</tt> file.</p>
+<p><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.name-606723928" href="#a-606620038">5.1.1</a>&nbsp;&nbsp;<a class="here" href="#param.name-606723928">name (Required) (eRuby) (HTML)</a>
+  </h3>
+  <div class="content"><p>The title of this blog entry.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.date" href="#a-606623188">5.1.2</a>&nbsp;&nbsp;<a class="here" href="#param.date">date (Optional) (eRuby)</a>
+  </h3>
+  <div class="content"><p>The date when this blog entry written.</p>
+<p>Here are some examples:</p>
+<pre>date: Thu, 01 Jan 1970 08:00:00 GMT
+date: 1970-01-01 8:00am
+date: 1/1/1970 8:00am
+date: jan 1st 1970 16:00 -08:00
+date: 1 january 1970
+date: Wed Dec 13 21:31:04 PST 2006</pre>
+<p>You can also specify dates in other languages.  For<br />
+example, the following date</p>
+<pre>date: Thursday, 01 January 1970 03:15:00 PM</pre>
+<p>can be written in German as:</p>
+<pre>date: Donnerstag, 01 Januar 1970 15:15:00</pre>
+<p>For more information about the format of this parameter, see the documentation<br />
+for the Time.parse method by typing the following command at your terminal:</p>
+<pre>ri Time.parse</pre>
+<p>or by visiting the following <span class="caps">URL</span>:</p>
+<pre>http://www.ruby-doc.org/core/classes/Time.html#M000297</pre>
+<p>If you do not specify this parameter, then Rassmalog will<br />
+use the modification time of this source file instead.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.tags" href="#a-606642068">5.1.3</a>&nbsp;&nbsp;<a class="here" href="#param.tags">tags (Optional)</a>
+  </h3>
+  <div class="content"><p>The categories/labels which classify this blog entry.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.output_file" href="#a-606644558">5.1.4</a>&nbsp;&nbsp;<a class="here" href="#param.output_file">output_file (Optional) (eRuby)</a>
+  </h3>
+  <div class="content"><p>A relative path (with respect to the <tt>output/</tt><br />
+directory) to the output <span class="caps">HTML</span> file for this blog entry.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.hide" href="#a-606647188">5.1.5</a>&nbsp;&nbsp;<a class="here" href="#param.hide">hide (Optional)</a>
+  </h3>
+  <div class="content"><p>Controls whether this entry is displayed in the<br />
+lists of tags, archives, and recent/all entries.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.generate_toc-607053978" href="#a-606649818">5.1.6</a>&nbsp;&nbsp;<a class="here" href="#param.generate_toc-607053978">generate_toc (Optional)</a>
+  </h3>
+  <div class="content"><p>Overrides the <strong>generate_toc</strong> parameter that is defined in the main<br />
+blog configuration file (<tt>config/blog.yaml</tt>).  This parameter<br />
+controls whether a table of contents is generated for this blog entry.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.summary" href="#a-606652498">5.1.7</a>&nbsp;&nbsp;<a class="here" href="#param.summary">summary (Optional) (eRuby) (HTML)</a>
+  </h3>
+  <div class="content"><p>Overrides the automatic summarization mechanism, which is<br />
+defined in the <tt>config/entry.erb</tt> template, by allowing<br />
+you to specify a predefined summary for this blog entry.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.your_own_parameter1" href="#a-606655168">5.1.8</a>&nbsp;&nbsp;<a class="here" href="#param.your_own_parameter1">your_own_parameter1 (Example)</a>
+  </h3>
+  <div class="content"><p>This is an example of how you can specify your own custom<br />
+parameters and use them in the content of this blog entry.</p></div>
+</div><div class="section">
+  <h3 class="title">
+    <a class="list" id="param.body" href="#a-606657908">5.1.9</a>&nbsp;&nbsp;<a class="here" href="#param.body">body (Required) (eRuby) (HTML)</a>
+  </h3>
+  <div class="content"><p>The content of this blog entry.</p>
+<p>In this parameter, you can use the following<br />
+predefined variables inside eRuby directives:</p>
+<ul>
+	<li><span class="caps">BLOG</span>        &#8211; data from the blog configuration file</li>
+	<li><span class="caps">LANG</span>        &#8211; data from the translation file</li>
+	<li>ABOUT_PAGE  &#8211; the blog entry corresponding to the about page</li>
+	<li>SEARCH_PAGE &#8211; the blog entry corresponding to the search page</li>
+	<li><span class="caps">ENTRIES</span>     &#8211; array of all blog entries (Entry objects)</li>
+	<li><span class="caps">TAGS</span>        &#8211; array of all tags (Section objects)</li>
+	<li><span class="caps">ARCHIVES</span>    &#8211; array of all archives (Section objects)</li>
+	<li><span class="caps">FEEDS</span>       &#8211; array of all feeds (Feed objects)</li>
+	<li>@entry      &#8211; the Entry object for which we are generating <span class="caps">HTML</span></li>
+	<li>@summarize  &#8211; should this entry be summarized?</li>
+	<li>@solo       &#8211; is this entry being rendered alone, on its own page?</li>
+</ul></div>
+</div></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="eRuby-directives" href="#a-606661018">5.2</a>&nbsp;&nbsp;<a class="here" href="#eRuby-directives">eRuby directives</a>
+  </h2>
+  <div class="content"><p>The body of a blog entry is treated as an eRuby template. Thus, you can use eRuby directives (which appear within <code class="code">&lt;%</code> and <code class="code"><span style="background-color:#fff0f0"><span style="color:#710">%&gt;</span></span></code> tags) in the body of your blog entries.</p>
+<p>For example, putting the following content in a blog entry:</p>
+<p><pre class="code" lang="rhtml">
+<span style="background: #eee"><span style="color:black">&lt;%</span> <span style="color:#00D; font-weight:bold">3</span>.times <span style="color:#080; font-weight:bold">do</span> <span style="color:black">%&gt;</span></span>
+
+* Hello World!
+<span style="background: #eee"><span style="color:black">&lt;%</span> <span style="color:#080; font-weight:bold">end</span> <span style="color:black">%&gt;</span></span>
+</pre></p>
+<p>Produces the following result:</p>
+<ul>
+	<li>Hello World!</li>
+	<li>Hello World!</li>
+	<li>Hello World!</li>
+</ul>
+<p><div class="section">
+  <h3 class="title">
+    <a class="list" id="Including-the-content-of-another-file" href="#a-606662858">5.2.1</a>&nbsp;&nbsp;<a class="here" href="#Including-the-content-of-another-file">Including the content of another file</a>
+  </h3>
+  <div class="content"><p>To include the content of another file inside the body of a blog entry, you can use the following eRuby directive:</p>
+<pre>&lt;%= File.read('path-to-your-file') %&gt;</pre>
+<p>If the included file contains characters that might be interpreted as <span class="caps">HTML</span>, then we should properly escape those characters using the <code class="code"><span style="color:#036; font-weight:bold">ERB</span>::<span style="color:#036; font-weight:bold">Util</span><span style="color:#888">#h</span></code> method:</p>
+<pre>&lt;%= h File.read('path-to-your-file') %&gt;</pre></div>
+</div></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="Relative-URLs-to-output-files" href="#a-606665488">5.3</a>&nbsp;&nbsp;<a class="here" href="#Relative-URLs-to-output-files">Relative URLs to output files</a>
+  </h2>
+  <div class="content"><p>Rassmalog adjusts all relative URLs in the final <span class="caps">HTML</span> output to be relative to the <tt>output/</tt> directory. This is done to give all blog entries (regardless of how deep they are inside the <tt>input/</tt> directory) a common way to access files. As a result, some extra work is necessary to access files that are relative to a blog entry itself.</p>
+<p>For example, suppose that (1) we have the following directory structure and that (2) the <tt>input/food/fruit/banana.yaml</tt> blog entry contains the <tt>../nuts/walnut.html</tt> relative <span class="caps">URL</span>.</p>
+<ul>
+	<li>input/
+	<ul>
+		<li>food/
+		<ul>
+			<li>fruit/
+			<ul>
+				<li>banana.yaml</li>
+			</ul></li>
+			<li>nuts/
+			<ul>
+				<li>walnut.yaml</li>
+			</ul></li>
+		</ul></li>
+	</ul></li>
+</ul>
+<ul>
+	<li>output/
+	<ul>
+		<li>food/
+		<ul>
+			<li>fruit/
+			<ul>
+				<li>banana.html</li>
+			</ul></li>
+			<li>nuts/
+			<ul>
+				<li>walnut.html</li>
+			</ul></li>
+		</ul></li>
+	</ul></li>
+</ul>
+<p>Rassmalog will change <tt>../nuts/walnut.html</tt> into <tt>../../../nuts/walnut.html</tt> by adding a <ins>../../</ins> prefix. As a result, the changed <span class="caps">URL</span> is now referring to a nonexistent <tt>nuts/walnut.html</tt> file that resides <em>one level above</em> the <tt>output/</tt> directory!</p>
+<p>One solution is to manually rewrite to rewrite the original <span class="caps">URL</span> to be relative to the <tt>output/</tt> directory: <tt>../nuts/walnut.html</tt> becomes <tt>food/nuts/walnut.html</tt>.</p>
+<p>Another solution is to use an eRuby directive to add the blog entry source file&#8217;s parent directory&#8217;s path to the relative <span class="caps">URL</span>: <tt>../nuts/walnut.html</tt> becomes <pre>&lt;%= File.dirname(@entry.output_url) %&gt;/../nuts/walnut.html</pre></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="entry.toc" href="#a-606667898">5.4</a>&nbsp;&nbsp;<a class="here" href="#entry.toc">Table of contents generation</a>
+  </h2>
+  <div class="content"><p>A table of contents is <em>automatically generated</em> from headings (<code class="code">&lt;h1&gt;</code> through <code class="code">&lt;h6&gt;</code> for <span class="caps">HTML</span> and <code class="code">h1.</code> through <code class="code">h6.</code> for Textile) found in the body of a blog entry.</p>
+<p>Headings are numbered in the style of LaTeX; these numbers contain a hyperlink back to the table of contents for easier navigation.</p>
+<p>If you want to disable the table of contents for a particular blog entry, then see the <a href="#param.generate_toc"><strong>generate_toc</strong> parameter</a> in the list of parameters above.</p>
+<p>If you want to disable the table of contents <em>globally</em>, for all blog entries, then see the <strong>generate_toc</strong> parameter in your <tt>config/blog.yaml</tt> configuration file.</p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="entry.code" href="#a-606670028">5.5</a>&nbsp;&nbsp;<a class="here" href="#entry.code">Syntax coloring for source code</a>
+  </h2>
+  <div class="content"><p>Syntax coloring is <em>automatically added</em> to source code found inside the <strong>&lt;code&gt;</strong> and <strong>&lt;/code&gt;</strong> <span class="caps">HTML</span> tags. Note that in Textile, any text enclosed within a pair of at-signs (&#64; and &#64;) is also considered to be source code.</p>
+<p>The following programming languages are currently supported by <a href="http://coderay.rubychan.de">CodeRay</a>, the default syntax coloring software used in Rassmalog:</p>
+<ul>
+	<li>Ruby</li>
+	<li>C</li>
+	<li>Delphi</li>
+	<li><span class="caps">HTML</span></li>
+	<li><span class="caps">RHTML</span> (Rails)</li>
+	<li>Nitro-<span class="caps">XHTML</span></li>
+</ul>
+<p>This feature can be disabled or changed by editing the <tt>config/format.rb</tt> file accordingly.</p>
+<p><div class="section">
+  <h3 class="title">
+    <a class="list" id="Specifying-the-programming-language" href="#a-606671818">5.5.1</a>&nbsp;&nbsp;<a class="here" href="#Specifying-the-programming-language">Specifying the programming language</a>
+  </h3>
+  <div class="content"><p>Because different programming languages have different syntax coloring schemes, you can specify the language of your source code using the <code class="code">lang</code> attribute to ensure that only the appropriate coloring scheme is used. Note that unless the <code class="code">lang</code> attribute is specified, <em>Ruby</em> is assumed to be the programming language of all source code by default.</p>
+<p>For example, here is some source code <em>without</em> the <code class="code">lang</code> attribute:</p>
+<p><pre class="code">
+<span style="color:#888"># Ruby ###########################</span>
+<span style="color:#080; font-weight:bold">def</span> <span style="color:#06B; font-weight:bold">hello</span>
+  puts <span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">Hello world!</span><span style="color:#710">&quot;</span></span>
+<span style="color:#080; font-weight:bold">end</span>
+
+
+<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">* C ****************************</span><span style="color:#404">/</span></span>
+<span style="color:#888">#include &lt;stdio.h&gt;</span>
+int main(int argc, char **argv) {
+  printf(<span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">Hello world!</span><span style="color:#04D">\n</span><span style="color:#710">&quot;</span></span>);
+  <span style="color:#080; font-weight:bold">return</span> <span style="color:#00D; font-weight:bold">0</span>;
+}
+
+
+&lt;!-- <span style="color:#036; font-weight:bold">HTML</span> -----------------------&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    <span style="color:#036; font-weight:bold">Hello</span> world!
+  &lt;body&gt;
+&lt;<span style="background-color:#fff0ff"><span style="color:#404">/</span><span style="color:#808">html&gt;
+</span></span></pre></p>
+<p>And here is the same source code with a <code class="code">lang=<span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">c</span><span style="color:#710">&quot;</span></span></code> attribute:</p>
+<p><pre class="code" lang="c">
+<span style="color:#579"># Ruby</span> <span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#</span><span style="color:#579">#
+def</span> hello
+  puts <span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">Hello world!</span><span style="color:#710">&quot;</span></span>
+end
+
+
+<span style="color:#888">/* C ****************************/</span>
+<span style="color:#579">#include</span> <span style="color:#B44; font-weight:bold">&lt;stdio.h&gt;</span>
+<span style="color:#339; font-weight:bold">int</span> main(<span style="color:#339; font-weight:bold">int</span> argc, <span style="color:#339; font-weight:bold">char</span> **argv) {
+  printf(<span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">Hello world!</span><span style="color:#04D">\n</span><span style="color:#710">&quot;</span></span>);
+  <span style="color:#080; font-weight:bold">return</span> <span style="color:#00D; font-weight:bold">0</span>;
+}
+
+
+&lt;!-- HTML -----------------------&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    Hello world!
+  &lt;body&gt;
+&lt;/html&gt;
+</pre></p>
+<p>And here is the same source code with a <code class="code">lang=<span style="background-color:#fff0f0"><span style="color:#710">&quot;</span><span style="color:#D20">html</span><span style="color:#710">&quot;</span></span></code> attribute:</p>
+<p><pre class="code" lang="html">
+# Ruby ###########################
+def hello
+  puts &quot;Hello world!&quot;
+end
+
+
+/* C ****************************/
+#include <span style="color:#070">&lt;stdio.h&gt;</span>
+int main(int argc, char **argv) {
+  printf(&quot;Hello world!\n&quot;);
+  return 0;
+}
+
+
+<span style="color:#888">&lt;!-- HTML -----------------------&gt;</span>
+<span style="color:#070">&lt;html&gt;</span>
+  <span style="color:#070">&lt;body&gt;</span>
+    Hello world!
+  <span style="color:#070">&lt;body&gt;</span>
+<span style="color:#070">&lt;/html&gt;</span>
+</pre></p></div>
+</div><br />
+<div class="section">
+  <h3 class="title">
+    <a class="list" id="Smart-sizing-of-source-code" href="#a-606673988">5.5.2</a>&nbsp;&nbsp;<a class="here" href="#Smart-sizing-of-source-code">Smart sizing of source code</a>
+  </h3>
+  <div class="content"><p>Source code is <em>automatically sized</em> to be displayed as either a line or paragraph of text, depending on whether it contains line breaks.</p>
+<p>For example, here is a single line of code:</p>
+<p><code class="code">life = <span style="color:#038; font-weight:bold">true</span> <span style="color:#080; font-weight:bold">or</span> <span style="color:#038; font-weight:bold">false</span></code></p>
+<p>And here is a paragraph of code:</p>
+<p><pre class="code">life =
+<span style="color:#038; font-weight:bold">true</span> <span style="color:#080; font-weight:bold">or</span> <span style="color:#038; font-weight:bold">false</span></pre></p>
+<p>This feature can be disabled or changed by editing the <tt>config/format.rb</tt> file accordingly.</p></div>
+</div></p></div>
+</div><br />
+<div class="section">
+  <h2 class="title">
+    <a class="list" id="entry.verbatim" href="#a-606676548">5.6</a>&nbsp;&nbsp;<a class="here" href="#entry.verbatim">Protecting verbatim text</a>
+  </h2>
+  <div class="content"><p>Sometimes you just need to protect some text from being mangled by the text-to-<span class="caps">HTML</span> conversion process (which is governed by <tt>config/format.rb</tt>). In such cases, you can wrap the text you want to proctect within <strong>&lt;noformat&gt;</strong> and <strong>&lt;/noformat&gt;</strong> tags.</p>
+<p>Note that this is a feature of the default <tt>config/format.rb</tt> file provided with Rassmalog.  If you defined your own text-to-<span class="caps">HTML</span> conversion scheme, then this feature might not work.</p></div>
+</div></p></div>
+</div>
+<div class="chapter">
+  <h1 class="title">
+    Chapter
+    <a class="list" id="Hacking" href="#a-606679098">6</a>
+
+    <br/>
+
+    <a class="here" href="#Hacking"><big>Hacking</big></a>
+  </h1>
+
+  <div class="content"><p>You can obtain the latest source code from the <a href="http://darcs.net">Darcs</a> repository:</p>
+<pre>darcs get http://rassmalog.rubyforge.org/src/ rassmalog</pre>
+<p><div class="section">
+  <h2 class="title">
+    <a class="list" id="hacking.api" href="#a-606680768">6.1</a>&nbsp;&nbsp;<a class="here" href="#hacking.api">API documentation</a>
+  </h2>
+  <div class="content"><table border="1">
+	<tr>
+		<th>Method declaration </th>
+		<th>Description </th>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Entry</span><span style="color:#888">#parent()</span></code> </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Entry</span>::new(aData = {})</code> </td>
+		<td> <table>
+<tr><td valign="top">aData:</td><td>the content of this Entry
+
+</td></tr>
+</table>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Entry</span><span style="color:#888">#hide?()</span></code> </td>
+		<td> <p>
+Returns true if this entry is hidden (the &#8216;hide&#8217; parameter is
+enabled).
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Entry</span><span style="color:#888">#summary()</span></code> </td>
+		<td> <p>
+Returns the summarized HTML content of this blog entry. If there is no
+summary or summarization is not possible, then returns nil.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Entry</span><span style="color:#888">#absolute_url()</span></code> </td>
+		<td> <p>
+Returns the absolute URL to this entry.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Entry</span><span style="color:#888">#&lt;=&gt;(aOther)</span></code> </td>
+		<td> <p>
+Sort chronologically.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Entry</span><span style="color:#888">#html()</span></code> </td>
+		<td> <p>
+Transforms the content of this entry into HTML and returns it.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Entry</span><span style="color:#888">#comment_url()</span></code> </td>
+		<td> <p>
+Returns a URL for submiting comments about this entry.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Chapter</span>::new(aName)</code> </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Chapter</span><span style="color:#888">#[](aName, *args)</span></code> </td>
+		<td> <p>
+Allows you to access a section using its name or through the usual Ruby
+array access idioms.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Language</span>::new(aData = {})</code> </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Language</span><span style="color:#888">#[](aPhrase, *aArgs)</span></code> </td>
+		<td> <p>
+Translates the given string and then formats (see String#format) the
+translation with the given placeholder arguments. If the translation is not
+available, then the given string will be used instead.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Template</span>::new(aName, *args)</code> </td>
+		<td> <table>
+<tr><td valign="top">aName:</td><td>String that replaces the ambiguous &#8217;(erb)&#8217; identifier in stack
+traces, so that the user can better determine the source of an error.
+
+</td></tr>
+<tr><td valign="top">args:</td><td>Arguments for ERB::new
+
+</td></tr>
+</table>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Template</span><span style="color:#888">#render_with(aInstVars = {})</span></code> </td>
+		<td> <p>
+Renders this template within a fresh object that is populated with the
+given instance variables.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Section</span><span style="color:#888">#url()</span></code> </td>
+		<td> <p>
+Path (relative to the output/ directory) to the HTML output file of this
+object.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Section</span>::new(aName, aChapter)</code> </td>
+		<td>  </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">Section</span><span style="color:#888">#&lt;=&gt;(aOther)</span></code> </td>
+		<td> <p>
+Sort alphabetically.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#to_file_name()</span></code> </td>
+		<td> <p>
+Transforms this string into a vaild file name that can be safely used in a
+URL. See <a
+href="http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax">en.wikipedia.org/wiki/URI_scheme#Generic_syntax</a>
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#to_html_entities()</span></code> </td>
+		<td> <p>
+Transforms this UTF-8 string into HTML entities.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#to_uri_fragment()</span></code> </td>
+		<td> <p>
+Transforms this string into a valid URI fragment. See <a
+href="http://www.nmt.edu/tcc/help/pubs/xhtml/id-type.html">www.nmt.edu/tcc/help/pubs/xhtml/id-type.html</a>
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#thru_erb(aBinding = Kernel.binding)</span></code> </td>
+		<td> <p>
+Passes this string through ERB and returns the result.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#shell_escape()</span></code> </td>
+		<td> <p>
+Transforms this string into an escaped POSIX shell argument whilst
+preserving Unicode characters.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#table_of_contents()</span></code> </td>
+		<td> <p>
+Builds a table of contents from XHTML headings (&lt;h1&gt;, &lt;h2&gt;,
+etc.) found in this string and returns an array containing [toc, html]
+where:
+</p>
+<table>
+<tr><td valign="top">toc:</td><td>the generated table of contents
+
+</td></tr>
+<tr><td valign="top">html:</td><td>a modified version of this string which contains anchors for the hyperlinks
+in the table of contents (so that the TOC can link to the content in this
+string)
+
+</td></tr>
+</table>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#to_inline_html()</span></code> </td>
+		<td> <p>
+Transforms this string into an <b>inline</b> HTML string (one that does not
+contain any block-level HTML elements at the root).
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#to_html(aInline = false)</span></code> </td>
+		<td> <p>
+Transforms this string into HTML while ensuring that the result contains
+one or more block-level elements at the root.
+</p>
+<p>
+If aInline is true, then the resulting HTML will be an <b>inline</b>
+string.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#thru_redcloth(aInline = false)</span></code> </td>
+		<td> <p>
+Returns the result of running this string through RedCloth.
+</p>
+<p>
+If aInline is true, then the resulting HTML will be an <b>inline</b>
+string.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#thru_coderay()</span></code> </td>
+		<td> <p>
+Adds syntax coloring to &lt;code&gt; elements in the given text. If the
+&lt;code&gt; tag has an attribute lang=&quot;&#8230;&quot;, then that is
+considered the programming language for which appropriate syntax coloring
+should be applied. Otherwise, the programming language is assumed to be
+ruby.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#digest()</span></code> </td>
+		<td> <p>
+Returns a digest of this string&#8216;s content.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">String</span><span style="color:#888">#protect(aInput, aTags, aVerbatim) {|aInput| ... }</span></code> </td>
+		<td> <p>
+Protects the given tags in the given input, passes that protected input to
+the given block, restores the given tags in the result of the block and
+returns it.
+</p>
+<p>
+If aVerbatim is true, the content of the elments having the given tags will
+not be temporarily altered so that process nested elements can be
+processed.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">File</span>::write(aPath, aContent)</code> </td>
+		<td> <p>
+Writes the given content to the given file.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#template_name()</span></code> </td>
+		<td> <p>
+Basename of the template file, which resides in the config/ directory, used
+to render objects of this class.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#template()</span></code> </td>
+		<td> <p>
+Returns the template used to render objects of this class.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#template_ivar()</span></code> </td>
+		<td> <p>
+Returns the name of the instance variable for objects of this class. This
+variable is used in the template of this class.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#url()</span></code> </td>
+		<td> <p>
+Path (relative to the output/ directory) to the HTML output file of this
+object.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#uri_fragment()</span></code> </td>
+		<td> <p>
+Returns a URI fragment for this object.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#parent_url()</span></code> </td>
+		<td> <p>
+Returns a URL to the parent page which takes you directly to this item
+inside the parent page.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#to_html(aOpts = {})</span></code> </td>
+		<td> <p>
+Transforms this object into HTML.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#render(aOpts = {})</span></code> </td>
+		<td> <p>
+Renders a complete HTML page for this object.
+</p>
+ </td>
+	</tr>
+	<tr>
+		<td> <code class="code"><span style="color:#036; font-weight:bold">TemplateMixin</span><span style="color:#888">#to_link(aOpts = {})</span></code> </td>
+		<td> <p>
+Returns a relative link to this object, customized by the following
+options:
+</p>
+<table>
+<tr><td valign="top">frag:</td><td>a URI fragment that is appended to the URL, if given.
+
+</td></tr>
+<tr><td valign="top">body:</td><td>sets the body of the link (the &lt;a&gt; tag), if given.
+
+</td></tr>
+<tr><td valign="top">nbsp:</td><td>makes spaces in the link body non-breaking, if true.
+
+</td></tr>
+</table>
+ </td>
+	</tr>
+</table></div>
+</div></p></div>
+</div></div>
+
+
+    <br style="display: none"/>
+    <hr style="display: none"/>
+    <br style="display: none"/>
+
+    
+    <div id="footer">
+    
+      Generated on Sat Aug 02 15:32:36 -0700 2008 by <a href="http://gerbil.rubyforge.org">Gerbil</a> 3.1.0.
+
+    
+    </div>
+    
+  </body>
+</html>

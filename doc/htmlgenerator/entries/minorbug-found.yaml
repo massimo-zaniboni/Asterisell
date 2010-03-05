@@ -1,0 +1,12 @@
+name: Minor Bug Found
+date: 2009-11-05
+generate_toc: true
+body: |
+
+  "A non critical bug":http://code.google.com/p/asterisell/issues/detail?id=1 was found. 
+
+  I will fix it only if there will be a "free donation or a buy of a commercial version.":paid-support.html 
+
+  Up to date I'm developing an improved "asterisell-testing-3.0.0" release, for my main customer. He is still using "asterisell-stable-0.9.12", that is not affected from the bug.
+
+  

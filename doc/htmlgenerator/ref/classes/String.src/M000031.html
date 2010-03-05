@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_html (String)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File config/format.rb, line 55</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span> <span class="ruby-identifier">aInline</span> = <span class="ruby-keyword kw">false</span>
+    <span class="ruby-identifier">protect</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-constant">VERBATIM_TAGS</span>, <span class="ruby-keyword kw">true</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">text</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">html</span> = <span class="ruby-identifier">protect</span>(<span class="ruby-identifier">text</span>, <span class="ruby-constant">PROTECTED_TAGS</span>, <span class="ruby-keyword kw">false</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">thru_redcloth</span> <span class="ruby-identifier">aInline</span> }
+
+      <span class="ruby-comment cmt"># collapse redundant &lt;pre&gt; elements -- a side effect of RedCloth</span>
+      <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">html</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-regexp re">%r{&lt;pre&gt;\s*(&lt;(code|pre)[^&gt;]*&gt;.*?&lt;/\2&gt;)\s*&lt;/pre&gt;}</span><span class="ruby-identifier">m</span>, <span class="ruby-value str">'\1'</span>
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-comment cmt"># ensure tables have a border: this *greatly* improves</span>
+      <span class="ruby-comment cmt"># readability in text-mode web browsers like Lynx and w3m</span>
+      <span class="ruby-identifier">html</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-regexp re">%r/&lt;table/</span>, <span class="ruby-value str">'\&amp; border=&quot;1&quot;'</span>
+
+      <span class="ruby-identifier">html</span>.<span class="ruby-identifier">thru_coderay</span>
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

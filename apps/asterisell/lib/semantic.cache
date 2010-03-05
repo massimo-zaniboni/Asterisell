@@ -1,0 +1,140 @@
+;; Object lib/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "lib/"
+  :tables (list 
+   (semanticdb-table "phpRateEngine.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [882 926])) :type "int") nil [860 928]))
+    :file "phpRateEngine.class.php"
+    :pointmax 22403
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpRateCache.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "phpRateCache.class.php"
+    :pointmax 1898
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpRateFixedPrice.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [882 928])) :type "int") nil [860 930]))
+    :file "phpRateFixedPrice.class.php"
+    :pointmax 2726
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "myUser.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "myUser.class.php"
+    :pointmax 5105
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpCallEndPointCache.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "phpCallEndPointCache.class.php"
+    :pointmax 2696
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpRate.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "phpRate.class.php"
+    :pointmax 6743
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpRateDependingFromEndPointType.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [882 928])) :type "int") nil [860 930]))
+    :file "phpRateDependingFromEndPointType.class.php"
+    :pointmax 3901
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpRateGratis.class.php"
+    :major-mode 'php-mode
+    :tags '(("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [30 43])) :type ("php" type (:type "class") nil nil)) nil [3 45]) ("software" variable (:type ("free" type (:type "class") nil nil)) nil [186 200]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [327 347]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [512 525]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [765 777]))
+    :file "phpRateGratis.class.php"
+    :pointmax 1682
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpRateWithSimpleEditModule.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [882 928])) :type "int") nil [860 930]))
+    :file "phpRateWithSimpleEditModule.class.php"
+    :pointmax 1493
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpCostLimit.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [882 926])) :type "int") nil [860 928]))
+    :file "phpCostLimit.class.php"
+    :pointmax 6063
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "variableFrame.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "variableFrame.class.php"
+    :pointmax 1270
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "billEngine.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [148 162]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [289 309]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [474 487]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [727 739]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [883 927])) :type "int") nil [861 929]))
+    :file "billEngine.class.php"
+    :pointmax 10933
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "arPartyCache.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "arPartyCache.class.php"
+    :pointmax 1315
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "arProblemException.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "arProblemException.class.php"
+    :pointmax 2462
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "alwaysFalseValidator.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "alwaysFalseValidator.class.php"
+    :pointmax 1547
+    )
+   (semanticdb-table "exactlyOneNotNullValidator.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "exactlyOneNotNullValidator.class.php"
+    :pointmax 2181
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "standardMailWithGenerator.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [882 926])) :type "int") nil [860 928]))
+    :file "standardMailWithGenerator.class.php"
+    :pointmax 4583
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "phpRateWithDstChannel.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [882 928])) :type "int") nil [860 930]))
+    :file "phpRateWithDstChannel.class.php"
+    :pointmax 2182
+    )
+   (semanticdb-table "mailWithInvoiceGenerator.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [882 926])) :type "int") nil [860 928]))
+    :file "mailWithInvoiceGenerator.class.php"
+    :pointmax 1346
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

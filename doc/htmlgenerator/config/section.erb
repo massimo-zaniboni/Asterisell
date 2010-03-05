@@ -1,0 +1,24 @@
+<%
+=begin
+  This is a template for generating HTML for individual tags and archives.
+
+  The following variables are available for use in this template:
+  * BLOG        - data from the blog configuration file
+  * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
+  * SEARCH_PAGE - the blog entry corresponding to the search page
+  * ENTRIES     - array of all blog entries (Entry objects)
+  * TAGS        - array of all tags (Section objects)
+  * ARCHIVES    - array of all archives (Section objects)
+  * FEEDS       - array of all feeds (Feed objects)
+  * @section    - the Section object for which we are generating HTML
+=end
+%>
+
+<div class="section">
+  <h1 class="name"><%= @section.name.to_inline_html %></h1>
+
+  <% @section.each do |entry| %>
+    <%= entry.to_html %>
+  <% end %>
+</div>

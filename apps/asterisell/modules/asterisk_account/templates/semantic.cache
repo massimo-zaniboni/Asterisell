@@ -1,0 +1,23 @@
+;; Object templates/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "templates/"
+  :tables (list 
+   (semanticdb-table "_list_footer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 31]) ("insertHelp" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [157 779]))
+    :file "_list_footer.php"
+    :pointmax 788
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_edit_footer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 31]) ("insertHelp" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [157 501]))
+    :file "_edit_footer.php"
+    :pointmax 510
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

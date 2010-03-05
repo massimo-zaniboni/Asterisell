@@ -1,0 +1,27 @@
+diff -udNr symfony-1.0.0beta4/data/generator/sfPropelAdmin/default/template/templates/_list_th_tabular.php symfony-patched/data/generator/sfPropelAdmin/default/template/templates/_list_th_tabular.php
+--- symfony-1.0.0beta4/data/generator/sfPropelAdmin/default/template/templates/_list_th_tabular.php	2007-01-16 10:57:28.000000000 +0100
++++ symfony-patched/data/generator/sfPropelAdmin/default/template/templates/_list_th_tabular.php	2007-02-08 17:30:06.000000000 +0100
+@@ -6,12 +6,19 @@
+     [?php if ($sf_user->hasCredential(<?php echo $credentials ?>)): ?]
+ <?php endif; ?>
+   <th id="sf_admin_list_th_<?php echo $column->getName() ?>">
+-    <?php if ($column->isReal()): ?>
+-      [?php if ($sf_user->getAttribute('sort', null, 'sf_admin/<?php echo $this->getSingularName() ?>/sort') == '<?php echo $column->getName() ?>'): ?]
+-      [?php echo link_to(__('<?php echo str_replace("'", "\\'", $this->getParameterValue('list.fields.'.$column->getName().'.name')) ?>'), '<?php echo $this->getModuleName() ?>/list?sort=<?php echo $column->getName() ?>&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/<?php echo $this->getSingularName() ?>/sort') == 'asc' ? 'desc' : 'asc')) ?]
++    <?php 
++      $columnSortName = $this->getParameterValue('list.fields.'.$column->getName().'.sort_on_column', null);
++      if (is_null($columnSortName) && $column->isReal()) 
++      {
++        $columnSortName = $column->getName();
++      }
++    ?>
++    <?php if (! is_null($columnSortName)): ?>
++      [?php if ($sf_user->getAttribute('sort', null, 'sf_admin/<?php echo $this->getSingularName() ?>/sort') == '<?php echo $columnSortName ?>'): ?]
++      [?php echo link_to(__('<?php echo str_replace("'", "\\'", $this->getParameterValue('list.fields.'.$column->getName().'.name')) ?>'), '<?php echo $this->getModuleName() ?>/list?sort=<?php echo $columnSortName ?>&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/<?php echo $this->getSingularName() ?>/sort') == 'asc' ? 'desc' : 'asc')) ?]
+       ([?php echo __($sf_user->getAttribute('type', 'asc', 'sf_admin/<?php echo $this->getSingularName() ?>/sort')) ?])
+       [?php else: ?]
+-      [?php echo link_to(__('<?php echo str_replace("'", "\\'", $this->getParameterValue('list.fields.'.$column->getName().'.name')) ?>'), '<?php echo $this->getModuleName() ?>/list?sort=<?php echo $column->getName() ?>&type=asc') ?]
++      [?php echo link_to(__('<?php echo str_replace("'", "\\'", $this->getParameterValue('list.fields.'.$column->getName().'.name')) ?>'), '<?php echo $this->getModuleName() ?>/list?sort=<?php echo $columnSortName ?>&type=asc') ?]
+       [?php endif; ?]
+     <?php else: ?>
+     [?php echo __('<?php echo str_replace("'", "\\'", $this->getParameterValue('list.fields.'.$column->getName().'.name')) ?>') ?]

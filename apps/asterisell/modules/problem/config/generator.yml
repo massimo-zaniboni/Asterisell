@@ -1,0 +1,23 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArProblem
+    theme:            default
+
+    fields:
+      created_at:        { name: Found at }
+      description:       { name: Description }
+      effect:            { name: Effect }
+      proposed_solution: { name: Proposed Solution }
+      user_notes:        { name: User Notes }
+      mantain:           { name: Not Delete }
+
+    list:
+      title: Found Problems
+      display: [created_at, =description, effect, proposed_solution, user_notes, mantain]
+      sort:    [created_at, desc]
+
+    edit:
+      title: Found Problem
+
+      display: [description, effect, proposed_solution, user_notes, mantain]

@@ -1,0 +1,148 @@
+;; Object templates/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "templates/"
+  :tables (list 
+   (semanticdb-table "exportToCsvSuccess.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 58]) ("csv_field" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [88 102]) ("" variable (:type ("true" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [103 108])) :type ("echo" type (:type "class") nil nil)) nil [73 109]) ("csv_field" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [125 138]) ("" variable (:type ("false" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [139 145])) :type ("echo" type (:type "class") nil nil)) nil [110 146]) ("csv_field" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [162 176]) ("" variable (:type ("false" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [177 183])) :type ("echo" type (:type "class") nil nil)) nil [147 184]) ("csv_field" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [200 224]) ("" variable (:type ("false" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [225 231])) :type ("echo" type (:type "class") nil nil)) nil [185 232]) ("csv_field" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [248 258]) ("" variable (:type ("false" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [259 265])) :type ("echo" type (:type "class") nil nil)) nil [233 266]) ("csv_field" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [282 304]) ("" variable (:type ("false" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [305 311])) :type ("echo" type (:type "class") nil nil)) nil [267 312]) ("csv_field" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [328 347]) ("" variable (:type ("false" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [348 354])) :type ("echo" type (:type "class") nil nil)) nil [313 355]) ("csv_field" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [371 381]) ("" variable (:type ("false" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [382 388])) :type ("echo" type (:type "class") nil nil)) nil [356 389]) ("hasCredential" function (:prototype-flag t :type "int") nil [412 435]) ("$time1" variable (:default-value "microtime_float()" :type "int") nil [661 688]) ("$nrOfRates" variable (:default-value "0" :type "int") nil [689 704]) ("VariableFrame::$filterCondition" variable (:type ("clone" type (:type "class") nil nil)) nil [722 760]) ("addAscendingOrderByColumn" function (:prototype-flag t :arguments (("" variable (:type ("CdrPeer::CALLDATE" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [802 820])) :type "int") nil [776 821]) ("addSelectColumns" function (:prototype-flag t :parent "CdrPeer" :arguments (("" variable (:type ("$cdrCondition" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [849 863])) :type "int") nil [823 864]) ("addJoin" function (:prototype-flag t :arguments (("" variable (:type ("CdrPeer::ACCOUNTCODE" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [963 984]) ("" variable (:type ("ArAsteriskAccountPeer::ACCOUNT_CODE" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [985 1021])) :type "int") nil [955 1022]) ("addSelectColumns" function (:prototype-flag t :parent "ArAsteriskAccountPeer" :arguments (("" variable (:type ("$cdrCondition" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1063 1077])) :type "int") nil [1023 1078]) ("ArAsteriskAccountPeer::NUM_COLUMNS" variable (:type "int") nil [1105 1140]) ("addJoin" function (:prototype-flag t :arguments (("" variable (:type ("ArAsteriskAccountPeer::AR_PARTY_ID" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1165 1200]) ("" variable (:type ("ArPartyPeer::ID" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1201 1217])) :type "int") nil [1157 1218]) ("addSelectColumns" function (:prototype-flag t :parent "ArPartyPeer" :arguments (("" variable (:type ("$cdrCondition" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1249 1263])) :type "int") nil [1219 1264]) ("ArPartyPeer::NUM_COLUMNS" variable (:type "int") nil [1291 1316]) ("$rs" variable (:default-value "CdrPeer::doSelectRS($cdrCondition)" :type "int") nil [1403 1444]) ("PhpRateCache" function (:prototype-flag t :type ("new" type (:type "class") nil nil)) nil [1591 1610]) ("ArPartyCache" function (:prototype-flag t :type ("new" type (:type "class") nil nil)) nil [1626 1645]))
+    :file "exportToCsvSuccess.php"
+    :pointmax 3687
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_my_vendor_cost.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 33]))
+    :file "_my_vendor_cost.php"
+    :pointmax 250
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_owner.php"
+    :major-mode 'php-mode
+    :tags '(("getArPartyId" function (:prototype-flag t :type "int") nil [49 64]) ("getArParty" function (:prototype-flag t :arguments (("" variable (:type ("$partyId" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [114 123])) :type "int") nil [103 124]) ("getFullName" function (:prototype-flag t :type "int") nil [138 152]))
+    :file "_owner.php"
+    :pointmax 156
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_accountcodename.php"
+    :major-mode 'php-mode
+    :tags '(("getName" function (:prototype-flag t :type "int") nil [43 53]))
+    :file "_accountcodename.php"
+    :pointmax 59
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_filter_on_account.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "_filter_on_account.php"
+    :pointmax 1579
+    )
+   (semanticdb-table "_filter_on_party.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "_filter_on_party.php"
+    :pointmax 1086
+    )
+   (semanticdb-table "_filter_on_dst.php"
+    :major-mode 'php-mode
+    :tags '(("$defaultValue" variable (:default-value "''" :type ("php" type (:type "class") nil nil)) nil [3 27]) ("input_tag" function (:prototype-flag t :arguments (("" variable (:type ("$defaultValue" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [157 171])) :type ("echo" type (:type "class") nil nil)) nil [116 172]))
+    :file "_filter_on_dst.php"
+    :pointmax 176
+    )
+   (semanticdb-table "_list_header.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 51]) ("$c" variable (:default-value "VariableFrame::$filterCondition;" :type "int") nil [1136 1173]) ("$c1" variable (:default-value "clone($c)" :type "int") nil [1175 1191]) ("clearSelectColumns" function (:prototype-flag t :type "int") nil [1197 1218]) ("addSelectColumn" function (:prototype-flag t :arguments (("" variable (:type ("CdrPeer::ID" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1251 1264])) :type "int") nil [1224 1270]) ("addSelectColumn" function (:prototype-flag t :arguments (("" variable (:type ("CdrPeer::BILLSEC" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1301 1319])) :type "int") nil [1276 1325]) ("addJoin" function (:prototype-flag t :arguments (("" variable (:type ("CdrPeer::ACCOUNTCODE" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1339 1360]) ("" variable (:type ("ArAsteriskAccountPeer::ACCOUNT_CODE" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1361 1397])) :type "int") nil [1331 1398]) ("addJoin" function (:prototype-flag t :arguments (("" variable (:type ("ArAsteriskAccountPeer::AR_PARTY_ID" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1412 1447]) ("" variable (:type ("ArPartyPeer::ID" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1448 1464])) :type "int") nil [1404 1465]) ("$rs" variable (:default-value "BasePeer::doSelect($c1)" :type "int") nil [1466 1496]) ("$totCalls" variable (:default-value "0" :type "int") nil [1497 1511]) ("$totSeconds" variable (:default-value "0" :type "int") nil [1512 1528]) ("foreach" function (:arguments (("as" variable (:type ("$rs" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1538 1547]) ("" variable (:type ("$r" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1545 1548])) :type "int") nil [1529 1597]) ("$c2" variable (:default-value "clone($c)" :type "int") nil [1647 1663]) ("clearSelectColumns" function (:prototype-flag t :type "int") nil [1669 1690]) ("addSelectColumn" function (:prototype-flag t :arguments (("" variable (:type ("ArRatePeer::CURRENCY" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1713 1734])) :type "int") nil [1696 1735]) ("addSelectColumn" function (:prototype-flag t :arguments (("" variable (:type ("CdrPeer::INCOME" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1766 1783])) :type "int") nil [1741 1789]) ("addJoin" function (:prototype-flag t :arguments (("" variable (:type ("CdrPeer::INCOME_AR_RATE_ID" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1803 1830]) ("" variable (:type ("ArRatePeer::ID" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1831 1846])) :type "int") nil [1795 1847]) ("addGroupByColumn" function (:prototype-flag t :arguments (("" variable (:type ("ArRatePeer::CURRENCY" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1870 1891])) :type "int") nil [1853 1892]) ("$rs" variable (:default-value "BasePeer::doSelect($c2)" :type "int") nil [1893 1923]) ("$fromCurrencyToIncome" variable (:default-value "array()" :type "int") nil [1925 1957]) ("foreach" function (:arguments (("as" variable (:type ("$rs" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1967 1976]) ("" variable (:type ("$r" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [1974 1977])) :type "int") nil [1959 2021]) ("$firstRow" variable (:default-value "true;" :type "int") nil [3584 3601]) ("foreach" function (:arguments (("as" variable (:type ("$fromCurrencyToIncome" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3610 3644]) ("" variable (:type ("$currency" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3635 3646]) ("" variable (:type ("$income" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [3648 3656])) :type "int") nil [3602 4637]))
+    :file "_list_header.php"
+    :pointmax 5847
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_earn.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 33]) ("getIncome" function (:prototype-flag t :type "int") nil [51 63]) ("getCost" function (:prototype-flag t :type "int") nil [78 88]))
+    :file "_earn.php"
+    :pointmax 1217
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_billmin.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 33]) ("format_minute" function (:prototype-flag t :arguments (("" variable (:type ("$cdr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [54 59]) ("" variable (:type ("getBillsec" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [60 72])) :type ("echo" type (:type "class") nil nil)) nil [35 74]))
+    :file "_billmin.php"
+    :pointmax 78
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_my_income_from_customer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 33]))
+    :file "_my_income_from_customer.php"
+    :pointmax 255
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_my_vendor.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "_my_vendor.php"
+    :pointmax 295
+    )
+   (semanticdb-table "__filter_on_timeframe.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "__filter_on_timeframe.php"
+    :pointmax 31
+    )
+   (semanticdb-table "_end_point_type.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 33]) ("getArCallEndPointTypeId" function (:prototype-flag t :type "int") nil [47 73]))
+    :file "_end_point_type.php"
+    :pointmax 225
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_masked_dst.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 33]) ("mask_dst" function (:prototype-flag t :arguments (("" variable (:type ("$cdr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [49 54]) ("" variable (:type ("getDst" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [55 63])) :type ("echo" type (:type "class") nil nil)) nil [35 65]))
+    :file "_masked_dst.php"
+    :pointmax 70
+    )
+   (semanticdb-table "_filter_on_vendor.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "_filter_on_vendor.php"
+    :pointmax 760
+    )
+   (semanticdb-table "_filter_on_timeframe.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 27]) ("use_helper" function (:prototype-flag t :type "int") nil [28 47]) ("$options" variable (:default-value "array('0' => '',
+                 '1' => __('today'),
+		 '2' => __('last two days'),
+		 '3' => __('this week'),
+		 '4' => __('last two weeks'),
+		 '5' => __('this month'),
+		 '6' => __('last two month'),
+		 '7' => __('last four month'),
+		 )" :type "int") nil [49 302]) ("$group" variable (:default-value "'filters[filter_on_timeframe]'" :type "int") nil [305 345]) ("select_tag" function (:prototype-flag t :arguments (("" variable (:type ("options_for_select" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [615 659])) :type ("echo" type (:type "class") nil nil)) nil [567 661]))
+    :file "_filter_on_timeframe.php"
+    :pointmax 665
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "exportToExcelSuccess.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "exportToExcelSuccess.php"
+    :pointmax 42
+    )
+   (semanticdb-table "_mycalldate.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 27]) ("format_datetime" function (:prototype-flag t :arguments (("" variable (:type ("$cdr" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [50 55]) ("" variable (:type ("getCalldate" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [56 69])) :type ("echo" type (:type "class") nil nil)) nil [29 76]))
+    :file "_mycalldate.php"
+    :pointmax 80
+    )
+   (semanticdb-table "_list_footer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 31]))
+    :file "_list_footer.php"
+    :pointmax 1871
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

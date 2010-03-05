@@ -1,0 +1,71 @@
+<%
+=begin
+  This is a template for generating the RSS feed for the blog.
+
+  The following variables are available for use in this template:
+  * BLOG        - data from the blog configuration file
+  * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
+  * SEARCH_PAGE - the blog entry corresponding to the search page
+  * ENTRIES     - array of all blog entries (Entry objects)
+  * TAGS        - array of all tags (Section objects)
+  * ARCHIVES    - array of all archives (Section objects)
+  * FEEDS       - array of all feeds (Feed objects)
+  * @feed       - the feed for which we are generating output (Feed object)
+=end
+%>
+<?xml version="1.0" encoding="<%= BLOG.encoding %>"?>
+<rss version="2.0">
+<channel>
+  <title><%=h @feed.name.to_s.to_inline_html %></title>
+  <link><%= BLOG.url %></link>
+  <description><%=h @feed.info.to_s.to_html %></description>
+  <language><%=h BLOG.language %></language>
+  <lastBuildDate><%= Time.now.rfc822 %></lastBuildDate>
+  <generator><%= Rassmalog %></generator>
+  <%
+    @feed.entries.each do |entry|
+      url = entry.absolute_url
+
+      body =
+        if @feed.summarize and summary = entry.summary
+          "#{summary}<p>#{ entry.to_link :body => LANG["Read more..."] }</p>"
+        else
+          entry.html
+        end
+
+      # resolve relative URLs into absolute URLs
+      # see http://en.wikipedia.org/wiki/URI_scheme#Generic_syntax
+      body.gsub! %r{(href=|src=)(.)(.*?)(\2)} do |match|
+        a, b = $1 + $2, $3.to_s << $4
+
+        case $3
+        when %r{^[[:alpha:]][[:alnum:]\+\.\-]*://} # already absolute
+          match
+
+        when /^#/ # relative to this entry
+          a << File.join(url, b)
+
+        else # relative to this blog
+          a << File.join(BLOG.url, b)
+        end
+      end
+  %>
+    <item>
+      <title><%=h entry.name.to_inline_html %></title>
+      <link><%= url %></link>
+      <guid><%= url %></guid>
+      <pubDate><%= entry.date.rfc822 %></pubDate>
+      <description><%=h body %></description>
+
+      <% entry.tags.each do |tag| %>
+        <category><%=h tag.name %></category>
+      <% end %>
+
+      <% if BLOG.email %>
+        <comments><%= entry.comment_url %></comments>
+      <% end %>
+    </item>
+  <% end %>
+</channel>
+</rss>

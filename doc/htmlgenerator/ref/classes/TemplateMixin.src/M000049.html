@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_link (TemplateMixin)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rassmalog.rb, line 396</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_link</span> <span class="ruby-identifier">aOpts</span> = {}
+      <span class="ruby-identifier">frag</span> = <span class="ruby-identifier">aOpts</span>[<span class="ruby-identifier">:frag</span>]
+      <span class="ruby-identifier">frag</span> = <span class="ruby-identifier">frag</span>.<span class="ruby-identifier">uri_fragment</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">frag</span>.<span class="ruby-identifier">respond_to?</span> <span class="ruby-identifier">:uri_fragment</span>
+
+      <span class="ruby-identifier">addr</span> = [<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">url</span>, <span class="ruby-identifier">frag</span>].<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">'#'</span>)
+
+      <span class="ruby-identifier">body</span> = <span class="ruby-identifier">aOpts</span>[<span class="ruby-identifier">:body</span>] <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>
+      <span class="ruby-identifier">body</span> = <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\s/</span>, <span class="ruby-value str">'&amp;nbsp;'</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">aOpts</span>[<span class="ruby-identifier">:nbsp</span>]
+      <span class="ruby-identifier">body</span> = <span class="ruby-identifier">body</span>.<span class="ruby-identifier">to_inline_html</span>
+
+      <span class="ruby-comment cmt"># reveal default link body in title when overriden</span>
+      <span class="ruby-identifier">title</span> = <span class="ruby-identifier">aOpts</span>[<span class="ruby-identifier">:body</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>
+
+      <span class="ruby-identifier">link</span>(<span class="ruby-identifier">addr</span>, <span class="ruby-identifier">body</span>, <span class="ruby-identifier">title</span>)
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

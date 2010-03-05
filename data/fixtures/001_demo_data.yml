@@ -1,0 +1,40 @@
+ArPriceCategory:
+  normal_price_category:
+    name: Prezzo Normale
+
+  discounted_price_category:
+    name: Prezzo Scontato
+
+ArCustomer:
+
+  massimo_zaniboni:
+    customer_or_vendor: C
+    name: Massimo Zaniboni
+    currency_code: EU
+    external_crm_code: 101
+    vat: 10122
+    address: Via Morello di Mezzo 627
+    zip: 41019
+    province: Soliera
+    country: Italy
+    email: massimo@nospam.it
+    ar_price_category_id: normal_price_category
+
+ArAsteriskUser:
+  acc:
+    account_code: acc 1
+    ar_customer_id: massimo_zaniboni
+
+
+ArWebUser:
+
+  admin_user:
+    login: admin
+    password: admin
+    ar_customer_id: NULL
+    ar_asterisk_user_id: acc
+    activate_at: 2007/1/1
+    deactivate_at: NULL
+    language: IT
+    date_format: NULL
+

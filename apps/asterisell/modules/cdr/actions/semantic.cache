@@ -1,0 +1,15 @@
+;; Object actions/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "actions/"
+  :tables (list 
+   (semanticdb-table "actions.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]))
+    :file "actions.class.php"
+    :pointmax 1084
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

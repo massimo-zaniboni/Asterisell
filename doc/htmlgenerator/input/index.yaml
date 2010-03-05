@@ -1,0 +1,116 @@
+name: News
+generate_toc: true
+summary: false
+date: 2007-01-01
+hide: true
+body: |
+
+  <noformat>
+    <% ENTRIES.first(3).each do |entry| %>
+      <%= entry.to_html :@summarize => true %>
+    <% end %>
+  </noformat>
+
+  <noformat>
+  <a name="overview"></a>
+  </noformat>
+  
+  h1. Asterisell Overview
+  
+  h1. Usage Scenario
+  
+  * You are a vendor of Voice over IP Telephony (VoIP) services, and you use an "Asterisk server":http://www.asterisk.org/.
+  * Your customers pay you for this service.
+  * Your customers can call users residing on telephone networks that are not directly managed/owned from you.
+  * For routing calls to external networks, you use the services of other telephone vendors, and you pay them for this service.
+  
+  Every call has:
+    * an income: what your customer pays to you;
+    * a cost: what you pay to other telephone service vendors in order to route the call;
+    * an earn: the difference between the income and the cost; 
+
+  You can use Asterisell for:
+    * rating calls;
+    * showing to your customers details about their calls;
+
+  h1. Features
+
+  h2. Customer Calls View
+  
+  * filters on many relevant fields like called number, date range, geographic location of called number, etc..;
+  * calls can be sorted according different parameters;  
+  * totals of number of calls/costs/duration/etc.. according the current filter conditions;
+  * data can be exported and downloaded to CSV / Excel file;
+  * called numbers can be masked for privacy reasons;
+  * configurable date, and currency format;
+  * configurable user interface language;
+  * check of last 30 days cost limit;
+  * different VoIP accounts/users associated to the same Customer (for example an enterprise with different offices or a small business with different employees);
+  * possibility to give web access account to a specific VoIP account, in this case he can inspect only his calls;
+  * easy to comprehend visualization;
+  * your costs associated to calls are not visible;
+  
+  !images/screenshots/thumb-Asterisell_report_compact.png!:images/screenshots/Asterisell_report_compact.png
+
+  h2. Administrator Calls View 
+
+  Administrators can:
+  * view full details about cost, income, and earn of calls;
+  * export data to CSV / Excel files;
+  * be advised (also via email) for problems during rating of calls;
+  * force recalculation of calls due to changes of rating methods;
+  
+  !images/screenshots/thumb-Asterisell_cdrs.png!:images/screenshots/Asterisell_cdrs.png
+
+  h2. Rating Process
+  
+  * rates can be associated to specific customer categories, telephone-prefixes, time periods, destination gateway channels, etc..;
+  * Asterisell source code can be extended with additional rating methods;
+  * customers can be grouped into different price list categories;
+
+  !images/screenshots/thumb-Asterisell_rates.png!:images/screenshots/Asterisell_rates.png
+  
+  h2. Rate Problem Notification 
+  
+  Problems during rate process are reported and signaled via email to the administrator. Affected calls are rated after the problem is resolved.
+
+  !images/screenshots/thumb-Asterisell_problems.png!:images/screenshots/Asterisell_problems.png
+  
+  h2. Telephone Prefixes
+
+  Telephone prefixes can be associated to a proper telephone-operator, geographic-location and connection-type. These details are then used during calls visualization and for filtering.
+
+  !images/screenshots/thumb-Asterisell_telephone_prefixes.png!:images/screenshots/Asterisell_telephone_prefixes.png
+
+  h2. Billing Process
+  
+  * generation and optional delivery via mail of invoices;
+  * generation and/or delivery can be per customer or bulk;
+
+  !images/screenshots/thumb-Asterisell_invoice.png!:images/screenshots/Asterisell_invoice.png
+
+  h2. Customer Management
+  
+  * customers can have (or no) web access accounts;
+  * customers can have one or more VoIP accounts associated to employees/offices/departments;
+  * management of Customer information like address, VAT, and so on...;
+
+  h2. Security
+  
+  * input fields that are accessible from customers, are secured from intrusion attempts;
+  * administrator is advised via email if a customer does not respect its cost limit;
+
+  h1. Support
+  
+  * Ask "Asterisell forum":http://groups.google.it/group/asterisell for support requests and application customizations;
+  * open source license allows to freely extend the product according the needs of the user and it prevents vendor loock-in;
+  * commercial/supported version allows to save time, and to fund future releases of the open source versions, for example the 6x speedup is now part of the free release;
+  * regression tests allow to discover bugs introduced during program development/customization;
+  
+  h1. Feedback
+  
+  Use "Asterisell forum":http://groups.google.it/group/asterisell for:
+     * signaling major/minor problems;
+     * suggesting possible improvements;
+
+  

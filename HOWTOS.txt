@@ -1,0 +1,88 @@
+= User Annotations =
+
+= Developer Annotations =
+
+== Retest ==
+
+Apply instructions in MANUAL_TETING.txt
+
+== Create New Module ==
+
+Make sure to add "security.yml" for each new module in order to prevent the accessing from normal users.
+
+== Modify Database ==
+
+Modify config/schema.yml
+
+  > ./symfony propel-build-model
+  > ./symfony propel-build-sql
+  > mysqladmin -u root -p drop asterisell
+  > mysqladmin -u root -p create asterisell
+  > mysql -u root -p asterisell < data/sql/lib.model.schema.sql
+  > cd batch
+  > php create_root.php your-password
+  > cd ..
+  > ./symfony cc
+
+See Asterisell installation instructions and Symfony documentation for more information.
+  
+Check all modules affected from the changes and update them.
+
+== Freeze Symfony Framework ==
+
+How to create a new Symfony FREEZE from scratch.
+
+  * symfony unfreeze
+  * update Symfony project.
+  * apply "symfony-patch" to the symfony project.
+  * symfony cc
+  * symfony freeze
+
+Otherwise
+
+  * rm -r -f web/sf
+  * rm -r -f data/symfony
+  * rm -r -f lib/symfony
+  * remove config/config.php
+  * remove symfony.php
+  * remove symfony
+  * create an empty Symfony project using "symfony init-project some_name"
+  * copy removed files from new empty project to Asterisell application
+  * symfony freeze
+
+== Code Snippest ==
+
+=== Access Config File Options inside a Template ===
+
+  sfConfig::get('app_currency')
+ 
+Se si creano dei livelli come
+
+  available:
+    currencies:
+      - EUR
+      - USD
+vi si accede con 
+
+  sfConfig::get('app_available_currencies')
+
+== Adding Debug Log Messages ==
+
+== Create Complex Custom Queries ==
+
+See 
+
+  apps/asterisell/modules/report/template/_list_header.php
+
+that creates a complex query.
+
+== New Releases ==
+
+  * execute automatic regression tests;
+  * execute manual regression tests;
+  * update web-site;
+  * put new commercial release on SWReg web site;
+  * check feed update;
+  * freshmeat update;
+  * put a new message on the mailing-list;
+  

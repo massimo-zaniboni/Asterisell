@@ -1,0 +1,38 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArWebAccount
+    theme:            default
+
+    fields:
+      login:         { name: Login }
+      password:      { name: Password }
+      activate_at:   { name: Created at }
+      deactivate_at: { name: Disabled at }
+
+    list:
+      title: Web Access Accounts
+
+      fields:
+        access_for:        { name: Owner }
+        filter_on_admin:   { name: Only Admins, filter_criteria_disabled: true }
+        filter_on_party:   { name: Customer , filter_criteria_disabled: true }
+        filter_on_account: { name: VoIP Accounts of Customer , filter_criteria_disabled: true }
+  
+      display: [ =login, password, _access_for, activate_at, deactivate_at]
+
+      filters: [_filter_on_admin, _filter_on_party, _filter_on_account]
+
+    edit:
+      title: Web Access Account
+
+      fields:
+        myadmin:       { name: Admin }
+        mycustomer:    { name: Customer }
+        myvoipaccount: { name: VoIP Account }
+       				 
+      display:			 
+        NONE: [login, password, activate_at, deactivate_at]
+        Owner:  [_myadmin, _mycustomer, _myvoipaccount]		 
+
+

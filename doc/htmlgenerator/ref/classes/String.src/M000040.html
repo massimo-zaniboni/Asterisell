@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>table_of_contents (String)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rassmalog.rb, line 118</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">table_of_contents</span>
+      <span class="ruby-identifier">toc</span> = <span class="ruby-value str">'&lt;ul&gt;'</span>
+      <span class="ruby-identifier">prevDepth</span> = <span class="ruby-value">0</span>
+      <span class="ruby-identifier">prevIndex</span> = <span class="ruby-value str">''</span>
+
+      <span class="ruby-identifier">html</span> = <span class="ruby-identifier">gsub</span> <span class="ruby-regexp re">%r{&lt;h(\d)(.*?)&gt;(.*?)&lt;/h\1&gt;$}</span><span class="ruby-identifier">m</span> <span class="ruby-keyword kw">do</span>
+        <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">atts</span>, <span class="ruby-identifier">title</span> = <span class="ruby-identifier">$1</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">$2</span>, <span class="ruby-identifier">$3</span>.<span class="ruby-identifier">strip</span>
+
+        <span class="ruby-comment cmt"># generate a LaTeX-style index (section number) for the heading</span>
+          <span class="ruby-identifier">depthDiff</span> = (<span class="ruby-identifier">depth</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">prevDepth</span>).<span class="ruby-identifier">abs</span>
+
+          <span class="ruby-identifier">index</span> =
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">prevDepth</span>
+              <span class="ruby-identifier">toc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'&lt;li&gt;&lt;ul&gt;'</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">depthDiff</span>
+
+              <span class="ruby-identifier">s</span> = <span class="ruby-identifier">prevIndex</span> <span class="ruby-operator">+</span> (<span class="ruby-value str">'.1'</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">depthDiff</span>)
+              <span class="ruby-identifier">s</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/^\./</span>, <span class="ruby-value str">''</span>)
+
+            <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">prevDepth</span>
+              <span class="ruby-identifier">toc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'&lt;/ul&gt;&lt;/li&gt;'</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">depthDiff</span>
+
+              <span class="ruby-identifier">s</span> = <span class="ruby-identifier">prevIndex</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-node">/(\.\d+){#{depthDiff}}$/</span>, <span class="ruby-value str">''</span>)
+              <span class="ruby-identifier">s</span>.<span class="ruby-identifier">next</span>
+
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-identifier">prevIndex</span>.<span class="ruby-identifier">next</span>
+
+            <span class="ruby-keyword kw">end</span>
+
+          <span class="ruby-identifier">prevDepth</span> = <span class="ruby-identifier">depth</span>
+          <span class="ruby-identifier">prevIndex</span> = <span class="ruby-identifier">index</span>
+
+        <span class="ruby-comment cmt"># generate a unique anchor for the heading</span>
+          <span class="ruby-identifier">frag</span> = <span class="ruby-constant">CGI</span>.<span class="ruby-identifier">unescape</span>(
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">atts</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/id=('|&quot;)(.*?)\1/</span>
+              <span class="ruby-identifier">atts</span> = <span class="ruby-identifier">$`</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">$'</span>
+              <span class="ruby-identifier">$2</span>
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-identifier">title</span>
+            <span class="ruby-keyword kw">end</span>
+          ).<span class="ruby-identifier">to_uri_fragment</span>
+
+          <span class="ruby-identifier">frag</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">frag</span>.<span class="ruby-identifier">object_id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">while</span> <span class="ruby-ivar">@@uriFrags</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">frag</span>
+          <span class="ruby-ivar">@@uriFrags</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">frag</span>
+
+        <span class="ruby-comment cmt"># provide hyperlinks for traveling between TOC and heading</span>
+          <span class="ruby-identifier">dst</span> = <span class="ruby-identifier">frag</span>
+          <span class="ruby-identifier">src</span> = <span class="ruby-identifier">dst</span>.<span class="ruby-identifier">object_id</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">to_uri_fragment</span>
+
+          <span class="ruby-identifier">dstUrl</span> = <span class="ruby-value str">'#'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">dst</span>
+          <span class="ruby-identifier">srcUrl</span> = <span class="ruby-value str">'#'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">src</span>
+
+          <span class="ruby-comment cmt"># forward link from TOC to heading</span>
+          <span class="ruby-identifier">toc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">%{&lt;li&gt;#{index} &lt;a id=&quot;#{src}&quot; href=&quot;#{dstUrl}&quot;&gt;#{title}&lt;/a&gt;&lt;/li&gt;}</span>
+
+          <span class="ruby-comment cmt"># reverse link from heading to TOC</span>
+          <span class="ruby-node">%{&lt;h#{depth}#{atts}&gt;&lt;a id=&quot;#{dst}&quot; href=&quot;#{srcUrl}&quot; class=&quot;list&quot; title=&quot;#{LANG['Return to %s', LANG['Contents']]}&quot;&gt;#{index}&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;a href=&quot;##{dst}&quot; class=&quot;here&quot; title=&quot;#{LANG['Permanent hyperlink to this section']}&quot;&gt;#{title}&lt;/a&gt;&lt;/h#{depth}&gt;}</span>
+      <span class="ruby-keyword kw">end</span>
+
+      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">prevIndex</span>.<span class="ruby-identifier">empty?</span>
+        <span class="ruby-identifier">toc</span> = <span class="ruby-keyword kw">nil</span> <span class="ruby-comment cmt"># there were no headings</span>
+      <span class="ruby-keyword kw">else</span>
+        <span class="ruby-identifier">toc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'&lt;/ul&gt;&lt;/li&gt;'</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">prevDepth</span>
+        <span class="ruby-identifier">toc</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'&lt;/ul&gt;'</span>
+
+        <span class="ruby-comment cmt"># collapse redundant list elements</span>
+        <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">toc</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-regexp re">%r{(&lt;li&gt;.*?)&lt;/li&gt;&lt;li&gt;(&lt;ul&gt;)}</span>, <span class="ruby-value str">'\1\2'</span>
+        <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-comment cmt"># collapse unnecessary levels</span>
+        <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">toc</span>.<span class="ruby-identifier">gsub!</span> <span class="ruby-regexp re">%r{(&lt;ul&gt;)&lt;li&gt;&lt;ul&gt;(.*)&lt;/ul&gt;&lt;/li&gt;(&lt;/ul&gt;)}</span>, <span class="ruby-value str">'\1\2\3'</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+
+      [<span class="ruby-identifier">toc</span>, <span class="ruby-identifier">html</span>]
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

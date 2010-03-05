@@ -1,0 +1,70 @@
+<%
+=begin
+  This is a template for generating HTML for lists of tags and archives.
+
+  The following variables are available for use in this template:
+  * BLOG        - data from the blog configuration file
+  * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
+  * SEARCH_PAGE - the blog entry corresponding to the search page
+  * ENTRIES     - array of all blog entries (Entry objects)
+  * TAGS        - array of all tags (Section objects)
+  * ARCHIVES    - array of all archives (Section objects)
+  * FEEDS       - array of all feeds (Feed objects)
+  * @chapter    - the Chapter object for which we are generating HTML
+
+  NOTE that the "display: none" stuff in this template is meant to improve
+  the readability and usability of this web page in text-only web browsers.
+=end
+%>
+<div class="chapter">
+  <h1 class="name"><%= @chapter.name.to_inline_html %></h1>
+
+  <ul class="cloud">
+  <%
+    fonts = %w[xx-small x-small small medium large x-large xx-large]
+    scale = fonts.length - 1
+
+    largest = @chapter.map {|section| section.length }.max
+
+    @chapter.each do |section|
+      size = section.length
+      mass = size.to_f / largest
+      font = fonts[ (mass * scale).round ]
+  %>
+    <li style="font-size: <%= font %>;" title="<%= size %>">
+      <%= section.to_link :nbsp => true %> <span style="display: none">(<%= size %>)</span>
+    </li>
+  <% end %>
+  </ul>
+
+  <%
+    langName = LANG['Name']
+    langDate = LANG['Date']
+    langSize = LANG['Size']
+
+    order = @chapter == ARCHIVES ? langDate : langName
+    items = @chapter.sort
+    sizes = @chapter.sort_by {|section| section.length }.reverse
+  %>
+  <table border="1">
+    <tr>
+      <th colspan="2"><%= LANG['Sorted by %s', order] %></th>
+      <th colspan="2"><%= LANG['Sorted by %s', langSize] %></th>
+    </tr>
+    <tr>
+      <th><%= order %> &darr;</th>
+      <th><%= langSize %></th>
+      <th><%= order %></th>
+      <th><%= langSize %> &uarr;</th>
+    </tr>
+    <% @chapter.each_index do |i| %>
+      <tr>
+        <td><%= items[i].to_link %></td>
+        <td><%= items[i].length %></td>
+        <td><%= sizes[i].to_link %></td>
+        <td><%= sizes[i].length %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

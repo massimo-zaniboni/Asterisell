@@ -1,0 +1,29 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArInvoiceCreation
+    theme:            default
+
+    fields:
+      first_nr: { name: First Invoice Nr. }
+      invoice_date: { name: Invoice Date }
+      ar_cdr_from:  { name: Calls from (inclusive) }
+      ar_cdr_to:    { name: Calls to (exclusive) }
+
+    list:
+      title: Invoice Creations
+
+      display: [=first_nr, invoice_date, ar_cdr_from, ar_cdr_to]
+
+      sort: [invoice_date, desc]
+
+      filters: [invoice_date, ar_cdr_to]
+
+    edit:
+      title: Invoice Creation    
+
+      fields:
+        creation_actions: { name: Actions } 
+
+      display: [first_nr, invoice_date, ar_cdr_from, ar_cdr_to, _creation_actions]
+

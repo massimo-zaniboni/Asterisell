@@ -1,0 +1,15 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArRateCategory
+    theme:            default
+
+    fields:
+      name: { name: Name }
+    
+    list:
+      title: Price Categories
+      display: [=name]
+    
+    edit:
+      title: Price Category

@@ -1,0 +1,52 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArRate
+    theme:            default
+   
+    fields:
+      ar_rate_category_id: { name: Customer Category }
+      ar_party:            { name: Vendor }
+      ar_party_id:         { name: Vendor }
+      start_time:          { name: Applicable from (inclusive)  } 
+      end_time:            { name: Applicable until (exclusive) } 
+      is_exception:        { name: Exception }
+
+      php_class_serialization: {name: Rate }
+      note:                { name: Note }
+
+      rate_category_link: { name: Customer Category }
+      display_short_description: { name: Rate Description }
+      display_cv_type: { name: Type  }
+
+      edit_of_php_class_serialization: { name: Rate Method }
+
+      mycv: { name: Type }
+
+    list:
+      title: Rates
+
+      fields:
+        iscurrent: { name: Is current }
+
+      display: [=id, _iscurrent, is_exception, _rate_category_link, ar_party, start_time, end_time,  _display_short_description, note]
+
+      filters: [ar_rate_category_id, _ar_party_id]
+      
+      sort: [start_time, desc]
+
+    edit:
+      title: Rate
+
+      fields:
+        select_customer_category: { name: Customer Category }
+        select_vendor:            { name: Vendor } 
+
+      display:
+        "Set only if the Rate is an Exception with higher priority respect normal rates": [is_exception]
+        "Compile only for Price List applied to Customers": [_select_customer_category]
+        "Compile only for a rate applied by a Vendor": [_select_vendor]
+
+        "Parameters - if you set dates in the past then you should re-execute rating process on old CDRs": [start_time, end_time]
+        "Method": [id, _edit_of_php_class_serialization, note]
+ 

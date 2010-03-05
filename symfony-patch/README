@@ -1,0 +1,18 @@
+Some PATCH to apply to the 1.0 version of the Symfony framework.
+
+In my Debian distribution it is located in the directories:
+
+  * /usr/share/php/symfony (the symfony "lib" directory)
+  * /usr/share/php/data/symfony (the symfony "data" directory)
+
+In order to test the PATCH execute:
+
+  cd /usr/share/php/data/symfony
+
+  patch --dry-run -i /var/www/asterisell/symfony-patch/PATCH_SORT_ON_COLUMN -p2
+
+If the dry-run execution of patch does not signal any problem then you can apply the patch:
+
+  patch -i /var/www/asterisell/symfony-patch/PATCH_SORT_ON_COLUMN -p2
+
+

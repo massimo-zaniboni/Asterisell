@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>feed (rassmalog.rb)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rassmalog.rb, line 274</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">feed</span> <span class="ruby-identifier">aFile</span>, <span class="ruby-identifier">aItems</span>, <span class="ruby-identifier">aName</span>, <span class="ruby-identifier">aInfo</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">aSummarize</span> = <span class="ruby-keyword kw">true</span>
+    <span class="ruby-identifier">dst</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">'output'</span>, <span class="ruby-identifier">aFile</span>)
+    <span class="ruby-identifier">entries</span> = [<span class="ruby-identifier">aItems</span>].<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
+
+    <span class="ruby-identifier">feedObj</span> = <span class="ruby-constant">Feed</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">aFile</span>, <span class="ruby-identifier">entries</span>, <span class="ruby-identifier">aName</span>, <span class="ruby-identifier">aInfo</span>, <span class="ruby-identifier">aSummarize</span>)
+    <span class="ruby-constant">FEEDS</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">feedObj</span>
+
+    <span class="ruby-identifier">file</span> <span class="ruby-identifier">dst</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">COMMON_DEPS</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">entries</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">input_file</span>} <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+      <span class="ruby-identifier">notify</span> <span class="ruby-identifier">:feed</span>, <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span>
+      <span class="ruby-constant">File</span>.<span class="ruby-identifier">write</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span>, <span class="ruby-constant">FEED_TEMPLATE</span>.<span class="ruby-identifier">render_with</span>(<span class="ruby-identifier">:@feed</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">feedObj</span>)
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">task</span> <span class="ruby-identifier">:feed</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">dst</span>
+    <span class="ruby-constant">CLEAN</span>.<span class="ruby-identifier">include</span> <span class="ruby-identifier">dst</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

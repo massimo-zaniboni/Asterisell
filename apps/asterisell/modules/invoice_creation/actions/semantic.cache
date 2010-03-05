@@ -1,0 +1,16 @@
+;; Object actions/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "actions/"
+  :tables (list 
+   (semanticdb-table "actions.class.php"
+    :major-mode 'php-mode
+    :tags '(("software" variable (:type ("free" type (:type "class") nil nil)) nil [147 161]) ("Foundation" variable (:type ("Software" type (:type "class") nil nil)) nil [288 308]) ("WARRANTY" variable (:type ("ANY" type (:type "class") nil nil)) nil [473 486]) ("Foobar" variable (:type ("with" type (:type "class") nil nil)) nil [726 738]) ("loadHelpers" function (:prototype-flag t :parent "sfLoader" :arguments (("" variable (:type ("array" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [881 925])) :type "int") nil [859 927]) ("sendAllUnsentInvoices" function (:arguments (("" variable (:type ("$invoiceCreation" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [2705 2722])) :type ("function" type (:type "class") nil nil)) nil [2674 3453]))
+    :file "actions.class.php"
+    :pointmax 3458
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

@@ -1,0 +1,16 @@
+fillin:
+  enabled: true
+
+fields:
+  ar_web_account{login}:
+    required:
+      msg: Required
+    sfPropelUniqueValidator:
+      class: ArWebAccount
+      column: login
+      unique_error: There is another login with the same name
+
+  ar_web_account{password}:
+    required:
+      msg: Required
+    

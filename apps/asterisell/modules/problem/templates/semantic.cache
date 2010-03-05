@@ -1,0 +1,22 @@
+;; Object templates/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "templates/"
+  :tables (list 
+   (semanticdb-table "_list_header.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 34]) ("form_tag" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [80 120]) ("submit_tag" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [137 162])) :type ("echo" type (:type "class") nil nil)) nil [121 164]) ("form_tag" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [209 248]) ("submit_tag" function (:prototype-flag t :arguments (("" variable (:type ("__" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [265 297])) :type ("echo" type (:type "class") nil nil)) nil [249 299]))
+    :file "_list_header.php"
+    :pointmax 365
+    )
+   (semanticdb-table "_list_footer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 31]) ("insertHelp" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [157 1030]))
+    :file "_list_footer.php"
+    :pointmax 1049
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

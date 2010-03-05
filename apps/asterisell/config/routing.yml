@@ -1,0 +1,24 @@
+export_csv:
+  url:   /export.csv
+  param: {module: report, action: exportToCsv}
+
+export_excel:
+  url:   /export_excel.csv
+  param: {module: report, action: exportToExcel}
+
+# default rules
+homepage:
+  url:   /
+  param: { module: login, action: index }
+
+default_symfony:
+  url:   /symfony/:action/*
+  param: { module: default }
+
+default_index:
+  url:   /:module
+  param: { action: index }
+
+default:
+  url:   /:module/:action/*
+

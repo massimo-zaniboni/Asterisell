@@ -1,0 +1,16 @@
+fillin:
+  enabled: true
+
+fields:
+  ar_asterisk_account{name}:
+    required:
+      msg: Specify
+
+  ar_asterisk_account{account_code}:
+    required:
+      msg: Specify
+
+  ar_asterisk_account{ar_party_id}:
+    required:
+      msg: Required
+

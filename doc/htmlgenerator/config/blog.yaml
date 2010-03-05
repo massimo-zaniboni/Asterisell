@@ -1,0 +1,284 @@
+#
+# This is the primary configuration file for your blog.
+#
+# It is a _plain text_ file that is marked up in YAML syntax and composed of
+# key-value pairs, known as _parameters_, whose values are defined by the user.
+#
+# The default set of parameters are shown below.
+#
+# For your convenience, the description of each parameter
+# below is marked with one or more of the following emblems:
+#
+# * (eRuby) You can use eRuby directives in the value of this parameter.
+#
+# * (HTML) The value of this parameter will be transformed into HTML using
+#   the standard mechanism defined in the <tt>config/format.rb</tt> file.
+#
+
+
+################################################################################
+# Blog information
+################################################################################
+
+
+#
+# (eRuby) (HTML)
+#
+# The name of your blog.
+#
+name: Asterisell
+
+
+#
+# (eRuby) (HTML)
+#
+# Description of your blog.
+#
+info: |
+  open source web application for rating, showing to customers, and billing Asterisk VoIP calls.
+
+################################################################################
+# Author information
+################################################################################
+
+
+#
+# (eRuby) (HTML)
+#
+# The name of the blog author.
+#
+author: Massimo Zaniboni
+
+
+#
+# (eRuby)
+#
+# The e-mail address that will receive comments about your blog entries.
+#
+# This address will be obfuscated into HTML entities so that
+# e-mail address harvesters won't bother to figure out what it
+# is.  For example, the address "xxx@yyy.zzz" will be converted
+# into the following *before* it is written to a HTML file:
+#
+# &#120;&#120;&#120;&#64;&#121;&#121;&#121;&#46;&#122;&#122;&#122;
+#
+# If you do not wish to receive comments about your
+# blog entries, or if you absolutely *do not* want
+# your e-mail address to be included in the output
+# (even in the obfuscated form), then you can
+# simply leave this parameter blank, as follows:
+#
+#   email:   # nothing here!
+#
+# Examples:
+#
+#   email: your@email.here
+#   email: your+blog@email.here
+#   email: your+comments@email.here
+#
+email: asterisellinfo@profitoss.com
+
+
+################################################################################
+# Publishing information
+################################################################################
+
+
+#
+# (eRuby)
+#
+# The URL of your published blog.
+#
+# Examples:
+#
+#   url: http://your_host.com/~you/path/to/your/blog/
+#   url: http://you.your_host.com/path/to/your/blog/
+#
+url: http://asterisell.profitoss.com
+
+
+#
+# (eRuby)
+#
+# An eRuby template for the command that uploads your blog to your website.
+#
+# The following predefined variables are available:
+#
+#   <%= whole %> is a path to the output/ directory which must be uploaded.
+#
+#   <%= parts %> is a sequence of quoted paths to files that must be uploaded.
+#                For example, the result of this directive is something like:
+#                "output/foo" "output/bar" "output/baz qux moz"
+#
+# SSH examples:
+#
+# These examples assume that your website is located in a
+# directory named "public_html" on a server named "host"
+# that is accessible by a user named "user" via SSH or SFTP.
+#
+#   uploader: scp -prC <%= parts %> user@host:public_html
+#   uploader: rsync -e ssh -auvz <%= whole %>/ user@host:public_html
+#   uploader: lftp sftp://user@host -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
+#
+# FTP examples:
+#
+# These examples assume that your website is located in a directory
+# named "public_html" on a server named "host" that is accessible
+# by a user named "user" with a password of "password" via FTP.
+#
+#   uploader: lftp host -u 'user,password' -e 'mirror -Ra --ignore-time <%= whole %>/ public_html; exit'
+#
+#uploader: rsync -avz --delete <%= whole %> snk@rubyforge.org:/var/www/gforge-projects/rassmalog
+
+
+################################################################################
+# Language information
+################################################################################
+
+
+#
+# (eRuby)
+#
+# The character set used in your entries.
+#
+# Examples:
+#
+#   encoding: utf-8       # Unicode (for all languages)
+#   encoding: x-sjis      # Shift JIS (for Japanese only)
+#   encoding: x-iscii-te  # Telugu ISCII (for Telugu only)
+#
+encoding: utf-8
+
+
+#
+# (eRuby)
+#
+# The ISO-639 code and (optionally) the ISO-3166 country
+# code for the primary language used in your entries.
+#
+# For a list of ISO-639 language codes, see:
+#
+#   http://en.wikipedia.org/wiki/List_of_ISO_639-2_codes
+#
+# For a list of ISO-3166 country codes, see:
+#
+#   http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Current_codes
+#
+# Examples:
+#
+#   language: en    # English
+#   language: en-us # English (United States)
+#   language: en-gb # English (Great Britain)
+#
+language: en-us
+
+
+#
+# (eRuby)
+#
+# This parameter specifies the locale corresponding to the language
+# in which dates, times, and currency will be formatted by Ruby.
+# See http://en.wikipedia.org/wiki/Locale for more information.
+#
+# Here are some examples of how the choice of
+# locale affects the formatting of dates and times:
+#
+# <pre>
+# $ irb -r locale
+# >> Time.now
+# => Tue Oct 23 13:12:20 -0700 2007
+#
+# # in German:
+# >> Locale.setlocale(Locale::LC_TIME, "de_DE"); Time.now
+# => Di Okt 23 13:12:32 -0700 2007
+#
+# # in Spanish:
+# >> Locale.setlocale(Locale::LC_TIME, "es_ES"); Time.now
+# => mar oct 23 13:15:19 -0700 2007
+#
+# # in Italian:
+# >> Locale.setlocale(Locale::LC_TIME, "it_IT"); Time.now
+# => mar ott 23 13:15:27 -0700 2007
+# </pre>
+#
+# To use the default POSIX (U.S. English) locale, leave this parameter blank:
+#
+#   locale:   # nothing here!
+#
+# To see a list of available locales on your system, run the following command:
+#
+#   locale -a
+#
+locale:
+
+
+################################################################################
+# Blog generation
+################################################################################
+
+
+#
+# (eRuby)
+#
+# Path to a file in the output/ directory that should be displayed when
+# somebody visits your blog. This is called the "entrance" of your blog.
+#
+# To use the newest blog entry as the
+# entrance, simply leave this parameter blank:
+#
+#   entrance:   # nothing here!
+#
+entrance: index.html
+
+#
+# Controls whether a table of contents is
+# generated, by default, for all blog entries.
+#
+# A blog entry can override this parameter by specifying
+# its own "generate_toc" parameter in its source file.
+#
+generate_toc: false
+
+
+#
+# Controls how dates are formatted for display in blog entries.
+#
+# To use preferred format for the current system locale, specify:
+#
+#   date_format: %c
+#
+# To display some other information, specify your own value:
+#
+#   date_format: put your own value here
+#
+# For more information, see the documentation of the Time.strftime method:
+#
+#   http://www.ruby-doc.org/docs/ProgrammingRuby/html/ref_c_time.html#Time.strftime
+#
+date_format: %Y %B %d
+
+#
+# Controls how frequently archives are created.
+#
+# To have one archive per unique year, specify:
+#
+#   archive_frequency: %Y
+#
+# To have one archive per unique month, specify:
+#
+#   archive_frequency: %Y-%m
+#
+# To have one archive per unique day, specify:
+#
+#   archive_frequency: %Y-%m-%d
+#
+# To have one archive per some other criteria, specify your own value:
+#
+#   archive_frequency: put your own value here
+#
+# For more information, see the documentation of the Time.strftime method:
+#
+#   http://www.ruby-doc.org/docs/ProgrammingRuby/html/ref_c_time.html#Time.strftime
+#
+archive_frequency: %Y
+

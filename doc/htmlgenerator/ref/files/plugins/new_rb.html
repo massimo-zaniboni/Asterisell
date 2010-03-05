@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: new.rb</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>new.rb</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>plugins/new.rb
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Wed Jul 30 12:20:38 -0700 2008</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Provides a Rake task to facilitate &quot;Lazy Blogging&quot; [1] where you
+can easily create a new blog entry source file without having to:
+</p>
+<ul>
+<li>think of and manage unique file names every time
+
+</li>
+<li>supply the current date and time
+
+</li>
+<li>remember the entire syntax of a blog entry file
+
+</li>
+<li>remember the names of all tags you have used thus far
+
+</li>
+</ul>
+<p>
+The name of the created file follows this format:
+</p>
+<pre>
+  &quot;entries/{today's date}+{serial number}.yaml&quot;
+</pre>
+<p>
+To create a new blog entry file that is ready for editing:
+</p>
+<pre>
+  rake new
+</pre>
+<p>
+To override the default values of blog entry fields:
+</p>
+<pre>
+  rake new name='hello world' date='2008 march 17' tags='foo,bar' body='hey!'
+</pre>
+<p>
+To override the tags field (values must be separated by commas):
+</p>
+<pre>
+  rake new tags='foo,bar,hello world'
+</pre>
+<p>
+To override the default location of the created file:
+</p>
+<pre>
+  rake new file='hello_world.yaml'
+</pre>
+<dl>
+<dt>1</dt><dd>Josef &#8216;Jupp&#8217; Schugt, &quot;Lazy Blogging&quot;, 2008 March 16,
+available at <a
+href="http://cip.physik.uni-bonn.de/~jupp/2008-03-16-lazy-blogging.html">cip.physik.uni-bonn.de/~jupp/2008-03-16-lazy-blogging.html</a>
+
+</dd>
+</dl>
+
+    </div>
+
+    <div id="requires-list">
+      <h3 class="section-bar">Required files</h3>
+
+      <div class="name-list">
+      date&nbsp;&nbsp;
+      yaml&nbsp;&nbsp;
+      </div>
+    </div>
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

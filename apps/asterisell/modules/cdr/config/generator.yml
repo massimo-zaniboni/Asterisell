@@ -1,0 +1,16 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      Cdr
+    theme:            default
+
+    list:
+      title: Call Detail Records (CDRs)
+
+      actions: []
+
+    edit:
+      title: CDR can not modified
+      display: []
+      actions: []
+

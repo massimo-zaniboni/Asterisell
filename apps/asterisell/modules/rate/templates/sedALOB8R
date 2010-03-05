@@ -1,0 +1,27 @@
+<?php
+
+use_helper('Markdown');
+
+// Different Culture Support
+//
+// if ($sf_user->getCulture() == 'it_IT')
+//{
+//
+//} else {
+
+// Default culture is en_US
+//
+echo Markdown('
+
+------------------------------
+
+### .
+
+### Cost vs Income
+
+Every call has a cost and an income because Asterisell views you (the VoIP service provider) as a reseller of others vendors services. 
+
+The income is what your customer pays to you and the cost is what you pays to other vendors in order to route the customer call.
+
+Each call when rated must have a definite income and cost. If there is no rate to apply or more than a rate then the call is not rated and an error is signaled to the Asterisell administrator. The administrator can freely correct the problem updating the rate table.
+

@@ -1,0 +1,15 @@
+;; Object config/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "config/"
+  :tables (list 
+   (semanticdb-table "config.php"
+    :major-mode 'php-mode
+    :tags '(("require_once" function (:prototype-flag t :arguments (("" variable (:type ("$sf_symfony_lib_dir" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [163 183])) :type "int") nil [150 209]) ("bootstrap" function (:prototype-flag t :parent "sfCore" :arguments (("" variable (:type ("$sf_symfony_lib_dir" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [228 248]) ("" variable (:type ("$sf_symfony_data_dir" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [249 270])) :type "int") nil [210 271]))
+    :file "config.php"
+    :pointmax 272
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

@@ -1,0 +1,47 @@
+;; Object templates/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "templates/"
+  :tables (list 
+   (semanticdb-table "_select_currency.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 33]) ("select_currency_tag" function (:prototype-flag t :arguments (("" variable (:type ("$ar_party" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [79 89]) ("" variable (:type ("getMaxLimit30Currency" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [90 113])) :type ("echo" type (:type "class") nil nil)) nil [35 115]))
+    :file "_select_currency.php"
+    :pointmax 119
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_insert_money_value.php"
+    :major-mode 'php-mode
+    :tags '(("$value" variable (:default-value "format_according_currency($ar_party->getMaxLimit30(), $ar_party->getMaxLimit30Currency())" :type ("php" type (:type "class") nil nil)) nil [3 107]) ("input_tag" function (:prototype-flag t :arguments (("" variable (:type ("$value" type (:type "class") nil nil)) (reparse-symbol arg-sub-list) [146 153])) :type ("echo" type (:type "class") nil nil)) nil [109 154]))
+    :file "_insert_money_value.php"
+    :pointmax 158
+    )
+   (semanticdb-table "_my_max_limit.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 33]) ("getMaxLimit30" function (:prototype-flag t :type "int") nil [58 74]) ("getMaxLimit30Currency" function (:prototype-flag t :type "int") nil [106 130]))
+    :file "_my_max_limit.php"
+    :pointmax 231
+    )
+   (semanticdb-table "_mycv.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "_mycv.php"
+    :pointmax 423
+    )
+   (semanticdb-table "_edit_footer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 31]) ("insertHelp" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [157 1089]))
+    :file "_edit_footer.php"
+    :pointmax 1098
+    :unmatched-syntax 'nil
+    )
+   (semanticdb-table "_list_footer.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 31]) ("insertHelp" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [157 827]))
+    :file "_list_footer.php"
+    :pointmax 836
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

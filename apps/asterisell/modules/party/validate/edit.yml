@@ -1,0 +1,22 @@
+fillin:
+  enabled: true
+
+fields:
+  ar_party{name}:
+    required:
+      msg: Required
+
+  ar_party{email}:
+    sfEmailValidator:
+      strict:       true
+      email_error:  This email address is invalid
+
+  ar_party{max_limit_30}:
+    sfNumberValidator:
+      nan_error:    Please enter an integer
+
+
+  ar_party{ar_rate_category_id}:
+    required:
+      msg: Required
+

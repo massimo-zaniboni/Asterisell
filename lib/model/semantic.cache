@@ -1,0 +1,51 @@
+;; Object model/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "model/"
+  :tables (list 
+   (semanticdb-table "ArCustomer.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "ArCustomer.php"
+    :pointmax 158
+    )
+   (semanticdb-table "ArParty.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "ArParty.php"
+    :pointmax 282
+    )
+   (semanticdb-table "ArCallEndPointType.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "ArCallEndPointType.php"
+    :pointmax 256
+    )
+   (semanticdb-table "Cdr.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "Cdr.php"
+    :pointmax 1031
+    )
+   (semanticdb-table "ArInvoice.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "ArInvoice.php"
+    :pointmax 155
+    )
+   (semanticdb-table "CdrPeer.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "CdrPeer.php"
+    :pointmax 162
+    )
+   (semanticdb-table "ArFromNumberToEndPointType.php"
+    :major-mode 'php-mode
+    :tags 'nil
+    :file "ArFromNumberToEndPointType.php"
+    :pointmax 211
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

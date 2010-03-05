@@ -1,0 +1,51 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      Cdr
+
+    theme:            default
+
+    # NOTE: if you update list remember to update templates/exportToCsvSuccess.php
+    #
+    list:
+      max_per_page: 30
+      peer_method: doSelectJoinArAsteriskAccount
+
+      title: ''
+
+      actions: {}
+
+      fields:
+        accountcode:             { name: VoIP Account }
+        accountcodename:         { name: VoIP Account }
+        owner:                   { name: Customer }
+        calldate:                { name: Date }
+        mycalldate:              { name: Date, sort_on_column: calldate }  
+        billsec:                 { name: Duration in Seconds }
+        masked_dst:              { name: Receiver, sort_on_column: dst }
+        billmin:                 { name: Duration, sort_on_column: billsec }
+        my_income_from_customer: { name: Cost, sort_on_column: income }
+        my_vendor_cost:          { credentials: [admin], name: Vendor Cost, sort_on_column: cost }
+        my_vendor:               { credentials: [admin], name: Vendor }
+        earn:                    { credentials: [admin], name: Earn }
+        name:                    { name: Nome Account Asterisk }
+        test:                    { name: test } 
+        filter_on_party:         { name: Customer, filter_criteria_disabled: true }
+        filter_on_account:       { name: VoIP Account, filter_criteria_disabled: true }
+        filter_on_timeframe:     { name: Time Frame, filter_criteria_disabled: true }
+        filter_on_dst:           { name: Receiver number starts with, filter_criteria_disabled: true }
+        filter_on_vendor:        { name: Vendor, filter_criteria_disabled: true }
+        filter_on_dst_operator_type: { name: Receiver connection type, filter_criteria_disabled: true }
+        filter_on_dst_geographic_location: { name: Receiver location, filter_criteria_disabled: true }
+
+        ar_call_end_point_type_id: { name: Tel. Operator }
+        dst:                     { name: Receiver }
+        end_point_type:          { name: Receiver Type }
+
+
+      sort: [calldate, desc]
+
+      display: [_owner, _accountcodename, _masked_dst, _end_point_type, _mycalldate, _billmin, _my_vendor, _my_income_from_customer, _my_vendor_cost, _earn]
+
+      filters: [_filter_on_party, _filter_on_account, _filter_on_timeframe, _filter_on_dst_operator_type, _filter_on_dst_geographic_location, calldate, _filter_on_dst, _filter_on_vendor]
+

@@ -1,0 +1,16 @@
+;; Object templates/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "templates/"
+  :tables (list 
+   (semanticdb-table "indexSuccess.php"
+    :major-mode 'php-mode
+    :tags '(("use_helper" function (:prototype-flag t :type ("php" type (:type "class") nil nil)) nil [3 30]) ("use_helper" function (:prototype-flag t :type "int") nil [31 50]) ("use_helper" function (:prototype-flag t :type "int") nil [51 70]) ("form_tag" function (:prototype-flag t :type ("echo" type (:type "class") nil nil)) nil [344 373]))
+    :file "indexSuccess.php"
+    :pointmax 778
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="en-us" />
+    <meta name="description" content="&lt;p&gt;false&lt;/p&gt;" />
+    <meta name="date" content="Mon, 23 Nov 2009 04:36:09 +0100" />
+    <meta name="author" content="Massimo Zaniboni" />
+    <meta name="generator" content="Rassmalog 12.0.1" />
+    <meta name="google-site-verification" content="opWq9H2bAcHJW8ENL-xvcgc-Lli90ZtVfIxJ88oHUGc" />
+
+    <link rel="stylesheet" type="text/css" href="styles/EliteCircle.css"/>
+
+      <link rel="alternate" type="application/rss+xml" href="rss.xml" title="Asterisell" />
+
+      
+      
+      
+      
+      
+
+    <title>Downloads &mdash; Asterisell</title>
+  </head>
+  <body>
+
+      <div id="header-wrap">
+      <div id="header-content">
+      <h1 id="logo">
+      <a title="" href="index.html">
+      Asteri<span class="orange">sell</span>
+      </a>
+      </h1>
+      <h2 id="slogan"><p>open source web application for rating, showing to customers, and billing Asterisk VoIP calls.</p></h2>
+      </div>
+      </div>
+      
+      <div id="content-wrap">
+      <div id="content">
+
+      <div id="main">
+        <h1 class="name">Downloads</h1>
+
+  <h1><span class="caps">GPL</span> Free Release</h1>
+<p>If you like supporting open-source development of this product, you <a href="https://euro.swreg.org/cgi-bin/s.cgi?s=81596&amp;p=81596-12&amp;v=0&amp;d=0&amp;q=1">can make a donation.</a> This page contains a list of received <a href="paid-support.html">donations.</a></p>
+<ul>
+	<li>Installation file: <a href="http://asterisell.googlecode.com/files/asterisell-stable-free-2.1.0.tar.gz">asterisell-stable-free-2.1.0.tar.gz</a></li>
+	<li><a href="2009-10-08-release-of-asterisell-stable-2-1-0.html">Changeset and current status.</a></li>
+	<li><a href="http://code.google.com/p/asterisell/issues/list">Known Bugs.</a></li>
+</ul>
+<h1>Supported/Commercial Release</h1>
+<ul>
+	<li><a href="https://euro.swreg.org/cgi-bin/s.cgi?s=81596&amp;p=81596-10&amp;v=1&amp;d=0&amp;q=1">asterisell-stable-supported-2.1.0.tar.gz</a> (price: <span class="caps">EUR</span> 100, note: www.swreg.org payment processor charges by default an optional &#8220;Extended Download Service&#8221;, feel free to remove this service in order to reduce the requested amount.)</li>
+</ul>
+<h2>Additional Features</h2>
+<p>Rates can be imported/updated using <span class="caps">CSV</span> files.</p>
+<p><a href="images/screenshots/Asterisell_csv_import.png"><img src="images/screenshots/thumb-Asterisell_csv_import.png" alt="" /></a></p>
+<h2>How Upgrading from Free Version</h2>
+<ul>
+	<li>make a backup of current Asterisell installation;</li>
+	<li>copy files inside current Asterisell installation;</li>
+	<li>enable &#8220;PhpRateImportFromCSV&#8221;, uncommenting the &#8220;available/phpRates&#8221; related line in &#8220;apps/asterisell/config/app.yml&#8221;;</li>
+	<li>execute &#8220;./symfony cc&#8221; and &#8220;./symfony fix-perms&#8221; inside current Asterisell installation directory;</li>
+</ul>
+<h1>Source Code Repository</h1>
+<ul>
+	<li><a href="http://code.google.com/p/asterisell/">http://code.google.com/p/asterisell/</a></li>
+</ul>
+<h1>Older Releases</h1>
+<ul>
+	<li><a href="downloads/asterisell-stable-0.9.11.tar.gz">asterisell-stable-0.9.11.tar.gz</a> free release;</li>
+	<li><a href="https://euro.swreg.org/cgi-bin/s.cgi?s=81596&amp;p=81596-10&amp;v=0&amp;d=0&amp;q=1">asterisell-stable-0.9.12.tar.gz</a> supported/commercial release, the same features of 0.9.11 free release but with a 6x speed-up of queries;</li>
+</ul>
+<h1>Versioning Scheme</h1>
+<p><pre>
+  asterisell-W-X.Y.Z
+</pre></p>
+<ul>
+	<li>W can be something like stable/testing/development;</li>
+	<li>X is major sequence: it changes only if the application update requires a conversion of the database, in particular of <span class="caps">CDR</span> table;</li>
+	<li>Y is minor sequence: it changes if the new version introduces new features;</li>
+	<li>Z is maintenance sequence: it changes if the new version introduces bug-fixes or little improvements of already existing features;</li>
+</ul>
+<h1>License</h1>
+<p><pre>
+Asterisell 
+Copyright (C) 2007, 2008, 2009 
+Massimo Zaniboni &lt;massimo.zaniboni@profitoss.com&gt;
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 3
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.
+</pre></p>
+<p>Asterisell uses the symfony framework that uses different projects with<br />
+different licenses (compatible with <span class="caps">GPL</span>) listed in the directory licenses.</p>
+
+
+  <p class="info">
+    <img class="icon" src="icons/tango-32x32-apps-office-calendar.png" alt="Date" title="Date" />
+    2007 January 01
+
+
+    
+    <br/>
+    <script>
+var idcomments_acct = '0499d0ffde2cb483ac14faa5f28901ec';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+  </p>
+  
+
+<hr style="display: none"/>
+
+      </div>
+
+      <div id="sidebar">
+      <h1>Pages :</h1>
+      <ul class="sidemenu">
+      <li><a href="index.html">News</a></li>
+      <li><a href="index.html#overview">Description</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="http://groups.google.it/group/asterisell">Forum</a></li>
+      <li><a href="development.html">Development</a></li>
+      <li><a href="paid-support.html">Donations</a><li>
+      <li><a href="archives.html">News Archive</a></li>
+      </ul>
+      
+      <h1>Notifications:</h1>
+      <ul class="sidemenu">
+      <li><a href="http://freshmeat.net/projects/asterisell/">freshmeat.net</a></li>
+      
+            <li><a href="http://asterisell.profitoss.com/rss.xml" title="Subscribe to my feed"><img src="/feed-icon.gif" style="border:0"/></a>
+</li><li><a title='Subscribe to my feed' href="http://asterisell.profitoss.com/rss.xml" style='text-decoration:none;'><span style='border:1px solid;border-color:#FC9 #630 #330 #F96;padding:0 3px;font:bold 10px verdana,sans-serif;color:#FFF;background:#F60;margin:0;'>XML</span></a>
+</li><li><a href="http://fusion.google.com/add?feedurl=http://asterisell.profitoss.com/rss.xml"><img src="http://gmodules.com/ig/images/plus_google.gif" alt="Google Reader or Homepage" border="0"></a>
+</li><li><a href="http://add.my.yahoo.com/rss?url=http://asterisell.profitoss.com/rss.xml"><img src="http://us.i1.yimg.com/us.yimg.com/i/us/my/addtomyyahoo4.gif" border="0" alt="Add to My Yahoo!"></a>
+</li><li><a href="http://www.bloglines.com/sub/http://asterisell.profitoss.com/rss.xml"><img src="http://www.bloglines.com/images/sub_modern9.gif" alt="Subscribe with Bloglines" border="0" /></a>
+</li><li><a href="http://www.newsgator.com/ngs/subscriber/subext.aspx?url=http://asterisell.profitoss.com/rss.xml"><img src="http://www.newsgator.com/images/ngsub1.gif" alt="Subscribe in NewsGator Online" border="0"></a> 
+</li><li><a href="http://my.msn.com/addtomymsn.armx?id=rss&ut=http://asterisell.profitoss.com/rss.xml&ru=http://asterisell.profitoss.com"><img src="http://sc.msn.com/44/G,UCH%7BZBSS3%7BOS%7BSE469LG.gif" border="0"></a>
+</li><li><a href="http://feeds.my.aol.com/add.jsp?url=http://asterisell.profitoss.com/rss.xml"><img src="http://myfeeds.aolcdn.com/vis/myaol_cta1.gif" alt="Add to My AOL" border="0"/></a>
+</li><li><a href="http://rss2pdf.com?url=http://asterisell.profitoss.com/rss.xml"> <img src="http://rss2pdf.com/images/rss2pdf.png" alt="Convert RSS to PDF" border="0"/></a>
+</li><li><a href="http://technorati.com/faves?add=http://asterisell.profitoss.com"><img src="http://static.technorati.com/pix/fave/tech-fav-5.gif" alt="Add to Technorati Favorites!" border="0"/></a>
+</li><li><a href="http://www.live.com/?add=http://asterisell.profitoss.com/rss.xml"><img style="width: 92px; height: 17px;" src="http://tkfiles.storage.msn.com/x1pHd9OYNP16fmmfqJHji7qY0yYomKrFzGROBps3O6qHF0JRlVV8xH6X4cfsptw0fftk5oJYFpTKP6I-i91-se8TaoO7R9oiPVoxDEG_LEZW_XhegHxASvHJYsSxNjf526t" border="0"></a>
+</li><div style="font:9px Verdana, Arial, Helvetica, sans-serif; width:100px;"><a href="http://www.toprankblog.com/tools/rss-buttons/" >Get RSS Buttons</a></div>
+ 
+       </ul>
+
+      <!-- Start Bravenet.com Service Code -->
+      <div align="center">
+      <div style="border:1px solid #999999; width:190px; margin: 0px; background-color:#F2F4FA;">
+      <form action="http://pub2.bravenet.com/elist/add.php" method="post" style="margin:0px;">
+      <div style="background-color:#DBE0F5; padding:3px; font:12px arial; color:#6C6E3A;"><b>Join the Mailing List</b></div>
+      <div style="margin:10px; font: 11px arial; color: #000000; text-align:left;">
+      <div style="margin-bottom:5px;">Enter your name and email address below:</div>
+      <div style="text-align:right;">Name: <input type="text" id="elistname" name="ename" size="25" maxlength="60" style="width: 125px"><br>
+Email: <input type="text" name="emailaddress" id="elistaddress449897342" size="25" maxlength="100" style="width: 125px"><br>
+      <span style="white-space:nowrap;"><input type="radio" name="action" value="join" checked style="border: 0px;">Subscribe </span>
+      <span style="white-space:nowrap;"><input type="radio" name="action" value="leave" style="border: 0px;">Unsubscribe </span>
+      <input type="hidden" name="usernum" style="border: 0px solid black; height: 0px; width: 0px;" value="139540231"><input type="hidden" name="cpv"  style="border: 0px solid black; height: 0px; width: 0px;"  value="1">
+      <input type="submit" name="submit" value="GO"></div></div>
+      <div style="color: red" id="elist_err449897342"></div>
+      <div align="center" style="margin-bottom:10px;"><a title="Free Mailing Lists from Bravenet.com" href="http://www.bravenet.com/webtools/elist/" style="font: bold 11px tahoma, sans-serif; color: #6C6E3A;" target="_blank">Get your Free Mailing List</a><br><a title="Free Mailing Lists from Bravenet.com" href="http://www.bravenet.com" style="font: 10px tahoma, sans-serif; color: #6C6E3A;" target="_blank">by Bravenet.com</a></div></form>
+      </div></div>
+      <!-- End Bravenet.com Service Code -->
+      
+      </div>
+      </div>
+      </div>
+
+    <div id="footer-wrap">
+    <div id="footer-content">
+    <span id="footer-left">
+    Website design adapted from <a href="http://www.styleshout.com">styleshout</a> and generated from <a href="http://rassmalog.rubyforge.org">Rassmalog 12.0.1</a><br/>Copyright (C) 2007-2009 by <A HREF="mailto:asterisellinfo@profitoss.com">Massimo Zaniboni</A>
+    </span>
+    </div>  
+    </div>
+        <!-- Support for Google Analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3624268-5");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+      
+  </body>
+</html>

@@ -1,0 +1,525 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="en-us" />
+    <meta name="description" content="&lt;p&gt;false&lt;/p&gt;" />
+    <meta name="date" content="Thu, 05 Nov 2009 14:31:56 +0100" />
+    <meta name="author" content="Massimo Zaniboni" />
+    <meta name="generator" content="Rassmalog 12.0.1" />
+    <meta name="google-site-verification" content="opWq9H2bAcHJW8ENL-xvcgc-Lli90ZtVfIxJ88oHUGc" />
+
+    <link rel="stylesheet" type="text/css" href="styles/EliteCircle.css"/>
+
+      <link rel="alternate" type="application/rss+xml" href="rss.xml" title="Asterisell" />
+
+      
+      
+      
+      
+      
+
+    <title>Installation and Configuration &mdash; Asterisell</title>
+  </head>
+  <body>
+
+      <div id="header-wrap">
+      <div id="header-content">
+      <h1 id="logo">
+      <a title="" href="index.html">
+      Asteri<span class="orange">sell</span>
+      </a>
+      </h1>
+      <h2 id="slogan"><p>open source web application for rating, showing to customers, and billing Asterisk VoIP calls.</p></h2>
+      </div>
+      </div>
+      
+      <div id="content-wrap">
+      <div id="content">
+
+      <div id="main">
+        <h1 class="name">Installation and Configuration</h1>
+
+  <h1>Requirements</h1>
+<ul>
+	<li><span class="caps">HTTP</span> <span class="caps">WEB</span> Server</li>
+	<li><span class="caps">PHP</span> 5.0 or greater (<span class="caps">PHP</span> 4.0 is not supported)</li>
+	<li>MySQL <span class="caps">DBMS</span></li>
+	<li>Asterisk VoIP server</li>
+</ul>
+<h1>Software Infrastructure</h1>
+<p>VoIP calls are managed from <a href="http://www.asterisk.org">Asterisk Server</a>:</p>
+<ul>
+	<li>it routes the calls to the proper dial peer;</li>
+	<li>it associates to every customer a unique &#8220;accountcode&#8221;;</li>
+	<li>it writes Call Detail Records (CDRs) on a specific MySQL database table shared with Asterisell.</li>
+</ul>
+<p>Asterisell is a PHP5 web application that:</p>
+<ul>
+	<li>reads calls information from the <span class="caps">CDR</span> table shared with Asterisk Server;</li>
+	<li>associate to every call a cost (what the service provider pays to other vendors for routing the customer&#8217;s call);</li>
+	<li>associate to every call an income (what the customer pays to the service provider);</li>
+	<li>displays calls info;</li>
+</ul>
+<h1>Asterisk Configuration</h1>
+<h2>Account Code</h2>
+<p>An &#8220;accountcode&#8221; is the code of the user requesting the call. It is assigned from Asterisk server after the user validation.</p>
+<p>There must be a unique &#8220;accountcode&#8221; for each different customer.</p>
+<p>Note: the Asterisk standard documentation pretends that this code is specified on a per-channel basis, but this is not the case in Asterisell configuration. So each accountcode has the same associated customer for every channel. This is also useful/practical in case of the same customer using different channels.</p>
+<h2>Amaflags</h2>
+<p>amaflags stands for &#8220;Automated Message Accounting flags&#8221;.</p>
+<p>You must configure Asterisk to use certain &#8220;amaflags&#8221; in order to classify a call as documentation or to bill or to ignore etc..</p>
+<p>As in the case of &#8220;accountcode&#8221; in theory every different channel can have its set of &#8220;amaflags&#8221;, but Asterisell supports only a unique set of flags that are assumed valid and with the same meaning for all channels.</p>
+<h1>Web Server</h1>
+<h2>Installation</h2>
+<p>The typical installation requires:</p>
+<ul>
+	<li>Apache2 <span class="caps">HTTP</span> server</li>
+	<li>mod_php5</li>
+	<li>mod_ssl</li>
+	<li>MySQL database server</li>
+</ul>
+<p>Asterisell use some PHP5 libraries. On Fedora for example you must install</p>
+<p><pre>
+  yum install php
+  yum install php-bcmath
+  yum install php-xml
+</pre></p>
+<p>and then execute</p>
+<p><pre>
+  /etc/init.d/httpd restart
+</pre></p>
+<h2>Directory Configuration</h2>
+<p>Create the file &#8220;asterisell.conf&#8221; inside the directory:</p>
+<ul>
+	<li>&#8220;/etc/httpd/conf.d/&#8221; or</li>
+	<li>&#8220;/etc/apache2/conf.d/&#8221;</li>
+</ul>
+<p>The content is something like:</p>
+<p><pre>
+  Alias /your-asterisell-web-name /your-asterisell-installation-directory/web/
+
+  &lt;Location /your-asterisell-web-name&gt;
+    Order allow,deny
+    Allow from all 
+
+    # If you have mod_ssl installed 
+    # then with these lines you can force the usage of https connections
+    # for all Asterisell access.
+    # If you omit them the passwords are sent in plain text and
+    # they can be intercepted from hackers...
+    #
+    AllowOverride All
+    &lt;IfModule mod_rewrite.c&gt;
+      RewriteEngine On
+      RewriteCond %{HTTPS} off
+      RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+    &lt;/IfModule&gt;
+
+  &lt;/Location&gt;
+</pre></p>
+<p>Restart the apache2 httpd server in order to render active the configurations using a command like:<br />
+<pre>
+  /etc/init.d/httpd restart  
+</pre></p>
+<p>or</p>
+<p><pre>
+  /etc/init.d/apache2 restart
+</pre></p>
+<p>If it is all correct then &#8220;http://your-host/your-asterisell-web-name&#8221; will display the login form.</p>
+<h1>Directories Permissions</h1>
+<p>Execute</p>
+<p><pre>
+  ./symfony fix-perms
+</pre></p>
+<p>or</p>
+<p><pre>
+  chmod -R a+rw log
+  chmod -R a+rw cache
+</pre></p>
+<p>in order to enable the write rights on (only) these two directories.</p>
+<h1>Asterisell Configuration</h1>
+<p>Rename</p>
+<p><pre>
+  apps/asterisell/config/_app.yml
+</pre></p>
+<p>to</p>
+<p><pre>
+  apps/asterisell/config/app.yml
+</pre></p>
+<p>and then inspect / change its content.</p>
+<h2>Important</h2>
+<p>After any change of configuration files or <span class="caps">PHP</span> code execute</p>
+<p><pre>
+  ./symfony cc
+</pre></p>
+<p>in order to clear the Asterisell execution cache.</p>
+<p><span class="caps">IMPORTANT</span>: in <span class="caps">YAML</span> files use only spaces and not tabs because they are not allowed!</p>
+<h2>Customizations</h2>
+<ul>
+	<li>&#8220;web/css/asterisell.css&#8221; contains the Cascading Style Sheets;</li>
+	<li>&#8220;apps/asterisell/templates/asterisell_layout.php&#8221; contains the html page template;</li>
+	<li>&#8220;web/images/&#8221; contains the available images;</li>
+	<li>&#8220;config/properties.ini&#8221; contains the project/web-site name;</li>
+</ul>
+<h2>Source Code</h2>
+<p>It is normally not needed but you can customize low level Asterisell behavior modifying its source code or <a href="http://www.symfony-project.com">Symfony <span class="caps">PHP</span> Framework</a> related configuration files.</p>
+<h1>Database Installation</h1>
+<p>Up to date Asterisell is tested only with <a href="http://www.mysql.com">MySQL <span class="caps">DBMS</span></a>, but the Symfony framework support many other popular open source <span class="caps">DBMS</span>.</p>
+<h2>Database Creation</h2>
+<p><pre>
+  mysqladmin -u your-root-user-name -p create your-asterisell-db-name
+</pre></p>
+<h2>Access</h2>
+<p>Rename</p>
+<p><pre>
+  config/_databases.yml
+</pre></p>
+<p>to</p>
+<p><pre>
+  config/databases.yml
+</pre></p>
+<p>and adapt it to yours needs:</p>
+<p><pre>
+ all:
+ propel:
+   class:        sfPropelDatabase
+   param:
+     phptype:    mysql
+     host:       your-mysql-server-host--typically-localhost
+     database:   your-asterisell-db-name
+     username:   your-root-user-name
+     password:   your-root-password
+     encoding:   utf8
+</pre></p>
+<p>with the correct</p>
+<ul>
+	<li>root-user-name and</li>
+	<li>asterisell-db-name</li>
+</ul>
+<p>Rename</p>
+<p><pre>
+  config/_propel.ini
+</pre></p>
+<p>to</p>
+<p><pre>
+  config/propel.ini
+</pre></p>
+<p>and adapt it to something like:</p>
+<p><pre>
+  propel.project             = asterisell
+  propel.database            = mysql
+  propel.database.createUrl  = mysql://localhost/
+  propel.database.url        = mysql://localhost/asterisell
+  propel.mysql.tableType = InnoDB
+
+  ; directories
+  propel.output.dir              = /your-asterisell-install-dir
+</pre></p>
+<h2>Schema Creation</h2>
+<h3>From <span class="caps">YAML</span> to <span class="caps">SQL</span></h3>
+<p><pre>
+  config/schema.yml
+</pre></p>
+<p>contains the asterisell database schema description. It is defined using the <span class="caps">YAML</span> syntax.</p>
+<p>Typically you must not change this file, but in case remember to regenerate the <span class="caps">SQL</span> counterpart with:</p>
+<p><pre>
+  ./symfony propel-build-model
+  ./symfony propel-build-sql
+</pre></p>
+<h3>From <span class="caps">SQL</span> to Database</h3>
+<p>In order to create the Asterisell database:</p>
+<p><pre>
+  mysql -u your-root-user-name -p your-asterisell-db-name &lt; data/sql/lib.model.schema.sql
+</pre></p>
+<p><span class="caps">WARNING</span>: this command will delete all previous data inside the previous Asterisell tables / databases.</p>
+<h2>Add Asterisell Root User</h2>
+<p><pre>
+  cd /your-asterisell-directory/scripts
+  php delete_data_and_create_root.php your-password
+</pre></p>
+<p>These commands will create:</p>
+<ul>
+	<li>an admin user with login &#8220;root&#8221; and</li>
+	<li>password &#8220;your-password&#8221;</li>
+</ul>
+<p>It deletes all the data from the database.</p>
+<h2>Insert Demo-Data</h2>
+<p>If you want to populate the database with some demo data then execute:<br />
+<pre>
+  cd /your-asterisell-directory/scripts
+  sh make_regression_tests.sh
+</pre></p>
+<p>It performs also some regression test on Asterisell installation.</p>
+<h2>Insert Telephone Prefixes</h2>
+<p>Telephone Prefix Table contains associations between a telephone-prefix, its telephone operator, the typical geographical-location of its costumers and the type of connection like Mobile/Fixed line.</p>
+<p>This data can be inserted manually or during <span class="caps">CSV</span> importing of rates.</p>
+<p>There is also a script loading a lot of data about telephone prefixes used in the world:</p>
+<p><pre>
+  cd /your-asterisell-directory/scripts
+  php delete_data_and_create_root.php root
+  php  insert_world_prefix_table.php
+</pre></p>
+<h2>Asterisk Database-Related Configuration</h2>
+<p>Asterisell reads info from the your-asterisell-database-name.<span class="caps">CDR</span> table (Call Details Records table). So you must configure Asterisk server to write calls info inside this table.</p>
+<h1>Mail Configuration</h1>
+<p>Asterisell can send mails to the administrator or to the customers with invoice information. It uses the <span class="caps">PHP</span> mail function. In order to enable it you must follow the <a href="http://www.php.net/manual/en/ref.mail.php">notes on <span class="caps">PHP</span> documentation site</a> .</p>
+<h1>Cron Job</h1>
+<h2>Calls Rating</h2>
+<p>Asterisell rates the calls:</p>
+<ul>
+	<li>&#8220;just-in-time&#8221; when users navigate in the reports and</li>
+	<li>&#8220;off-line&#8221; using a cron-job process.</li>
+</ul>
+<p>The cron job process is important because it tests also if there is a Customer who does not respect his cost limits.</p>
+<p>In case of errors the process sends an email to the administrator as configured in the &#8220;apps/asterisell/config/app.yml&#8221; configuration file.</p>
+<p>The process must be executed from the same user that is associated to http connection. On Fedora it is &#8220;apache&#8221;, on Debian &#8220;www-data&#8221;. In order to retrieve it you can execute<br />
+<pre>
+  ls -l /your-asterisell-dir/log/
+</pre></p>
+<p>Supposing the http user is &#8220;apache&#8221; you can associate to it a cron job using the command<br />
+<pre>
+  crontab -u apache -e
+</pre></p>
+<p>Add to the apache user crontab this line:<br />
+<pre>
+  5,20,35,45 * * * * sh -c &quot;cd /your-asterisell-dir/scripts/ ; php rate_all_and_test.php&quot;
+</pre></p>
+<p>The meaning of the line is to execute at minutes 5, 20, 35 and 45 of every hour the &#8220;php rate_all_and_test.php&#8221; command inside the Asterisell directory.</p>
+<p><span class="caps">NOTE</span>: in order to enter the above line using &#8220;vi&#8221; editor digit:<br />
+<pre>
+  :i
+  5,20,35,45 * * * * sh -c &quot;cd /your-asterisell-dir/scripts/ ; php rate_all_and_test.php&quot;
+  &quot;press ctrl-c&quot;
+  :wq
+</pre></p>
+<h2>Log Rotate</h2>
+<p>In order to reduce log file size put &#8220;asterisell-logrotate&#8221; with execution privileges in &#8220;/etc/cron.monthly&#8221; directory:<br />
+<pre>
+  #!/bin/sh
+
+  cd /your-asterisell-install-dir
+  ./symfony log-rotate asterisell prod
+</pre></p>
+<h2>VoIP Accounts</h2>
+<p>You <strong>must define</strong> an &#8220;Asterisk VoIP Account&#8221; using Asterisell Web-Interface for each corresponding Asterisell &#8220;accountcode&#8221;.</p>
+<p>This is the most critical task to do because <span class="caps">VOIP</span> Account table is in join with <span class="caps">CDR</span> table and MySQL does not save <span class="caps">CDR</span> records without a corresponding defined <span class="caps">VOIP</span> Account. This error is signaled only in the MySQL <span class="caps">LOG</span>, and so you can &#8220;silently&#8221; lost <span class="caps">CDR</span> records if you do not register corresponding <span class="caps">VOIP</span> accounts also in Asterisell application.</p>
+<h2>Other Configurations</h2>
+<p>Every call is associated to a VoIP account. Every VoIP account is associated to a Customer who is the responsible for the account. The Customer is who pays the calls cost. A Customer can have more than one VoIP account.</p>
+<p>Every customer or VoIP account can have a Web Access Account. It is a login and a password. If you connect as VoIP account you can inspect only the calls made from you. If you connect as a Customer you can inspect all the calls of your VoIP accounts. If you connect as Admin you can inspect all the calls.</p>
+<ul>
+	<li>Customer Categories (normal, discounted, etc..)</li>
+	<li>Dial Peer Telephone Operators</li>
+	<li>Telephone Operators Prefixes Numbers</li>
+	<li>Vendors</li>
+	<li>Rate Methods</li>
+	<li>Currency Conversions</li>
+	<li>Customers</li>
+	<li>VoIP accounts</li>
+	<li>Web Access Accounts</li>
+</ul>
+<p>A rate can be applied to a customer category. In this case it specifies an income from a specific class of Customer. Otherwise it can be applied from a &#8220;Vendor&#8221;. In this case it specifies a cost due to a specific vendor.</p>
+<h1>Troubleshooting</h1>
+<h2>File Permissions</h2>
+<h3>Log Directory</h3>
+<p>Often after upgrades there are problems related to the Asterisell log files inside log directory.</p>
+<p>If this file was created from root then the &#8220;apache&#8221; user is not able to add info to it and the entire Asterisell application is blocked. In this case change the permissions of file with something like:<br />
+<pre>
+  cd log
+  chmod a+rw asterisell_prod.log
+  chmod a+rw asterisell_dev.log
+</pre><br />
+or better change the owner in something like<br />
+<pre>
+  cd log
+  chown apache asterisell_prod.log
+  chown apache asterisell_dev.log
+</pre></p>
+<p>or execute</p>
+<p><pre>
+  ./symfony fix-perms
+</pre></p>
+<p>Try also to restart the web server.</p>
+<h3>Created Files</h3>
+<p>During initial Asterisell configuration new files can be created. Check if these files are readable from webserver process. For example on my debian machine I performs</p>
+<p><pre>
+   chown -R :www-data * 
+   chmod -R g+rx *
+   symfony cc
+   symfonu fix-perms
+</pre></p>
+<p>where &#8220;www-data&#8221; is the group used from my webserver.</p>
+<h2>Additional Run-Time Debug Info</h2>
+<p>In case of problems you can enable the development/debug version of Asterisell that shows useful informations about its execution and related problems.</p>
+<p>Execute:<br />
+<pre>
+  ./symfony enable asterisell dev
+</pre></p>
+<p>and open the url</p>
+<p><pre>
+  http://your-web-url/asterisell_dev.php/login
+</pre></p>
+<p>When finished remember to execute<br />
+<pre>
+  ./symfony disable asterisell dev
+</pre></p>
+<p><span class="caps">NOTE</span>: on the contrary of Asterisell production version, in the development version if you change Asterisell source code or a configuration file you must not execute &#8220;./symfony cc&#8221;, because the development version recreate all files every time in order to speed up development at the expense of run-time executions.</p>
+<h2>Increasing of <span class="caps">PHP</span> Resources</h2>
+<p>\&#8220;PHPInfo\&#8221; module allows to inspect the maximum allocable resources of <span class="caps">PHP</span> process inside web server execution environment.</p>
+<p>Usually default <span class="caps">PHP</span> settings are good enough, but they can be increased if there are errors during Asterisell execution. In particular check:</p>
+<ul>
+	<li>post_max_size;</li>
+	<li>memory_limit;</li>
+	<li>max_execution_time;</li>
+</ul>
+<h2>Potential Loss of Data</h2>
+<p>You must define an &#8220;Asterisk VoIP Account&#8221; using Asterisell Web-Interface for each corresponding Asterisell &#8220;accountcode&#8221;.</p>
+<p>If there is an &#8220;accountcode&#8221; not registered as &#8220;Asterisk VoIP Account&#8221; then (for current technical limitation) it will not registered on the <span class="caps">CDR</span> table.</p>
+<h3>Reasons</h3>
+<p><span class="caps">CDR</span> table has the field &#8220;accountcode&#8221; that is defined as foreign key of the Asterisell.ar_asterisk_account table.</p>
+<p>Symfony generates the schema and it imposes through a database constraint the presence of a corresponding accountcode for each cdr record added.</p>
+<p>If there is no accountcode then the MySQL database signals a referential integrity error and it does not permit the insertion of the Call.</p>
+<p>So the &#8220;nasty effects&#8221; is that the <span class="caps">CDR</span> table does not contain a potentially billable record.</p>
+<p>This type of errors are showed only in the Asterisk server log error messages.</p>
+<h2>Run Time Configuration Problems</h2>
+<p>Every problem encountered from Asterisell during the call rating process is clearly reported to the administrator with hints of how to resolve it.</p>
+<p>The presence of problems is signaled also via email to the administrator.</p>
+<p>In case of dubious configurations Asterisell advise the administrator and suspend the rate of affected calls.</p>
+<p>The rate process is rather robust and error-free regarding ill defined configurations because:</p>
+<ul>
+	<li>re-rating of calls is always possible;</li>
+	<li>problems are always signaled;</li>
+</ul>
+<h2>Security</h2>
+<p>The end user interacts only with the &#8220;Call Report&#8221; form. The content of user input fields is checked by a very conservative function that removes every non proper character.</p>
+<p>No particular care is put on other forms because they are accessible only from the administrator.</p>
+<p>User session handling is managed directly from Symfony and <span class="caps">PHP</span> engine.</p>
+<h2>Feedback</h2>
+<p>Web servers, <span class="caps">PHP</span> environment, libraries, and os on&#8230; can interact in strange ways. If something is not working properly <a href="http://groups.google.it/group/asterisell">let me know</a> !</p>
+<h1>How to Upgrade</h1>
+<p>Usually the files customized by the user are:</p>
+<ul>
+	<li>apps/asterisell/config/app.yml</li>
+	<li>config/databases.yml</li>
+	<li>config/propel.ini</li>
+	<li>new images and <span class="caps">CSS</span></li>
+	<li>log/log_files</li>
+</ul>
+<p>An Asterisell distribution does not contains these files but contains the renamed example files:</p>
+<ul>
+	<li>apps/asterisell/config/_app.yml</li>
+	<li>config/_databases.yml</li>
+	<li>config/_propel.ini</li>
+	<li>no log files</li>
+</ul>
+<p>So you can copy all the new files of Asterisell upgrade inside the old Asterisell installation without loosing your precious configurations.</p>
+<p>In any case it is better to create a backup copy of current Asterisell installation and restore it in case of problems.</p>
+<p>After an upgrade the user <strong>must execute</strong></p>
+<p><pre>
+  ./symfony cc
+  ./symfony fix-perms
+</pre></p>
+<p>in order to flush the Symfony cache and fix the permission on &#8220;log&#8221; and &#8220;cache&#8221; directories.</p>
+<p>If &#8220;fix-perms&#8221; does not work the user can execute</p>
+<p><pre>
+  chmod -R a+rw log
+  chmod -R a+rw cache
+</pre></p>
+
+
+  <p class="info">
+    <img class="icon" src="icons/tango-32x32-apps-office-calendar.png" alt="Date" title="Date" />
+    2007 January 01
+
+
+    
+    <br/>
+    <script>
+var idcomments_acct = '0499d0ffde2cb483ac14faa5f28901ec';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+  </p>
+  
+
+<hr style="display: none"/>
+
+      </div>
+
+      <div id="sidebar">
+      <h1>Pages :</h1>
+      <ul class="sidemenu">
+      <li><a href="index.html">News</a></li>
+      <li><a href="index.html#overview">Description</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
+      <li><a href="installation.html">Installation</a></li>
+      <li><a href="http://groups.google.it/group/asterisell">Forum</a></li>
+      <li><a href="development.html">Development</a></li>
+      <li><a href="paid-support.html">Donations</a><li>
+      <li><a href="archives.html">News Archive</a></li>
+      </ul>
+      
+      <h1>Notifications:</h1>
+      <ul class="sidemenu">
+      <li><a href="http://freshmeat.net/projects/asterisell/">freshmeat.net</a></li>
+      
+            <li><a href="http://asterisell.profitoss.com/rss.xml" title="Subscribe to my feed"><img src="/feed-icon.gif" style="border:0"/></a>
+</li><li><a title='Subscribe to my feed' href="http://asterisell.profitoss.com/rss.xml" style='text-decoration:none;'><span style='border:1px solid;border-color:#FC9 #630 #330 #F96;padding:0 3px;font:bold 10px verdana,sans-serif;color:#FFF;background:#F60;margin:0;'>XML</span></a>
+</li><li><a href="http://fusion.google.com/add?feedurl=http://asterisell.profitoss.com/rss.xml"><img src="http://gmodules.com/ig/images/plus_google.gif" alt="Google Reader or Homepage" border="0"></a>
+</li><li><a href="http://add.my.yahoo.com/rss?url=http://asterisell.profitoss.com/rss.xml"><img src="http://us.i1.yimg.com/us.yimg.com/i/us/my/addtomyyahoo4.gif" border="0" alt="Add to My Yahoo!"></a>
+</li><li><a href="http://www.bloglines.com/sub/http://asterisell.profitoss.com/rss.xml"><img src="http://www.bloglines.com/images/sub_modern9.gif" alt="Subscribe with Bloglines" border="0" /></a>
+</li><li><a href="http://www.newsgator.com/ngs/subscriber/subext.aspx?url=http://asterisell.profitoss.com/rss.xml"><img src="http://www.newsgator.com/images/ngsub1.gif" alt="Subscribe in NewsGator Online" border="0"></a> 
+</li><li><a href="http://my.msn.com/addtomymsn.armx?id=rss&ut=http://asterisell.profitoss.com/rss.xml&ru=http://asterisell.profitoss.com"><img src="http://sc.msn.com/44/G,UCH%7BZBSS3%7BOS%7BSE469LG.gif" border="0"></a>
+</li><li><a href="http://feeds.my.aol.com/add.jsp?url=http://asterisell.profitoss.com/rss.xml"><img src="http://myfeeds.aolcdn.com/vis/myaol_cta1.gif" alt="Add to My AOL" border="0"/></a>
+</li><li><a href="http://rss2pdf.com?url=http://asterisell.profitoss.com/rss.xml"> <img src="http://rss2pdf.com/images/rss2pdf.png" alt="Convert RSS to PDF" border="0"/></a>
+</li><li><a href="http://technorati.com/faves?add=http://asterisell.profitoss.com"><img src="http://static.technorati.com/pix/fave/tech-fav-5.gif" alt="Add to Technorati Favorites!" border="0"/></a>
+</li><li><a href="http://www.live.com/?add=http://asterisell.profitoss.com/rss.xml"><img style="width: 92px; height: 17px;" src="http://tkfiles.storage.msn.com/x1pHd9OYNP16fmmfqJHji7qY0yYomKrFzGROBps3O6qHF0JRlVV8xH6X4cfsptw0fftk5oJYFpTKP6I-i91-se8TaoO7R9oiPVoxDEG_LEZW_XhegHxASvHJYsSxNjf526t" border="0"></a>
+</li><div style="font:9px Verdana, Arial, Helvetica, sans-serif; width:100px;"><a href="http://www.toprankblog.com/tools/rss-buttons/" >Get RSS Buttons</a></div>
+ 
+       </ul>
+
+      <!-- Start Bravenet.com Service Code -->
+      <div align="center">
+      <div style="border:1px solid #999999; width:190px; margin: 0px; background-color:#F2F4FA;">
+      <form action="http://pub2.bravenet.com/elist/add.php" method="post" style="margin:0px;">
+      <div style="background-color:#DBE0F5; padding:3px; font:12px arial; color:#6C6E3A;"><b>Join the Mailing List</b></div>
+      <div style="margin:10px; font: 11px arial; color: #000000; text-align:left;">
+      <div style="margin-bottom:5px;">Enter your name and email address below:</div>
+      <div style="text-align:right;">Name: <input type="text" id="elistname" name="ename" size="25" maxlength="60" style="width: 125px"><br>
+Email: <input type="text" name="emailaddress" id="elistaddress449897342" size="25" maxlength="100" style="width: 125px"><br>
+      <span style="white-space:nowrap;"><input type="radio" name="action" value="join" checked style="border: 0px;">Subscribe </span>
+      <span style="white-space:nowrap;"><input type="radio" name="action" value="leave" style="border: 0px;">Unsubscribe </span>
+      <input type="hidden" name="usernum" style="border: 0px solid black; height: 0px; width: 0px;" value="139540231"><input type="hidden" name="cpv"  style="border: 0px solid black; height: 0px; width: 0px;"  value="1">
+      <input type="submit" name="submit" value="GO"></div></div>
+      <div style="color: red" id="elist_err449897342"></div>
+      <div align="center" style="margin-bottom:10px;"><a title="Free Mailing Lists from Bravenet.com" href="http://www.bravenet.com/webtools/elist/" style="font: bold 11px tahoma, sans-serif; color: #6C6E3A;" target="_blank">Get your Free Mailing List</a><br><a title="Free Mailing Lists from Bravenet.com" href="http://www.bravenet.com" style="font: 10px tahoma, sans-serif; color: #6C6E3A;" target="_blank">by Bravenet.com</a></div></form>
+      </div></div>
+      <!-- End Bravenet.com Service Code -->
+      
+      </div>
+      </div>
+      </div>
+
+    <div id="footer-wrap">
+    <div id="footer-content">
+    <span id="footer-left">
+    Website design adapted from <a href="http://www.styleshout.com">styleshout</a> and generated from <a href="http://rassmalog.rubyforge.org">Rassmalog 12.0.1</a><br/>Copyright (C) 2007-2009 by <A HREF="mailto:asterisellinfo@profitoss.com">Massimo Zaniboni</A>
+    </span>
+    </div>  
+    </div>
+        <!-- Support for Google Analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-3624268-5");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+      
+  </body>
+</html>

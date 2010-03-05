@@ -1,0 +1,21 @@
+fillin:
+  enabled: true
+
+fields:
+  ar_invoice_creation{first_nr}:
+    required:
+      msg: Required
+    sfNumberValidator:
+      nan_error:    Please enter an integer
+
+  ar_invoice_creation{ar_cdr_from}:
+    required:
+      msg: Required
+
+  ar_invoice_creation{ar_cdr_to}:
+    required:
+      msg: Required
+
+  ar_invoice_creation{invoice_date}:
+    required:
+      msg: Required

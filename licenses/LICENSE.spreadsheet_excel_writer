@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0" packagerversion="1.5.0a1">
+ <name>Spreadsheet_Excel_Writer</name>
+ <summary>Package for generating Excel spreadsheets</summary>
+ <description>Spreadsheet_Excel_Writer was born as a porting of the Spreadsheet::WriteExcel Perl module to PHP.
+It allows writing of Excel spreadsheets without the need for COM objects.
+It supports formulas, images (BMP) and all kinds of formatting for text and cells.
+It currently supports the BIFF5 format (Excel 5.0), so functionality appeared in the latest Excel versions is not yet available.
+ </description>
+ <maintainers>
+  <maintainer>
+   <user>xnoguer</user>
+   <name>Xavier Noguer</name>
+   <email>xnoguer@php.net</email>
+   <role>lead</role>
+  </maintainer>
+  <maintainer>
+   <user>tuupola</user>
+   <name>Mika Tuupola</name>
+   <email>tuupola@appelsiini.net</email>
+   <role>developer</role>
+  </maintainer>
+  </maintainers>
+ <release>
+  <version>0.9.1</version>
+  <date>2006-09-26</date>
+  <license>LGPL</license>
+  <state>beta</state>
+  <notes>Bug fixes:
+- Fixed Bug #6509, Object of class Spreadsheet_Excel_Writer_Format could not be converted to int (Christian Schmidt)
+- Fixed Bug #7840, Notices on default formats (Christian Schmidt)
+  </notes>
+  <deps>
+   <dep type="pkg" rel="ge" version="0.5">OLE</dep>
+   <dep type="php" rel="ge" version="4.1.0"/>
+  </deps>
+  <filelist>
+   <file role="php" baseinstalldir="Spreadsheet/Excel/" md5sum="7448239c89e753412d5569cc09d30933" name="Writer.php"/>
+   <file role="php" baseinstalldir="Spreadsheet/Excel/" md5sum="4fb4a6aaa6a0887f7049f45d2a3436d0" name="Writer/BIFFwriter.php"/>
+   <file role="php" baseinstalldir="Spreadsheet/Excel/" md5sum="2fdd90925b6b483988f7f26e5a692c39" name="Writer/Workbook.php"/>
+   <file role="php" baseinstalldir="Spreadsheet/Excel/" md5sum="860bfc48af004587e9cf06d1e79f459d" name="Writer/Format.php"/>
+   <file role="php" baseinstalldir="Spreadsheet/Excel/" md5sum="82df80419ec75659b2072d54a078f698" name="Writer/Worksheet.php"/>
+   <file role="php" baseinstalldir="Spreadsheet/Excel/" md5sum="e1bd32fb1fb356fad0318a4bfa7450dd" name="Writer/Parser.php"/>
+   <file role="php" baseinstalldir="Spreadsheet/Excel/" md5sum="90fe536e6333170d39a975503263201b" name="Writer/Validator.php"/>
+  </filelist>
+ </release>
+ <changelog>
+   <release>
+    <version>0.2</version>
+    <date>2003-03-17</date>
+    <state>beta</state>
+    <notes>-added several formatting methods: setTextRotation(), setStrikeOut(),
+setOutLine(), setShadow(), setScript().
+-fixed bug in Workbook::sheets() (Björn Schotte).
+-fixed range for references in formulas (Edward).
+-added support for external references in formulas.
+-added support for comparisons in formulas.
+-added support for strings in formulas.
+    </notes>
+   </release>
+   <release>
+    <version>0.3</version>
+    <date>2003-05-02</date>
+    <notes>New features:
+ -added support for row ranges (JT Hughes)
+ -added method method Format::setUnLocked() (Ajit Dixit)
+ -added Worksheet::writeRow() and Worksheet::writeCol()
+Bug fixes:
+ -fixed problem with unparenthesized expresions in formulas (Brent Laminack)
+ -fixed problems with non ISO-8859-1 characters (KUBO Atsuhiro)
+ -fixed swapping of columns in formulas (JT Hughes)
+ -fixed assorted bugs in tokenizing formulas (JT Hughes)
+ -fixed Worksheet::activate() (JT Hughes)
+    </notes>
+   </release>
+   <release>
+    <version>0.4</version>
+    <date>2003-08-21</date>
+    <notes>New features:
+ -using OLE package (&gt;= 0.3) to generate files bigger than 7MB
+ -changed setFgColor() and setBgColor()&apos;s behavior to something more intuitive.
+Bug fixes:
+ -fixed bug #25133, lowercase cell references (jkwiat03 at hotmail dot com)
+ -fixed Bug #23730, worksheet names containing spaces in formulas (Robin Ericsson)
+ -fixed Bug #24147, formulas ended in &apos;0&apos; (paul at classical dot com)
+ -fixed swapping of arguments in variable arguments functions (JT Hughes)
+    </notes>
+   </release>
+   <release>
+    <version>0.5</version>
+    <date>2003-10-01</date>
+    <notes>New features:
+ -added rowcolToCell() utility method for easy writing of formula&apos;s cell references (JT Hughes).
+ -added Worksheet::setOutline() method (Herman Kuiper)
+ -added Format::setFontFamily() method (Donnie Miller)
+Bug fixes:
+ -fixed bug #21, cyrillic characters in sheet references (arhip at goldentele dot com)
+    </notes>
+   </release>
+   <release>
+    <version>0.6</version>
+    <date>2003-11-15</date>
+    <notes>New features:
+ - allow semicolon as argument separator (Axel Pratzner)
+ - added experimental Excel97 generation. You can test it with setVersion():
+   Beware! this method will be deprecated in a future release (when
+   Excel97 becomes the default). It is only available for testing
+   purposes. Use it at your own risk.
+ - strings longer than 255 bytes are now available using the experimental
+   Excel97 generation. But not all Excel97 features are available yet!
+Bug fixes:
+ - Fixed bug #225, error in writeUrl() (jamesn at tocquigny dot com)
+ - Fixed bug #59, retval undefined for writeRow() (Bertrand)
+    </notes>
+   </release>
+   <release>
+    <version>0.7</version>
+    <date>2004-02-27</date>
+    <notes>New features:
+ - allow setting temp dir other than default using setTempDir() (using OLE 5.0 for this).
+ - added setMerge() for merging (only for experimental Excel97 generation)
+ - added setCountry() method.
+ - added setLocked() method.
+Bug fixes:
+ - Fixed bug #415, typo in BIFF8 code (papercrane at reversefold dot com)
+    </notes>
+   </release>
+   <release>
+    <version>0.8</version>
+    <date>2004-06-22</date>
+    <notes>New features:
+ - added hideScreenGridlines() (Paul Osman)
+Bug fixes:
+ - Fixed SST table (long strings) (Bernd Jaenichen)
+ - Fixed bug #1218, SST table (boucher dot stephane at free dot fr)
+ - Fixed bug #781, insertBitmap ignores row height
+ - Fixed bug #578, setVPageBreaks doesn&apos;t handle multiple value arrays (natel at tocquigny dot com)
+    </notes>
+   </release>
+   <release>
+    <version>0.9.0</version>
+    <date>2005-11-21</date>
+    <notes>New features:
+- adding new methods Format::setVAlign() and Format::setHAlign()
+- adding support for uncapitalized functions in formulas (ej: &quot;=sum(B27:B31)&quot;)
+- adding support for different charsets with method Worksheet::setInputEncoding()
+- adding support for sheetnames longer than 31 chars when using setVersion(8).
+Bug fixes:
+- Fixed Bug #1796, wrong regular expression in _writeUrlInternal
+- Fixed Bug #2363, wrong export filename with spaces
+- Fixed Bug #2425, Error using writeFormula with Now() and TODAY()
+- Fixed Bug #2876, German Umlauts destroy sheet references
+- Fixed Bug #1706, Formulas refer to other Worksheets with &quot;spezial&quot; names don&apos;t work
+- Fixed Bug #2748, setMargins(), setHeader() and setFooter() work in excel but not in openoffice.
+- Fixed Bug #5698, preg_replace in _writeUrlInternal
+- Fixed Bug #2823, Inpropper results from writeUrl() method
+    </notes>
+   </release>
+ </changelog>
+</package>

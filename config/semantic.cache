@@ -1,0 +1,16 @@
+;; Object config/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "config/"
+  :tables (list 
+   (semanticdb-table "config.php"
+    :major-mode 'php-mode
+    :tags '(("$sf_symfony_lib_dir" variable (:default-value "'/usr/share/php/symfony'" :type ("php" type (:type "class") nil nil)) nil [3 79]) ("$sf_symfony_data_dir" variable (:default-value "'/usr/share/php/data/symfony'" :type "int") nil [80 133]))
+    :file "config.php"
+    :pointmax 135
+    :unmatched-syntax 'nil
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre3"
+  :semanticdb-version "2.0pre3"
+  )

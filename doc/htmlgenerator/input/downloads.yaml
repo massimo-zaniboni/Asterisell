@@ -1,0 +1,77 @@
+name: Downloads
+generate_toc: true
+summary: false
+date: 2007-01-01
+hide: true
+body: |
+
+  h1. GPL Free Release
+
+  If you like supporting open-source development of this product, you "can make a donation.":https://euro.swreg.org/cgi-bin/s.cgi?s=81596&p=81596-12&v=0&d=0&q=1 This page contains a list of received "donations.":paid-support.html
+
+  * Installation file: "asterisell-stable-free-2.1.0.tar.gz":http://asterisell.googlecode.com/files/asterisell-stable-free-2.1.0.tar.gz 
+  * "Changeset and current status.":2009-10-08-release-of-asterisell-stable-2-1-0.html
+  * "Known Bugs.":http://code.google.com/p/asterisell/issues/list
+  
+  h1. Supported/Commercial Release
+
+  * "asterisell-stable-supported-2.1.0.tar.gz":https://euro.swreg.org/cgi-bin/s.cgi?s=81596&p=81596-10&v=1&d=0&q=1 (price: EUR 100, note: www.swreg.org payment processor charges by default an optional "Extended Download Service", feel free to remove this service in order to reduce the requested amount.)
+  
+  h2. Additional Features
+
+  Rates can be imported/updated using CSV files.
+  
+  !images/screenshots/thumb-Asterisell_csv_import.png!:images/screenshots/Asterisell_csv_import.png
+  
+  h2. How Upgrading from Free Version
+
+  * make a backup of current Asterisell installation;
+  * copy files inside current Asterisell installation;
+  * enable "PhpRateImportFromCSV", uncommenting the "available/phpRates" related line in "apps/asterisell/config/app.yml";
+  * execute "./symfony cc" and "./symfony fix-perms" inside current Asterisell installation directory;
+
+  h1. Source Code Repository
+  
+  * "http://code.google.com/p/asterisell/":http://code.google.com/p/asterisell/
+
+  h1. Older Releases
+  
+  * "asterisell-stable-0.9.11.tar.gz":downloads/asterisell-stable-0.9.11.tar.gz free release;
+  * "asterisell-stable-0.9.12.tar.gz":https://euro.swreg.org/cgi-bin/s.cgi?s=81596&p=81596-10&v=0&d=0&q=1 supported/commercial release, the same features of 0.9.11 free release but with a 6x speed-up of queries;
+
+  h1. Versioning Scheme
+  
+  <pre>
+  <code>
+    asterisell-W-X.Y.Z
+  </code>
+  </pre>
+
+  * W can be something like stable/testing/development;
+  * X is major sequence: it changes only if the application update requires a conversion of the database, in particular of CDR table;
+  * Y is minor sequence: it changes if the new version introduces new features;
+  * Z is maintenance sequence: it changes if the new version introduces bug-fixes or little improvements of already existing features;
+  
+  h1. License
+
+  <pre>
+  Asterisell 
+  Copyright (C) 2007, 2008, 2009 
+  Massimo Zaniboni <massimo.zaniboni@profitoss.com>
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  as published by the Free Software Foundation; either version 3
+  of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+  </pre>
+
+  Asterisell uses the symfony framework that uses different projects with
+  different licenses (compatible with GPL) listed in the directory licenses.

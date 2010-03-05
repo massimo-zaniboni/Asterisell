@@ -1,0 +1,30 @@
+name: Release of asterisell-stable-2.1.0
+date: 2009-10-08
+generate_toc: true
+body: |
+
+  This new release of Asterisell introduces many internal (source code) and external (features) improvements. 
+  
+  Differences/improvements respect asterisell-stable-0.9.11 version are:
+    * 6x speedup of the previous commercial-only version is now part of the free GPL version;
+    * "exception rates" with higher priority respect "normal rates"; this allows supporting more complex rate plans;
+    * telephone prefixes can be associated to connection-type (mobile/fixed) and typical geographic location (Italy, Denmark, etc..);
+    * telephone-operator table was removed and data moved to telephone prefix table: user interface simplified, queries are faster;
+    * the display of CDR now include information about the connection-type and the geographical-location of the call destination;
+    * the administrator can specify a custom date format to use inside CDR report;
+    * generated invoices can include partial sums on geographical-locations/connection-types of called telephone numbers;
+    * the user can load data about all the world telephone prefixes;
+    * imports of rates and telephone prefixes from a CSV file instead of manual entry (note: this feature is only part of the commercial/supported version);
+    * multi currencies support was removed because this feature was not really needed; as benefit the user interface is simplified, and queries are faster; 
+    * automatic regression tests on different rate methods and related calculations;
+    * website improvements;
+    
+  This new version uses a different database format respect version 0.9.11. So the upgrade from previous running installation is not immediate:
+    * rates must be re-inserted;
+    * CDR table must be altered;
+    * old CDR calls must be recalculated;
+  Please contact me on the Asterisell forum in order to figure out the needed steps.
+  
+  The configuration file is changed respect 0.9.11 version so check "apps/asterisell/config/_app.yml" template in order to discover the few differences and enable/disable new features. Remember to execute "./symfony cc" after every change of the parameters.
+  
+  

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Template)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File rassmalog.rb, line 205</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span> <span class="ruby-identifier">aName</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>
+      <span class="ruby-comment cmt"># silence the code-only &lt;% ... %&gt; directive, just like PHP does</span>
+      <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/^[ \t]*&lt;%[^%=]((?!&lt;%).)*?[^%]%&gt;[ \t]*\r?\n/</span><span class="ruby-identifier">m</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">strip</span>}
+
+      <span class="ruby-identifier">args</span>[<span class="ruby-value">3</span>] = <span class="ruby-value str">'@buffer'</span>
+      <span class="ruby-keyword kw">super</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+
+      <span class="ruby-ivar">@filename</span> = <span class="ruby-identifier">aName</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

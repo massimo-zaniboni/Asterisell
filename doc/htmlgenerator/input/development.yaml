@@ -1,0 +1,108 @@
+name: Development
+generate_toc: true
+summary: false
+date: 2007-01-01
+hide: true
+body: |
+  h1. Source Code
+
+  Asterisell has a "Google Code Project Page":http://code.google.com/p/asterisell/
+
+  You can retrieve its source code from repository using "Mercurial Distribuited Version Control System":http://mercurial.selenic.com/wiki/
+
+  <pre>
+  <code>
+  hg clone https://asterisell.googlecode.com/hg/ asterisell  
+  </code>
+  </pre>
+
+  You can send improvements using email. First create a "changes.hg" file contains all changes
+
+  <pre>
+  <code>
+  hg commit -m "<commit-message>"
+  hg bundle changes.hg 
+  </code>
+  </pre>
+
+  Then send "changes.hg" file to email as attachement to asterisell@profitoss.com 
+
+  h1. Symfony Framework
+
+  Asterisell uses the "Symfony PHP framework":http://www.symfony-project.com wich is a well documented and designed framework. 
+
+  h2. Installation
+
+  Asterisell distribution contanins a "snapshot" of the Symfony framework.
+
+  If you want to use the most recent version of Symfony framework you can install it through the "PEAR PHP Extension and Application Repository":http://pear.php.net
+
+  <pre>
+  <code>
+  pear channel-discover pear.symfony-project.com
+  pear install symfony/symfony
+  </code>
+  </pre>
+
+  In order to upgrade to new versions of symfony:
+
+  <pre>
+  <code>
+  pear upgrade symfony/symfony
+  </code>
+  </pre>
+
+  Do not forget to clear the Asterisell cache executing in the Asterisell directory:
+
+  <pre>
+  <code>
+  symfony cc
+  </code>
+  </pre>
+
+  h3. Patch Application
+
+  Up to date a patched version of Symfony 1.0.5 is used, so you must apply the patch inside the directory "symfony-patch". 
+
+  Consult the README file for details on how to apply the patch.
+
+  h1. Asterisell Development Version Usage
+ 
+  If you run Asterisell in production mode every time you change some code you must rexecute the command
+ 
+  <pre>
+  <code>
+  symfony cc
+  </code>
+  </pre>
+
+  because the page generation result is cached for performance reasons.
+
+  If you run Asterisell in development mode all the pages are regenerated every time.
+
+  In order to enable the development mode execute 
+
+  <pre>
+  <code>
+  symfony enable asterisell dev
+  </code>
+  </pre>
+
+  If Asterisell project is in the "/var/www/asterisell" directory and your local apache server is listening on port 3000, then you must open the web page:
+
+  <pre>
+  <code>
+  http://localhost:3000/asterisell/web/asterisell_dev.php/login
+  </code>
+  </pre>
+
+  h1. Asterisell Localization
+
+  If you want to support a new language / culture you must:
+  * add to "apps/asterisell/config/app.yml" the new currency and culture;
+  * copy "apps/asterisell/i18n/messages.it.xml" to "apps/asterisell/i18n/messages.your_culture_code.xml";
+  * replace all Italian translations with your locale translations;
+  * update "apps/asterisell/lib/standardMailWithInvoiceGenerator.class.php" with the new culture support;
+  * execute "./symfony cc" in order to clear the cache and view the new messages;
+  * make a login in Asterisell web interface using a web account with the new culture in order to inspect the result;
+

@@ -1,0 +1,422 @@
+#
+# Copyright (C) 2007-2009
+# by Massimo Zaniboni <massimo.zaniboni@profitoss.com>
+#
+#    This file is part of Asterisell.
+#
+#    Asterisell is free software; you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation; either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    Asterisell is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with Asterisell; if not, write to the Free Software
+#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+
+propel:
+
+  cdr:
+  #
+  # the table where Asterisk Server put call-detail-records for each call,
+  # modified with rate-specific fields.
+  # NOTE: maintain the order of all fields from 'calldate' until 'userfield'
+  # because it is the asterisk server expected order.
+
+    calldate:    { type: timestamp, required: true, index: true }
+    # 
+    # start of call (date/time)
+
+    clid:        { type: varchar, size: 80, required: true }
+    #
+    # caller id as text / short description 
+
+    src:         { type: varchar, size: 80, required: true }
+    #
+    # received caller identifier as unique number 
+
+    dst:         { type: varchar, size: 80, required: true }
+    #
+    # destination extension
+
+    dcontext:    { type: varchar, size: 80, required: true }
+    #
+    # destination context
+
+    channel:     { type: varchar, size: 80, required: false, index: false }
+    #
+    # channel used
+
+    dstchannel:  { type: varchar, size: 80, required: true }
+    # 
+    # destination channel, if appropiate.
+    # Filters on rates are applied to this channel.
+ 
+    lastapp:     { type: varchar, size: 80, required: true }
+    #
+    # last application ,if appropiate
+
+    lastdata:    { type: varchar, size: 80, required: true }
+    #
+    # last application data (arguments)
+
+    duration:    { type: integer, size: 11, required: true }
+    #
+    # total time in system, in seconds from answer to hangup
+
+    billsec:     { type: integer, size: 11, required: true }
+    #
+    # total time call is up, in seconds, from answer to hangup
+
+    disposition: { type: varchar, size: 45, required: true }
+    #
+    # what happened to the call (ANSWERED, NO ANSWER, BUSY)
+
+    amaflags:    { type: integer, size: 11, required: true }
+    # 
+    # what flags to use (default, omit, billing, documentation).
+    # AMA flags stand for Automated Message Accounting flags,
+    # wich are somewhat standard in the industry
+
+    accountcode: { type: varchar, size: 30, required: true, index: true, foreignTable: ar_asterisk_account, foreignReference: account_code }
+    #
+    # ar_asterisk_account that must pay the outbound call
+
+    uniqueid: { type: varchar, size: 32, required: true, index: false, default: "" }
+
+    userfield:   { type: varchar, size: 255, required: true }
+    #
+    # a user-defined field
+
+    income_ar_rate_id: { type: integer, size: 20, index: false, required: false, default: NULL }
+    #
+    # how the income is rated, NULL if the call is not already rated.
+
+    income: { type: integer, size: 20, index: true, required: false, default: null }
+    #
+    # what the customer must pay for the call 
+    #
+    # NULL if the call is not already rated,
+    # 0 if the call has no income associated.
+    #	
+    # NOTE: this field is indexed so it is fast to search for unrated cdr (value NULL)
+
+    cost_ar_rate_id: { type: integer, size: 20, index: true, required: false, default: NULL }
+    #
+    # how the cost is rated, NULL if the call is not already rated.
+
+    vendor_id: { type: integer, size: 20, index: true, required: false, default: NULL }
+    #
+    # NULL before the rating process,
+    # the vendor party-id wich must be paid for call routing service
+
+    cost: { type: integer, size: 20, index: false, required: false, default: NULL }
+    #
+    # the income of the vendor that has managed the call 
+    
+    ar_telephone_prefix_id:
+    #
+    # the prefix associated to the called telephone number.
+    # This association: 
+    #   * is made during rating process;
+    #   * does not depend from the rate method but only from the ar_telephone_prefix table;
+    #   * allows to filter efficiently calls according the operator type of the called number;
+    #   * breaks normalization rules because this property can be derived (with a big amount of work) from cdr fields;
+    #   * breaking normalization rules became out of synchro if after CDR rating the ar_telephone_prefix table is changed;
+    
+    id:
+    #
+    # NOTE: not in first position in order to not conflict with Asterisk Server
+    # expected field order
+ 
+    _foreignKeys:
+
+      cdr_to_income_rate_key:
+        foreignTable: ar_rate
+        references:
+          - { local: income_ar_rate_id, foreign: id }
+
+      # XXX is there a method to assign a different alias name 
+      # to ar_rate? The scope is to have joins like:
+      #
+      # FROM ar_rate as rate1, ar_rate as rate2 
+      # WHERE rate1.id = cdr.income_ar_rate_id 
+      # AND   rate2.id = cdr.cost_ar_rate_id
+      # 
+      cdr_to_cost_rate_key:
+        foreignTable: ar_rate
+        references:
+          - { local: cost_ar_rate_id, foreign: id }
+
+  ar_asterisk_account:
+    id: 
+
+    name: varchar(160)
+
+    account_code: { type: varchar, size: 30, required: true, index: true }
+    #
+    # the internal account code configured on the Asterisk Server
+    # and used as reference in the cdr table 
+
+    ar_party_id:
+    #
+    # the customer that is accountable (pays) for the call of the asterisk_account
+
+  ar_rate_category:
+    id:
+
+    name: varchar(128)
+
+  ar_party:
+    id:
+
+    customer_or_vendor: varchar(1)
+
+    name: varchar(255)
+
+    external_crm_code: varchar(40)
+
+    vat: varchar(40)
+
+    legal_address: varchar(60) 
+
+    legal_city: varchar(60)
+
+    legal_zipcode: varchar(20)
+
+    legal_state_province: varchar(60)
+
+    legal_country: varchar(60)
+
+    email: varchar(60)
+
+    phone: varchar(60)
+
+    phone2: varchar(60)
+
+    fax: varchar(60)
+
+    ar_rate_category_id:
+
+    max_limit_30: { type: integer, size: 20, index: false, required: false, default: NULL }
+    #
+    # the max cost of calls for last 30 days.
+
+  ar_web_account:
+  
+    id:
+
+    login: { type: varchar, size: 20, required: true, index: true, unique: true }
+
+    password: varchar(40)
+
+    ar_party_id:
+    #
+    # NULL if the account is admin
+    #
+    # NOT NULL if the account is associated to a ar_party,
+    # in this case the web_account can inspect all the calls of account
+    # related to ar_party_id
+
+    ar_asterisk_account_id:
+    #
+    # NULL if the account is not associated to a specific ar_asterisk_account.
+    # 
+    # NOT NULL if the account is associated to a specific ar_asterisk_account,
+    # in this case the ar_web_account can inspect only its calls.
+    # In this case ar_party_id must be the party_associated to the account_id.
+    
+    activate_at: date
+
+    deactivate_at: date
+    
+  ar_invoice:
+    id:
+
+    ar_party_id:
+
+    nr: { type: varchar, size: 20, index: true, required: true, unique: true } 
+
+    invoice_date: date
+    #
+    # the date of the invoice
+
+    ar_cdr_from: date
+    #
+    # consider calls starting from this date (incluse this date)
+
+    ar_cdr_to: date
+    #
+    # consider calls until this date (excluse this date)
+
+    total_without_tax: { type: integer, size: 20, index: false, required: false, default: NULL }
+
+    vat_perc: { type: integer, size: 20, index: false, required: false, default: NULL }
+
+    total_vat: { type: integer, size: 20, index: false, required: false, default: NULL }
+
+    total: { type: integer, size: 20, index: false, required: false, default: NULL }
+
+    html_details: longvarchar
+    #
+    # details about the invoiced calls in HTML format.
+
+    txt_details: longvarchar
+    #
+    # details about the invoiced calls in standard text format
+
+    pdf_invoice: longvarchar
+    #
+    # pdf version of the invoice
+
+    already_sent: boolean
+    #
+    # true if the invoice is already sent to customer or received from vendor
+
+    _indexes:
+      ar_invoice_index_1: [ar_party_id]
+
+  ar_invoice_creation:
+  #
+  # store all the request of invoice creations 
+ 
+    id:
+
+    first_nr: varchar(20)
+    #
+    # the first invoice number to use,
+    # the last used number is first_nr + number of customers with
+    # an invoice
+
+    invoice_date: date
+
+    ar_cdr_from: date
+    #
+    # consider calls starting from this date (incluse this date)
+
+    ar_cdr_to: date
+    #
+    # consider calls until this date (exclise this date)
+
+    _indexes:
+      ar_invoice_creation_index_1: [invoice_date]
+
+  ar_rate:
+    id:
+
+    is_exception: { type: boolean, required: true, default: false }
+    #
+    # true if the rate is an exception and it must be applied
+    # with an higher priority respect normal rates.
+    # This allows to introduce exception rules to the 
+    # rating process.
+
+    ar_rate_category_id:
+    #
+    # at wich category of customers the rate is applicable,
+    # NULL if the rate is a vendor rate
+
+    ar_party_id:
+    #
+    # the vendor that apply the rate (we are its customer)
+    # NULL if the rate is a customer rate
+
+    start_time: { type: timestamp, required: true, index: true }
+    # 
+    # when the rate become applicable 
+
+    end_time: timestamp
+    #
+    # NULL if the rate is current, 
+    # the timestamp at wich the rate is not valid/applicable to calls
+
+    php_class_serialization: clob
+    #
+    # serialization of a PHP class that given a CDR calc the rate.
+    # This permits to adopt different rating methods using the
+    # flexibility of PHP code.
+    #
+    # IMPORTANT: access this field using
+    # > getPhpClassSerialization()->getContents()
+    # because a CLOB (LONGTEXT) is managed
+    # in a different way respect LONGVARCHARS
+    # from Symfony framework.
+    # In case of this field a special method
+    # > unserializePhpRateMethod
+    # was added to ArRate class.
+
+    user_input: clob
+    #
+    # description of the user input eventually 
+    # used to initialize the rate.
+    # Few rate methods use this field to store
+    # private informations.
+    #
+    # IMPORTANT: access this field using
+    # > getUserInput()->getContents()
+    # because a CLOB (LONGTEXT) is managed
+    # in a different way respect LONGVARCHARS
+    # from Symfony framework.
+
+    note: longvarchar
+    
+    _indexes:
+      ar_rate_index_1: [ar_party_id]
+
+  ar_telephone_prefix:
+  #
+  # A telephone prefix identifing a certain area or telephone operator.
+    id:
+  
+    prefix: { type: varchar(40), required: true, unique: true, index: unique }
+    
+    name: varchar(80)
+    
+    geographic_location: varchar(80)
+    #
+    # where (mainly) user of the prefix 
+    # are geographically located
+    
+    operator_type: { type: varchar(80), index: true }
+    #
+    # something like "mobile" or "fixed" or "VoIP"
+    # that describes the type of transmission technology
+    # associated to the prefix.
+    # NULL if there is more than one type of connection
+    # associated to the prefix.
+
+  ar_problem:
+  #
+  # problems found during periodic check of the database
+
+    id:
+
+    created_at:
+    #
+    # when the problem was found
+
+    duplication_key: { type: varchar(160), required: true, unique: true, index: true }
+    # 
+    # a key that represent in a unique manner a problem in order
+    # to avoid annoiance duplicate problems in the table
+
+    description: longvarchar
+
+    effect: longvarchar
+
+    proposed_solution: longvarchar
+
+    user_notes: longvarchar
+
+    mantain: boolean
+    #
+    # true if the problem must be mantained in the table during a purge operations
+
+    signaled_to_admin: { type: boolean, required: true, default: false }
+    #
+    # true if the problem was signaled to the administrator

@@ -1,0 +1,41 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArInvoice
+    theme:            default
+
+    fields:
+      nr:                    { name: Invoice Number }
+      invoice_date:          { name: Date }
+      ar_cdr_from:           { name: Calls from (incluse) }
+      ar_cdr_to:             { name: Calls to (excluse)  }
+      my_total_without_tax:  { name: Total Amount (tax not included) }
+      total:                 { name: Total Amount }
+      my_total:              { name: Total Amount }
+      my_total_vat:          { name: Total VAT }
+      my_vat_perc:           { name: VAT % }
+      already_sent:          { name: Sent }
+      my_details:            { name: Details }
+      ar_party_id:           { name: Customer }
+      ar_party:              { name: Customer }
+      filter_on_party_name:  { name: Name, filter_criteria_disabled: true }
+      already_sent:          { name: Sent? }
+
+    list:
+      peer_method: doSelectJoinArParty
+
+      title: Customer Invoices
+      display: [=nr, ar_party, invoice_date, ar_cdr_from, ar_cdr_to, _my_total, already_sent]
+
+      sort:    [invoice_date, desc]    
+
+      filters: [nr, ar_party_id, ar_cdr_to]  
+
+    edit:
+      title: Customer Invoice
+
+      fields:
+        creation_actions: { name: Actions } 
+
+      display: [ar_party_id, nr, ar_cdr_from, ar_cdr_to, _my_details, _my_total_without_tax, _my_vat_perc, _my_total_vat, _my_total, already_sent, _creation_actions]
+

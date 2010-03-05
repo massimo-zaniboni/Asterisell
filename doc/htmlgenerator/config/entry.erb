@@ -1,0 +1,105 @@
+<%
+=begin
+  This is a template for generating HTML for a blog entry.
+
+  The following variables are available for use in this template:
+  * BLOG        - data from the blog configuration file
+  * LANG        - data from the translation file
+  * ABOUT_PAGE  - the blog entry corresponding to the about page
+  * SEARCH_PAGE - the blog entry corresponding to the search page
+  * ENTRIES     - array of all blog entries (Entry objects)
+  * TAGS        - array of all tags (Section objects)
+  * ARCHIVES    - array of all archives (Section objects)
+  * FEEDS       - array of all feeds (Feed objects)
+  * @entry      - the Entry object for which we are generating HTML
+  * @summarize  - should this entry be summarized?
+  * @solo       - is this entry being rendered alone, on its own page?
+
+  NOTE that the "display: none" stuff in this template is meant to improve
+  the readability and usability of this web page in text-only web browsers.
+=end
+
+  # prevent Ruby warning about uninitialized @solo variable
+  @solo = false unless defined? @solo
+
+  content = @entry.html
+
+  if @summarize
+    summary = @entry.summary
+    readMore = summary != content
+  end
+
+  if summary
+    # fragment links should take you inside the full (non-readMore) entry
+    content = summary.gsub %r{(href=.)(#)} do
+      $1 + @entry.url + $2
+    end
+
+  else
+    # check whether we want to generate the table of contents
+    generateTOC =
+      if @entry.key? 'generate_toc'
+        @entry['generate_toc']
+      else
+        BLOG.generate_toc
+      end
+
+    if generateTOC
+      toc, content = content.table_of_contents
+    end
+  end
+%>
+  <h1 class="name"><%= @entry.name %></h1>
+
+  <%= content %>
+
+  <% if readMore %>
+    <p class="more">
+      <%= icon 'tango-32x32-actions-edit-redo.png', '&rarr;' %>
+      <%= @entry.to_link :body => LANG["Read more..."] %>
+    </p>
+  <% end %>
+
+  <p class="info">
+    <%= icon 'tango-32x32-apps-office-calendar.png', LANG['Date'] %>
+    <%=
+      stamp = @entry.date.strftime(BLOG.date_format)
+
+      if @entry.hide?
+        stamp
+      else
+        @entry.archive.to_link :body => stamp, :frag => @entry
+      end
+    %>
+
+    <% unless @entry.tags.empty? %>
+      <br/>
+      <%= icon 'tango-32x32-categories-applications-games.png', LANG['Tags'] %>
+      <%= @entry.tags.map {|t| t.to_link :frag => @entry }.join(' &middot; ') %>
+    <% end %>
+
+    <% unless @summarize %>
+    
+    <%# BEGIN COMMENTS SECTION %>
+    <br/>
+    <script>
+var idcomments_acct = '0499d0ffde2cb483ac14faa5f28901ec';
+var idcomments_post_id;
+var idcomments_post_url;
+</script>
+<span id="IDCommentsPostTitle" style="display:none"></span>
+<script type='text/javascript' src='http://www.intensedebate.com/js/genericCommentWrapperV2.js'></script>
+    <%# END COMMENTS SECTION %>
+    <% end %>
+  </p>
+  
+    <% if toc %>
+    <% if false %>
+    <div id="right">
+    <h1>Table of Content</h1>
+    <%= LANG['Contents'] %> <%= toc %>
+    </div>
+    <%end %>
+    <% end %>
+
+<hr style="display: none"/>

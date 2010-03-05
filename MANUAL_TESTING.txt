@@ -1,0 +1,28 @@
+= Rationale =
+
+Testing all the application using only regression testing is not possible due to constraints on development time.
+
+So some tests are executed using regression tests and other manually before releasing a new version.
+
+= Initial Pass =
+
+Load demo data using:
+
+  cd scripts
+  sh make_regression_testing
+
+= Localizations =
+
+Execute the application using different locales and check if there are missing trnaslations.
+
+= Application Test =
+
+Load demo data and perform various tests on application behaviour:
+  * check if CDR-LIST is updated respect CALL REPORT;
+  * various filters on CALL REPORT;
+  * export data to CSV;
+  * test if automatic evaluation of calls is executed correctly;
+  * insert conflicting rates and test if there are errors;  
+  
+
+  

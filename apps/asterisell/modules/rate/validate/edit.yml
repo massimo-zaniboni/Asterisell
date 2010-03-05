@@ -1,0 +1,18 @@
+fillin:
+  enabled: true
+
+fields:
+  ar_rate{start_time}:
+    required:
+      msg: Required
+
+# XXX does not work
+# It is substitute from a test during phpRateEngine
+#
+#  ar_rate{ar_party_id}:
+#    ExactlyOneNotNullValidator:
+#      check: "ar_rate[ar_rate_category_id]"
+#      compare_error: Select a customer category or a vendor, but not both.
+#
+#  ar_rate{end_time}:
+#    AlwaysFalseValidator: []
