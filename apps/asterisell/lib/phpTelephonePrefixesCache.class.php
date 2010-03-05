@@ -62,7 +62,7 @@ class PhpTelephonePrefixesCache {
     $r = null;
     $again = true;
     while ($again) {
-      if ($c <= 1) {
+      if ($c <= 0) {
         $again = false;
       } else {
         $i = substr($number, 0, $c);

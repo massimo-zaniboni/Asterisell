@@ -331,7 +331,7 @@ class reportActions extends autoReportActions {
     $n = strlen($str);
     $w = '';
     for ($i = 0;$i < $n;$i++) {
-      $w.= $this->filterCharForSQLQuery($str[$i]);
+      $w.= $this->filterCharForSQLQuery(substr($str,$i,1));
     }
     return $w;
   }

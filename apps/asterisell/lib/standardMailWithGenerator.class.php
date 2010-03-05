@@ -28,7 +28,8 @@ class StandardMailWithInvoiceGenerator extends MailWithInvoiceGenerator {
   public function getEmailContent(ArParty $party, ArInvoice $invoice) {
     $eol = "\r\n";
     $providerName = sfConfig::get('app_service_provider_name');
-    $culture = sfConfig::get('app_culture') $currency = sfConfig::get('app_currency');
+    $culture = sfConfig::get('app_culture');
+    $currency = sfConfig::get('app_currency');
     $subject = '';
     $r = '';
     if ($culture == 'it_IT') {
