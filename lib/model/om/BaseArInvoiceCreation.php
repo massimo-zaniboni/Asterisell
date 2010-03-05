@@ -13,6 +13,14 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 
 
 	
+	protected $type = 'C';
+
+
+	
+	protected $is_revenue_sharing = false;
+
+
+	
 	protected $first_nr;
 
 
@@ -38,6 +46,20 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 	{
 
 		return $this->id;
+	}
+
+	
+	public function getType()
+	{
+
+		return $this->type;
+	}
+
+	
+	public function getIsRevenueSharing()
+	{
+
+		return $this->is_revenue_sharing;
 	}
 
 	
@@ -130,6 +152,32 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setType($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->type !== $v || $v === 'C') {
+			$this->type = $v;
+			$this->modifiedColumns[] = ArInvoiceCreationPeer::TYPE;
+		}
+
+	} 
+	
+	public function setIsRevenueSharing($v)
+	{
+
+		if ($this->is_revenue_sharing !== $v || $v === false) {
+			$this->is_revenue_sharing = $v;
+			$this->modifiedColumns[] = ArInvoiceCreationPeer::IS_REVENUE_SHARING;
+		}
+
+	} 
+	
 	public function setFirstNr($v)
 	{
 
@@ -203,19 +251,23 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 
 			$this->id = $rs->getInt($startcol + 0);
 
-			$this->first_nr = $rs->getString($startcol + 1);
+			$this->type = $rs->getString($startcol + 1);
 
-			$this->invoice_date = $rs->getDate($startcol + 2, null);
+			$this->is_revenue_sharing = $rs->getBoolean($startcol + 2);
 
-			$this->ar_cdr_from = $rs->getDate($startcol + 3, null);
+			$this->first_nr = $rs->getString($startcol + 3);
 
-			$this->ar_cdr_to = $rs->getDate($startcol + 4, null);
+			$this->invoice_date = $rs->getDate($startcol + 4, null);
+
+			$this->ar_cdr_from = $rs->getDate($startcol + 5, null);
+
+			$this->ar_cdr_to = $rs->getDate($startcol + 6, null);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 5; 
+						return $startcol + 7; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArInvoiceCreation object", $e);
 		}
@@ -346,15 +398,21 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getFirstNr();
+				return $this->getType();
 				break;
 			case 2:
-				return $this->getInvoiceDate();
+				return $this->getIsRevenueSharing();
 				break;
 			case 3:
-				return $this->getArCdrFrom();
+				return $this->getFirstNr();
 				break;
 			case 4:
+				return $this->getInvoiceDate();
+				break;
+			case 5:
+				return $this->getArCdrFrom();
+				break;
+			case 6:
 				return $this->getArCdrTo();
 				break;
 			default:
@@ -368,10 +426,12 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		$keys = ArInvoiceCreationPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getFirstNr(),
-			$keys[2] => $this->getInvoiceDate(),
-			$keys[3] => $this->getArCdrFrom(),
-			$keys[4] => $this->getArCdrTo(),
+			$keys[1] => $this->getType(),
+			$keys[2] => $this->getIsRevenueSharing(),
+			$keys[3] => $this->getFirstNr(),
+			$keys[4] => $this->getInvoiceDate(),
+			$keys[5] => $this->getArCdrFrom(),
+			$keys[6] => $this->getArCdrTo(),
 		);
 		return $result;
 	}
@@ -391,15 +451,21 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setFirstNr($value);
+				$this->setType($value);
 				break;
 			case 2:
-				$this->setInvoiceDate($value);
+				$this->setIsRevenueSharing($value);
 				break;
 			case 3:
-				$this->setArCdrFrom($value);
+				$this->setFirstNr($value);
 				break;
 			case 4:
+				$this->setInvoiceDate($value);
+				break;
+			case 5:
+				$this->setArCdrFrom($value);
+				break;
+			case 6:
 				$this->setArCdrTo($value);
 				break;
 		} 	}
@@ -410,10 +476,12 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		$keys = ArInvoiceCreationPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setFirstNr($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setInvoiceDate($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setArCdrFrom($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setArCdrTo($arr[$keys[4]]);
+		if (array_key_exists($keys[1], $arr)) $this->setType($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setIsRevenueSharing($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setFirstNr($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setInvoiceDate($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setArCdrFrom($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setArCdrTo($arr[$keys[6]]);
 	}
 
 	
@@ -422,6 +490,8 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		$criteria = new Criteria(ArInvoiceCreationPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(ArInvoiceCreationPeer::ID)) $criteria->add(ArInvoiceCreationPeer::ID, $this->id);
+		if ($this->isColumnModified(ArInvoiceCreationPeer::TYPE)) $criteria->add(ArInvoiceCreationPeer::TYPE, $this->type);
+		if ($this->isColumnModified(ArInvoiceCreationPeer::IS_REVENUE_SHARING)) $criteria->add(ArInvoiceCreationPeer::IS_REVENUE_SHARING, $this->is_revenue_sharing);
 		if ($this->isColumnModified(ArInvoiceCreationPeer::FIRST_NR)) $criteria->add(ArInvoiceCreationPeer::FIRST_NR, $this->first_nr);
 		if ($this->isColumnModified(ArInvoiceCreationPeer::INVOICE_DATE)) $criteria->add(ArInvoiceCreationPeer::INVOICE_DATE, $this->invoice_date);
 		if ($this->isColumnModified(ArInvoiceCreationPeer::AR_CDR_FROM)) $criteria->add(ArInvoiceCreationPeer::AR_CDR_FROM, $this->ar_cdr_from);
@@ -455,6 +525,10 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 	
 	public function copyInto($copyObj, $deepCopy = false)
 	{
+
+		$copyObj->setType($this->type);
+
+		$copyObj->setIsRevenueSharing($this->is_revenue_sharing);
 
 		$copyObj->setFirstNr($this->first_nr);
 

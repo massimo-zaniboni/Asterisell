@@ -447,6 +447,41 @@ abstract class BaseArRateCategory extends BaseObject  implements Persistent {
 		$l->setArRateCategory($this);
 	}
 
+
+	
+	public function getArPartysJoinArParams($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArPartyPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArPartys === null) {
+			if ($this->isNew()) {
+				$this->collArPartys = array();
+			} else {
+
+				$criteria->add(ArPartyPeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+				$this->collArPartys = ArPartyPeer::doSelectJoinArParams($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArPartyPeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+			if (!isset($this->lastArPartyCriteria) || !$this->lastArPartyCriteria->equals($criteria)) {
+				$this->collArPartys = ArPartyPeer::doSelectJoinArParams($criteria, $con);
+			}
+		}
+		$this->lastArPartyCriteria = $criteria;
+
+		return $this->collArPartys;
+	}
+
 	
 	public function initArRates()
 	{

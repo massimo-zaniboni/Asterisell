@@ -7,8 +7,9 @@ generator:
     fields:
       login:         { name: Login }
       password:      { name: Password }
-      activate_at:   { name: Created at }
-      deactivate_at: { name: Disabled at }
+      activate_at:   { name: Created at, help: "A user can not login before this date.", params: date_format='dd/MM' }
+      deactivate_at: { name: Disabled at, help: "A user can not login after this date. " }
+      ar_params_id:  { name: Params, help: "If this web account is associated to a customer, then the value of this field is not used / taken in consideration, because the customer will use the params associated to it. Otherwise if this web account is associated to an admin, then after login these params will be used." }
 
     list:
       title: Web Access Accounts
@@ -16,23 +17,22 @@ generator:
       fields:
         access_for:        { name: Owner }
         filter_on_admin:   { name: Only Admins, filter_criteria_disabled: true }
-        filter_on_party:   { name: Customer , filter_criteria_disabled: true }
-        filter_on_account: { name: VoIP Accounts of Customer , filter_criteria_disabled: true }
+        filter_on_party:   { name: Customer, filter_criteria_disabled: true }
   
-      display: [ =login, password, _access_for, activate_at, deactivate_at]
+      display: [=login, password, _access_for, activate_at, deactivate_at]
 
-      filters: [_filter_on_admin, _filter_on_party, _filter_on_account]
+      filters: [_filter_on_admin, _filter_on_party]
 
     edit:
       title: Web Access Account
 
       fields:
-        myadmin:       { name: Admin }
-        mycustomer:    { name: Customer }
-        myvoipaccount: { name: VoIP Account }
+        myadmin:       { name: Admin    }
+        mycustomer:    { name: Customer, help: "Use SAVE button in order to save the choice. Then you can select the specific office." }
+        myoffice:      { name: Office   }
        				 
       display:			 
-        NONE: [login, password, activate_at, deactivate_at]
-        Owner:  [_myadmin, _mycustomer, _myvoipaccount]		 
+        Account information: [login, password, ar_params_id, activate_at, deactivate_at]
+        Web account access privileges:  [_myadmin, _mycustomer, _myoffice]
 
 

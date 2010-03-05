@@ -13,6 +13,10 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 
 
 	
+	protected $destination_type = 0;
+
+
+	
 	protected $is_exception = false;
 
 
@@ -62,6 +66,12 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	protected $lastCdrRelatedByCostArRateIdCriteria = null;
 
 	
+	protected $collArCustomRateForms;
+
+	
+	protected $lastArCustomRateFormCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -72,6 +82,13 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	{
 
 		return $this->id;
+	}
+
+	
+	public function getDestinationType()
+	{
+
+		return $this->destination_type;
 	}
 
 	
@@ -173,6 +190,22 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 		if ($this->id !== $v) {
 			$this->id = $v;
 			$this->modifiedColumns[] = ArRatePeer::ID;
+		}
+
+	} 
+	
+	public function setDestinationType($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->destination_type !== $v || $v === 0) {
+			$this->destination_type = $v;
+			$this->modifiedColumns[] = ArRatePeer::DESTINATION_TYPE;
 		}
 
 	} 
@@ -325,27 +358,29 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 
 			$this->id = $rs->getInt($startcol + 0);
 
-			$this->is_exception = $rs->getBoolean($startcol + 1);
+			$this->destination_type = $rs->getInt($startcol + 1);
 
-			$this->ar_rate_category_id = $rs->getInt($startcol + 2);
+			$this->is_exception = $rs->getBoolean($startcol + 2);
 
-			$this->ar_party_id = $rs->getInt($startcol + 3);
+			$this->ar_rate_category_id = $rs->getInt($startcol + 3);
 
-			$this->start_time = $rs->getTimestamp($startcol + 4, null);
+			$this->ar_party_id = $rs->getInt($startcol + 4);
 
-			$this->end_time = $rs->getTimestamp($startcol + 5, null);
+			$this->start_time = $rs->getTimestamp($startcol + 5, null);
 
-			$this->php_class_serialization = $rs->getClob($startcol + 6);
+			$this->end_time = $rs->getTimestamp($startcol + 6, null);
 
-			$this->user_input = $rs->getClob($startcol + 7);
+			$this->php_class_serialization = $rs->getClob($startcol + 7);
 
-			$this->note = $rs->getString($startcol + 8);
+			$this->user_input = $rs->getClob($startcol + 8);
+
+			$this->note = $rs->getString($startcol + 9);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 9; 
+						return $startcol + 10; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArRate object", $e);
 		}
@@ -445,6 +480,14 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collArCustomRateForms !== null) {
+				foreach($this->collArCustomRateForms as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -516,6 +559,14 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 					}
 				}
 
+				if ($this->collArCustomRateForms !== null) {
+					foreach($this->collArCustomRateForms as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
@@ -538,27 +589,30 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getIsException();
+				return $this->getDestinationType();
 				break;
 			case 2:
-				return $this->getArRateCategoryId();
+				return $this->getIsException();
 				break;
 			case 3:
-				return $this->getArPartyId();
+				return $this->getArRateCategoryId();
 				break;
 			case 4:
-				return $this->getStartTime();
+				return $this->getArPartyId();
 				break;
 			case 5:
-				return $this->getEndTime();
+				return $this->getStartTime();
 				break;
 			case 6:
-				return $this->getPhpClassSerialization();
+				return $this->getEndTime();
 				break;
 			case 7:
-				return $this->getUserInput();
+				return $this->getPhpClassSerialization();
 				break;
 			case 8:
+				return $this->getUserInput();
+				break;
+			case 9:
 				return $this->getNote();
 				break;
 			default:
@@ -572,14 +626,15 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 		$keys = ArRatePeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getIsException(),
-			$keys[2] => $this->getArRateCategoryId(),
-			$keys[3] => $this->getArPartyId(),
-			$keys[4] => $this->getStartTime(),
-			$keys[5] => $this->getEndTime(),
-			$keys[6] => $this->getPhpClassSerialization(),
-			$keys[7] => $this->getUserInput(),
-			$keys[8] => $this->getNote(),
+			$keys[1] => $this->getDestinationType(),
+			$keys[2] => $this->getIsException(),
+			$keys[3] => $this->getArRateCategoryId(),
+			$keys[4] => $this->getArPartyId(),
+			$keys[5] => $this->getStartTime(),
+			$keys[6] => $this->getEndTime(),
+			$keys[7] => $this->getPhpClassSerialization(),
+			$keys[8] => $this->getUserInput(),
+			$keys[9] => $this->getNote(),
 		);
 		return $result;
 	}
@@ -599,27 +654,30 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setIsException($value);
+				$this->setDestinationType($value);
 				break;
 			case 2:
-				$this->setArRateCategoryId($value);
+				$this->setIsException($value);
 				break;
 			case 3:
-				$this->setArPartyId($value);
+				$this->setArRateCategoryId($value);
 				break;
 			case 4:
-				$this->setStartTime($value);
+				$this->setArPartyId($value);
 				break;
 			case 5:
-				$this->setEndTime($value);
+				$this->setStartTime($value);
 				break;
 			case 6:
-				$this->setPhpClassSerialization($value);
+				$this->setEndTime($value);
 				break;
 			case 7:
-				$this->setUserInput($value);
+				$this->setPhpClassSerialization($value);
 				break;
 			case 8:
+				$this->setUserInput($value);
+				break;
+			case 9:
 				$this->setNote($value);
 				break;
 		} 	}
@@ -630,14 +688,15 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 		$keys = ArRatePeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setIsException($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setArRateCategoryId($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setArPartyId($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setStartTime($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setEndTime($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setPhpClassSerialization($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setUserInput($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setNote($arr[$keys[8]]);
+		if (array_key_exists($keys[1], $arr)) $this->setDestinationType($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setIsException($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setArRateCategoryId($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setArPartyId($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setStartTime($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setEndTime($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setPhpClassSerialization($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setUserInput($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setNote($arr[$keys[9]]);
 	}
 
 	
@@ -646,6 +705,7 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 		$criteria = new Criteria(ArRatePeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(ArRatePeer::ID)) $criteria->add(ArRatePeer::ID, $this->id);
+		if ($this->isColumnModified(ArRatePeer::DESTINATION_TYPE)) $criteria->add(ArRatePeer::DESTINATION_TYPE, $this->destination_type);
 		if ($this->isColumnModified(ArRatePeer::IS_EXCEPTION)) $criteria->add(ArRatePeer::IS_EXCEPTION, $this->is_exception);
 		if ($this->isColumnModified(ArRatePeer::AR_RATE_CATEGORY_ID)) $criteria->add(ArRatePeer::AR_RATE_CATEGORY_ID, $this->ar_rate_category_id);
 		if ($this->isColumnModified(ArRatePeer::AR_PARTY_ID)) $criteria->add(ArRatePeer::AR_PARTY_ID, $this->ar_party_id);
@@ -684,6 +744,8 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
+		$copyObj->setDestinationType($this->destination_type);
+
 		$copyObj->setIsException($this->is_exception);
 
 		$copyObj->setArRateCategoryId($this->ar_rate_category_id);
@@ -710,6 +772,10 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 
 			foreach($this->getCdrsRelatedByCostArRateId() as $relObj) {
 				$copyObj->addCdrRelatedByCostArRateId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getArCustomRateForms() as $relObj) {
+				$copyObj->addArCustomRateForm($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1073,6 +1139,76 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 		$this->lastCdrRelatedByCostArRateIdCriteria = $criteria;
 
 		return $this->collCdrsRelatedByCostArRateId;
+	}
+
+	
+	public function initArCustomRateForms()
+	{
+		if ($this->collArCustomRateForms === null) {
+			$this->collArCustomRateForms = array();
+		}
+	}
+
+	
+	public function getArCustomRateForms($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArCustomRateFormPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArCustomRateForms === null) {
+			if ($this->isNew()) {
+			   $this->collArCustomRateForms = array();
+			} else {
+
+				$criteria->add(ArCustomRateFormPeer::ID, $this->getId());
+
+				ArCustomRateFormPeer::addSelectColumns($criteria);
+				$this->collArCustomRateForms = ArCustomRateFormPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArCustomRateFormPeer::ID, $this->getId());
+
+				ArCustomRateFormPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArCustomRateFormCriteria) || !$this->lastArCustomRateFormCriteria->equals($criteria)) {
+					$this->collArCustomRateForms = ArCustomRateFormPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArCustomRateFormCriteria = $criteria;
+		return $this->collArCustomRateForms;
+	}
+
+	
+	public function countArCustomRateForms($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArCustomRateFormPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArCustomRateFormPeer::ID, $this->getId());
+
+		return ArCustomRateFormPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArCustomRateForm(ArCustomRateForm $l)
+	{
+		$this->collArCustomRateForms[] = $l;
+		$l->setArRate($this);
 	}
 
 } 

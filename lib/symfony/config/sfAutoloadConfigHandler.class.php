@@ -15,7 +15,7 @@
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfAutoloadConfigHandler.class.php 9784 2008-06-23 07:40:20Z dwhittle $
+ * @version    SVN: $Id: sfAutoloadConfigHandler.class.php 17047 2009-04-06 14:43:02Z fabien $
  */
 class sfAutoloadConfigHandler extends sfYamlConfigHandler
 {
@@ -78,7 +78,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
         $recursive = ((isset($entry['recursive'])) ? $entry['recursive'] : false);
         if (!$recursive)
         {
-          $finder->maxdepth(1);
+          $finder->maxdepth(0);
         }
 
         // exclude files or directories?
@@ -106,7 +106,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
             if (isset($entry['prefix']))
             {
               // FIXME: does not work for plugins installed with a symlink
-              preg_match('~^'.str_replace('\*', '(.+?)', preg_quote(str_replace('/', DIRECTORY_SEPARATOR, $path), '~')).'~', $file, $match);
+              preg_match('~^'.str_replace('\*', '(.+?)', preg_quote(str_replace('/', DIRECTORY_SEPARATOR, $path), '~')).'~', str_replace('/', DIRECTORY_SEPARATOR, $file), $match);
               if (isset($match[$entry['prefix']]))
               {
                 $prefix = $match[$entry['prefix']].'/';

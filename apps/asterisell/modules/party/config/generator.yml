@@ -6,28 +6,30 @@ generator:
 
     fields:
       customer_or_vendor:   { name: C/V } 
+      is_active:            { name: Is Active, help: "True if this is an active customer. Invoices are not sent to inactive customers." }
       mycv:                 { name: Type, sort_on_column: customer_or_vendor }
-      name:                 { name: Name }
-      external_crm_code:    { name: CRM Code }
-      vat:                  { name: VAT }
+      name:                 { name: Name, help: "The name identifing the customer / vendor. It will be used also in invoices." }
+      external_crm_code:    { name: CRM Code, help: "The code associated to the customer in you Customer Relationship Management (CRM) tool." }
+      vat:                  { name: VAT, help: "VAT Registration Number" }
       legal_address:        { name: Address }
       legal_city:           { name: City }
       legal_zipcode:        { name: ZIP }
-      legal_state_province: { name: Province }
-      legal_country:        { name: Country }
-      email:                { name: email }
+      legal_state_province: { name: "State / Province", help: "If not empty, it will be displayed in address." }
+      legal_country:        { name: Country, help: "If not empty, it will be displayed in address."  }
+      email:                { name: email, help: "Where sending invoices and notifications." }
       phone:                { name: Telephon 1 }
       phone2:               { name: Telephon 2 }
       fax:                  { name: Fax }
-      ar_rate_category_id:  { name: Price Category }
+      ar_rate_category_id:  { name: Price Category, help: "You can classify customers in different price categories in order to apply different rates / price listes. In case of a vendor this field has no meaning / effect." }
       ar_rate_category:     { name: Price Category }
       language:             { name: Language } 
       filter_on_cv:         { name: Type, filter_criteria_disabled: true }
-      my_max_limit:         { name: Max admitted calls cost for the last 30 days }	
+      ar_params_id:         { name: Use params, help: "The params to use after the login of the customer, and during the generation of customer related invoices."  }
+      ar_params:            { name: Use params }
 
     list:
       title: Customers and Vendors
-      display: [_mycv, ar_rate_category, =name, external_crm_code, legal_city, legal_state_province, legal_country, _my_max_limit]
+      display: [is_active, _mycv, ar_rate_category, =name, ar_params, external_crm_code, legal_city, legal_state_province, legal_country, _my_max_limit]
       filters: [_filter_on_cv, name, external_crm_code, legal_city, legal_state_province]
 
     edit:
@@ -35,11 +37,11 @@ generator:
 
       fields:
         editcv:      { name: Type }
-        insert_money_value:   { name: Limit }
+        insert_money_value:   { name: Limit, help: "Max admitted calls cost of the last 30 days/current month (depending from the setting inside apps/asterisell/config/app.yml). If you set a limit of 0 (or NULL) then the cost limit check is disabled." }
 
       display:
-        NONE: [_editcv, name, vat, external_crm_code, ar_rate_category_id]
-        Address: [legal_address, legal_city, legal_zipcode, legal_state_province, legal_country]
+        State: [_editcv, name, ar_rate_category_id, is_active, ar_params_id]
+        Accouning: [vat, external_crm_code, legal_address, legal_city, legal_zipcode, legal_state_province, legal_country]
         Contacts: [email, phone, phone2, fax]
         Calls Cost Limit for last 30 days: [_insert_money_value]
 

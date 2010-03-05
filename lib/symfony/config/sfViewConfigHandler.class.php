@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfViewConfigHandler.class.php 3289 2007-01-15 21:28:51Z fabien $
+ * @version    SVN: $Id: sfViewConfigHandler.class.php 17714 2009-04-28 13:57:29Z FabianLange $
  */
 class sfViewConfigHandler extends sfYamlConfigHandler
 {
@@ -226,7 +226,7 @@ class sfViewConfigHandler extends sfYamlConfigHandler
 
     foreach ($this->mergeConfigValue('metas', $viewName) as $name => $content)
     {
-      $data[] = sprintf("  \$response->addMeta('%s', '%s', false, false);", $name, str_replace('\'', '\\\'', preg_replace('/&amp;(?=\w+;)/', '&', htmlentities($content, ENT_QUOTES, sfConfig::get('sf_charset')))));
+      $data[] = sprintf("  \$response->addMeta('%s', '%s', false, false);", $name, str_replace('\'', '\\\'', preg_replace('/&amp;(?=\w+;)/', '&', htmlspecialchars($content, ENT_QUOTES, sfConfig::get('sf_charset')))));
     }
 
     return implode("\n", $data)."\n";
@@ -242,9 +242,6 @@ class sfViewConfigHandler extends sfYamlConfigHandler
   protected function addHtmlAsset($viewName = '')
   {
     $data = array();
-    $omit = array();
-    $delete = array();
-    $delete_all = false;
 
     // Merge the current view's stylesheets with the app's default stylesheets
     $stylesheets = $this->mergeConfigValue('stylesheets', $viewName);
@@ -286,27 +283,40 @@ class sfViewConfigHandler extends sfYamlConfigHandler
 
     $data = array_merge($data, array_values($tmp));
 
-    $omit = array();
-    $delete_all = false;
-
     // Populate $javascripts with the values from ONLY the current view
     $javascripts = $this->mergeConfigValue('javascripts', $viewName);
     $tmp = array();
     foreach ((array) $javascripts as $js)
     {
-      $js = $this->replaceConstants($js);
-
-      if ('-*' == $js)
+      $position = '';
+      if (is_array($js))
       {
-        $tmp = array();
-      }
-      else if ('-' == $js[0])
-      {
-        unset($tmp[substr($js, 1)]);
+        $key = key($js);
+        $options = $js[$key];
+        if (isset($options['position']))
+        {
+          $position = $options['position'];
+          unset($options['position']);
+        }
       }
       else
       {
-        $tmp[$js] = sprintf("  \$response->addJavascript('%s');", $js);
+        $key = $js;
+      }
+
+      $key = $this->replaceConstants($key);
+
+      if ('-*' == $key)
+      {
+        $tmp = array();
+      }
+      else if ('-' == $key[0])
+      {
+        unset($tmp[substr($key, 1)]);
+      }
+      else
+      {
+        $tmp[$key] = sprintf("  \$response->addJavascript('%s', '%s');", $key, $position);
       }
     }
 

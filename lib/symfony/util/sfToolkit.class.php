@@ -16,7 +16,7 @@
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfToolkit.class.php 9589 2008-06-15 07:20:17Z FabianLange $
+ * @version    SVN: $Id: sfToolkit.class.php 19216 2009-06-13 06:42:00Z fabien $
  */
 class sfToolkit
 {
@@ -92,7 +92,7 @@ class sfToolkit
     }
 
     // close file pointer
-    fclose($fp);
+    closedir($fp);
   }
 
   /**
@@ -181,32 +181,25 @@ class sfToolkit
       return $source;
     }
 
+    $ignore = array(T_COMMENT => true, T_DOC_COMMENT => true);
     $output = '';
 
-    $tokens = token_get_all($source);
-    foreach ($tokens as $token)
+    foreach (token_get_all($source) as $token)
     {
-      if (is_string($token))
+      // array
+      if (isset($token[1]))
       {
-        // simple 1-character token
-        $output .= $token;
+        // no action on comments
+        if (!isset($ignore[$token[0]]))
+        {
+          // anything else -> output "as is"
+          $output .= $token[1];
+        }
       }
       else
       {
-        // token array
-        list($id, $text) = $token;
-
-        switch ($id)
-        {
-          case T_COMMENT:
-          case T_DOC_COMMENT:
-            // no action on comments
-            break;
-          default:
-            // anything else -> output "as is"
-            $output .= $text;
-            break;
-        }
+        // simple 1-character token
+        $output .= $token;
       }
     }
 
@@ -360,7 +353,7 @@ class sfToolkit
    */
   public static function replaceConstants($value)
   {
-    return is_string($value) ? preg_replace('/%(.+?)%/e', 'sfConfig::has(strtolower("\\1")) ? sfConfig::get(strtolower("\\1")) : "%\\1%"', $value) : $value;
+    return is_string($value) ? preg_replace_callback('/%(.+?)%/', create_function('$v', 'return sfConfig::has(strtolower($v[1])) ? sfConfig::get(strtolower($v[1])) : "%{$v[1]}%";'), $value) : $value;
   }
 
   /**
@@ -466,8 +459,15 @@ class sfToolkit
           {
             return $default;
           }
-          $array = &$array[substr($name, $pos + 1, $end - $pos - 1)];
-          $offset = $end;
+          else if (is_array($array))
+          {
+            $array = &$array[substr($name, $pos + 1, $end - $pos - 1)];
+            $offset = $end;
+          }
+          else
+          {
+            return $default;
+          }
         }
 
         return $array;
@@ -497,8 +497,15 @@ class sfToolkit
           {
             return $default;
           }
-          $array = $array[substr($name, $pos + 1, $end - $pos - 1)];
-          $offset = $end;
+          else if (is_array($array))
+          {
+            $array = $array[substr($name, $pos + 1, $end - $pos - 1)];
+            $offset = $end;
+          }
+          else
+          {
+            return $default;
+          }
         }
 
         return $array;

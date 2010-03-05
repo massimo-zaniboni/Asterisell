@@ -17,7 +17,7 @@ all:
 
     unavailable_module:   exception   # To be called when a user requests a page
     unavailable_action:   error404  # From an application disabled via the available setting below
-
+    
 prod:
   .settings:
     error_reporting:        341
@@ -26,7 +26,9 @@ prod:
     i18n:                   on
     default_culture:        it_IT
     cache:                  on
-    use_process_cache:      on        
+    use_process_cache:      on
+    escaping_strategy:      bc 
+    escaping_method:        ESC_ENTITIES
 
 dev:
   .settings:

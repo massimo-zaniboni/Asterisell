@@ -1,0 +1,35 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArCustomRateForm
+    #
+    # do not change this class
+
+    theme:            default
+
+    # Add custom fields. These fields must be explicitely
+    # managed as "template/_custom_field_name.php"
+    # because the "ArCustomRateForm" contains only
+    # a reference to its parent/owner ArRate object.
+    #
+    fields:
+      owner_ar_rate_id: { name: The owner rate }
+      #
+      # this is the only real field of the class.
+
+      destination_type: { name: Call type, help: "The call will be classified as a call of this type." }
+
+      destination_channel: { name: Destination channel prefix, help: "This rate will be applied only to calls having a destination channel starting with this prefix. The prefix is case insensitive." }
+
+      disposition: { name: Disposition, help: "The call is recognized from this rate only if its disposition field has the specified value. " }
+
+      amaflags: { name: Amaflags, help: "The call is recognized from this rate only if its AMAFLAGS field has the specified value. " }
+
+    edit:
+      title: Initial Classification of Calls
+      actions:
+        _save: ~
+      display:
+        "Recognize calls with these field values": [_destination_channel, _disposition, _amaflags]
+
+        "How classify recognized calls": [_destination_type ]

@@ -73,6 +73,14 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 
 	
+	protected $destination_type = 0;
+
+
+	
+	protected $ar_asterisk_account_id;
+
+
+	
 	protected $income_ar_rate_id = 0;
 
 
@@ -94,6 +102,26 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 	
 	protected $ar_telephone_prefix_id;
+
+
+	
+	protected $cached_internal_telephone_number;
+
+
+	
+	protected $cached_external_telephone_number;
+
+
+	
+	protected $external_telephone_number_with_applied_portability;
+
+
+	
+	protected $cached_masked_external_telephone_number;
+
+
+	
+	protected $source_id = 0;
 
 
 	
@@ -245,6 +273,20 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	}
 
 	
+	public function getDestinationType()
+	{
+
+		return $this->destination_type;
+	}
+
+	
+	public function getArAsteriskAccountId()
+	{
+
+		return $this->ar_asterisk_account_id;
+	}
+
+	
 	public function getIncomeArRateId()
 	{
 
@@ -284,6 +326,41 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	{
 
 		return $this->ar_telephone_prefix_id;
+	}
+
+	
+	public function getCachedInternalTelephoneNumber()
+	{
+
+		return $this->cached_internal_telephone_number;
+	}
+
+	
+	public function getCachedExternalTelephoneNumber()
+	{
+
+		return $this->cached_external_telephone_number;
+	}
+
+	
+	public function getExternalTelephoneNumberWithAppliedPortability()
+	{
+
+		return $this->external_telephone_number_with_applied_portability;
+	}
+
+	
+	public function getCachedMaskedExternalTelephoneNumber()
+	{
+
+		return $this->cached_masked_external_telephone_number;
+	}
+
+	
+	public function getSourceId()
+	{
+
+		return $this->source_id;
 	}
 
 	
@@ -517,10 +594,6 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = CdrPeer::ACCOUNTCODE;
 		}
 
-		if ($this->aArAsteriskAccount !== null && $this->aArAsteriskAccount->getAccountCode() !== $v) {
-			$this->aArAsteriskAccount = null;
-		}
-
 	} 
 	
 	public function setUniqueid($v)
@@ -551,6 +624,42 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 		if ($this->userfield !== $v) {
 			$this->userfield = $v;
 			$this->modifiedColumns[] = CdrPeer::USERFIELD;
+		}
+
+	} 
+	
+	public function setDestinationType($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->destination_type !== $v || $v === 0) {
+			$this->destination_type = $v;
+			$this->modifiedColumns[] = CdrPeer::DESTINATION_TYPE;
+		}
+
+	} 
+	
+	public function setArAsteriskAccountId($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->ar_asterisk_account_id !== $v) {
+			$this->ar_asterisk_account_id = $v;
+			$this->modifiedColumns[] = CdrPeer::AR_ASTERISK_ACCOUNT_ID;
+		}
+
+		if ($this->aArAsteriskAccount !== null && $this->aArAsteriskAccount->getId() !== $v) {
+			$this->aArAsteriskAccount = null;
 		}
 
 	} 
@@ -663,6 +772,86 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setCachedInternalTelephoneNumber($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->cached_internal_telephone_number !== $v) {
+			$this->cached_internal_telephone_number = $v;
+			$this->modifiedColumns[] = CdrPeer::CACHED_INTERNAL_TELEPHONE_NUMBER;
+		}
+
+	} 
+	
+	public function setCachedExternalTelephoneNumber($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->cached_external_telephone_number !== $v) {
+			$this->cached_external_telephone_number = $v;
+			$this->modifiedColumns[] = CdrPeer::CACHED_EXTERNAL_TELEPHONE_NUMBER;
+		}
+
+	} 
+	
+	public function setExternalTelephoneNumberWithAppliedPortability($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->external_telephone_number_with_applied_portability !== $v) {
+			$this->external_telephone_number_with_applied_portability = $v;
+			$this->modifiedColumns[] = CdrPeer::EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY;
+		}
+
+	} 
+	
+	public function setCachedMaskedExternalTelephoneNumber($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->cached_masked_external_telephone_number !== $v) {
+			$this->cached_masked_external_telephone_number = $v;
+			$this->modifiedColumns[] = CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER;
+		}
+
+	} 
+	
+	public function setSourceId($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->source_id !== $v || $v === 0) {
+			$this->source_id = $v;
+			$this->modifiedColumns[] = CdrPeer::SOURCE_ID;
+		}
+
+	} 
+	
 	public function setId($v)
 	{
 
@@ -715,25 +904,39 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 			$this->userfield = $rs->getString($startcol + 15);
 
-			$this->income_ar_rate_id = $rs->getInt($startcol + 16);
+			$this->destination_type = $rs->getInt($startcol + 16);
 
-			$this->income = $rs->getInt($startcol + 17);
+			$this->ar_asterisk_account_id = $rs->getInt($startcol + 17);
 
-			$this->cost_ar_rate_id = $rs->getInt($startcol + 18);
+			$this->income_ar_rate_id = $rs->getInt($startcol + 18);
 
-			$this->vendor_id = $rs->getInt($startcol + 19);
+			$this->income = $rs->getInt($startcol + 19);
 
-			$this->cost = $rs->getInt($startcol + 20);
+			$this->cost_ar_rate_id = $rs->getInt($startcol + 20);
 
-			$this->ar_telephone_prefix_id = $rs->getInt($startcol + 21);
+			$this->vendor_id = $rs->getInt($startcol + 21);
 
-			$this->id = $rs->getInt($startcol + 22);
+			$this->cost = $rs->getInt($startcol + 22);
+
+			$this->ar_telephone_prefix_id = $rs->getInt($startcol + 23);
+
+			$this->cached_internal_telephone_number = $rs->getString($startcol + 24);
+
+			$this->cached_external_telephone_number = $rs->getString($startcol + 25);
+
+			$this->external_telephone_number_with_applied_portability = $rs->getString($startcol + 26);
+
+			$this->cached_masked_external_telephone_number = $rs->getString($startcol + 27);
+
+			$this->source_id = $rs->getInt($startcol + 28);
+
+			$this->id = $rs->getInt($startcol + 29);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 23; 
+						return $startcol + 30; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Cdr object", $e);
 		}
@@ -965,24 +1168,45 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 				return $this->getUserfield();
 				break;
 			case 16:
-				return $this->getIncomeArRateId();
+				return $this->getDestinationType();
 				break;
 			case 17:
-				return $this->getIncome();
+				return $this->getArAsteriskAccountId();
 				break;
 			case 18:
-				return $this->getCostArRateId();
+				return $this->getIncomeArRateId();
 				break;
 			case 19:
-				return $this->getVendorId();
+				return $this->getIncome();
 				break;
 			case 20:
-				return $this->getCost();
+				return $this->getCostArRateId();
 				break;
 			case 21:
-				return $this->getArTelephonePrefixId();
+				return $this->getVendorId();
 				break;
 			case 22:
+				return $this->getCost();
+				break;
+			case 23:
+				return $this->getArTelephonePrefixId();
+				break;
+			case 24:
+				return $this->getCachedInternalTelephoneNumber();
+				break;
+			case 25:
+				return $this->getCachedExternalTelephoneNumber();
+				break;
+			case 26:
+				return $this->getExternalTelephoneNumberWithAppliedPortability();
+				break;
+			case 27:
+				return $this->getCachedMaskedExternalTelephoneNumber();
+				break;
+			case 28:
+				return $this->getSourceId();
+				break;
+			case 29:
 				return $this->getId();
 				break;
 			default:
@@ -1011,13 +1235,20 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 			$keys[13] => $this->getAccountcode(),
 			$keys[14] => $this->getUniqueid(),
 			$keys[15] => $this->getUserfield(),
-			$keys[16] => $this->getIncomeArRateId(),
-			$keys[17] => $this->getIncome(),
-			$keys[18] => $this->getCostArRateId(),
-			$keys[19] => $this->getVendorId(),
-			$keys[20] => $this->getCost(),
-			$keys[21] => $this->getArTelephonePrefixId(),
-			$keys[22] => $this->getId(),
+			$keys[16] => $this->getDestinationType(),
+			$keys[17] => $this->getArAsteriskAccountId(),
+			$keys[18] => $this->getIncomeArRateId(),
+			$keys[19] => $this->getIncome(),
+			$keys[20] => $this->getCostArRateId(),
+			$keys[21] => $this->getVendorId(),
+			$keys[22] => $this->getCost(),
+			$keys[23] => $this->getArTelephonePrefixId(),
+			$keys[24] => $this->getCachedInternalTelephoneNumber(),
+			$keys[25] => $this->getCachedExternalTelephoneNumber(),
+			$keys[26] => $this->getExternalTelephoneNumberWithAppliedPortability(),
+			$keys[27] => $this->getCachedMaskedExternalTelephoneNumber(),
+			$keys[28] => $this->getSourceId(),
+			$keys[29] => $this->getId(),
 		);
 		return $result;
 	}
@@ -1082,24 +1313,45 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 				$this->setUserfield($value);
 				break;
 			case 16:
-				$this->setIncomeArRateId($value);
+				$this->setDestinationType($value);
 				break;
 			case 17:
-				$this->setIncome($value);
+				$this->setArAsteriskAccountId($value);
 				break;
 			case 18:
-				$this->setCostArRateId($value);
+				$this->setIncomeArRateId($value);
 				break;
 			case 19:
-				$this->setVendorId($value);
+				$this->setIncome($value);
 				break;
 			case 20:
-				$this->setCost($value);
+				$this->setCostArRateId($value);
 				break;
 			case 21:
-				$this->setArTelephonePrefixId($value);
+				$this->setVendorId($value);
 				break;
 			case 22:
+				$this->setCost($value);
+				break;
+			case 23:
+				$this->setArTelephonePrefixId($value);
+				break;
+			case 24:
+				$this->setCachedInternalTelephoneNumber($value);
+				break;
+			case 25:
+				$this->setCachedExternalTelephoneNumber($value);
+				break;
+			case 26:
+				$this->setExternalTelephoneNumberWithAppliedPortability($value);
+				break;
+			case 27:
+				$this->setCachedMaskedExternalTelephoneNumber($value);
+				break;
+			case 28:
+				$this->setSourceId($value);
+				break;
+			case 29:
 				$this->setId($value);
 				break;
 		} 	}
@@ -1125,13 +1377,20 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[13], $arr)) $this->setAccountcode($arr[$keys[13]]);
 		if (array_key_exists($keys[14], $arr)) $this->setUniqueid($arr[$keys[14]]);
 		if (array_key_exists($keys[15], $arr)) $this->setUserfield($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setIncomeArRateId($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setIncome($arr[$keys[17]]);
-		if (array_key_exists($keys[18], $arr)) $this->setCostArRateId($arr[$keys[18]]);
-		if (array_key_exists($keys[19], $arr)) $this->setVendorId($arr[$keys[19]]);
-		if (array_key_exists($keys[20], $arr)) $this->setCost($arr[$keys[20]]);
-		if (array_key_exists($keys[21], $arr)) $this->setArTelephonePrefixId($arr[$keys[21]]);
-		if (array_key_exists($keys[22], $arr)) $this->setId($arr[$keys[22]]);
+		if (array_key_exists($keys[16], $arr)) $this->setDestinationType($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setArAsteriskAccountId($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setIncomeArRateId($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setIncome($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setCostArRateId($arr[$keys[20]]);
+		if (array_key_exists($keys[21], $arr)) $this->setVendorId($arr[$keys[21]]);
+		if (array_key_exists($keys[22], $arr)) $this->setCost($arr[$keys[22]]);
+		if (array_key_exists($keys[23], $arr)) $this->setArTelephonePrefixId($arr[$keys[23]]);
+		if (array_key_exists($keys[24], $arr)) $this->setCachedInternalTelephoneNumber($arr[$keys[24]]);
+		if (array_key_exists($keys[25], $arr)) $this->setCachedExternalTelephoneNumber($arr[$keys[25]]);
+		if (array_key_exists($keys[26], $arr)) $this->setExternalTelephoneNumberWithAppliedPortability($arr[$keys[26]]);
+		if (array_key_exists($keys[27], $arr)) $this->setCachedMaskedExternalTelephoneNumber($arr[$keys[27]]);
+		if (array_key_exists($keys[28], $arr)) $this->setSourceId($arr[$keys[28]]);
+		if (array_key_exists($keys[29], $arr)) $this->setId($arr[$keys[29]]);
 	}
 
 	
@@ -1155,12 +1414,19 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(CdrPeer::ACCOUNTCODE)) $criteria->add(CdrPeer::ACCOUNTCODE, $this->accountcode);
 		if ($this->isColumnModified(CdrPeer::UNIQUEID)) $criteria->add(CdrPeer::UNIQUEID, $this->uniqueid);
 		if ($this->isColumnModified(CdrPeer::USERFIELD)) $criteria->add(CdrPeer::USERFIELD, $this->userfield);
+		if ($this->isColumnModified(CdrPeer::DESTINATION_TYPE)) $criteria->add(CdrPeer::DESTINATION_TYPE, $this->destination_type);
+		if ($this->isColumnModified(CdrPeer::AR_ASTERISK_ACCOUNT_ID)) $criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->ar_asterisk_account_id);
 		if ($this->isColumnModified(CdrPeer::INCOME_AR_RATE_ID)) $criteria->add(CdrPeer::INCOME_AR_RATE_ID, $this->income_ar_rate_id);
 		if ($this->isColumnModified(CdrPeer::INCOME)) $criteria->add(CdrPeer::INCOME, $this->income);
 		if ($this->isColumnModified(CdrPeer::COST_AR_RATE_ID)) $criteria->add(CdrPeer::COST_AR_RATE_ID, $this->cost_ar_rate_id);
 		if ($this->isColumnModified(CdrPeer::VENDOR_ID)) $criteria->add(CdrPeer::VENDOR_ID, $this->vendor_id);
 		if ($this->isColumnModified(CdrPeer::COST)) $criteria->add(CdrPeer::COST, $this->cost);
 		if ($this->isColumnModified(CdrPeer::AR_TELEPHONE_PREFIX_ID)) $criteria->add(CdrPeer::AR_TELEPHONE_PREFIX_ID, $this->ar_telephone_prefix_id);
+		if ($this->isColumnModified(CdrPeer::CACHED_INTERNAL_TELEPHONE_NUMBER)) $criteria->add(CdrPeer::CACHED_INTERNAL_TELEPHONE_NUMBER, $this->cached_internal_telephone_number);
+		if ($this->isColumnModified(CdrPeer::CACHED_EXTERNAL_TELEPHONE_NUMBER)) $criteria->add(CdrPeer::CACHED_EXTERNAL_TELEPHONE_NUMBER, $this->cached_external_telephone_number);
+		if ($this->isColumnModified(CdrPeer::EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY)) $criteria->add(CdrPeer::EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY, $this->external_telephone_number_with_applied_portability);
+		if ($this->isColumnModified(CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER)) $criteria->add(CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER, $this->cached_masked_external_telephone_number);
+		if ($this->isColumnModified(CdrPeer::SOURCE_ID)) $criteria->add(CdrPeer::SOURCE_ID, $this->source_id);
 		if ($this->isColumnModified(CdrPeer::ID)) $criteria->add(CdrPeer::ID, $this->id);
 
 		return $criteria;
@@ -1224,6 +1490,10 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 		$copyObj->setUserfield($this->userfield);
 
+		$copyObj->setDestinationType($this->destination_type);
+
+		$copyObj->setArAsteriskAccountId($this->ar_asterisk_account_id);
+
 		$copyObj->setIncomeArRateId($this->income_ar_rate_id);
 
 		$copyObj->setIncome($this->income);
@@ -1235,6 +1505,16 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 		$copyObj->setCost($this->cost);
 
 		$copyObj->setArTelephonePrefixId($this->ar_telephone_prefix_id);
+
+		$copyObj->setCachedInternalTelephoneNumber($this->cached_internal_telephone_number);
+
+		$copyObj->setCachedExternalTelephoneNumber($this->cached_external_telephone_number);
+
+		$copyObj->setExternalTelephoneNumberWithAppliedPortability($this->external_telephone_number_with_applied_portability);
+
+		$copyObj->setCachedMaskedExternalTelephoneNumber($this->cached_masked_external_telephone_number);
+
+		$copyObj->setSourceId($this->source_id);
 
 
 		$copyObj->setNew(true);
@@ -1266,9 +1546,9 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 
 		if ($v === null) {
-			$this->setAccountcode(NULL);
+			$this->setArAsteriskAccountId(NULL);
 		} else {
-			$this->setAccountcode($v->getAccountCode());
+			$this->setArAsteriskAccountId($v->getId());
 		}
 
 
@@ -1279,10 +1559,10 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	
 	public function getArAsteriskAccount($con = null)
 	{
-		if ($this->aArAsteriskAccount === null && (($this->accountcode !== "" && $this->accountcode !== null))) {
+		if ($this->aArAsteriskAccount === null && ($this->ar_asterisk_account_id !== null)) {
 						include_once 'lib/model/om/BaseArAsteriskAccountPeer.php';
 
-			$this->aArAsteriskAccount = ArAsteriskAccountPeer::retrieveByPK($this->accountcode, $con);
+			$this->aArAsteriskAccount = ArAsteriskAccountPeer::retrieveByPK($this->ar_asterisk_account_id, $con);
 
 			
 		}

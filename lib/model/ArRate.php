@@ -11,14 +11,20 @@ class ArRate extends BaseArRate
 {
 
   /**
-   * According ArRate schema documentation 
-   * ArRate can have ArRateCategoryId to no-null if it is applicable to a whole Customer category,
-   * or otherwise ArRate must have ArPartyId to no-null if it is applied to a vendor.
+   * @return "C" if the rate is applicable to customers of a certain category,
+   *         "V" if the rate is applied to a vendor,
+   *         "S" if the rate is applied to unprocessed CDRs.
+   *         "X" if the rate has bad format.
+   *
    */
   public function getCustomerOrVendor() {
     if (is_null($this->getArRateCategoryId())) {
       if (is_null($this->getArPartyId())) {
-	trigger_error(__("ArRate with id ").$this->getId().__(" has bad format."));
+        if ($this->getDestinationType() == DestinationType::unprocessed) {
+          return "S";
+        } else {
+          return "X";
+        }
       } else {
 	return "V";
       }
@@ -26,18 +32,22 @@ class ArRate extends BaseArRate
       if (is_null($this->getArPartyId())) {
 	return "C";
       } else {
-	trigger_error(__("ArRate with id ").$this->getId().__(" has bad format."));
+          return "X";
       }
     }
   }
 
   public function getCVName() {
-    if ($this->getCustomerOrVendor() == 'C') {
+    $c = $this->getCustomerOrVendor();
+
+    if ($c == 'C') {
       return __("Customer");
-    } else if ($this->getCustomerOrVendor() == 'V') {
+    } else if ($c == 'V') {
       return __("Vendor");
-    } else {
-      trigger_error(__("ArRate with id ").$this->getId().__(" has bad format."));
+    } else if ($c == "S") {
+      return __("Process CDR");
+    } else { 
+      return __("Bad Forma!!");
     }
   }
 

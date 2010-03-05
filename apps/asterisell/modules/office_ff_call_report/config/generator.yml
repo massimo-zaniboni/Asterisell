@@ -1,0 +1,74 @@
+
+################################################################
+#!!!                                                        !!!#
+#!!! WARNING: This file is automatic generated.             !!!#
+#!!!                                                        !!!#
+#!!! In order to modify this file change the content of     !!!#
+#!!!                                                        !!!#
+#!!!    /module_template/call_report_template               !!!#
+#!!!                                                        !!!#
+#!!! and execute                                            !!!#
+#!!!                                                        !!!#
+#!!!    sh generate_modules.sh                              !!!#     
+#!!!                                                        !!!#
+################################################################
+
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      Cdr
+
+    theme:            default
+
+    # NOTE: if you update list remember to update templates/exportToCsvSuccess.php
+    #
+    list:
+      max_per_page: 60
+      peer_method: doSelectJoinAllExceptVendorUsingCalldateIndex
+      #
+      # WARNING: this setting is without any real effect
+      # because it is overwritten from "CdrPeer::forceMyProxyConnection" 
+      # method.
+
+      title: ''
+
+      actions: {}
+
+      fields:
+        internal_telephone_number: { name: Account, help: "The internal VoIP account that is target or source of the incoming / outgoing call." }
+        external_location:       { name: Location, help: "Where resides the called / calling external telephone number." }
+        external_connection_type:{ name: Connection, help: "The technology used for telephone connection: fixed line, mobile line and so on." }
+        owner:                   { name: Customer, help: "The owner of called / calling internal VoIP account." }
+        office:                  { name: Office, help: "The office where resides the called / calling internal VoIP account." }
+        calldate:                { name: Date, sort_on_column: calldate }
+        mycalldate:              { name: Date, sort_on_column: calldate, help: "The starting timestamp of the call." }  
+        external_telephone_number: { name: Tel. Nr., sort_on_column: dst, help: "Called / calling external telephone number." }
+        billmin:                 { name: Duration, sort_on_column: billsec, help: "Call duration." }
+        direction:               { name: Dir., help: "The direction of the call: incoming, outcomig or internal." }
+        my_income_from_customer: { name: Cost, sort_on_column: income, help: "The cost of the call."  }
+        my_vendor_cost:          { name: Cost, sort_on_column: cost, help: "The amount requested from the telephone vendor in order to route the call." }
+        my_vendor:               { name: Vendor, help: "The telephone vendor that routed / managed the call." }
+        earn:                    { name: Earn, help: "The difference between the income and the cost of the call." }
+        filter_on_party:         { name: Customer, filter_criteria_disabled: true }
+        filter_on_office:        { name: Office, filter_criteria_disabled: true }
+        filter_on_account:       { name: "VoIP account", filter_criteria_disabled: true }
+        filter_on_timeframe:     { name: "Time frame", filter_criteria_disabled: true }
+        filter_on_calldate_from: { name: "From (inclusive)", filter_criteria_disabled: true }
+        filter_on_calldate_to:   { name: "To (exclusive)", filter_criteria_disabled: true }
+        filter_on_external_telephone_number:  { name: "External tel.number prefix", filter_criteria_disabled: true }
+        filter_on_vendor:        { name: Vendor, filter_criteria_disabled: true }
+        filter_on_dst_operator_type:  { name: "Tel. number connection type", filter_criteria_disabled: true }
+        filter_on_dst_geographic_location: { name: "Tel. number location", filter_criteria_disabled: true }
+        filter_on_destination_type:  { name: "Call Type", filter_criteria_disabled: true }
+        ar_call_end_point_type_id: { name: "Tel. Operator"    }
+        end_point_type:            { name: "Tel. Number Type" }
+
+      sort: [calldate, desc]
+
+      display: [_external_telephone_number, _external_location, _external_connection_type, _mycalldate, _billmin, _my_income_from_customer]
+
+      # NOTE: if you change the type of filters to enable/disable according the type of user
+      # remember to update in the same wasy also actions.php, addFiltersCriteria function.
+      #
+      filters: [    _filter_on_timeframe, _filter_on_calldate_from, _filter_on_calldate_to, _filter_on_dst_operator_type, _filter_on_dst_geographic_location, _filter_on_external_telephone_number ]
+

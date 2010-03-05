@@ -3,8 +3,8 @@
 //
 $phpClassOptions = sfConfig::get('app_available_phpRates');
 $options = array();
-foreach($phpClassOptions as $rateName => $rateDescription) {
-  $options[$rateName] = __($rateDescription);
+foreach($phpClassOptions as $rateClassName => $rateDescription) {
+  $options[$rateClassName] = $rateDescription;
 }
 // Select in the list the current rate method.
 //
@@ -32,7 +32,7 @@ if (is_null($ar_rate->getPhpClassSerialization())) {
 }
 echo select_tag('php_rate_class_name', $optionsForSelect);
 echo '  ';
-echo submit_tag(__('Apply'), array('name' => 'change_rate_type'));
+echo submit_tag(__('Apply / Reset'), array('name' => 'change_rate_type'));
 echo '<br/>';
 echo '<br/>';
 if (is_null($rate)) {

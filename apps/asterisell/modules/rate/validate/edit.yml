@@ -7,7 +7,7 @@ fields:
       msg: Required
 
 # XXX does not work
-# It is substitute from a test during phpRateEngine
+# It is substitute from a test during RateCalls
 #
 #  ar_rate{ar_party_id}:
 #    ExactlyOneNotNullValidator:

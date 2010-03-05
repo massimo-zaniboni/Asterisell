@@ -9,7 +9,7 @@ default:
     keywords:     asterisell, asterisk, symfony
     language:     en
 
-  stylesheets:    [asterisell]
+  stylesheets:    [asterisell, appmenu_style]
 
   javascripts:    [ ]
 

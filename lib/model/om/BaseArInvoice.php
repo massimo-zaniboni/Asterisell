@@ -17,6 +17,14 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 
 	
+	protected $type = 'C';
+
+
+	
+	protected $is_revenue_sharing = false;
+
+
+	
 	protected $nr;
 
 
@@ -53,11 +61,15 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 
 	
-	protected $txt_details;
+	protected $pdf_invoice;
 
 
 	
-	protected $pdf_invoice;
+	protected $email_subject;
+
+
+	
+	protected $email_message;
 
 
 	
@@ -84,6 +96,20 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	{
 
 		return $this->ar_party_id;
+	}
+
+	
+	public function getType()
+	{
+
+		return $this->type;
+	}
+
+	
+	public function getIsRevenueSharing()
+	{
+
+		return $this->is_revenue_sharing;
 	}
 
 	
@@ -195,17 +221,24 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getTxtDetails()
-	{
-
-		return $this->txt_details;
-	}
-
-	
 	public function getPdfInvoice()
 	{
 
 		return $this->pdf_invoice;
+	}
+
+	
+	public function getEmailSubject()
+	{
+
+		return $this->email_subject;
+	}
+
+	
+	public function getEmailMessage()
+	{
+
+		return $this->email_message;
 	}
 
 	
@@ -248,6 +281,32 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 		if ($this->aArParty !== null && $this->aArParty->getId() !== $v) {
 			$this->aArParty = null;
+		}
+
+	} 
+	
+	public function setType($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->type !== $v || $v === 'C') {
+			$this->type = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::TYPE;
+		}
+
+	} 
+	
+	public function setIsRevenueSharing($v)
+	{
+
+		if ($this->is_revenue_sharing !== $v || $v === false) {
+			$this->is_revenue_sharing = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::IS_REVENUE_SHARING;
 		}
 
 	} 
@@ -399,23 +458,28 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setTxtDetails($v)
+	public function setPdfInvoice($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+								if ($v instanceof Lob && $v === $this->pdf_invoice) {
+			$changed = $v->isModified();
+		} else {
+			$changed = ($this->pdf_invoice !== $v);
 		}
-
-		if ($this->txt_details !== $v) {
-			$this->txt_details = $v;
-			$this->modifiedColumns[] = ArInvoicePeer::TXT_DETAILS;
+		if ($changed) {
+			if ( !($v instanceof Lob) ) {
+				$obj = new Blob();
+				$obj->setContents($v);
+			} else {
+				$obj = $v;
+			}
+			$this->pdf_invoice = $obj;
+			$this->modifiedColumns[] = ArInvoicePeer::PDF_INVOICE;
 		}
 
 	} 
 	
-	public function setPdfInvoice($v)
+	public function setEmailSubject($v)
 	{
 
 		
@@ -424,9 +488,25 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 			$v = (string) $v; 
 		}
 
-		if ($this->pdf_invoice !== $v) {
-			$this->pdf_invoice = $v;
-			$this->modifiedColumns[] = ArInvoicePeer::PDF_INVOICE;
+		if ($this->email_subject !== $v) {
+			$this->email_subject = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::EMAIL_SUBJECT;
+		}
+
+	} 
+	
+	public function setEmailMessage($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->email_message !== $v) {
+			$this->email_message = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::EMAIL_MESSAGE;
 		}
 
 	} 
@@ -449,35 +529,41 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 			$this->ar_party_id = $rs->getInt($startcol + 1);
 
-			$this->nr = $rs->getString($startcol + 2);
+			$this->type = $rs->getString($startcol + 2);
 
-			$this->invoice_date = $rs->getDate($startcol + 3, null);
+			$this->is_revenue_sharing = $rs->getBoolean($startcol + 3);
 
-			$this->ar_cdr_from = $rs->getDate($startcol + 4, null);
+			$this->nr = $rs->getString($startcol + 4);
 
-			$this->ar_cdr_to = $rs->getDate($startcol + 5, null);
+			$this->invoice_date = $rs->getDate($startcol + 5, null);
 
-			$this->total_without_tax = $rs->getInt($startcol + 6);
+			$this->ar_cdr_from = $rs->getDate($startcol + 6, null);
 
-			$this->vat_perc = $rs->getInt($startcol + 7);
+			$this->ar_cdr_to = $rs->getDate($startcol + 7, null);
 
-			$this->total_vat = $rs->getInt($startcol + 8);
+			$this->total_without_tax = $rs->getInt($startcol + 8);
 
-			$this->total = $rs->getInt($startcol + 9);
+			$this->vat_perc = $rs->getInt($startcol + 9);
 
-			$this->html_details = $rs->getString($startcol + 10);
+			$this->total_vat = $rs->getInt($startcol + 10);
 
-			$this->txt_details = $rs->getString($startcol + 11);
+			$this->total = $rs->getInt($startcol + 11);
 
-			$this->pdf_invoice = $rs->getString($startcol + 12);
+			$this->html_details = $rs->getString($startcol + 12);
 
-			$this->already_sent = $rs->getBoolean($startcol + 13);
+			$this->pdf_invoice = $rs->getBlob($startcol + 13);
+
+			$this->email_subject = $rs->getString($startcol + 14);
+
+			$this->email_message = $rs->getString($startcol + 15);
+
+			$this->already_sent = $rs->getBoolean($startcol + 16);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 14; 
+						return $startcol + 17; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArInvoice object", $e);
 		}
@@ -628,39 +714,48 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				return $this->getArPartyId();
 				break;
 			case 2:
-				return $this->getNr();
+				return $this->getType();
 				break;
 			case 3:
-				return $this->getInvoiceDate();
+				return $this->getIsRevenueSharing();
 				break;
 			case 4:
-				return $this->getArCdrFrom();
+				return $this->getNr();
 				break;
 			case 5:
-				return $this->getArCdrTo();
+				return $this->getInvoiceDate();
 				break;
 			case 6:
-				return $this->getTotalWithoutTax();
+				return $this->getArCdrFrom();
 				break;
 			case 7:
-				return $this->getVatPerc();
+				return $this->getArCdrTo();
 				break;
 			case 8:
-				return $this->getTotalVat();
+				return $this->getTotalWithoutTax();
 				break;
 			case 9:
-				return $this->getTotal();
+				return $this->getVatPerc();
 				break;
 			case 10:
-				return $this->getHtmlDetails();
+				return $this->getTotalVat();
 				break;
 			case 11:
-				return $this->getTxtDetails();
+				return $this->getTotal();
 				break;
 			case 12:
-				return $this->getPdfInvoice();
+				return $this->getHtmlDetails();
 				break;
 			case 13:
+				return $this->getPdfInvoice();
+				break;
+			case 14:
+				return $this->getEmailSubject();
+				break;
+			case 15:
+				return $this->getEmailMessage();
+				break;
+			case 16:
 				return $this->getAlreadySent();
 				break;
 			default:
@@ -675,18 +770,21 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getArPartyId(),
-			$keys[2] => $this->getNr(),
-			$keys[3] => $this->getInvoiceDate(),
-			$keys[4] => $this->getArCdrFrom(),
-			$keys[5] => $this->getArCdrTo(),
-			$keys[6] => $this->getTotalWithoutTax(),
-			$keys[7] => $this->getVatPerc(),
-			$keys[8] => $this->getTotalVat(),
-			$keys[9] => $this->getTotal(),
-			$keys[10] => $this->getHtmlDetails(),
-			$keys[11] => $this->getTxtDetails(),
-			$keys[12] => $this->getPdfInvoice(),
-			$keys[13] => $this->getAlreadySent(),
+			$keys[2] => $this->getType(),
+			$keys[3] => $this->getIsRevenueSharing(),
+			$keys[4] => $this->getNr(),
+			$keys[5] => $this->getInvoiceDate(),
+			$keys[6] => $this->getArCdrFrom(),
+			$keys[7] => $this->getArCdrTo(),
+			$keys[8] => $this->getTotalWithoutTax(),
+			$keys[9] => $this->getVatPerc(),
+			$keys[10] => $this->getTotalVat(),
+			$keys[11] => $this->getTotal(),
+			$keys[12] => $this->getHtmlDetails(),
+			$keys[13] => $this->getPdfInvoice(),
+			$keys[14] => $this->getEmailSubject(),
+			$keys[15] => $this->getEmailMessage(),
+			$keys[16] => $this->getAlreadySent(),
 		);
 		return $result;
 	}
@@ -709,39 +807,48 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				$this->setArPartyId($value);
 				break;
 			case 2:
-				$this->setNr($value);
+				$this->setType($value);
 				break;
 			case 3:
-				$this->setInvoiceDate($value);
+				$this->setIsRevenueSharing($value);
 				break;
 			case 4:
-				$this->setArCdrFrom($value);
+				$this->setNr($value);
 				break;
 			case 5:
-				$this->setArCdrTo($value);
+				$this->setInvoiceDate($value);
 				break;
 			case 6:
-				$this->setTotalWithoutTax($value);
+				$this->setArCdrFrom($value);
 				break;
 			case 7:
-				$this->setVatPerc($value);
+				$this->setArCdrTo($value);
 				break;
 			case 8:
-				$this->setTotalVat($value);
+				$this->setTotalWithoutTax($value);
 				break;
 			case 9:
-				$this->setTotal($value);
+				$this->setVatPerc($value);
 				break;
 			case 10:
-				$this->setHtmlDetails($value);
+				$this->setTotalVat($value);
 				break;
 			case 11:
-				$this->setTxtDetails($value);
+				$this->setTotal($value);
 				break;
 			case 12:
-				$this->setPdfInvoice($value);
+				$this->setHtmlDetails($value);
 				break;
 			case 13:
+				$this->setPdfInvoice($value);
+				break;
+			case 14:
+				$this->setEmailSubject($value);
+				break;
+			case 15:
+				$this->setEmailMessage($value);
+				break;
+			case 16:
 				$this->setAlreadySent($value);
 				break;
 		} 	}
@@ -753,18 +860,21 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setArPartyId($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setNr($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setInvoiceDate($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setArCdrFrom($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setArCdrTo($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setTotalWithoutTax($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setVatPerc($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setTotalVat($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setTotal($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setHtmlDetails($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setTxtDetails($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setPdfInvoice($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setAlreadySent($arr[$keys[13]]);
+		if (array_key_exists($keys[2], $arr)) $this->setType($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setIsRevenueSharing($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setNr($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setInvoiceDate($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setArCdrFrom($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setArCdrTo($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setTotalWithoutTax($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setVatPerc($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setTotalVat($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setTotal($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setHtmlDetails($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setPdfInvoice($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setEmailSubject($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setEmailMessage($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setAlreadySent($arr[$keys[16]]);
 	}
 
 	
@@ -774,6 +884,8 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 		if ($this->isColumnModified(ArInvoicePeer::ID)) $criteria->add(ArInvoicePeer::ID, $this->id);
 		if ($this->isColumnModified(ArInvoicePeer::AR_PARTY_ID)) $criteria->add(ArInvoicePeer::AR_PARTY_ID, $this->ar_party_id);
+		if ($this->isColumnModified(ArInvoicePeer::TYPE)) $criteria->add(ArInvoicePeer::TYPE, $this->type);
+		if ($this->isColumnModified(ArInvoicePeer::IS_REVENUE_SHARING)) $criteria->add(ArInvoicePeer::IS_REVENUE_SHARING, $this->is_revenue_sharing);
 		if ($this->isColumnModified(ArInvoicePeer::NR)) $criteria->add(ArInvoicePeer::NR, $this->nr);
 		if ($this->isColumnModified(ArInvoicePeer::INVOICE_DATE)) $criteria->add(ArInvoicePeer::INVOICE_DATE, $this->invoice_date);
 		if ($this->isColumnModified(ArInvoicePeer::AR_CDR_FROM)) $criteria->add(ArInvoicePeer::AR_CDR_FROM, $this->ar_cdr_from);
@@ -783,8 +895,9 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArInvoicePeer::TOTAL_VAT)) $criteria->add(ArInvoicePeer::TOTAL_VAT, $this->total_vat);
 		if ($this->isColumnModified(ArInvoicePeer::TOTAL)) $criteria->add(ArInvoicePeer::TOTAL, $this->total);
 		if ($this->isColumnModified(ArInvoicePeer::HTML_DETAILS)) $criteria->add(ArInvoicePeer::HTML_DETAILS, $this->html_details);
-		if ($this->isColumnModified(ArInvoicePeer::TXT_DETAILS)) $criteria->add(ArInvoicePeer::TXT_DETAILS, $this->txt_details);
 		if ($this->isColumnModified(ArInvoicePeer::PDF_INVOICE)) $criteria->add(ArInvoicePeer::PDF_INVOICE, $this->pdf_invoice);
+		if ($this->isColumnModified(ArInvoicePeer::EMAIL_SUBJECT)) $criteria->add(ArInvoicePeer::EMAIL_SUBJECT, $this->email_subject);
+		if ($this->isColumnModified(ArInvoicePeer::EMAIL_MESSAGE)) $criteria->add(ArInvoicePeer::EMAIL_MESSAGE, $this->email_message);
 		if ($this->isColumnModified(ArInvoicePeer::ALREADY_SENT)) $criteria->add(ArInvoicePeer::ALREADY_SENT, $this->already_sent);
 
 		return $criteria;
@@ -818,6 +931,10 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 		$copyObj->setArPartyId($this->ar_party_id);
 
+		$copyObj->setType($this->type);
+
+		$copyObj->setIsRevenueSharing($this->is_revenue_sharing);
+
 		$copyObj->setNr($this->nr);
 
 		$copyObj->setInvoiceDate($this->invoice_date);
@@ -836,9 +953,11 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 		$copyObj->setHtmlDetails($this->html_details);
 
-		$copyObj->setTxtDetails($this->txt_details);
-
 		$copyObj->setPdfInvoice($this->pdf_invoice);
+
+		$copyObj->setEmailSubject($this->email_subject);
+
+		$copyObj->setEmailMessage($this->email_message);
 
 		$copyObj->setAlreadySent($this->already_sent);
 

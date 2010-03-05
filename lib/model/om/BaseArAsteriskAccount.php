@@ -21,22 +21,16 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 
 	
-	protected $ar_party_id;
+	protected $ar_office_id;
 
 	
-	protected $aArParty;
+	protected $aArOffice;
 
 	
 	protected $collCdrs;
 
 	
 	protected $lastCdrCriteria = null;
-
-	
-	protected $collArWebAccounts;
-
-	
-	protected $lastArWebAccountCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -66,10 +60,10 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getArPartyId()
+	public function getArOfficeId()
 	{
 
-		return $this->ar_party_id;
+		return $this->ar_office_id;
 	}
 
 	
@@ -121,7 +115,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setArPartyId($v)
+	public function setArOfficeId($v)
 	{
 
 		
@@ -130,13 +124,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			$v = (int) $v;
 		}
 
-		if ($this->ar_party_id !== $v) {
-			$this->ar_party_id = $v;
-			$this->modifiedColumns[] = ArAsteriskAccountPeer::AR_PARTY_ID;
+		if ($this->ar_office_id !== $v) {
+			$this->ar_office_id = $v;
+			$this->modifiedColumns[] = ArAsteriskAccountPeer::AR_OFFICE_ID;
 		}
 
-		if ($this->aArParty !== null && $this->aArParty->getId() !== $v) {
-			$this->aArParty = null;
+		if ($this->aArOffice !== null && $this->aArOffice->getId() !== $v) {
+			$this->aArOffice = null;
 		}
 
 	} 
@@ -151,7 +145,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 			$this->account_code = $rs->getString($startcol + 2);
 
-			$this->ar_party_id = $rs->getInt($startcol + 3);
+			$this->ar_office_id = $rs->getInt($startcol + 3);
 
 			$this->resetModified();
 
@@ -215,11 +209,11 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 
 												
-			if ($this->aArParty !== null) {
-				if ($this->aArParty->isModified()) {
-					$affectedRows += $this->aArParty->save($con);
+			if ($this->aArOffice !== null) {
+				if ($this->aArOffice->isModified()) {
+					$affectedRows += $this->aArOffice->save($con);
 				}
-				$this->setArParty($this->aArParty);
+				$this->setArOffice($this->aArOffice);
 			}
 
 
@@ -236,14 +230,6 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 			if ($this->collCdrs !== null) {
 				foreach($this->collCdrs as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collArWebAccounts !== null) {
-				foreach($this->collArWebAccounts as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -287,9 +273,9 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 
 												
-			if ($this->aArParty !== null) {
-				if (!$this->aArParty->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aArParty->getValidationFailures());
+			if ($this->aArOffice !== null) {
+				if (!$this->aArOffice->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArOffice->getValidationFailures());
 				}
 			}
 
@@ -301,14 +287,6 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 				if ($this->collCdrs !== null) {
 					foreach($this->collCdrs as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collArWebAccounts !== null) {
-					foreach($this->collArWebAccounts as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -343,7 +321,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 				return $this->getAccountCode();
 				break;
 			case 3:
-				return $this->getArPartyId();
+				return $this->getArOfficeId();
 				break;
 			default:
 				return null;
@@ -358,7 +336,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getAccountCode(),
-			$keys[3] => $this->getArPartyId(),
+			$keys[3] => $this->getArOfficeId(),
 		);
 		return $result;
 	}
@@ -384,7 +362,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 				$this->setAccountCode($value);
 				break;
 			case 3:
-				$this->setArPartyId($value);
+				$this->setArOfficeId($value);
 				break;
 		} 	}
 
@@ -396,7 +374,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setAccountCode($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setArPartyId($arr[$keys[3]]);
+		if (array_key_exists($keys[3], $arr)) $this->setArOfficeId($arr[$keys[3]]);
 	}
 
 	
@@ -407,7 +385,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArAsteriskAccountPeer::ID)) $criteria->add(ArAsteriskAccountPeer::ID, $this->id);
 		if ($this->isColumnModified(ArAsteriskAccountPeer::NAME)) $criteria->add(ArAsteriskAccountPeer::NAME, $this->name);
 		if ($this->isColumnModified(ArAsteriskAccountPeer::ACCOUNT_CODE)) $criteria->add(ArAsteriskAccountPeer::ACCOUNT_CODE, $this->account_code);
-		if ($this->isColumnModified(ArAsteriskAccountPeer::AR_PARTY_ID)) $criteria->add(ArAsteriskAccountPeer::AR_PARTY_ID, $this->ar_party_id);
+		if ($this->isColumnModified(ArAsteriskAccountPeer::AR_OFFICE_ID)) $criteria->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $this->ar_office_id);
 
 		return $criteria;
 	}
@@ -442,7 +420,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 		$copyObj->setAccountCode($this->account_code);
 
-		$copyObj->setArPartyId($this->ar_party_id);
+		$copyObj->setArOfficeId($this->ar_office_id);
 
 
 		if ($deepCopy) {
@@ -450,10 +428,6 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 			foreach($this->getCdrs() as $relObj) {
 				$copyObj->addCdr($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getArWebAccounts() as $relObj) {
-				$copyObj->addArWebAccount($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -482,32 +456,32 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 	}
 
 	
-	public function setArParty($v)
+	public function setArOffice($v)
 	{
 
 
 		if ($v === null) {
-			$this->setArPartyId(NULL);
+			$this->setArOfficeId(NULL);
 		} else {
-			$this->setArPartyId($v->getId());
+			$this->setArOfficeId($v->getId());
 		}
 
 
-		$this->aArParty = $v;
+		$this->aArOffice = $v;
 	}
 
 
 	
-	public function getArParty($con = null)
+	public function getArOffice($con = null)
 	{
-		if ($this->aArParty === null && ($this->ar_party_id !== null)) {
-						include_once 'lib/model/om/BaseArPartyPeer.php';
+		if ($this->aArOffice === null && ($this->ar_office_id !== null)) {
+						include_once 'lib/model/om/BaseArOfficePeer.php';
 
-			$this->aArParty = ArPartyPeer::retrieveByPK($this->ar_party_id, $con);
+			$this->aArOffice = ArOfficePeer::retrieveByPK($this->ar_office_id, $con);
 
 			
 		}
-		return $this->aArParty;
+		return $this->aArOffice;
 	}
 
 	
@@ -535,7 +509,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			   $this->collCdrs = array();
 			} else {
 
-				$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+				$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 				CdrPeer::addSelectColumns($criteria);
 				$this->collCdrs = CdrPeer::doSelect($criteria, $con);
@@ -544,7 +518,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+				$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 				CdrPeer::addSelectColumns($criteria);
 				if (!isset($this->lastCdrCriteria) || !$this->lastCdrCriteria->equals($criteria)) {
@@ -568,7 +542,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+		$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 		return CdrPeer::doCount($criteria, $distinct, $con);
 	}
@@ -598,13 +572,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 				$this->collCdrs = array();
 			} else {
 
-				$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+				$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 				$this->collCdrs = CdrPeer::doSelectJoinArTelephonePrefix($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+			$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 			if (!isset($this->lastCdrCriteria) || !$this->lastCdrCriteria->equals($criteria)) {
 				$this->collCdrs = CdrPeer::doSelectJoinArTelephonePrefix($criteria, $con);
@@ -633,13 +607,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 				$this->collCdrs = array();
 			} else {
 
-				$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+				$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 				$this->collCdrs = CdrPeer::doSelectJoinArRateRelatedByIncomeArRateId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+			$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 			if (!isset($this->lastCdrCriteria) || !$this->lastCdrCriteria->equals($criteria)) {
 				$this->collCdrs = CdrPeer::doSelectJoinArRateRelatedByIncomeArRateId($criteria, $con);
@@ -668,13 +642,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 				$this->collCdrs = array();
 			} else {
 
-				$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+				$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 				$this->collCdrs = CdrPeer::doSelectJoinArRateRelatedByCostArRateId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(CdrPeer::ACCOUNTCODE, $this->getAccountCode());
+			$criteria->add(CdrPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
 
 			if (!isset($this->lastCdrCriteria) || !$this->lastCdrCriteria->equals($criteria)) {
 				$this->collCdrs = CdrPeer::doSelectJoinArRateRelatedByCostArRateId($criteria, $con);
@@ -683,111 +657,6 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		$this->lastCdrCriteria = $criteria;
 
 		return $this->collCdrs;
-	}
-
-	
-	public function initArWebAccounts()
-	{
-		if ($this->collArWebAccounts === null) {
-			$this->collArWebAccounts = array();
-		}
-	}
-
-	
-	public function getArWebAccounts($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseArWebAccountPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collArWebAccounts === null) {
-			if ($this->isNew()) {
-			   $this->collArWebAccounts = array();
-			} else {
-
-				$criteria->add(ArWebAccountPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
-
-				ArWebAccountPeer::addSelectColumns($criteria);
-				$this->collArWebAccounts = ArWebAccountPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ArWebAccountPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
-
-				ArWebAccountPeer::addSelectColumns($criteria);
-				if (!isset($this->lastArWebAccountCriteria) || !$this->lastArWebAccountCriteria->equals($criteria)) {
-					$this->collArWebAccounts = ArWebAccountPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastArWebAccountCriteria = $criteria;
-		return $this->collArWebAccounts;
-	}
-
-	
-	public function countArWebAccounts($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseArWebAccountPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ArWebAccountPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
-
-		return ArWebAccountPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addArWebAccount(ArWebAccount $l)
-	{
-		$this->collArWebAccounts[] = $l;
-		$l->setArAsteriskAccount($this);
-	}
-
-
-	
-	public function getArWebAccountsJoinArParty($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseArWebAccountPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collArWebAccounts === null) {
-			if ($this->isNew()) {
-				$this->collArWebAccounts = array();
-			} else {
-
-				$criteria->add(ArWebAccountPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
-
-				$this->collArWebAccounts = ArWebAccountPeer::doSelectJoinArParty($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(ArWebAccountPeer::AR_ASTERISK_ACCOUNT_ID, $this->getId());
-
-			if (!isset($this->lastArWebAccountCriteria) || !$this->lastArWebAccountCriteria->equals($criteria)) {
-				$this->collArWebAccounts = ArWebAccountPeer::doSelectJoinArParty($criteria, $con);
-			}
-		}
-		$this->lastArWebAccountCriteria = $criteria;
-
-		return $this->collArWebAccounts;
 	}
 
 } 

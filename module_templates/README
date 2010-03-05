@@ -1,0 +1,3 @@
+In Asterisell there are modules like customer_call_report and admin_call_report that are very similar. In this directories there templates for these modules and then they are instantiated to their specific instance.
+
+

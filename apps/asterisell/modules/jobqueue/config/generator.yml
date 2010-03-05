@@ -1,0 +1,19 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArJobQueue
+    theme:            default
+
+    fields:
+      state:           { name: State } 
+      mystate:         { name: State } 
+      created_at:      { name: Created at }
+      end_at:          { name: Completed at }
+      description:     { name: Description }
+
+    list:
+      title: Jobs Log
+      actions: []
+      sort: [id, desc]
+      display: [=id, _mystate, created_at, description, end_at]
+      filters: [created_at, end_at]

@@ -19,7 +19,7 @@
  * @subpackage request
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfWebRequest.class.php 9959 2008-06-28 07:46:19Z fabien $
+ * @version    SVN: $Id: sfWebRequest.class.php 16347 2009-03-16 16:59:06Z fabien $
  */
 class sfWebRequest extends sfRequest
 {
@@ -374,12 +374,17 @@ class sfWebRequest extends sfRequest
   {
     $pathArray = $this->getPathInfoArray();
 
-    if ($this->isAbsUri())
+    // for IIS with rewrite module (IIFR, ISAPI Rewrite, ...)
+    if ('HTTP_X_REWRITE_URL' == sfConfig::get('sf_path_info_key'))
     {
-      return $pathArray['REQUEST_URI'];
+      $uri = isset($pathArray['HTTP_X_REWRITE_URL']) ? $pathArray['HTTP_X_REWRITE_URL'] : '';
+    }
+    else
+    {
+      $uri = isset($pathArray['REQUEST_URI']) ? $pathArray['REQUEST_URI'] : '';
     }
 
-    return $this->getUriPrefix().$pathArray['REQUEST_URI'];
+    return $this->isAbsUri() ? $uri : $this->getUriPrefix().$uri;
   }
 
   /**
@@ -413,10 +418,10 @@ class sfWebRequest extends sfRequest
       $protocol = 'http';
     }
 
-    $host = explode(":", $pathArray['HTTP_HOST']);
+    $host = explode(":", $this->getHost());
     if (count($host) == 1)
     {
-      $host[] = $pathArray['SERVER_PORT'];
+      $host[] = isset($pathArray['SERVER_PORT']) ? $pathArray['SERVER_PORT'] : '';
     }
 
     if ($host[1] == $standardPort || empty($host[1]))
@@ -450,7 +455,7 @@ class sfWebRequest extends sfRequest
         $pathInfo = preg_replace('/^'.preg_quote($script_name, '/').'/', '', $pathInfo);
         $prefix_name = preg_replace('#/[^/]+$#', '', $script_name);
         $pathInfo = preg_replace('/^'.preg_quote($prefix_name, '/').'/', '', $pathInfo);
-        $pathInfo = preg_replace('/'.preg_quote($pathArray['QUERY_STRING'], '/').'$/', '', $pathInfo);
+        $pathInfo = preg_replace('/\??'.preg_quote($pathArray['QUERY_STRING'], '/').'$/', '', $pathInfo);
       }
     }
     else

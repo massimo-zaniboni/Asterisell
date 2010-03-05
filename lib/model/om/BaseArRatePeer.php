@@ -13,7 +13,7 @@ abstract class BaseArRatePeer {
 	const CLASS_DEFAULT = 'lib.model.ArRate';
 
 	
-	const NUM_COLUMNS = 9;
+	const NUM_COLUMNS = 10;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -21,6 +21,9 @@ abstract class BaseArRatePeer {
 
 	
 	const ID = 'ar_rate.ID';
+
+	
+	const DESTINATION_TYPE = 'ar_rate.DESTINATION_TYPE';
 
 	
 	const IS_EXCEPTION = 'ar_rate.IS_EXCEPTION';
@@ -52,18 +55,18 @@ abstract class BaseArRatePeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'IsException', 'ArRateCategoryId', 'ArPartyId', 'StartTime', 'EndTime', 'PhpClassSerialization', 'UserInput', 'Note', ),
-		BasePeer::TYPE_COLNAME => array (ArRatePeer::ID, ArRatePeer::IS_EXCEPTION, ArRatePeer::AR_RATE_CATEGORY_ID, ArRatePeer::AR_PARTY_ID, ArRatePeer::START_TIME, ArRatePeer::END_TIME, ArRatePeer::PHP_CLASS_SERIALIZATION, ArRatePeer::USER_INPUT, ArRatePeer::NOTE, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'is_exception', 'ar_rate_category_id', 'ar_party_id', 'start_time', 'end_time', 'php_class_serialization', 'user_input', 'note', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'DestinationType', 'IsException', 'ArRateCategoryId', 'ArPartyId', 'StartTime', 'EndTime', 'PhpClassSerialization', 'UserInput', 'Note', ),
+		BasePeer::TYPE_COLNAME => array (ArRatePeer::ID, ArRatePeer::DESTINATION_TYPE, ArRatePeer::IS_EXCEPTION, ArRatePeer::AR_RATE_CATEGORY_ID, ArRatePeer::AR_PARTY_ID, ArRatePeer::START_TIME, ArRatePeer::END_TIME, ArRatePeer::PHP_CLASS_SERIALIZATION, ArRatePeer::USER_INPUT, ArRatePeer::NOTE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'destination_type', 'is_exception', 'ar_rate_category_id', 'ar_party_id', 'start_time', 'end_time', 'php_class_serialization', 'user_input', 'note', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'IsException' => 1, 'ArRateCategoryId' => 2, 'ArPartyId' => 3, 'StartTime' => 4, 'EndTime' => 5, 'PhpClassSerialization' => 6, 'UserInput' => 7, 'Note' => 8, ),
-		BasePeer::TYPE_COLNAME => array (ArRatePeer::ID => 0, ArRatePeer::IS_EXCEPTION => 1, ArRatePeer::AR_RATE_CATEGORY_ID => 2, ArRatePeer::AR_PARTY_ID => 3, ArRatePeer::START_TIME => 4, ArRatePeer::END_TIME => 5, ArRatePeer::PHP_CLASS_SERIALIZATION => 6, ArRatePeer::USER_INPUT => 7, ArRatePeer::NOTE => 8, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'is_exception' => 1, 'ar_rate_category_id' => 2, 'ar_party_id' => 3, 'start_time' => 4, 'end_time' => 5, 'php_class_serialization' => 6, 'user_input' => 7, 'note' => 8, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'DestinationType' => 1, 'IsException' => 2, 'ArRateCategoryId' => 3, 'ArPartyId' => 4, 'StartTime' => 5, 'EndTime' => 6, 'PhpClassSerialization' => 7, 'UserInput' => 8, 'Note' => 9, ),
+		BasePeer::TYPE_COLNAME => array (ArRatePeer::ID => 0, ArRatePeer::DESTINATION_TYPE => 1, ArRatePeer::IS_EXCEPTION => 2, ArRatePeer::AR_RATE_CATEGORY_ID => 3, ArRatePeer::AR_PARTY_ID => 4, ArRatePeer::START_TIME => 5, ArRatePeer::END_TIME => 6, ArRatePeer::PHP_CLASS_SERIALIZATION => 7, ArRatePeer::USER_INPUT => 8, ArRatePeer::NOTE => 9, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'destination_type' => 1, 'is_exception' => 2, 'ar_rate_category_id' => 3, 'ar_party_id' => 4, 'start_time' => 5, 'end_time' => 6, 'php_class_serialization' => 7, 'user_input' => 8, 'note' => 9, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	
@@ -118,6 +121,8 @@ abstract class BaseArRatePeer {
 	{
 
 		$criteria->addSelectColumn(ArRatePeer::ID);
+
+		$criteria->addSelectColumn(ArRatePeer::DESTINATION_TYPE);
 
 		$criteria->addSelectColumn(ArRatePeer::IS_EXCEPTION);
 

@@ -1,6 +1,12 @@
-= User Annotations =
-
 = Developer Annotations =
+
+== Add a Custom Rate Method ==
+
+  > cp -r apps/asterisell/modules/custom_demo_rate apps/asterisel/modules/my_custom_rate
+
+  * add the rate in the "apps/asterisell/config/app.yml";
+  * clear the Symfony cache ("./symfony cc");
+  * adapt the content of "my_custom_rate";
 
 == Retest ==
 
@@ -8,26 +14,33 @@ Apply instructions in MANUAL_TETING.txt
 
 == Create New Module ==
 
+  > ./symfony init-module asterisell <module-name>
+
 Make sure to add "security.yml" for each new module in order to prevent the accessing from normal users.
+
+With current version of Asterisell replace the header of "apps/asterisell/modules/<module-name>/actions/actions.class.php from something like
+
+  > class web_accountActions extends ... {
+
+to 
+
+  > class web_accountActions extends autoweb_accountActions {
+
+NOTA: deve corrispondere sia il nome della classe che quello del parent.
+
+Remove the content of "executeIndex" function.
 
 == Modify Database ==
 
-Modify config/schema.yml
+Modify 
 
-  > ./symfony propel-build-model
-  > ./symfony propel-build-sql
-  > mysqladmin -u root -p drop asterisell
-  > mysqladmin -u root -p create asterisell
-  > mysql -u root -p asterisell < data/sql/lib.model.schema.sql
-  > cd batch
-  > php create_root.php your-password
-  > cd ..
-  > ./symfony cc
+  > config/schema.yml
 
-See Asterisell installation instructions and Symfony documentation for more information.
+Execute
+
+  > cd scripts
+  > sh makedb.sh
   
-Check all modules affected from the changes and update them.
-
 == Freeze Symfony Framework ==
 
 How to create a new Symfony FREEZE from scratch.
@@ -52,21 +65,61 @@ Otherwise
 
 == Code Snippest ==
 
-=== Access Config File Options inside a Template ===
+=== Load Helpers inside Actions / Modules ===
 
-  sfConfig::get('app_currency')
- 
-Se si creano dei livelli come
+From action
 
-  available:
-    currencies:
-      - EUR
-      - USD
-vi si accede con 
+  sfLoader::loadHelpers(array('I18N', 'Debug', 'Asterisell'));
 
-  sfConfig::get('app_available_currencies')
+from Template
+
+  use_helper('Asterisell');
+
+== Low Level Access to DB ==
+
+  http://creole.phpdb.org/trac/wiki/Documentation/CreoleGuide
+
+== Adding User Messages ==
+
+In Action code:
+
+  $this->setFlash('notice', $message);
+  $this->setFlash('error', $message);
+
+Copy the 
+
+  _list_header.php 
+
+template of apps/asterisell/rate_by... in order to support the error message.
 
 == Adding Debug Log Messages ==
+
+Inside an action
+
+  $this->logMessage('help me!', 'info');
+
+Outside an action
+
+  sfContext::getInstance()->getLogger()->info($message);
+  sfContext::getInstance()->getLogger()->err($message);
+
+Inside a template if the erroe must be viewed on the web toolbar
+
+  echo log_message(...)
+
+== Simple Queries ==
+
+This retrieve the first record:
+
+    $c = new Criteria();
+    $c->add(ArParamsPeer::IS_DEFAULT, TRUE);
+    $params = ArParams::doSelectOne($c);
+
+This retrieve all the records:
+
+    $c = new Criteria();
+    $c->add(ArParamsPeer::IS_DEFAULT, TRUE);
+    $results = ArParamsPeer::doSelect($c);
 
 == Create Complex Custom Queries ==
 
@@ -76,13 +129,20 @@ See
 
 that creates a complex query.
 
-== New Releases ==
+== User Management ==
 
-  * execute automatic regression tests;
-  * execute manual regression tests;
-  * update web-site;
-  * put new commercial release on SWReg web site;
-  * check feed update;
-  * freshmeat update;
-  * put a new message on the mailing-list;
-  
+Study 
+
+  apps/asterisell/lib/myUser.class.php
+
+Access user data at run-time using:
+  * always: sfContext::getInstance()->getUser()
+  * in forms: $sf_user
+
+== Adding a New Job ==
+
+  * "apps/asterisell/lib/jobs" contains all Jobs;
+  * create JobData (eventually);
+  * create a JobProcessor following the schema of other JobProcesorrs;
+  * register the JobProcessor inside app.yml;
+

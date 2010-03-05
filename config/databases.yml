@@ -1,0 +1,16 @@
+all:
+  propel:
+    class:        sfPropelDatabase
+    param:
+      phptype:    mysql
+      host:       localhost
+
+      # NOTE: if you change this name update also:
+      #   * config/propel.ini
+      #   * scripts/makedb.sh
+      #   * scripts/abilis2asterisk/abilis2asterisk.php
+      #
+      database:   asterisell3
+      username:   root
+      password:   root
+      encoding:   utf8

@@ -1,0 +1,25 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArCustomRateForm
+    #
+    # do not change this class
+
+    theme:            default
+
+    # Add custom fields. These fields must be explicitely
+    # managed as "template/_custom_field_name.php"
+    # because the "ArCustomRateForm" contains only
+    # a reference to its parent/owner ArRate object.
+    #
+    fields:
+      owner_ar_rate_id: { name: The owner rate }
+      #
+      # this is the only real field of the class.
+
+    edit:
+      title:          DContext Rate
+      actions:
+        _save: ~
+      display:
+        "This rate has no parameters": []

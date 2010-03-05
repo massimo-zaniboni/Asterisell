@@ -34,7 +34,7 @@ class ArPartyMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('CUSTOMER_OR_VENDOR', 'CustomerOrVendor', 'string', CreoleTypes::VARCHAR, false, 1);
+		$tMap->addColumn('CUSTOMER_OR_VENDOR', 'CustomerOrVendor', 'string', CreoleTypes::CHAR, true, 1);
 
 		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
 
@@ -62,7 +62,13 @@ class ArPartyMapBuilder {
 
 		$tMap->addForeignKey('AR_RATE_CATEGORY_ID', 'ArRateCategoryId', 'int', CreoleTypes::INTEGER, 'ar_rate_category', 'ID', false, null);
 
+		$tMap->addForeignKey('AR_PARAMS_ID', 'ArParamsId', 'int', CreoleTypes::INTEGER, 'ar_params', 'ID', false, null);
+
 		$tMap->addColumn('MAX_LIMIT_30', 'MaxLimit30', 'int', CreoleTypes::INTEGER, false, 20);
+
+		$tMap->addColumn('LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30', 'LastEmailAdviseForMaxLimit30', 'int', CreoleTypes::TIMESTAMP, false, null);
+
+		$tMap->addColumn('IS_ACTIVE', 'IsActive', 'boolean', CreoleTypes::BOOLEAN, true, null);
 
 	} 
 } 

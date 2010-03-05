@@ -13,7 +13,7 @@ abstract class BaseCdrPeer {
 	const CLASS_DEFAULT = 'lib.model.Cdr';
 
 	
-	const NUM_COLUMNS = 23;
+	const NUM_COLUMNS = 30;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -68,6 +68,12 @@ abstract class BaseCdrPeer {
 	const USERFIELD = 'cdr.USERFIELD';
 
 	
+	const DESTINATION_TYPE = 'cdr.DESTINATION_TYPE';
+
+	
+	const AR_ASTERISK_ACCOUNT_ID = 'cdr.AR_ASTERISK_ACCOUNT_ID';
+
+	
 	const INCOME_AR_RATE_ID = 'cdr.INCOME_AR_RATE_ID';
 
 	
@@ -86,6 +92,21 @@ abstract class BaseCdrPeer {
 	const AR_TELEPHONE_PREFIX_ID = 'cdr.AR_TELEPHONE_PREFIX_ID';
 
 	
+	const CACHED_INTERNAL_TELEPHONE_NUMBER = 'cdr.CACHED_INTERNAL_TELEPHONE_NUMBER';
+
+	
+	const CACHED_EXTERNAL_TELEPHONE_NUMBER = 'cdr.CACHED_EXTERNAL_TELEPHONE_NUMBER';
+
+	
+	const EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY = 'cdr.EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY';
+
+	
+	const CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER = 'cdr.CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER';
+
+	
+	const SOURCE_ID = 'cdr.SOURCE_ID';
+
+	
 	const ID = 'cdr.ID';
 
 	
@@ -94,18 +115,18 @@ abstract class BaseCdrPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Calldate', 'Clid', 'Src', 'Dst', 'Dcontext', 'Channel', 'Dstchannel', 'Lastapp', 'Lastdata', 'Duration', 'Billsec', 'Disposition', 'Amaflags', 'Accountcode', 'Uniqueid', 'Userfield', 'IncomeArRateId', 'Income', 'CostArRateId', 'VendorId', 'Cost', 'ArTelephonePrefixId', 'Id', ),
-		BasePeer::TYPE_COLNAME => array (CdrPeer::CALLDATE, CdrPeer::CLID, CdrPeer::SRC, CdrPeer::DST, CdrPeer::DCONTEXT, CdrPeer::CHANNEL, CdrPeer::DSTCHANNEL, CdrPeer::LASTAPP, CdrPeer::LASTDATA, CdrPeer::DURATION, CdrPeer::BILLSEC, CdrPeer::DISPOSITION, CdrPeer::AMAFLAGS, CdrPeer::ACCOUNTCODE, CdrPeer::UNIQUEID, CdrPeer::USERFIELD, CdrPeer::INCOME_AR_RATE_ID, CdrPeer::INCOME, CdrPeer::COST_AR_RATE_ID, CdrPeer::VENDOR_ID, CdrPeer::COST, CdrPeer::AR_TELEPHONE_PREFIX_ID, CdrPeer::ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('calldate', 'clid', 'src', 'dst', 'dcontext', 'channel', 'dstchannel', 'lastapp', 'lastdata', 'duration', 'billsec', 'disposition', 'amaflags', 'accountcode', 'uniqueid', 'userfield', 'income_ar_rate_id', 'income', 'cost_ar_rate_id', 'vendor_id', 'cost', 'ar_telephone_prefix_id', 'id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
+		BasePeer::TYPE_PHPNAME => array ('Calldate', 'Clid', 'Src', 'Dst', 'Dcontext', 'Channel', 'Dstchannel', 'Lastapp', 'Lastdata', 'Duration', 'Billsec', 'Disposition', 'Amaflags', 'Accountcode', 'Uniqueid', 'Userfield', 'DestinationType', 'ArAsteriskAccountId', 'IncomeArRateId', 'Income', 'CostArRateId', 'VendorId', 'Cost', 'ArTelephonePrefixId', 'CachedInternalTelephoneNumber', 'CachedExternalTelephoneNumber', 'ExternalTelephoneNumberWithAppliedPortability', 'CachedMaskedExternalTelephoneNumber', 'SourceId', 'Id', ),
+		BasePeer::TYPE_COLNAME => array (CdrPeer::CALLDATE, CdrPeer::CLID, CdrPeer::SRC, CdrPeer::DST, CdrPeer::DCONTEXT, CdrPeer::CHANNEL, CdrPeer::DSTCHANNEL, CdrPeer::LASTAPP, CdrPeer::LASTDATA, CdrPeer::DURATION, CdrPeer::BILLSEC, CdrPeer::DISPOSITION, CdrPeer::AMAFLAGS, CdrPeer::ACCOUNTCODE, CdrPeer::UNIQUEID, CdrPeer::USERFIELD, CdrPeer::DESTINATION_TYPE, CdrPeer::AR_ASTERISK_ACCOUNT_ID, CdrPeer::INCOME_AR_RATE_ID, CdrPeer::INCOME, CdrPeer::COST_AR_RATE_ID, CdrPeer::VENDOR_ID, CdrPeer::COST, CdrPeer::AR_TELEPHONE_PREFIX_ID, CdrPeer::CACHED_INTERNAL_TELEPHONE_NUMBER, CdrPeer::CACHED_EXTERNAL_TELEPHONE_NUMBER, CdrPeer::EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY, CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER, CdrPeer::SOURCE_ID, CdrPeer::ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('calldate', 'clid', 'src', 'dst', 'dcontext', 'channel', 'dstchannel', 'lastapp', 'lastdata', 'duration', 'billsec', 'disposition', 'amaflags', 'accountcode', 'uniqueid', 'userfield', 'destination_type', 'ar_asterisk_account_id', 'income_ar_rate_id', 'income', 'cost_ar_rate_id', 'vendor_id', 'cost', 'ar_telephone_prefix_id', 'cached_internal_telephone_number', 'cached_external_telephone_number', 'external_telephone_number_with_applied_portability', 'cached_masked_external_telephone_number', 'source_id', 'id', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Calldate' => 0, 'Clid' => 1, 'Src' => 2, 'Dst' => 3, 'Dcontext' => 4, 'Channel' => 5, 'Dstchannel' => 6, 'Lastapp' => 7, 'Lastdata' => 8, 'Duration' => 9, 'Billsec' => 10, 'Disposition' => 11, 'Amaflags' => 12, 'Accountcode' => 13, 'Uniqueid' => 14, 'Userfield' => 15, 'IncomeArRateId' => 16, 'Income' => 17, 'CostArRateId' => 18, 'VendorId' => 19, 'Cost' => 20, 'ArTelephonePrefixId' => 21, 'Id' => 22, ),
-		BasePeer::TYPE_COLNAME => array (CdrPeer::CALLDATE => 0, CdrPeer::CLID => 1, CdrPeer::SRC => 2, CdrPeer::DST => 3, CdrPeer::DCONTEXT => 4, CdrPeer::CHANNEL => 5, CdrPeer::DSTCHANNEL => 6, CdrPeer::LASTAPP => 7, CdrPeer::LASTDATA => 8, CdrPeer::DURATION => 9, CdrPeer::BILLSEC => 10, CdrPeer::DISPOSITION => 11, CdrPeer::AMAFLAGS => 12, CdrPeer::ACCOUNTCODE => 13, CdrPeer::UNIQUEID => 14, CdrPeer::USERFIELD => 15, CdrPeer::INCOME_AR_RATE_ID => 16, CdrPeer::INCOME => 17, CdrPeer::COST_AR_RATE_ID => 18, CdrPeer::VENDOR_ID => 19, CdrPeer::COST => 20, CdrPeer::AR_TELEPHONE_PREFIX_ID => 21, CdrPeer::ID => 22, ),
-		BasePeer::TYPE_FIELDNAME => array ('calldate' => 0, 'clid' => 1, 'src' => 2, 'dst' => 3, 'dcontext' => 4, 'channel' => 5, 'dstchannel' => 6, 'lastapp' => 7, 'lastdata' => 8, 'duration' => 9, 'billsec' => 10, 'disposition' => 11, 'amaflags' => 12, 'accountcode' => 13, 'uniqueid' => 14, 'userfield' => 15, 'income_ar_rate_id' => 16, 'income' => 17, 'cost_ar_rate_id' => 18, 'vendor_id' => 19, 'cost' => 20, 'ar_telephone_prefix_id' => 21, 'id' => 22, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
+		BasePeer::TYPE_PHPNAME => array ('Calldate' => 0, 'Clid' => 1, 'Src' => 2, 'Dst' => 3, 'Dcontext' => 4, 'Channel' => 5, 'Dstchannel' => 6, 'Lastapp' => 7, 'Lastdata' => 8, 'Duration' => 9, 'Billsec' => 10, 'Disposition' => 11, 'Amaflags' => 12, 'Accountcode' => 13, 'Uniqueid' => 14, 'Userfield' => 15, 'DestinationType' => 16, 'ArAsteriskAccountId' => 17, 'IncomeArRateId' => 18, 'Income' => 19, 'CostArRateId' => 20, 'VendorId' => 21, 'Cost' => 22, 'ArTelephonePrefixId' => 23, 'CachedInternalTelephoneNumber' => 24, 'CachedExternalTelephoneNumber' => 25, 'ExternalTelephoneNumberWithAppliedPortability' => 26, 'CachedMaskedExternalTelephoneNumber' => 27, 'SourceId' => 28, 'Id' => 29, ),
+		BasePeer::TYPE_COLNAME => array (CdrPeer::CALLDATE => 0, CdrPeer::CLID => 1, CdrPeer::SRC => 2, CdrPeer::DST => 3, CdrPeer::DCONTEXT => 4, CdrPeer::CHANNEL => 5, CdrPeer::DSTCHANNEL => 6, CdrPeer::LASTAPP => 7, CdrPeer::LASTDATA => 8, CdrPeer::DURATION => 9, CdrPeer::BILLSEC => 10, CdrPeer::DISPOSITION => 11, CdrPeer::AMAFLAGS => 12, CdrPeer::ACCOUNTCODE => 13, CdrPeer::UNIQUEID => 14, CdrPeer::USERFIELD => 15, CdrPeer::DESTINATION_TYPE => 16, CdrPeer::AR_ASTERISK_ACCOUNT_ID => 17, CdrPeer::INCOME_AR_RATE_ID => 18, CdrPeer::INCOME => 19, CdrPeer::COST_AR_RATE_ID => 20, CdrPeer::VENDOR_ID => 21, CdrPeer::COST => 22, CdrPeer::AR_TELEPHONE_PREFIX_ID => 23, CdrPeer::CACHED_INTERNAL_TELEPHONE_NUMBER => 24, CdrPeer::CACHED_EXTERNAL_TELEPHONE_NUMBER => 25, CdrPeer::EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY => 26, CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER => 27, CdrPeer::SOURCE_ID => 28, CdrPeer::ID => 29, ),
+		BasePeer::TYPE_FIELDNAME => array ('calldate' => 0, 'clid' => 1, 'src' => 2, 'dst' => 3, 'dcontext' => 4, 'channel' => 5, 'dstchannel' => 6, 'lastapp' => 7, 'lastdata' => 8, 'duration' => 9, 'billsec' => 10, 'disposition' => 11, 'amaflags' => 12, 'accountcode' => 13, 'uniqueid' => 14, 'userfield' => 15, 'destination_type' => 16, 'ar_asterisk_account_id' => 17, 'income_ar_rate_id' => 18, 'income' => 19, 'cost_ar_rate_id' => 20, 'vendor_id' => 21, 'cost' => 22, 'ar_telephone_prefix_id' => 23, 'cached_internal_telephone_number' => 24, 'cached_external_telephone_number' => 25, 'external_telephone_number_with_applied_portability' => 26, 'cached_masked_external_telephone_number' => 27, 'source_id' => 28, 'id' => 29, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, )
 	);
 
 	
@@ -191,6 +212,10 @@ abstract class BaseCdrPeer {
 
 		$criteria->addSelectColumn(CdrPeer::USERFIELD);
 
+		$criteria->addSelectColumn(CdrPeer::DESTINATION_TYPE);
+
+		$criteria->addSelectColumn(CdrPeer::AR_ASTERISK_ACCOUNT_ID);
+
 		$criteria->addSelectColumn(CdrPeer::INCOME_AR_RATE_ID);
 
 		$criteria->addSelectColumn(CdrPeer::INCOME);
@@ -202,6 +227,16 @@ abstract class BaseCdrPeer {
 		$criteria->addSelectColumn(CdrPeer::COST);
 
 		$criteria->addSelectColumn(CdrPeer::AR_TELEPHONE_PREFIX_ID);
+
+		$criteria->addSelectColumn(CdrPeer::CACHED_INTERNAL_TELEPHONE_NUMBER);
+
+		$criteria->addSelectColumn(CdrPeer::CACHED_EXTERNAL_TELEPHONE_NUMBER);
+
+		$criteria->addSelectColumn(CdrPeer::EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY);
+
+		$criteria->addSelectColumn(CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER);
+
+		$criteria->addSelectColumn(CdrPeer::SOURCE_ID);
 
 		$criteria->addSelectColumn(CdrPeer::ID);
 
@@ -300,7 +335,7 @@ abstract class BaseCdrPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$criteria->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$rs = CdrPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -408,7 +443,7 @@ abstract class BaseCdrPeer {
 		$startcol = (CdrPeer::NUM_COLUMNS - CdrPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 		ArAsteriskAccountPeer::addSelectColumns($c);
 
-		$c->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$c->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -600,7 +635,7 @@ abstract class BaseCdrPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$criteria->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$criteria->addJoin(CdrPeer::AR_TELEPHONE_PREFIX_ID, ArTelephonePrefixPeer::ID);
 
@@ -641,7 +676,7 @@ abstract class BaseCdrPeer {
 		ArRatePeer::addSelectColumns($c);
 		$startcol6 = $startcol5 + ArRatePeer::NUM_COLUMNS;
 
-		$c->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$c->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$c->addJoin(CdrPeer::AR_TELEPHONE_PREFIX_ID, ArTelephonePrefixPeer::ID);
 
@@ -808,7 +843,7 @@ abstract class BaseCdrPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$criteria->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$criteria->addJoin(CdrPeer::INCOME_AR_RATE_ID, ArRatePeer::ID);
 
@@ -840,7 +875,7 @@ abstract class BaseCdrPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$criteria->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$criteria->addJoin(CdrPeer::AR_TELEPHONE_PREFIX_ID, ArTelephonePrefixPeer::ID);
 
@@ -870,7 +905,7 @@ abstract class BaseCdrPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$criteria->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$criteria->addJoin(CdrPeer::AR_TELEPHONE_PREFIX_ID, ArTelephonePrefixPeer::ID);
 
@@ -1015,7 +1050,7 @@ abstract class BaseCdrPeer {
 		ArRatePeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + ArRatePeer::NUM_COLUMNS;
 
-		$c->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$c->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$c->addJoin(CdrPeer::INCOME_AR_RATE_ID, ArRatePeer::ID);
 
@@ -1123,7 +1158,7 @@ abstract class BaseCdrPeer {
 		ArTelephonePrefixPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ArTelephonePrefixPeer::NUM_COLUMNS;
 
-		$c->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$c->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$c->addJoin(CdrPeer::AR_TELEPHONE_PREFIX_ID, ArTelephonePrefixPeer::ID);
 
@@ -1207,7 +1242,7 @@ abstract class BaseCdrPeer {
 		ArTelephonePrefixPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ArTelephonePrefixPeer::NUM_COLUMNS;
 
-		$c->addJoin(CdrPeer::ACCOUNTCODE, ArAsteriskAccountPeer::ACCOUNT_CODE);
+		$c->addJoin(CdrPeer::AR_ASTERISK_ACCOUNT_ID, ArAsteriskAccountPeer::ID);
 
 		$c->addJoin(CdrPeer::AR_TELEPHONE_PREFIX_ID, ArTelephonePrefixPeer::ID);
 

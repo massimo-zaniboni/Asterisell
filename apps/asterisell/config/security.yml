@@ -1,2 +1,5 @@
 default:
-  is_secure: off
+  is_secure: on
+  credentials: admin
+
+

@@ -34,6 +34,10 @@ class ArInvoiceCreationMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
+		$tMap->addColumn('TYPE', 'Type', 'string', CreoleTypes::CHAR, true, 1);
+
+		$tMap->addColumn('IS_REVENUE_SHARING', 'IsRevenueSharing', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
 		$tMap->addColumn('FIRST_NR', 'FirstNr', 'string', CreoleTypes::VARCHAR, false, 20);
 
 		$tMap->addColumn('INVOICE_DATE', 'InvoiceDate', 'int', CreoleTypes::DATE, false, null);

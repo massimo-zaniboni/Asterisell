@@ -10,14 +10,17 @@ generator:
       effect:            { name: Effect }
       proposed_solution: { name: Proposed Solution }
       user_notes:        { name: User Notes }
-      mantain:           { name: Not Delete }
+      mantain:           { name: Known Problem, help: "Mark if the problem is known, and the administrator must not be advised of it. Unmark when the problem is (maybe) solved."  }
 
     list:
-      title: Found Problems
+      title: Current Problems
+      actions: []
       display: [created_at, =description, effect, proposed_solution, user_notes, mantain]
       sort:    [created_at, desc]
 
     edit:
       title: Found Problem
-
+      actions:
+        _list: ~
+        _save: ~
       display: [description, effect, proposed_solution, user_notes, mantain]

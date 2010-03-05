@@ -1,14 +1,18 @@
 <?php
 if ($sf_user->hasCredential('admin')) {
+
   $c = new Criteria();
   $c->addAscendingOrderByColumn(ArPartyPeer::NAME);
-  $parties = ArPartyPeer::doSelect($c);
+  $c->addAscendingOrderByColumn(ArOfficePeer::NAME);
+  $offices = ArOfficePeer::doSelectJoinArParty($c);
+
   // add a blank option
   $options = array("" => "");
-  // add other options
-  foreach($parties as $party) {
-    $options[$party->getId() ] = $party->getFullName();
+  foreach($offices as $office) {
+    $party = $office->getArParty();
+    $options[$office->getId()] = $party->getName() . ' - ' . $office->getName();
   }
+
   $defaultChoice = "";
   if (isset($filters['filter_on_party'])) {
     $defaultChoice = $filters['filter_on_party'];

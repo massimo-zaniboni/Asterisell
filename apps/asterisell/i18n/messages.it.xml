@@ -10,23 +10,37 @@
 
     <trans-unit id="2">
       <source>Login</source>
-      <target>Utente</target>
+      <target>Accedi</target>
+    </trans-unit>
+
+    <trans-unit id="2">
+      <source>Logout</source>
+      <target>Esci</target>
     </trans-unit>
 
     <trans-unit id="2b">
       <source>Login:</source>
+      <target>Note Utente:</target>
+    </trans-unit>
+
+    <trans-unit id="2">
+      <source>User:</source>
       <target>Utente:</target>
     </trans-unit>
 
+    <trans-unit id="2">
+      <source>User</source>
+      <target>Utente</target>
+    </trans-unit>
 
     <trans-unit id="3">
       <source>Password</source>
-      <target>Parola Chiave</target>
+      <target>Password</target>
     </trans-unit>
 
     <trans-unit id="3b">
       <source>Password:</source>
-      <target>Parola Chiave:</target>
+      <target>Password:</target>
     </trans-unit>
 
 
@@ -156,7 +170,6 @@
       <source>Disabled at:</source>
       <target>Disabilitato il:</target>
     </trans-unit>
-
 
     <trans-unit id="18">
       <source>User Name</source>
@@ -406,7 +419,7 @@
 
     <trans-unit id="52">
       <source>VoIP Accounts</source>
-      <target>Utenti VoIP</target>
+      <target>VoIP Accounts</target>
     </trans-unit>
 
     <trans-unit id="53">
@@ -461,13 +474,13 @@
 
     <trans-unit id="63">
       <source>Account configured not correctly. Contact the administrator in order to resolve the problem.</source>
-      <target>Utente Web non e` configurato correttamente. Contattare l'amministratore per risolvere il problema.</target>
+      <target>L'utente non e` configurato correttamente. Contattare l'amministratore per risolvere il problema.</target>
     </trans-unit>
 
 
     <trans-unit id="64">
       <source>There is no Account with the given name.</source>
-      <target>Non esiste nessun utente con il nome specificato.</target>
+      <target>Utente sconosciuto.</target>
     </trans-unit>
 
     <trans-unit id="65">
@@ -679,7 +692,12 @@
 
     <trans-unit id="104">
       <source>this month</source>
-      <target>ultimo mese</target>
+      <target>mese corrente</target>
+    </trans-unit>
+
+    <trans-unit id="104">
+      <source>last month</source>
+      <target>mese scorso</target>
     </trans-unit>
 
     <trans-unit id="105">
@@ -885,7 +903,7 @@
 
     <trans-unit id="141">
       <source>Calls</source>
-      <target>Nr. Chiamate</target>
+      <target>Chiamate</target>
     </trans-unit>
 
     <trans-unit id="142">
@@ -990,8 +1008,8 @@
     </trans-unit>
 
     <trans-unit id="166">
-      <source> problems to resolve. </source>
-      <target> problemi da risolvere. </target>
+      <source>problems to solve.</source>
+      <target>problemi da risolvere.</target>
     </trans-unit>
 
     <trans-unit id="167">
@@ -1191,17 +1209,546 @@
       <target>Cliente:Utente</target>
     </trans-unit>
 
-    <trans-unit id="id">
-      <source></source>
-      <target></target>
+    <trans-unit id="204">
+      <source>Office</source>
+      <target>Sede</target>
     </trans-unit>
 
-    
-
-    <trans-unit id="id">
-      <source></source>
-      <target></target>
+    <trans-unit id="205">
+      <source>Location</source>
+      <target>Ubicazione</target>
     </trans-unit>
+
+    <trans-unit id="206">
+      <source>Connection</source>
+      <target>Connessione</target>
+    </trans-unit>
+
+    <trans-unit id="207">
+      <source>Income</source>
+      <target>Ricavo</target>
+    </trans-unit>
+
+    <trans-unit id="208">
+      <source>Call Type</source>
+      <target>Classificazione Chiamata</target>
+    </trans-unit>
+
+    <trans-unit id="209">
+      <source>Time frame</source>
+      <target>Periodo</target>
+    </trans-unit>
+
+    <trans-unit id="210">
+      <source>-- first select an Office --</source>
+      <target>-- seleziona una sede --</target>
+    </trans-unit>
+
+    <trans-unit id="211">
+      <source>last 4 months</source>
+      <target>ultimi 4 mesi</target>
+    </trans-unit>
+
+    <trans-unit id="212">
+      <source>last 60 days</source>
+      <target>ultimi 60 giorni</target>
+    </trans-unit>
+
+    <trans-unit id="213">
+      <source>last 30 days</source>
+      <target>ultimi 30 giorni</target>
+    </trans-unit>
+
+    <trans-unit id="214">
+      <source>last 14 days</source>
+      <target>ultimi 14 giorni</target>
+    </trans-unit>
+
+    <trans-unit id="215">
+      <source>last 7 days</source>
+      <target>ultimi 7 giorni</target>
+    </trans-unit>
+
+    <trans-unit id="216">
+      <source>last 2 days</source>
+      <target>ultimi 2 giorni</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Specific date range</source>
+      <target>Intervallo specifico</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>specific date range</source>
+      <target>intervallo specifico</target>
+    </trans-unit>
+
+    <trans-unit id="219">
+      <source>Tel. number connection type</source>
+      <target>Tipo di connessione</target>
+    </trans-unit>
+
+    <trans-unit id="220">
+      <source>Tel. number location</source>
+      <target>Ubicazione</target>
+    </trans-unit>
+
+    <trans-unit id="220">
+      <source>External tel.number prefix</source>
+      <target>Prefisso</target>
+    </trans-unit>
+
+    <trans-unit id="221">
+      <source>incoming</source>
+      <target>in entrata</target>
+    </trans-unit>
+
+    <trans-unit id="222">
+      <source>outgoing</source>
+      <target>in uscita</target>
+    </trans-unit>
+
+    <trans-unit id="223">
+      <source>internal</source>
+      <target>interna</target>
+    </trans-unit>
+
+    <trans-unit id="224">
+      <source>unprocessed</source>
+      <target>da classificare</target>
+    </trans-unit>
+
+    <trans-unit id="225">
+      <source>ignored</source>
+      <target>da ignorare</target>
+    </trans-unit>
+
+    <trans-unit id="226">
+      <source>problems to solve. </source>
+      <target>problemi da risolvere.</target>
+    </trans-unit>
+
+    <trans-unit id="227">
+      <source>Reset Selected Calls</source>
+      <target>Rinizializza le quotazioni delle chiamate selezionate</target>
+    </trans-unit>
+
+    <trans-unit id="227">
+      <source>Rate All Unrated Calls</source>
+      <target>Quota tutte le chiamate non ancora valutate</target>
+    </trans-unit>
+
+    <trans-unit id="228">
+      <source>Tel.Nr.</source>
+      <target>Tel.</target>
+    </trans-unit>
+
+    <trans-unit id="229">
+      <source>Current Problems</source>
+      <target>Problemi Attuali</target>
+    </trans-unit>
+
+    <trans-unit id="229">
+      <source>Job Log</source>
+      <target>Job Log</target>
+    </trans-unit>
+
+    <trans-unit id="229">
+      <source>Jobs Log</source>
+      <target>Job Log</target>
+    </trans-unit>
+
+    <trans-unit id="229">
+      <source>Refresh View</source>
+      <target>Aggiorna Vista</target>
+    </trans-unit>
+
+    <trans-unit id="229">
+      <source>Vendor Invoices</source>
+      <target>Fatture Fornitori</target>
+    </trans-unit>
+
+    <trans-unit id="229">
+      <source>System Details</source>
+      <target>Dettagli Sistema</target>
+    </trans-unit>
+
+    <trans-unit id="229">
+      <source>Month Limit</source>
+      <target>Limite mensile</target>
+    </trans-unit>
+
+    <trans-unit id="229">
+      <source>Current Month Cost</source>
+      <target>Totale del mese</target>
+    </trans-unit>
+
+    <trans-unit id="52">
+      <source>VoIP Account:</source>
+      <target>Utente</target>
+    </trans-unit>
+
+    <trans-unit id="204">
+      <source>Office:</source>
+      <target>Sede:</target>
+    </trans-unit>
+
+    <trans-unit id="204">
+      <source>Time frame:</source>
+      <target>Periodo:</target>
+    </trans-unit>
+
+    <trans-unit id="204">
+      <source>Specific call date from:</source>
+      <target>Da:</target>
+    </trans-unit>
+
+    <trans-unit id="204">
+      <source>Specific call date to:</source>
+      <target>A:</target>
+    </trans-unit>
+
+    <trans-unit id="204">
+      <source>Tel. number connection type:</source>
+      <target>Tipo di connessione</target>
+    </trans-unit>
+
+    <trans-unit id="204">
+      <source>Tel. number location:</source>
+      <target>Ubicazione</target>
+    </trans-unit>
+
+    <trans-unit id="204">
+      <source>External tel.number prefix:</source>
+      <target>Prefisso telefonico</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Fixed line</source>
+      <target>Rete fissa</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Mobile line</source>
+      <target>Rete mobile</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Params</source>
+      <target>Parametri</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Main Params</source>
+      <target>Parametri Principali</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Parties</source>
+      <target>Utenti</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Parties</source>
+      <target>Utenti</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Accounting</source>
+      <target>Fatturazione</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Customers / Vendors</source>
+      <target>Clienti / Fornitori</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Customer Offices</source>
+      <target>Sedi Clienti</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Website Accounts</source>
+      <target>Account Sito Web</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>VoIP Batch Creation</source>
+      <target>Creazione veloce Acc.VoIP</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>VoIP Accounts</source>
+      <target>Account VoIP</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Batch Invoice Creation</source>
+      <target>Creazione veloce Fatture</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Call Type:</source>
+      <target>Tipo chiamata:</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Reset Calls (see Help)</source>
+      <target>Rinizializza Chiamate (vedi Help)</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Direction</source>
+      <target>Direzione</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Telephone Number</source>
+      <target>Numero Telefono Esterno</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Connection type</source>
+      <target>Tipo Connessione</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Operator name</source>
+      <target>Nome Operatore</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Duration in seconds</source>
+      <target>Durata (in secondi)</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>PAGE</source>
+      <target>PAGINA</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>DATE</source>
+      <target>DATA</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>DESTINATION</source>
+      <target>DESTINAZIONE</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>CALLS</source>
+      <target>NR.CHIAMATE</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>DURATION</source>
+      <target>TEMPO TOT.</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>COST</source>
+      <target>COSTO</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>VAT</source>
+      <target>P.IVA</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>tel:</source>
+      <target>tel:</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Amount</source>
+      <target>Imponibile</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>VAT:</source>
+      <target>P.IVA:</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>VAT Tax</source>
+      <target>IVA</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>% VAT</source>
+      <target>Aliq.IVA</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Total</source>
+      <target>Totale</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Invoiced Period</source>
+      <target>Periodo Fatturato</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>NR.</source>
+      <target>NR.</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>from</source>
+      <target>da</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>to</source>
+      <target>a</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Reported Period</source>
+      <target>a</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>See Job Log</source>
+      <target>Vai al Log dei Job</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>There are news on Asterisell website</source>
+      <target>Ci sono novita` nel sito web di Asterisell</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Rate New/Unprocessed Calls</source>
+      <target>Valuta le nuove chiamate</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Check Call Cost Limits</source>
+      <target>Controlla il superamento dei limiti di spesa</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>See Problems</source>
+      <target>Vai al Log dei Problemi</target>
+    </trans-unit>
+
+    <trans-unit id="218">
+      <source>Execute Jobs</source>
+      <target>Esegui i Job</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>From (inclusive):</source>
+      <target>Da (incluso):</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>To (exclusive):</source>
+      <target>A (escluso):</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Show Stats</source>
+      <target>Mostra Statistiche</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Hide Stats</source>
+      <target>Nascondi Statistiche</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>An invoice was generated for customer </source>
+      <target>E` stata generata una fattura per il cliente</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>VAT:</source>
+      <target>P.IVA:</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>from company</source>
+      <target>intestatario</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>with this data </source>
+      <target>con i seguenti dettagli </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Invoice number: </source>
+      <target>Numero fattura: </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Invoice date: </source>
+      <target>Data fattura: </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Telephone calls from </source>
+      <target>Traffico telefonico da </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Total without tax: </source>
+      <target>Imponibile: </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>VAT %: </source>
+      <target>Aliquota IVA: </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Total VAT: </source>
+      <target>Iva: </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Total with tax: </source>
+      <target>Importo totale: </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Invoice Notification for customer </source>
+      <target>Fattura per </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source> from company </source>
+      <target> da </target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Source:</source>
+      <target>Sorgente:</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Destination:</source>
+      <target>Destinazione:</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>Source</source>
+      <target>Sorgente</target>
+    </trans-unit>
+
+    <trans-unit id="117">
+      <source>excluded</source>
+      <target>escluso</target>
+    </trans-unit>
+
 
   </body>
   </file>

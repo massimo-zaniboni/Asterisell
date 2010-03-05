@@ -11,7 +11,14 @@ class ArWebAccount extends BaseArWebAccount
    * @return true if the web account is for an administrator
    */
   public function isAdmin() {
-    return (is_null($this->getArPartyId()) && is_null($this->getArAsteriskAccountId()));
+    return (is_null($this->getArPartyId()) && is_null($this->getArOfficeId()));
   }
 
+  public function isParty() {
+    return (!is_null($this->getArPartyId()) && is_null($this->getArOfficeId()));
+  }
+
+  public function isOffice() {
+    return (!is_null($this->getArPartyId()) && !is_null($this->getArOfficeId()));
+  }
 }

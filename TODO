@@ -1,0 +1,297 @@
+XXX TEMPLATE CALL REPORT
+
+XXXXXXXXXXXXXXXXXXX USARE REDMINE... tengo qua solo per backup...
+XXXX VEDERE IN ISSUE E WIKI
+
+== TODO ==
+
+  * dire in CUSTOMER che AR_PARMS e` riferito ai dati da usare durante
+   la generaizone dei report mentre per le maschere di connessione fa
+   fede il WEB_ACCOUNT;
+  * dire in WEB_ACCOUNT che AR_PARAMS fa fede solamente per la form
+   mentre per la generazione dei report fa fede il settaggio del CUSTOMER;
+  * mettere una forma di feedback direttamente nel modulo ADMIN del progrmama;
+  * usare una PARTY per identificare la COMPANY che possiede il sito e
+   usare quei dati anche nella visualizzazione della fattura o
+   comunque migliorare i dati per produrre una INVOICE credibile;
+  * ho PARAMS anche per WEB-ACCOUNT e specificare meglio come vengono
+   usati rispetto a quelli impostati per PARTY...;
+  * ragruppare in modo diverso i costi e altro negativi per quando
+   faccio le fatture in modo da applicare poi gli sconti e mostrare i
+   totali distinti;
+  * aggiornare documentazioen sul CRON-TAB e il file di SCRIPT per
+   fargli eseguire il JOB-QUEUE-PROCESSOR (chiamato scripts/process_jobs.php).
+  * verificare che se il mailserver e` impostato correttamente le mail
+   siano inviate in modo corretto e con anche l'allegato...;
+  * dire nella documentazione che ogni personalizzazione del
+   funzionamento del programma a livello di job va fatto cosi`:
+     * mettere in jobs/userjobs i job propietari;
+     * registrarli nel file di configurazione;
+    Questo evita di far sovrascrivere durante gli aggiornamenti altri jobs.
+  * togliere supporto alle DISCUSSION nel sito di ASTERISELL;
+  * togliere supporto alla MAILING-LIST nel sito di ASTERISELL dato che non e` usata;
+  * includere lato ADMIN il CHECK ad intervalli di tempo regolare se
+   vi sono nuove versioni e scarica il testo da visualizzare in
+   LOCALE, usare una sorta di RSS reader piu` che inventare un nuovo
+   formato e vedere se trovo del codice gia` fatto da utilizzare come base;
+ * fare IMPORT dei miglioramenti della versione FREE poi fare copia
+   dei file di nuovo in FREE senza le classi da non includere in FREE
+   in modo da non rilasciare la versione COMMERCIAL;
+  * riscrivere tutta la documentazione adattandola alla nuova versione
+   di ASTERISELL e inserire un rimando alla documentazione della
+   versione prima come LINK nella pagina della documentazione e nel
+   DOWNLOAD;
+  * rifare SCREENSHOOTS della versione FREE e COMMERCIAL con le nuove
+   funzionalita` e senza le funzionalita` rimosse;
+  * quando carico i dati di esempio aggiungere AR_PARAMS di DEFAULT;
+  * eliminare CREATE/EDIT da JOBQUEUE e PROBLEM forms;
+  * sistemare il discorso delle CULTURES durante la generazione dei REPORTS;
+  * aggiungere IS_ACTIVE support per i PARTY e dire che influisce
+   nella visualizzazione delle fatture e in teoria anche durante il
+   LOGIN...;
+  * nello SCRIPT di migrazione convertire anche in ACTIVE tutti i
+   vecchi CUSTOMER, abbastanza facile..;
+  * quando esegue la JobQueue in modalita` INTERACITVE controlla
+   quando tempo manca per la fine del processo e lo puo` fare per ogni
+   JOB e quando e` al 70% del tempo disponibile termina il processo e
+   va alla pagina che fa la lista dei JOB ancora da completare per
+   informare implicitamente l'utente che questi job devono ancora
+   essere eseguiti, potrebbe in teoria fare un redirect ad una pagina
+   che poi riesegue un altro update dei job pending e cosi` fin quando
+   non ho finito tutti i calcoli. In INTERNET c'era qualcosa del
+   genere che usava queste info come il tempo di esecuzione di uno
+   script. 
+  * creare una RATE in cui si inserisce una lista di FREE numbers
+   separati da ENTER in una TEXTBOX e se si ha una chiamata in cui
+   SOURCE e DEST stanno in quella lista applica la RATE BY DURATION
+   specifica (copio codice e riuso i servizi di un'altra classe per
+   fare i calcoli);
+  * far eseguire il CRON SCRIPT da utente di APACHE (www-data o altro)
+   per evitare che il file di MUTEX abbia privilegi diversi...;
+  * XXX usare http://areski.net/asterisk-stat-v2/about.php per
+   statistiche sul max-load dei canali;
+  * pensare qual e` l'aproccio piu` FIREWALL friendly:
+      * javascript che avvisa il server delle statistiche / feeds;
+      * codice PHP all'interno del server che fa un ping su un altro server;
+  * riconvertire i menu lato utente in ITALIANO ed eventualmente
+   chiedere se posso evitare di tradurre la maschera di amministrazione;
+  * segnare come messaggio di errore nella AR_TABLE se ho piu` di un
+   DEFAULT PARAMETER;
+  * notificare via mail se ci sono dei problemi nuovi nella AR_TABLE;
+  * spiegare come fare a caricare l'immagine nei params;
+  * mostrare nell'help esempi di footer con indicazioni della MAIL nei
+   params;
+  * dire nella documentazione HOWTO come fare a cambiare i parametri
+   di DEFAULT dato che sono impostati comunque in modo un po' truccoso;
+  * avvisare se vi e` piu` di un parametro di DEFAULT impostato,
+   metterlo nella tabella degli errori;
+  * aggiungere un test che controlla ad intervalli regolari tipo una
+   volta alla settimana (ho messo il campo DATE in PARAMS) 
+   se vi e` una nuova versione della applicazione
+   e lo mostra nell'interfaccia di ADMIN o ancora meglio che mostra i
+   messaggi presi da RSS feed per tenere aggiornati gli utenti sulle
+   ultime novita` e farlo attraverso codice PHP che legge RSS FEED ad
+   intervalli regolari (tipo una volta alla settimana) e non
+   attraverso codice HTML dato che se no il browser potrebbe avvisare
+   della breccia di sicurezza, il problema e` che lo dovrebbe fare
+   senza rallentare di troppo l'applicazione... cioe` non deve esserci
+   una pausa significativa e quindi o con JavaScript che lavora
+   off-line dopo il caricamento della pagina... boh..;
+  * aggiungere sempre nella applicazione un form di feedback veloce che
+   permette di ricevere commenti o quant'altro;
+  * il brutto della publicita` e` che apre brecce di sicurezza dato
+   che se i banner sono compromessi poi uno puo` perdere le password
+   di amministrazione per il sito e non e` una cosa piacevole;
+  * dalla via che ci sono corregere il bug che mi hanno segnalato;
+  * attivare un servizio di ADWORDS che possa essere associato ad una
+   WEB-APPLICATION e quindi per ogni utente della mia applicazione
+   visualizzare un ADS o chiedere un supporto monetario;
+  * inviare via mail segnalazioni se ci sono nuovi problemi nella
+   table PROBLEM del database;
+  * controllare i bugs su DITZ...;
+  * dire nella documentazione o visualizzare un link comodo nella
+   maschera di ADMIN che permetta di controllare i CDR di tipo IGNORED per vedere se si sono
+   fatti degli scarti troppo pesanti...; comunque una rate che
+   classifica come IGNORE deve comunque essere univoca e non deve fare
+   match anche qualche altra rate che magari classifica in modo diverso...;
+  * valutare come gestire le RATES che potrebbero non essere sempre
+   aggiornate ed eventualmente usare una "RATE STORICO" e nella
+   migrazione usare paro paro i valori gia` calcolati dato che magari
+   hanno cambiato delle RATES in corso d'opera;
+  * lo script e` essenziale per fare migrazione dei vecchi utenti;
+  * mantenere da qualche parte nel sito la documetazione della vecchia
+   versione e poi aggiungere quella nuova;
+  * usare BRANCH diverso o come CLONE o come altro nel repository di
+   GOOGLE dato che il passaggio ad una versione 3.0 rispetto a 2.0
+   richiede comunque la tenuta di versioni differenti e usare i TAG e
+   quello che serve;
+  * valutare se sostituire il RESET delle RATES in report module con
+   una ACTION SET che prende il filtro passato come parametro,
+   fattibile ora che ho semplificato la query e non ho piu` il
+   CRITERION come prima;
+  * tenere traccia dei tempi di visualizzazione nella versione con
+   tutti i dati della TSNET e misurare le differenze di PERFORMANCE
+   del nuovo sistema;
+  * verificare che sia rimasto il 6x speedup delle queries...;
+  * visualizzare lato ADMIN le rates non ancora calcolate e dirlo
+   nell'HELP che queste RATE non verrano visualizzate;
+  * rimettere abilisell come database dell'applicazione principale
+   oppure usare un numero di versione progressivo a seconda della
+   release dell'applicazione per poter poi favorire la migrazione;
+  * fare dei refactoring tests anche usando find su  
+      * ArAsteriskAccountPeer::AR_PARTY_ID --> AR_OFFICE_ID;
+  * laciare per il momento in sospeso la generazione di BILLING di
+   refactoring dato che comunque la dovro` modificare del tutto;
+  * includere un filtro sul tipo di STATE nella JOB-QUEUE;
+  * ho cambiato abbastanza pesantemente AsterisellHelp, controllare se
+   le visualizzazioni sono OK e magari cambiare i nomi che spesso non
+   sono molto chiari...;
+  * verificare di fare ship del file di configurazione adatto...;
+  * vedere OPEN-ISSUES su GOOGLE e correggerli anche nella mia versione;
+  * trovare una organizzazione GIT o MERCURIAL che permetta di
+   applicare/togliere le singole PATCH intese come FEATURES dalle
+   diverse versioni e trovare un modo di lavoro accettabile (se esiste);  
+
+Vedere 
+
+  ../TODO 
+  
+per miglioramenti generici ad Asterisell e importarli poi in free e importarli poi in supported e importarli poi qua.
+
+Esegui 
+
+  ditz
+  
+per l'elenco degli ISSUE da completare.
+
+Vedi il sito WEB inviato a TSNET per le restanti FEATURES.
+
+== REFACTORING ==
+
+  * adesso non e` a NULL PARTY-ID se ho un accounta legato ad un
+   OFFICE;
+  * spostato alcuni parametri di configurazione da APP.YML al database
+   con relativa FORM;
+
+== SOFTWARE DA STUDIARE ==
+
+  * http://agileco.com/agilebill-open-source-billing-software.htm
+  * http://www.yakasoftware.com/index.php?option=com_content&task=view&id=23&Itemid=31 vedere se posso integrare alcune di queste funzionalita`;
+  * http://areski.net/asterisk-stat-v2/about.php (per fare statistiche del CDR)
+
+== Reports ==
+
+Devo mostrare i totali senza IVA e poi con l'IVA.
+
+=== Work Flow ===
+
+XXX Prima di ogni operazione controlla se vi sono dei nuovi problemi e
+   avvisa l'amministratore inviando una mail che lo avvisa di fare
+   LOGIN e controllarli.
+
+In teoria non ho errori nella generazione dei dati mentre ho solo errori
+   nell'invio delle EMAIL.
+
+Le MAIL mi conviene inviarle successivamente dato che una volta
+   generati i REPORT uno avrebbe piacere di controllarne un po'.
+
+Sarebbe carino anche mostrare la lista di REPORT mensili o quant'altro
+   anche quando l'utente si connete al sito web e ha acesso ad una
+   lista degli ultimi report generati con il riassunto delle chiamate.
+
+Posso avere un servizio di ADMIN generale che:
+  * invia le mail;
+  * avvisa dei problemi;
+  * fa il rating delle tariffe;
+  * scarica nuovi aggiornamenti dei FEEDS una volta ogni ora;
+  * gestisce il work-flow;
+
+== Asterisk Behaviour/Configuration ==
+
+=== Input Calls on CDR ===
+
+Callerid e` un identificativo dell'utente ma non e` molto importante ai miei fini.
+
+  The Asterisk dialplan is divided into contexts.
+  A context is simply a group of extensions.
+  For each "line" that should be able to be called,
+  an extension must be added to a context.
+  Then, you configure the calling "line" to have access to this context.
+
+A Context is a group of Extensions. Context can also include other contexts.
+
+  "s" extension is the extension is the "start" extension,
+  and when a device activates a context the
+  "s" extension is the one that is going to be run.
+
+Le "extension" sono come degli STATE che puo` assumere una chiamata.
+Sono dirette da eventi tipo l'utente che preme dei tasti sulla sua tastiera
+del telefono o il FAX che emette dei BEEP ed e` riconosciuto come tale
+da Asterisk server.
+
+  For each extension, several actions may be listed and must be given a unique priority.
+  When each action completes, the call continues at the next priority
+  (except for some modules which use explicitly GOTO's).
+
+  Extensions frequently have data they pass to the executing application (most frequently a string).
+  You can see the available dialplan applications by entering the "core show applications" command in the CLI.
+
+  When Asterisk receives an incoming connection on a channel,
+  Asterisk looks at the context defined for that channel for commands telling Asterisk what it should do.
+  The context defines different sets of commands depending on what extension the user has dialed.
+  For example, a context might provide one set of commands for what to do if the user dials "123",
+  and another set of commands for what to do if the user dials "9",
+  and another set of commands for what to do if the user dials any number beginning with "555".
+
+XXX trunk cosa vuol dire?
+XXX line?
+XXX forse vanno su un CONTEXT le INCOMING calls? O devo anche imporre una EXTENSION?
+
+XXX vedere altro software OPEN-SOURCE che gestisce i CDR per carpire qualche "segreto" e in particolare quelli per la generazione di fatture.
+
+XXX valutare se visualizzare anche alcune INCOMING-CALL a cui non si
+   e` riusciti a rispondere e altre cose di questo tipo...
+
+AMAFLAGS ha per ora solo questi stati:
+  * billing
+  * documentation
+  * omit
+e quindi non mi conviene estenderlo con anche il supporto alle INCOMING-CALLS.
+
+Potrei fare una ricerca sul numero di destinazione ma e` da stupidi dato che Asterisk comunque ha
+questa INFO durante il processing delle CALLS.
+
+Quindi posso supporre:
+  * ACCOUNTCODE viene impostato ugualmente al codice dell'utente anche per le INCOMING-CALLS;
+  * presuppongo che DCONTEXT sia uguale ad una serie di valori in OR
+    che contraddistingue le INCOMING CALLS da visualizzare e di cui fare il RATING;
+  * quindi si configura Asterisk server per settare DCONTEXT nel modo giusto e non saranno
+    poi molti i CONTEXT da gestire;
+  * i CONTEXT sono relativamente pochi mentre le EXTENSIONS / DESTINATIONS NUMBERS sono molti e
+    quelli non li metto nel file di configuraizone o altro e comunque ci pensa sempre ASTERISK
+    a fare l'associazione con l'ACCOUNT-CODE corretto;
+
+XXX documentare questa divisione di ruoli bene nella documentazione
+
+XXX dire che comunque sono disponibile per gestire delle personalizzazioni se trovo uno
+esperto di Asterisk.
+
+=== NUOVO SCHEMA ===
+
+I CDR con ERROR e UNKNONW non li visualizzo lato CUSTOMER dato che non
+   e` elegante ma li visualizzo per l'ADMINISTRATOR e indico nell'help
+   che non sono visibili.
+
+Uso un BOTTONE lato ADMINISTRATOR per il RATING dei PENDING CDR.
+
+=== Differenze con Asterisell ===
+
+Si ha NUMBER-PORTABILITY gestita da ABILIS.
+
+Il carico di lavoro e` un 2x rispetto a quello gestito attualmente da Asterisell.
+
+Decidere se includere IVA o meno nei TOTALI delle fatture (vedere se questa implementazione c'e` gia` in Asterisell).
+
+Se un numero telefonico RICEVE una chiamata si ha un piccolo accredito di una somma dal gestore telefonico che fa il routing della chiamata.
+
+

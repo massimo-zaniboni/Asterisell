@@ -29,7 +29,7 @@ abstract class BaseArAsteriskAccountPeer {
 	const ACCOUNT_CODE = 'ar_asterisk_account.ACCOUNT_CODE';
 
 	
-	const AR_PARTY_ID = 'ar_asterisk_account.AR_PARTY_ID';
+	const AR_OFFICE_ID = 'ar_asterisk_account.AR_OFFICE_ID';
 
 	
 	private static $phpNameMap = null;
@@ -37,17 +37,17 @@ abstract class BaseArAsteriskAccountPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AccountCode', 'ArPartyId', ),
-		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID, ArAsteriskAccountPeer::NAME, ArAsteriskAccountPeer::ACCOUNT_CODE, ArAsteriskAccountPeer::AR_PARTY_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'account_code', 'ar_party_id', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AccountCode', 'ArOfficeId', ),
+		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID, ArAsteriskAccountPeer::NAME, ArAsteriskAccountPeer::ACCOUNT_CODE, ArAsteriskAccountPeer::AR_OFFICE_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'account_code', 'ar_office_id', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AccountCode' => 2, 'ArPartyId' => 3, ),
-		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID => 0, ArAsteriskAccountPeer::NAME => 1, ArAsteriskAccountPeer::ACCOUNT_CODE => 2, ArAsteriskAccountPeer::AR_PARTY_ID => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'account_code' => 2, 'ar_party_id' => 3, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AccountCode' => 2, 'ArOfficeId' => 3, ),
+		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID => 0, ArAsteriskAccountPeer::NAME => 1, ArAsteriskAccountPeer::ACCOUNT_CODE => 2, ArAsteriskAccountPeer::AR_OFFICE_ID => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'account_code' => 2, 'ar_office_id' => 3, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
@@ -108,7 +108,7 @@ abstract class BaseArAsteriskAccountPeer {
 
 		$criteria->addSelectColumn(ArAsteriskAccountPeer::ACCOUNT_CODE);
 
-		$criteria->addSelectColumn(ArAsteriskAccountPeer::AR_PARTY_ID);
+		$criteria->addSelectColumn(ArAsteriskAccountPeer::AR_OFFICE_ID);
 
 	}
 
@@ -189,7 +189,7 @@ abstract class BaseArAsteriskAccountPeer {
 	}
 
 	
-	public static function doCountJoinArParty(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinArOffice(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -205,7 +205,7 @@ abstract class BaseArAsteriskAccountPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(ArAsteriskAccountPeer::AR_PARTY_ID, ArPartyPeer::ID);
+		$criteria->addJoin(ArAsteriskAccountPeer::AR_OFFICE_ID, ArOfficePeer::ID);
 
 		$rs = ArAsteriskAccountPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -217,7 +217,7 @@ abstract class BaseArAsteriskAccountPeer {
 
 
 	
-	public static function doSelectJoinArParty(Criteria $c, $con = null)
+	public static function doSelectJoinArOffice(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -227,9 +227,9 @@ abstract class BaseArAsteriskAccountPeer {
 
 		ArAsteriskAccountPeer::addSelectColumns($c);
 		$startcol = (ArAsteriskAccountPeer::NUM_COLUMNS - ArAsteriskAccountPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-		ArPartyPeer::addSelectColumns($c);
+		ArOfficePeer::addSelectColumns($c);
 
-		$c->addJoin(ArAsteriskAccountPeer::AR_PARTY_ID, ArPartyPeer::ID);
+		$c->addJoin(ArAsteriskAccountPeer::AR_OFFICE_ID, ArOfficePeer::ID);
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -241,7 +241,7 @@ abstract class BaseArAsteriskAccountPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = ArPartyPeer::getOMClass();
+			$omClass = ArOfficePeer::getOMClass();
 
 			$cls = Propel::import($omClass);
 			$obj2 = new $cls();
@@ -249,7 +249,7 @@ abstract class BaseArAsteriskAccountPeer {
 
 			$newObject = true;
 			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getArParty(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getArOffice(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 										$temp_obj2->addArAsteriskAccount($obj1); 					break;
 				}
@@ -280,7 +280,7 @@ abstract class BaseArAsteriskAccountPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(ArAsteriskAccountPeer::AR_PARTY_ID, ArPartyPeer::ID);
+		$criteria->addJoin(ArAsteriskAccountPeer::AR_OFFICE_ID, ArOfficePeer::ID);
 
 		$rs = ArAsteriskAccountPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -303,10 +303,10 @@ abstract class BaseArAsteriskAccountPeer {
 		ArAsteriskAccountPeer::addSelectColumns($c);
 		$startcol2 = (ArAsteriskAccountPeer::NUM_COLUMNS - ArAsteriskAccountPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		ArPartyPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + ArPartyPeer::NUM_COLUMNS;
+		ArOfficePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ArOfficePeer::NUM_COLUMNS;
 
-		$c->addJoin(ArAsteriskAccountPeer::AR_PARTY_ID, ArPartyPeer::ID);
+		$c->addJoin(ArAsteriskAccountPeer::AR_OFFICE_ID, ArOfficePeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -322,7 +322,7 @@ abstract class BaseArAsteriskAccountPeer {
 
 
 					
-			$omClass = ArPartyPeer::getOMClass();
+			$omClass = ArOfficePeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -332,7 +332,7 @@ abstract class BaseArAsteriskAccountPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getArParty(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getArOffice(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addArAsteriskAccount($obj1); 					break;
 				}

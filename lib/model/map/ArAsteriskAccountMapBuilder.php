@@ -38,7 +38,7 @@ class ArAsteriskAccountMapBuilder {
 
 		$tMap->addColumn('ACCOUNT_CODE', 'AccountCode', 'string', CreoleTypes::VARCHAR, true, 30);
 
-		$tMap->addForeignKey('AR_PARTY_ID', 'ArPartyId', 'int', CreoleTypes::INTEGER, 'ar_party', 'ID', false, null);
+		$tMap->addForeignKey('AR_OFFICE_ID', 'ArOfficeId', 'int', CreoleTypes::INTEGER, 'ar_office', 'ID', false, null);
 
 	} 
 } 

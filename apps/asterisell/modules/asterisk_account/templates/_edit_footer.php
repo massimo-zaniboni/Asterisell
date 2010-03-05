@@ -4,13 +4,11 @@ use_helper('Markdown');
 //
 echo insertHelp('
 
-## Asterisk Code
+## Name Update
 
-A unique code used from the Asterisk server to identify this VoIP account. The code is inserted from the Asterisk server in the "accountcode" field of the CDR table. 
+If you udapte the name of a VoIP account, it will take effect only on new processed calls.
 
-## User Name
-
-A human readable name used inside selection combo in order to identify the VoIP account without using the Asterisk Code.
+In order to propagate this change also to old calls you must reset them, and force a rerate.
 
 ');
 //}

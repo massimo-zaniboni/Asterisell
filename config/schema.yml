@@ -1,24 +1,3 @@
-#
-# Copyright (C) 2007-2009
-# by Massimo Zaniboni <massimo.zaniboni@profitoss.com>
-#
-#    This file is part of Asterisell.
-#
-#    Asterisell is free software; you can redistribute it and/or modify
-#    it under the terms of the GNU General Public License as published by
-#    the Free Software Foundation; either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    Asterisell is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with Asterisell; if not, write to the Free Software
-#    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-#
-
 propel:
 
   cdr:
@@ -38,11 +17,15 @@ propel:
 
     src:         { type: varchar, size: 80, required: true }
     #
-    # received caller identifier as unique number 
+    # received caller identifier as unique number
+    # see "apps/asterisell/config/app.yml" for a description
+    # of the real meaning of this field.
 
     dst:         { type: varchar, size: 80, required: true }
     #
     # destination extension
+    # see "apps/asterisell/config/app.yml" for a description
+    # of the real meaning of this field.
 
     dcontext:    { type: varchar, size: 80, required: true }
     #
@@ -64,6 +47,8 @@ propel:
     lastdata:    { type: varchar, size: 80, required: true }
     #
     # last application data (arguments)
+    # see "apps/asterisell/config/app.yml" for a description
+    # of the real meaning of this field.
 
     duration:    { type: integer, size: 11, required: true }
     #
@@ -83,7 +68,7 @@ propel:
     # AMA flags stand for Automated Message Accounting flags,
     # wich are somewhat standard in the industry
 
-    accountcode: { type: varchar, size: 30, required: true, index: true, foreignTable: ar_asterisk_account, foreignReference: account_code }
+    accountcode: { type: varchar, size: 30 }
     #
     # ar_asterisk_account that must pay the outbound call
 
@@ -93,29 +78,47 @@ propel:
     #
     # a user-defined field
 
-    income_ar_rate_id: { type: integer, size: 20, index: false, required: false, default: NULL }
-    #
-    # how the income is rated, NULL if the call is not already rated.
+    ### !!! ADD NEW FIELDS BELOW AND NOT ABOVE in order to avoid   !!! ###
+    ### !!! conflicts with Asterisk field expected order           !!! ###
 
-    income: { type: integer, size: 20, index: true, required: false, default: null }
+    destination_type: { type: integer, size: 1, index: true, required: true, default: 0 }
+    #
+    # Value "0" identifies a CDR to process, not already rated.
+    #
+    # This field is indexed in order to speedup the retrieving of 
+    # CDRs to rate.
+    #
+    # See "apps/asterisell/lib/DestinationType.php" for a list of available 
+    # "destination_type": for incoming/outgoing/internal/ignorable calls.
+    # 
+
+    ar_asterisk_account_id:
+    #
+    # a fast link/join to the corresponding asterisk accountcode,
+    # determinated during rating process, using the accountcode field.
+
+    income_ar_rate_id: { type: integer, size: 20, index: false, required: false, default: null }
+    #
+    # the rate used/applied for income calculation, 
+    # NULL if the call is not already rated.
+
+    income: { type: integer, size: 20, index: false, required: false, default: null }
     #
     # what the customer must pay for the call 
     #
     # NULL if the call is not already rated,
     # 0 if the call has no income associated.
-    #	
-    # NOTE: this field is indexed so it is fast to search for unrated cdr (value NULL)
 
-    cost_ar_rate_id: { type: integer, size: 20, index: true, required: false, default: NULL }
+    cost_ar_rate_id: { type: integer, size: 20, index: true, required: false, default: null }
     #
     # how the cost is rated, NULL if the call is not already rated.
 
-    vendor_id: { type: integer, size: 20, index: true, required: false, default: NULL }
+    vendor_id: { type: integer, size: 20, index: true, required: false, default: null }
     #
     # NULL before the rating process,
     # the vendor party-id wich must be paid for call routing service
 
-    cost: { type: integer, size: 20, index: false, required: false, default: NULL }
+    cost: { type: integer, size: 20, index: false, required: false, default: null }
     #
     # the income of the vendor that has managed the call 
     
@@ -126,9 +129,48 @@ propel:
     #   * is made during rating process;
     #   * does not depend from the rate method but only from the ar_telephone_prefix table;
     #   * allows to filter efficiently calls according the operator type of the called number;
-    #   * breaks normalization rules because this property can be derived (with a big amount of work) from cdr fields;
-    #   * breaking normalization rules became out of synchro if after CDR rating the ar_telephone_prefix table is changed;
-    
+    #   * breaks normalization rules because this property can be derived 
+    #     (with a big amount of work) from cdr fields; 
+    #   * breaking normalization rules became out of synchro 
+    #     if after CDR rating the ar_telephone_prefix table is changed;
+
+    cached_internal_telephone_number: { type: varchar, size: 256, required: false, index: true }
+    #
+    # NULL for unrated/unprocessed calls.
+    # The proper internal telephone number of the call, as displayed in the CALL REPORT
+    # This field allow to cache a not so easy calculation, that depends also from
+    # configuration parameters of "apps/asterisell/config/app.yml", in order to 
+    # support filtering and ordering on this field.
+    # See "apps/asterisell/config/app.yml" comments for a detailed description 
+    # of the meaning of internal and external telephone numbers.
+
+    cached_external_telephone_number: { type: varchar, size: 256, required: false, index: true }
+    #
+    # NULL for unrated/unprocessed calls.
+    # The proper external telephone number of the call, as displayed in the CALL REPORT
+    # This field allow to cache a not so easy calculation, that depends also from
+    # configuration parameters of "apps/asterisell/config/app.yml", in order to 
+    # support filtering and ordering on this field.
+    # See "apps/asterisell/config/app.yml" comments for a detailed description 
+    # of the meaning of internal and external telephone numbers.
+
+    external_telephone_number_with_applied_portability: { type: varchar, size: 256, required: false, index: true }
+    #
+    # The external telephone number with applied number portability.
+    # This is the telephone number on wich must work rates.
+
+    cached_masked_external_telephone_number: { type: varchar, size: 256, required: false, index: true }
+    #
+    # as "cached_external_telephone_number" but with a mask on its last part
+    # if it is specified in the application configuration file.
+
+    source_id: { type: integer, size: 11, required: false, default: null, unique: false, index: true }
+    #
+    # if the CDR was generated from a record of another table, 
+    # this field contains a reference to it.
+    # This field is used only if the application/installation 
+    # import CDR records from other table. Normally it is not used.
+
     id:
     #
     # NOTE: not in first position in order to not conflict with Asterisk Server
@@ -153,35 +195,69 @@ propel:
         references:
           - { local: cost_ar_rate_id, foreign: id }
 
+  ar_number_portability:
+  #
+  # mantain info about known telephone numbers 
+  # that are ported to a new number.
+
+    id:
+
+    telephone_number: { type: varchar, size: 256, required: true, index: true }
+    #
+    # the source telephone number
+
+    ported_telephone_number: { type: varchar, size: 256, required: true, index: false }
+    #
+    # the destination telephone number
+
+    from_date:    { type: timestamp, required: false, index: false }
+ 
   ar_asterisk_account:
     id: 
 
     name: varchar(160)
 
-    account_code: { type: varchar, size: 30, required: true, index: true }
+    account_code: { type: varchar, size: 30, required: true, unique: true, index: true }
     #
     # the internal account code configured on the Asterisk Server
     # and used as reference in the cdr table 
 
-    ar_party_id:
+    ar_office_id:
     #
-    # the customer that is accountable (pays) for the call of the asterisk_account
+    # the office of the customer that
+    # is accountable (pays) for the call of this asterisk_account
 
-  ar_rate_category:
+  ar_office:
+  #
+  # every customer can have one or more offices/seat/centers
+  # In each offices there can be one or more asterisk_accounts.
+
     id:
 
     name: varchar(128)
 
+    description: varchar(1024)
+
+    ar_party_id:
+
   ar_party:
+  #
+  # a customer or a vendor
+
     id:
 
-    customer_or_vendor: varchar(1)
+    customer_or_vendor: { type: char, size: 1, required: true, index: true, default: 'C' }
+    #
+    # 'C' for a CUSTOMER
+    # 'V" for a VENDOR
 
     name: varchar(255)
 
     external_crm_code: varchar(40)
 
     vat: varchar(40)
+    #
+    # VAT registration number
 
     legal_address: varchar(60) 
 
@@ -203,9 +279,136 @@ propel:
 
     ar_rate_category_id:
 
+    ar_params_id:
+
     max_limit_30: { type: integer, size: 20, index: false, required: false, default: NULL }
     #
     # the max cost of calls for last 30 days.
+
+    last_email_advise_for_max_limit_30: timestamp
+    #
+    # when the customer was advised 
+
+    is_active: { type: boolean, index: true, required: true, default: 1 }
+    #
+    # TRUE if it is an active customer/vendor.
+
+  ar_params:
+  #
+  # Params associated to customer/account
+
+    id:
+
+    name: varchar(80)
+    #
+    # identifies the params 
+
+    is_default: boolean
+    #
+    # if TRUE use these parameters are applied also to login form
+    # and when there are no other available params
+
+    service_name: varchar(120)
+    #
+    # the name of the VoIP service offered from the Company
+
+    service_provider_website: varchar(120)
+    #
+    # the web site address where the user can retrieve info about its telephone traffics. 
+    # In other word, it is where Asterisell is installed.
+
+    service_provider_email: varchar(120)
+    #
+    # the mail associated to the VoIP service
+
+    vat_tax_perc: { type: integer, size: 3, required: true, default: 0 }
+    #
+    # from 0% to 999% for VAT tax to apply to invoice amount
+
+    logo_image: varchar(120)
+    #
+    # the logo to display
+
+    slogan: varchar(255)
+    #
+    # the slogan to display near the logo
+
+    footer: varchar(255)
+    #
+    # the text to display in the footer
+ 
+    user_message: varchar(2048)
+    #
+    # an optional informative message to show after login of the account
+
+    last_viewed_feeds_md5: varchar(1024)
+    #
+    # store the md5 checksum code 
+    # of the last viewed feeds.
+    
+    current_feeds_md5: varchar(1024)
+    #
+    # store the md5 checksum code
+    # of the current version of feeds.
+
+    legal_name: varchar(255)
+
+    external_crm_code: varchar(40)
+
+    vat: varchar(40)
+    #
+    # VAT registration number
+
+    legal_address: varchar(120) 
+
+    legal_website: varchar(120)
+    #
+    # Note: this is the company web site, not where Asterisell is installed.
+
+    legal_city: varchar(60)
+
+    legal_zipcode: varchar(20)
+
+    legal_state_province: varchar(60)
+
+    legal_country: varchar(60)
+
+    legal_email: varchar(60)
+
+    legal_phone: varchar(60)
+
+    phone2: varchar(60)
+
+    legal_fax: varchar(60)
+
+    sender_name_on_invoicing_emails: varchar(120)
+    #
+    # the name used in invoices / reports
+
+    invoicing_email_address: varchar(120)
+    #
+    # the sender mail address used for invoicing
+
+    accountant_email_address: varchar(120)
+    #
+    # who receives a copy of sent invoices
+    # for book-keeping.
+
+    smtp_host: varchar(250)
+    #
+    # the smtp host to use for sending emails
+    
+    smtp_port: { type: integer, size: 4 }
+
+    smtp_username: varchar(60)
+
+    smtp_password: varchar(60)
+
+    smtp_encryption: varchar(60)
+
+    smtp_reconnect_after_nr_of_messages: { type: integer, size: 4 }
+
+    smtp_seconds_of_pause_after_reconnection: { type: integer, size: 2 }
 
   ar_web_account:
   
@@ -223,26 +426,38 @@ propel:
     # in this case the web_account can inspect all the calls of account
     # related to ar_party_id
 
-    ar_asterisk_account_id:
+    ar_office_id:
     #
-    # NULL if the account is not associated to a specific ar_asterisk_account.
+    # NULL if the account is not associated to a specific ar_office.
     # 
-    # NOT NULL if the account is associated to a specific ar_asterisk_account,
+    # NOT NULL if the account is associated to a specific ar_office,
     # in this case the ar_web_account can inspect only its calls.
-    # In this case ar_party_id must be the party_associated to the account_id.
+    # In this case ar_party_id must be the party_associated to this ar_office_id.
     
     activate_at: date
 
     deactivate_at: date
+
+    ar_params_id:
     
   ar_invoice:
     id:
 
     ar_party_id:
 
+    type: { type: char, size: 1, required: true, index: true, default: 'C' }
+    #
+    # 'C' for a an invoice to send to a customer (incomes)
+    # 'V' for a summary of vendor costs (costs)
+
+    is_revenue_sharing: {type: boolean, index: true, required: true, default: false }
+    #
+    # TRUE if the invoice contains revenue sharing
+    # FALSE if it is a normal invoice
+
     nr: { type: varchar, size: 20, index: true, required: true, unique: true } 
 
-    invoice_date: date
+    invoice_date: { type: date, index: true }
     #
     # the date of the invoice
 
@@ -266,20 +481,17 @@ propel:
     #
     # details about the invoiced calls in HTML format.
 
-    txt_details: longvarchar
-    #
-    # details about the invoiced calls in standard text format
-
-    pdf_invoice: longvarchar
+    pdf_invoice: blob
     #
     # pdf version of the invoice
+
+    email_subject: varchar(1024)
+
+    email_message: longvarchar
 
     already_sent: boolean
     #
     # true if the invoice is already sent to customer or received from vendor
-
-    _indexes:
-      ar_invoice_index_1: [ar_party_id]
 
   ar_invoice_creation:
   #
@@ -287,13 +499,23 @@ propel:
  
     id:
 
+    type: { type: char, size: 1, required: true, index: true, default: 'C' }
+    #
+    # 'C' for a an invoice to send to a customer (incomes)
+    # 'V' for a summary of vendor costs (costs)
+
+    is_revenue_sharing: {type: boolean, index: true, required: true, default: false }
+    #
+    # TRUE if the invoice contains revenue sharing
+    # FALSE if it is a normal invoice
+
     first_nr: varchar(20)
     #
     # the first invoice number to use,
     # the last used number is first_nr + number of customers with
     # an invoice
 
-    invoice_date: date
+    invoice_date: { type: date, index: true }
 
     ar_cdr_from: date
     #
@@ -303,11 +525,20 @@ propel:
     #
     # consider calls until this date (exclise this date)
 
-    _indexes:
-      ar_invoice_creation_index_1: [invoice_date]
+  ar_rate_category:
+  #
+  # every customer can be assigned to a certain rate_category
+    id:
+
+    name: varchar(128)
 
   ar_rate:
     id:
+
+    destination_type: { type: integer, size: 1, required: true, index: true, default: 0 }
+    #
+    # Identifies the "destination_type" of accepted CDRs that can be processed
+    # from this rate.
 
     is_exception: { type: boolean, required: true, default: false }
     #
@@ -365,9 +596,6 @@ propel:
 
     note: longvarchar
     
-    _indexes:
-      ar_rate_index_1: [ar_party_id]
-
   ar_telephone_prefix:
   #
   # A telephone prefix identifing a certain area or telephone operator.
@@ -403,6 +631,7 @@ propel:
     duplication_key: { type: varchar(160), required: true, unique: true, index: true }
     # 
     # a key that represent in a unique manner a problem in order
+
     # to avoid annoiance duplicate problems in the table
 
     description: longvarchar
@@ -419,4 +648,63 @@ propel:
 
     signaled_to_admin: { type: boolean, required: true, default: false }
     #
-    # true if the problem was signaled to the administrator
+    # true if the problem was signaled to the administrator 
+    # via mail or other method
+
+  ar_job_queue:
+  #
+  # job to execute/executing/executed
+
+    id:
+
+    is_part_of: { type: integer, size: 11, required: true, index: true, unique: false }
+    #
+    # is-part-of relationship.
+    # It is equal to "id" when this job is not part of another
+    # job. It is equal to the parent job when the parent were
+    # decomposed in different jobs.
+    # The job queue processor enforces the execution first of all ar_job_queue_id with lover values.
+    # So job execution order is predictable.
+
+    state: { type: integer, size: 1, required: true, index: true, unique: false, default: 0 }
+    #
+    # 0 for TODO
+    # 1 for RUNNING
+    # 2 for DONE
+    # 3 for ERROR 
+
+    created_at: timestamp
+    #
+    # when the job was added to the queue
+
+    start_at: timestamp
+
+    end_at: timestamp
+
+    description: { type: varchar, size: 12000, required: true }
+    #
+    # a user readable detailed description of the job
+
+    php_data_job_serialization: clob
+    #
+    # serialization of a PHP DataJob class containing the description
+    # of the job to do in a PHP comprehensible format.
+    #
+
+    # IMPORTANT: access this field using
+    #
+    # > getPhpDataJobSerialization()->getContents()
+    #
+    # because a CLOB (LONGTEXT) is managed
+    # in a different way respect LONGVARCHARS
+    # from Symfony framework.
+
+  ar_custom_rate_form:
+  #
+  # a temporary table used for processing forms
+  # about custom rate methods.
+  
+    id: { type: integer, size: 20, primaryKey: true, autoIncrement: false, index: true, foreignTable: ar_rate, foreignReference: id, onDelete: cascade, required: true }
+    #
+    # it plays both the role of primary key and the role of a reference
+    # to the ar_rate owning the custom PhpRate.

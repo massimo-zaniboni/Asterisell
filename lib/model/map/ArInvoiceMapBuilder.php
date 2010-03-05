@@ -36,6 +36,10 @@ class ArInvoiceMapBuilder {
 
 		$tMap->addForeignKey('AR_PARTY_ID', 'ArPartyId', 'int', CreoleTypes::INTEGER, 'ar_party', 'ID', false, null);
 
+		$tMap->addColumn('TYPE', 'Type', 'string', CreoleTypes::CHAR, true, 1);
+
+		$tMap->addColumn('IS_REVENUE_SHARING', 'IsRevenueSharing', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
 		$tMap->addColumn('NR', 'Nr', 'string', CreoleTypes::VARCHAR, true, 20);
 
 		$tMap->addColumn('INVOICE_DATE', 'InvoiceDate', 'int', CreoleTypes::DATE, false, null);
@@ -54,9 +58,11 @@ class ArInvoiceMapBuilder {
 
 		$tMap->addColumn('HTML_DETAILS', 'HtmlDetails', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
-		$tMap->addColumn('TXT_DETAILS', 'TxtDetails', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('PDF_INVOICE', 'PdfInvoice', 'string', CreoleTypes::BLOB, false, null);
 
-		$tMap->addColumn('PDF_INVOICE', 'PdfInvoice', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('EMAIL_SUBJECT', 'EmailSubject', 'string', CreoleTypes::VARCHAR, false, 1024);
+
+		$tMap->addColumn('EMAIL_MESSAGE', 'EmailMessage', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('ALREADY_SENT', 'AlreadySent', 'boolean', CreoleTypes::BOOLEAN, false, null);
 

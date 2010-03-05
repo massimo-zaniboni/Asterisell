@@ -34,6 +34,7 @@ application/octet-stream exe
 application/oda oda
 application/ogg ogg
 application/pdf pdf
+application/x-pdf pdf
 application/pgp-encrypted 7bit
 application/pgp-keys 7bit
 application/pgp-signature sig
@@ -252,6 +253,7 @@ application/x-wingz wz
 application/x-word base64
 application/x-wordperfect6.1 wp6
 application/x-x509-ca-cert crt
+application/x-zip zip
 application/x-zip-compressed zip
 application/xhtml+xml xhtml
 application/zip zip

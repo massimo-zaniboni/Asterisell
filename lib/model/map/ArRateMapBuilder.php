@@ -34,6 +34,8 @@ class ArRateMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
+		$tMap->addColumn('DESTINATION_TYPE', 'DestinationType', 'int', CreoleTypes::INTEGER, true, 1);
+
 		$tMap->addColumn('IS_EXCEPTION', 'IsException', 'boolean', CreoleTypes::BOOLEAN, true, null);
 
 		$tMap->addForeignKey('AR_RATE_CATEGORY_ID', 'ArRateCategoryId', 'int', CreoleTypes::INTEGER, 'ar_rate_category', 'ID', false, null);

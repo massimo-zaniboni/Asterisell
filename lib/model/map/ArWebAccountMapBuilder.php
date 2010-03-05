@@ -40,11 +40,13 @@ class ArWebAccountMapBuilder {
 
 		$tMap->addForeignKey('AR_PARTY_ID', 'ArPartyId', 'int', CreoleTypes::INTEGER, 'ar_party', 'ID', false, null);
 
-		$tMap->addForeignKey('AR_ASTERISK_ACCOUNT_ID', 'ArAsteriskAccountId', 'int', CreoleTypes::INTEGER, 'ar_asterisk_account', 'ID', false, null);
+		$tMap->addForeignKey('AR_OFFICE_ID', 'ArOfficeId', 'int', CreoleTypes::INTEGER, 'ar_office', 'ID', false, null);
 
 		$tMap->addColumn('ACTIVATE_AT', 'ActivateAt', 'int', CreoleTypes::DATE, false, null);
 
 		$tMap->addColumn('DEACTIVATE_AT', 'DeactivateAt', 'int', CreoleTypes::DATE, false, null);
+
+		$tMap->addForeignKey('AR_PARAMS_ID', 'ArParamsId', 'int', CreoleTypes::INTEGER, 'ar_params', 'ID', false, null);
 
 	} 
 } 

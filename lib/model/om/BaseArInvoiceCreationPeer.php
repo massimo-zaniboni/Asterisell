@@ -13,7 +13,7 @@ abstract class BaseArInvoiceCreationPeer {
 	const CLASS_DEFAULT = 'lib.model.ArInvoiceCreation';
 
 	
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 7;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -21,6 +21,12 @@ abstract class BaseArInvoiceCreationPeer {
 
 	
 	const ID = 'ar_invoice_creation.ID';
+
+	
+	const TYPE = 'ar_invoice_creation.TYPE';
+
+	
+	const IS_REVENUE_SHARING = 'ar_invoice_creation.IS_REVENUE_SHARING';
 
 	
 	const FIRST_NR = 'ar_invoice_creation.FIRST_NR';
@@ -40,18 +46,18 @@ abstract class BaseArInvoiceCreationPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'FirstNr', 'InvoiceDate', 'ArCdrFrom', 'ArCdrTo', ),
-		BasePeer::TYPE_COLNAME => array (ArInvoiceCreationPeer::ID, ArInvoiceCreationPeer::FIRST_NR, ArInvoiceCreationPeer::INVOICE_DATE, ArInvoiceCreationPeer::AR_CDR_FROM, ArInvoiceCreationPeer::AR_CDR_TO, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'first_nr', 'invoice_date', 'ar_cdr_from', 'ar_cdr_to', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Type', 'IsRevenueSharing', 'FirstNr', 'InvoiceDate', 'ArCdrFrom', 'ArCdrTo', ),
+		BasePeer::TYPE_COLNAME => array (ArInvoiceCreationPeer::ID, ArInvoiceCreationPeer::TYPE, ArInvoiceCreationPeer::IS_REVENUE_SHARING, ArInvoiceCreationPeer::FIRST_NR, ArInvoiceCreationPeer::INVOICE_DATE, ArInvoiceCreationPeer::AR_CDR_FROM, ArInvoiceCreationPeer::AR_CDR_TO, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'type', 'is_revenue_sharing', 'first_nr', 'invoice_date', 'ar_cdr_from', 'ar_cdr_to', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'FirstNr' => 1, 'InvoiceDate' => 2, 'ArCdrFrom' => 3, 'ArCdrTo' => 4, ),
-		BasePeer::TYPE_COLNAME => array (ArInvoiceCreationPeer::ID => 0, ArInvoiceCreationPeer::FIRST_NR => 1, ArInvoiceCreationPeer::INVOICE_DATE => 2, ArInvoiceCreationPeer::AR_CDR_FROM => 3, ArInvoiceCreationPeer::AR_CDR_TO => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'first_nr' => 1, 'invoice_date' => 2, 'ar_cdr_from' => 3, 'ar_cdr_to' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Type' => 1, 'IsRevenueSharing' => 2, 'FirstNr' => 3, 'InvoiceDate' => 4, 'ArCdrFrom' => 5, 'ArCdrTo' => 6, ),
+		BasePeer::TYPE_COLNAME => array (ArInvoiceCreationPeer::ID => 0, ArInvoiceCreationPeer::TYPE => 1, ArInvoiceCreationPeer::IS_REVENUE_SHARING => 2, ArInvoiceCreationPeer::FIRST_NR => 3, ArInvoiceCreationPeer::INVOICE_DATE => 4, ArInvoiceCreationPeer::AR_CDR_FROM => 5, ArInvoiceCreationPeer::AR_CDR_TO => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'type' => 1, 'is_revenue_sharing' => 2, 'first_nr' => 3, 'invoice_date' => 4, 'ar_cdr_from' => 5, 'ar_cdr_to' => 6, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	
@@ -106,6 +112,10 @@ abstract class BaseArInvoiceCreationPeer {
 	{
 
 		$criteria->addSelectColumn(ArInvoiceCreationPeer::ID);
+
+		$criteria->addSelectColumn(ArInvoiceCreationPeer::TYPE);
+
+		$criteria->addSelectColumn(ArInvoiceCreationPeer::IS_REVENUE_SHARING);
 
 		$criteria->addSelectColumn(ArInvoiceCreationPeer::FIRST_NR);
 

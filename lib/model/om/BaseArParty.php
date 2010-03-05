@@ -13,7 +13,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 
 	
-	protected $customer_or_vendor;
+	protected $customer_or_vendor = 'C';
 
 
 	
@@ -69,16 +69,31 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 
 	
+	protected $ar_params_id;
+
+
+	
 	protected $max_limit_30 = 0;
+
+
+	
+	protected $last_email_advise_for_max_limit_30;
+
+
+	
+	protected $is_active = true;
 
 	
 	protected $aArRateCategory;
 
 	
-	protected $collArAsteriskAccounts;
+	protected $aArParams;
 
 	
-	protected $lastArAsteriskAccountCriteria = null;
+	protected $collArOffices;
+
+	
+	protected $lastArOfficeCriteria = null;
 
 	
 	protected $collArWebAccounts;
@@ -210,10 +225,46 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	}
 
 	
+	public function getArParamsId()
+	{
+
+		return $this->ar_params_id;
+	}
+
+	
 	public function getMaxLimit30()
 	{
 
 		return $this->max_limit_30;
+	}
+
+	
+	public function getLastEmailAdviseForMaxLimit30($format = 'Y-m-d H:i:s')
+	{
+
+		if ($this->last_email_advise_for_max_limit_30 === null || $this->last_email_advise_for_max_limit_30 === '') {
+			return null;
+		} elseif (!is_int($this->last_email_advise_for_max_limit_30)) {
+						$ts = strtotime($this->last_email_advise_for_max_limit_30);
+			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [last_email_advise_for_max_limit_30] as date/time value: " . var_export($this->last_email_advise_for_max_limit_30, true));
+			}
+		} else {
+			$ts = $this->last_email_advise_for_max_limit_30;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
+	}
+
+	
+	public function getIsActive()
+	{
+
+		return $this->is_active;
 	}
 
 	
@@ -242,7 +293,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 			$v = (string) $v; 
 		}
 
-		if ($this->customer_or_vendor !== $v) {
+		if ($this->customer_or_vendor !== $v || $v === 'C') {
 			$this->customer_or_vendor = $v;
 			$this->modifiedColumns[] = ArPartyPeer::CUSTOMER_OR_VENDOR;
 		}
@@ -461,6 +512,26 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setArParamsId($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->ar_params_id !== $v) {
+			$this->ar_params_id = $v;
+			$this->modifiedColumns[] = ArPartyPeer::AR_PARAMS_ID;
+		}
+
+		if ($this->aArParams !== null && $this->aArParams->getId() !== $v) {
+			$this->aArParams = null;
+		}
+
+	} 
+	
 	public function setMaxLimit30($v)
 	{
 
@@ -473,6 +544,33 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		if ($this->max_limit_30 !== $v || $v === 0) {
 			$this->max_limit_30 = $v;
 			$this->modifiedColumns[] = ArPartyPeer::MAX_LIMIT_30;
+		}
+
+	} 
+	
+	public function setLastEmailAdviseForMaxLimit30($v)
+	{
+
+		if ($v !== null && !is_int($v)) {
+			$ts = strtotime($v);
+			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [last_email_advise_for_max_limit_30] from input: " . var_export($v, true));
+			}
+		} else {
+			$ts = $v;
+		}
+		if ($this->last_email_advise_for_max_limit_30 !== $ts) {
+			$this->last_email_advise_for_max_limit_30 = $ts;
+			$this->modifiedColumns[] = ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30;
+		}
+
+	} 
+	
+	public function setIsActive($v)
+	{
+
+		if ($this->is_active !== $v || $v === true) {
+			$this->is_active = $v;
+			$this->modifiedColumns[] = ArPartyPeer::IS_ACTIVE;
 		}
 
 	} 
@@ -511,13 +609,19 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 			$this->ar_rate_category_id = $rs->getInt($startcol + 14);
 
-			$this->max_limit_30 = $rs->getInt($startcol + 15);
+			$this->ar_params_id = $rs->getInt($startcol + 15);
+
+			$this->max_limit_30 = $rs->getInt($startcol + 16);
+
+			$this->last_email_advise_for_max_limit_30 = $rs->getTimestamp($startcol + 17, null);
+
+			$this->is_active = $rs->getBoolean($startcol + 18);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 16; 
+						return $startcol + 19; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArParty object", $e);
 		}
@@ -582,6 +686,13 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 				$this->setArRateCategory($this->aArRateCategory);
 			}
 
+			if ($this->aArParams !== null) {
+				if ($this->aArParams->isModified()) {
+					$affectedRows += $this->aArParams->save($con);
+				}
+				$this->setArParams($this->aArParams);
+			}
+
 
 						if ($this->isModified()) {
 				if ($this->isNew()) {
@@ -594,8 +705,8 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
-			if ($this->collArAsteriskAccounts !== null) {
-				foreach($this->collArAsteriskAccounts as $referrerFK) {
+			if ($this->collArOffices !== null) {
+				foreach($this->collArOffices as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -669,14 +780,20 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aArParams !== null) {
+				if (!$this->aArParams->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArParams->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = ArPartyPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
 
-				if ($this->collArAsteriskAccounts !== null) {
-					foreach($this->collArAsteriskAccounts as $referrerFK) {
+				if ($this->collArOffices !== null) {
+					foreach($this->collArOffices as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -771,7 +888,16 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 				return $this->getArRateCategoryId();
 				break;
 			case 15:
+				return $this->getArParamsId();
+				break;
+			case 16:
 				return $this->getMaxLimit30();
+				break;
+			case 17:
+				return $this->getLastEmailAdviseForMaxLimit30();
+				break;
+			case 18:
+				return $this->getIsActive();
 				break;
 			default:
 				return null;
@@ -798,7 +924,10 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 			$keys[12] => $this->getPhone2(),
 			$keys[13] => $this->getFax(),
 			$keys[14] => $this->getArRateCategoryId(),
-			$keys[15] => $this->getMaxLimit30(),
+			$keys[15] => $this->getArParamsId(),
+			$keys[16] => $this->getMaxLimit30(),
+			$keys[17] => $this->getLastEmailAdviseForMaxLimit30(),
+			$keys[18] => $this->getIsActive(),
 		);
 		return $result;
 	}
@@ -860,7 +989,16 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 				$this->setArRateCategoryId($value);
 				break;
 			case 15:
+				$this->setArParamsId($value);
+				break;
+			case 16:
 				$this->setMaxLimit30($value);
+				break;
+			case 17:
+				$this->setLastEmailAdviseForMaxLimit30($value);
+				break;
+			case 18:
+				$this->setIsActive($value);
 				break;
 		} 	}
 
@@ -884,7 +1022,10 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[12], $arr)) $this->setPhone2($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setFax($arr[$keys[13]]);
 		if (array_key_exists($keys[14], $arr)) $this->setArRateCategoryId($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setMaxLimit30($arr[$keys[15]]);
+		if (array_key_exists($keys[15], $arr)) $this->setArParamsId($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setMaxLimit30($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setLastEmailAdviseForMaxLimit30($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setIsActive($arr[$keys[18]]);
 	}
 
 	
@@ -907,7 +1048,10 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArPartyPeer::PHONE2)) $criteria->add(ArPartyPeer::PHONE2, $this->phone2);
 		if ($this->isColumnModified(ArPartyPeer::FAX)) $criteria->add(ArPartyPeer::FAX, $this->fax);
 		if ($this->isColumnModified(ArPartyPeer::AR_RATE_CATEGORY_ID)) $criteria->add(ArPartyPeer::AR_RATE_CATEGORY_ID, $this->ar_rate_category_id);
+		if ($this->isColumnModified(ArPartyPeer::AR_PARAMS_ID)) $criteria->add(ArPartyPeer::AR_PARAMS_ID, $this->ar_params_id);
 		if ($this->isColumnModified(ArPartyPeer::MAX_LIMIT_30)) $criteria->add(ArPartyPeer::MAX_LIMIT_30, $this->max_limit_30);
+		if ($this->isColumnModified(ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30)) $criteria->add(ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30, $this->last_email_advise_for_max_limit_30);
+		if ($this->isColumnModified(ArPartyPeer::IS_ACTIVE)) $criteria->add(ArPartyPeer::IS_ACTIVE, $this->is_active);
 
 		return $criteria;
 	}
@@ -966,14 +1110,20 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 		$copyObj->setArRateCategoryId($this->ar_rate_category_id);
 
+		$copyObj->setArParamsId($this->ar_params_id);
+
 		$copyObj->setMaxLimit30($this->max_limit_30);
+
+		$copyObj->setLastEmailAdviseForMaxLimit30($this->last_email_advise_for_max_limit_30);
+
+		$copyObj->setIsActive($this->is_active);
 
 
 		if ($deepCopy) {
 									$copyObj->setNew(false);
 
-			foreach($this->getArAsteriskAccounts() as $relObj) {
-				$copyObj->addArAsteriskAccount($relObj->copy($deepCopy));
+			foreach($this->getArOffices() as $relObj) {
+				$copyObj->addArOffice($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getArWebAccounts() as $relObj) {
@@ -1043,17 +1193,46 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initArAsteriskAccounts()
+	public function setArParams($v)
 	{
-		if ($this->collArAsteriskAccounts === null) {
-			$this->collArAsteriskAccounts = array();
+
+
+		if ($v === null) {
+			$this->setArParamsId(NULL);
+		} else {
+			$this->setArParamsId($v->getId());
+		}
+
+
+		$this->aArParams = $v;
+	}
+
+
+	
+	public function getArParams($con = null)
+	{
+		if ($this->aArParams === null && ($this->ar_params_id !== null)) {
+						include_once 'lib/model/om/BaseArParamsPeer.php';
+
+			$this->aArParams = ArParamsPeer::retrieveByPK($this->ar_params_id, $con);
+
+			
+		}
+		return $this->aArParams;
+	}
+
+	
+	public function initArOffices()
+	{
+		if ($this->collArOffices === null) {
+			$this->collArOffices = array();
 		}
 	}
 
 	
-	public function getArAsteriskAccounts($criteria = null, $con = null)
+	public function getArOffices($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseArAsteriskAccountPeer.php';
+				include_once 'lib/model/om/BaseArOfficePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1062,36 +1241,36 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collArAsteriskAccounts === null) {
+		if ($this->collArOffices === null) {
 			if ($this->isNew()) {
-			   $this->collArAsteriskAccounts = array();
+			   $this->collArOffices = array();
 			} else {
 
-				$criteria->add(ArAsteriskAccountPeer::AR_PARTY_ID, $this->getId());
+				$criteria->add(ArOfficePeer::AR_PARTY_ID, $this->getId());
 
-				ArAsteriskAccountPeer::addSelectColumns($criteria);
-				$this->collArAsteriskAccounts = ArAsteriskAccountPeer::doSelect($criteria, $con);
+				ArOfficePeer::addSelectColumns($criteria);
+				$this->collArOffices = ArOfficePeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(ArAsteriskAccountPeer::AR_PARTY_ID, $this->getId());
+				$criteria->add(ArOfficePeer::AR_PARTY_ID, $this->getId());
 
-				ArAsteriskAccountPeer::addSelectColumns($criteria);
-				if (!isset($this->lastArAsteriskAccountCriteria) || !$this->lastArAsteriskAccountCriteria->equals($criteria)) {
-					$this->collArAsteriskAccounts = ArAsteriskAccountPeer::doSelect($criteria, $con);
+				ArOfficePeer::addSelectColumns($criteria);
+				if (!isset($this->lastArOfficeCriteria) || !$this->lastArOfficeCriteria->equals($criteria)) {
+					$this->collArOffices = ArOfficePeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastArAsteriskAccountCriteria = $criteria;
-		return $this->collArAsteriskAccounts;
+		$this->lastArOfficeCriteria = $criteria;
+		return $this->collArOffices;
 	}
 
 	
-	public function countArAsteriskAccounts($criteria = null, $distinct = false, $con = null)
+	public function countArOffices($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseArAsteriskAccountPeer.php';
+				include_once 'lib/model/om/BaseArOfficePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1100,15 +1279,15 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(ArAsteriskAccountPeer::AR_PARTY_ID, $this->getId());
+		$criteria->add(ArOfficePeer::AR_PARTY_ID, $this->getId());
 
-		return ArAsteriskAccountPeer::doCount($criteria, $distinct, $con);
+		return ArOfficePeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addArAsteriskAccount(ArAsteriskAccount $l)
+	public function addArOffice(ArOffice $l)
 	{
-		$this->collArAsteriskAccounts[] = $l;
+		$this->collArOffices[] = $l;
 		$l->setArParty($this);
 	}
 
@@ -1184,7 +1363,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 
 	
-	public function getArWebAccountsJoinArAsteriskAccount($criteria = null, $con = null)
+	public function getArWebAccountsJoinArOffice($criteria = null, $con = null)
 	{
 				include_once 'lib/model/om/BaseArWebAccountPeer.php';
 		if ($criteria === null) {
@@ -1202,14 +1381,49 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 				$criteria->add(ArWebAccountPeer::AR_PARTY_ID, $this->getId());
 
-				$this->collArWebAccounts = ArWebAccountPeer::doSelectJoinArAsteriskAccount($criteria, $con);
+				$this->collArWebAccounts = ArWebAccountPeer::doSelectJoinArOffice($criteria, $con);
 			}
 		} else {
 									
 			$criteria->add(ArWebAccountPeer::AR_PARTY_ID, $this->getId());
 
 			if (!isset($this->lastArWebAccountCriteria) || !$this->lastArWebAccountCriteria->equals($criteria)) {
-				$this->collArWebAccounts = ArWebAccountPeer::doSelectJoinArAsteriskAccount($criteria, $con);
+				$this->collArWebAccounts = ArWebAccountPeer::doSelectJoinArOffice($criteria, $con);
+			}
+		}
+		$this->lastArWebAccountCriteria = $criteria;
+
+		return $this->collArWebAccounts;
+	}
+
+
+	
+	public function getArWebAccountsJoinArParams($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArWebAccountPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArWebAccounts === null) {
+			if ($this->isNew()) {
+				$this->collArWebAccounts = array();
+			} else {
+
+				$criteria->add(ArWebAccountPeer::AR_PARTY_ID, $this->getId());
+
+				$this->collArWebAccounts = ArWebAccountPeer::doSelectJoinArParams($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArWebAccountPeer::AR_PARTY_ID, $this->getId());
+
+			if (!isset($this->lastArWebAccountCriteria) || !$this->lastArWebAccountCriteria->equals($criteria)) {
+				$this->collArWebAccounts = ArWebAccountPeer::doSelectJoinArParams($criteria, $con);
 			}
 		}
 		$this->lastArWebAccountCriteria = $criteria;

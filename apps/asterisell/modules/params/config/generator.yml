@@ -1,0 +1,75 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArParams
+    theme:            default
+
+    fields:
+      name: { name: Name }
+
+      is_default: { name: Default?, help: True if these params are used for initial login form }
+
+      service_name: { name: Website Name, help: Name of the VoIP service associated to the website / company. It gives the name to the website.  }
+
+      service_provider_website: {name: Website address }
+
+      service_provider_email: { name: Email, help: "Customers support email, and automatic problem notification email."  }
+
+      vat_tax_perc: { name: Tax %, help: VAT Tax % to apply in invoices. A number from 00 to 99 without % symbol. }
+
+      logo_image: { name: Logo image }
+
+      slogan:  { name: Slogan, help: Slogan message displayed under the logo image }
+
+      footer: { name:  Footer text }
+ 
+      user_message:         { name: User message, help: Wellcome message displayed to customers / users after login. }
+
+      legal_name:           { name: Company name }
+
+      vat:                  { name: VAT, help: VAT registration number }
+
+      legal_address:        { name: Address }
+
+      legal_city:           { name: City }
+
+      legal_zipcode:        { name: ZIP }
+
+      legal_state_province: { name: Province / State, help: "This can be empty." }
+
+      legal_country:        { name: Country, help: "This can be empty." }
+
+      legal_email:          { name: email, help: "If not empty, it will be displayed in address." }
+
+      legal_website:        { name: Company web site }
+
+      legal_phone:          { name: Telephon 1, help: "If not empty, it will be displayed in address." }
+
+      phone2:               { name: Telephon 2 }
+
+      legal_fax:            { name: Fax, help: "If not empty, it will be displayed in address." }
+
+      invoicing_email_address: { name: Email address }
+
+      accountant_email_address: { name: Accountant email address, help: "Send a copy of invoices to this address (if not empty) for book-keeping. He receives all the generated invoices, also for customers without an email address." }
+
+      sender_name_on_invoicing_emails: { name: Sender name, help: "The name used in emails. "} 
+      smtp_host:  { name: SMTP host, help: "The address of the SMTP server used for sending emails." } 
+      smtp_port: { name: SMTP port, help: "The port of the SMTP server used for sending emails." } 
+      smtp_username: { name: SMTP username, help: "The username/login recognized from the SMTP server." } 
+      smtp_password:  { name: SMTP password, help: "The password associated to the username/login, and recognized from the STMP server." }  
+      smtp_encryption: { name: SMTP encryption, help: "plain for no encryption, ssl for ssl encryption, tls for tls encryptio." }
+      smtp_reconnect_after_nr_of_messages: { name: Emails limit, help: "Force a SMTP reconnection after sending the specified number of emails, in order to reduce the stress on the STMP server. Use 0 for no limit."  }
+      smtp_seconds_of_pause_after_reconnection: { name: Seconds of pause, help: "Before a new SMTP reconnection, wait the specified number of seconds, in order to reduce the stress on the SMTP server. Use 0 for no pause." }
+
+    list:
+      title: Params
+      display: [=name, is_default, service_name, service_provider_website]
+
+    edit:
+      title: Params
+      display:
+        Params: [name, is_default]
+        VoIP service information (used on website): [service_name, service_provider_website, service_provider_email, logo_image, slogan, footer]
+        Company legal information (used on invoices): [legal_name, vat, vat_tax_perc, legal_address, legal_city, legal_zipcode, legal_state_province, legal_country, legal_email, legal_website, legal_phone, phone2, legal_fax]
+        Parameters for emails, used for sending to customer invoices and/or reports: [invoicing_email_address, sender_name_on_invoicing_emails, accountant_email_address, smtp_host, smtp_port, smtp_username, smtp_password, smtp_encryption, smtp_reconnect_after_nr_of_messages, smtp_seconds_of_pause_after_reconnection]

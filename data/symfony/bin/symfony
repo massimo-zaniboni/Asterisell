@@ -26,8 +26,8 @@ if (!isset($sf_symfony_lib_dir))
   else
   {
     // PEAR
-    $sf_symfony_lib_dir  = '/usr/share/php/symfony';
-    $sf_symfony_data_dir = '/usr/share/php/data/symfony';
+    $sf_symfony_lib_dir  = '/usr/share/php/symfony1.0';
+    $sf_symfony_data_dir = '/usr/share/php/data/symfony1.0';
 
     if (!is_dir($sf_symfony_lib_dir))
     {

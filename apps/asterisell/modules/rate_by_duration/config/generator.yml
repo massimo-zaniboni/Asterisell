@@ -1,0 +1,43 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArCustomRateForm
+    #
+    # do not change this class
+
+    theme:            default
+
+    # Add custom fields. These fields must be explicitely
+    # managed as "template/_custom_field_name.php"
+    # because the "ArCustomRateForm" contains only
+    # a reference to its parent/owner ArRate object.
+    #
+    fields:
+      owner_ar_rate_id: { name: The owner rate }
+      #
+      # this is the only real field of the class.
+
+      destination_channel: { name: Destination channel prefix, help: "This rate will be applied only to calls having a destination channel starting with this prefix. The prefix is case insensitive." }
+
+      internal_telephone_prefix: { name: Internal telephone number, help: "This rate will be applied only to calls having an internal telephone number with the specified prefix. Read general Asterisell instructions, about the precise meaning of internal and external telephone numbers." }
+
+      external_telephone_prefix: { name: External telephone number, help: "This rate will be applied only to calls, having an external telephone number starting with the specified prefix. Read general Asterisell instructions, about the precise meaning of internal and external telephone numbers." }
+      
+      cost_on_call: { name: Cost on call, help: "The initial cost of the call, indipendently from the call duration." }
+ 
+      cost_for_minute: { name: Cost for minute, help: "The cost of a telephone call during one minute. Note that a call can be rated using its duration in seconds, but in any case the rate cost is expressed in minutes and not in seconds in order to avoid very small numbers."  }
+
+      minimum_call: { name: Minimum call duration in seconds, help: "A call is billed at least for this amount of seconds, also if its duration was inferior." }
+
+      rate_method: { name: Rate method, help: "A call duration can be rated according its duration in minutes, or in seconds."  }
+
+      when_round: { name: When round a duration to the next minute, help: "When round to the next minute a call rated by minute. This field has no meaning in case of calls rated by seconds." }
+
+    edit:
+      title: Rate by Telephone Call Duration
+      actions:
+        _save: ~
+      display:
+        "Limit applicability to telephone calls of specified type": [_destination_channel, _internal_telephone_prefix, _external_telephone_prefix]
+
+        "Rate method - (prices/numbers are written using "." as decimal separator)": [_cost_on_call, _cost_for_minute, _minimum_call, _rate_method, _when_round ]

@@ -25,7 +25,7 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 
 
 	
-	protected $ar_asterisk_account_id;
+	protected $ar_office_id;
 
 
 	
@@ -35,11 +35,18 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	
 	protected $deactivate_at;
 
+
+	
+	protected $ar_params_id;
+
 	
 	protected $aArParty;
 
 	
-	protected $aArAsteriskAccount;
+	protected $aArOffice;
+
+	
+	protected $aArParams;
 
 	
 	protected $alreadyInSave = false;
@@ -76,10 +83,10 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getArAsteriskAccountId()
+	public function getArOfficeId()
 	{
 
-		return $this->ar_asterisk_account_id;
+		return $this->ar_office_id;
 	}
 
 	
@@ -124,6 +131,13 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 		} else {
 			return date($format, $ts);
 		}
+	}
+
+	
+	public function getArParamsId()
+	{
+
+		return $this->ar_params_id;
 	}
 
 	
@@ -195,7 +209,7 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setArAsteriskAccountId($v)
+	public function setArOfficeId($v)
 	{
 
 		
@@ -204,13 +218,13 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 			$v = (int) $v;
 		}
 
-		if ($this->ar_asterisk_account_id !== $v) {
-			$this->ar_asterisk_account_id = $v;
-			$this->modifiedColumns[] = ArWebAccountPeer::AR_ASTERISK_ACCOUNT_ID;
+		if ($this->ar_office_id !== $v) {
+			$this->ar_office_id = $v;
+			$this->modifiedColumns[] = ArWebAccountPeer::AR_OFFICE_ID;
 		}
 
-		if ($this->aArAsteriskAccount !== null && $this->aArAsteriskAccount->getId() !== $v) {
-			$this->aArAsteriskAccount = null;
+		if ($this->aArOffice !== null && $this->aArOffice->getId() !== $v) {
+			$this->aArOffice = null;
 		}
 
 	} 
@@ -249,6 +263,26 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setArParamsId($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->ar_params_id !== $v) {
+			$this->ar_params_id = $v;
+			$this->modifiedColumns[] = ArWebAccountPeer::AR_PARAMS_ID;
+		}
+
+		if ($this->aArParams !== null && $this->aArParams->getId() !== $v) {
+			$this->aArParams = null;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -261,17 +295,19 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 
 			$this->ar_party_id = $rs->getInt($startcol + 3);
 
-			$this->ar_asterisk_account_id = $rs->getInt($startcol + 4);
+			$this->ar_office_id = $rs->getInt($startcol + 4);
 
 			$this->activate_at = $rs->getDate($startcol + 5, null);
 
 			$this->deactivate_at = $rs->getDate($startcol + 6, null);
 
+			$this->ar_params_id = $rs->getInt($startcol + 7);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 7; 
+						return $startcol + 8; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArWebAccount object", $e);
 		}
@@ -336,11 +372,18 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 				$this->setArParty($this->aArParty);
 			}
 
-			if ($this->aArAsteriskAccount !== null) {
-				if ($this->aArAsteriskAccount->isModified()) {
-					$affectedRows += $this->aArAsteriskAccount->save($con);
+			if ($this->aArOffice !== null) {
+				if ($this->aArOffice->isModified()) {
+					$affectedRows += $this->aArOffice->save($con);
 				}
-				$this->setArAsteriskAccount($this->aArAsteriskAccount);
+				$this->setArOffice($this->aArOffice);
+			}
+
+			if ($this->aArParams !== null) {
+				if ($this->aArParams->isModified()) {
+					$affectedRows += $this->aArParams->save($con);
+				}
+				$this->setArParams($this->aArParams);
 			}
 
 
@@ -398,9 +441,15 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->aArAsteriskAccount !== null) {
-				if (!$this->aArAsteriskAccount->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aArAsteriskAccount->getValidationFailures());
+			if ($this->aArOffice !== null) {
+				if (!$this->aArOffice->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArOffice->getValidationFailures());
+				}
+			}
+
+			if ($this->aArParams !== null) {
+				if (!$this->aArParams->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArParams->getValidationFailures());
 				}
 			}
 
@@ -441,13 +490,16 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 				return $this->getArPartyId();
 				break;
 			case 4:
-				return $this->getArAsteriskAccountId();
+				return $this->getArOfficeId();
 				break;
 			case 5:
 				return $this->getActivateAt();
 				break;
 			case 6:
 				return $this->getDeactivateAt();
+				break;
+			case 7:
+				return $this->getArParamsId();
 				break;
 			default:
 				return null;
@@ -463,9 +515,10 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 			$keys[1] => $this->getLogin(),
 			$keys[2] => $this->getPassword(),
 			$keys[3] => $this->getArPartyId(),
-			$keys[4] => $this->getArAsteriskAccountId(),
+			$keys[4] => $this->getArOfficeId(),
 			$keys[5] => $this->getActivateAt(),
 			$keys[6] => $this->getDeactivateAt(),
+			$keys[7] => $this->getArParamsId(),
 		);
 		return $result;
 	}
@@ -494,13 +547,16 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 				$this->setArPartyId($value);
 				break;
 			case 4:
-				$this->setArAsteriskAccountId($value);
+				$this->setArOfficeId($value);
 				break;
 			case 5:
 				$this->setActivateAt($value);
 				break;
 			case 6:
 				$this->setDeactivateAt($value);
+				break;
+			case 7:
+				$this->setArParamsId($value);
 				break;
 		} 	}
 
@@ -513,9 +569,10 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setLogin($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setPassword($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setArPartyId($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setArAsteriskAccountId($arr[$keys[4]]);
+		if (array_key_exists($keys[4], $arr)) $this->setArOfficeId($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setActivateAt($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setDeactivateAt($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setArParamsId($arr[$keys[7]]);
 	}
 
 	
@@ -527,9 +584,10 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArWebAccountPeer::LOGIN)) $criteria->add(ArWebAccountPeer::LOGIN, $this->login);
 		if ($this->isColumnModified(ArWebAccountPeer::PASSWORD)) $criteria->add(ArWebAccountPeer::PASSWORD, $this->password);
 		if ($this->isColumnModified(ArWebAccountPeer::AR_PARTY_ID)) $criteria->add(ArWebAccountPeer::AR_PARTY_ID, $this->ar_party_id);
-		if ($this->isColumnModified(ArWebAccountPeer::AR_ASTERISK_ACCOUNT_ID)) $criteria->add(ArWebAccountPeer::AR_ASTERISK_ACCOUNT_ID, $this->ar_asterisk_account_id);
+		if ($this->isColumnModified(ArWebAccountPeer::AR_OFFICE_ID)) $criteria->add(ArWebAccountPeer::AR_OFFICE_ID, $this->ar_office_id);
 		if ($this->isColumnModified(ArWebAccountPeer::ACTIVATE_AT)) $criteria->add(ArWebAccountPeer::ACTIVATE_AT, $this->activate_at);
 		if ($this->isColumnModified(ArWebAccountPeer::DEACTIVATE_AT)) $criteria->add(ArWebAccountPeer::DEACTIVATE_AT, $this->deactivate_at);
+		if ($this->isColumnModified(ArWebAccountPeer::AR_PARAMS_ID)) $criteria->add(ArWebAccountPeer::AR_PARAMS_ID, $this->ar_params_id);
 
 		return $criteria;
 	}
@@ -566,11 +624,13 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 
 		$copyObj->setArPartyId($this->ar_party_id);
 
-		$copyObj->setArAsteriskAccountId($this->ar_asterisk_account_id);
+		$copyObj->setArOfficeId($this->ar_office_id);
 
 		$copyObj->setActivateAt($this->activate_at);
 
 		$copyObj->setDeactivateAt($this->deactivate_at);
+
+		$copyObj->setArParamsId($this->ar_params_id);
 
 
 		$copyObj->setNew(true);
@@ -626,32 +686,61 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	}
 
 	
-	public function setArAsteriskAccount($v)
+	public function setArOffice($v)
 	{
 
 
 		if ($v === null) {
-			$this->setArAsteriskAccountId(NULL);
+			$this->setArOfficeId(NULL);
 		} else {
-			$this->setArAsteriskAccountId($v->getId());
+			$this->setArOfficeId($v->getId());
 		}
 
 
-		$this->aArAsteriskAccount = $v;
+		$this->aArOffice = $v;
 	}
 
 
 	
-	public function getArAsteriskAccount($con = null)
+	public function getArOffice($con = null)
 	{
-		if ($this->aArAsteriskAccount === null && ($this->ar_asterisk_account_id !== null)) {
-						include_once 'lib/model/om/BaseArAsteriskAccountPeer.php';
+		if ($this->aArOffice === null && ($this->ar_office_id !== null)) {
+						include_once 'lib/model/om/BaseArOfficePeer.php';
 
-			$this->aArAsteriskAccount = ArAsteriskAccountPeer::retrieveByPK($this->ar_asterisk_account_id, $con);
+			$this->aArOffice = ArOfficePeer::retrieveByPK($this->ar_office_id, $con);
 
 			
 		}
-		return $this->aArAsteriskAccount;
+		return $this->aArOffice;
+	}
+
+	
+	public function setArParams($v)
+	{
+
+
+		if ($v === null) {
+			$this->setArParamsId(NULL);
+		} else {
+			$this->setArParamsId($v->getId());
+		}
+
+
+		$this->aArParams = $v;
+	}
+
+
+	
+	public function getArParams($con = null)
+	{
+		if ($this->aArParams === null && ($this->ar_params_id !== null)) {
+						include_once 'lib/model/om/BaseArParamsPeer.php';
+
+			$this->aArParams = ArParamsPeer::retrieveByPK($this->ar_params_id, $con);
+
+			
+		}
+		return $this->aArParams;
 	}
 
 } 

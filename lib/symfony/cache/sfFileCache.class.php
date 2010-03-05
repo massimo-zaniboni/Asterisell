@@ -19,7 +19,7 @@
  * @subpackage cache
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Fabien Marty <fab@php.net>
- * @version    SVN: $Id: sfFileCache.class.php 8280 2008-04-04 12:06:44Z noel $
+ * @version    SVN: $Id: sfFileCache.class.php 16899 2009-04-02 06:47:33Z fabien $
  */
 class sfFileCache extends sfCache
 {
@@ -523,54 +523,43 @@ class sfFileCache extends sfCache
   */
   protected function write($path, $file, $data)
   {
-    $try = 1;
-    while ($try <= 2)
+    $current_umask = umask();
+    umask(0000);
+    if (!is_dir($path))
     {
-      $fp = @fopen($path.$file, 'wb');
-      if ($fp)
+      // create directory structure if needed
+      mkdir($path, 0777, true);
+    }
+
+    $tmpFile = tempnam(dirname($path), basename($file));
+
+    if (!$fp = @fopen($tmpFile, 'wb'))
+    {
+      throw new sfCacheException(sprintf('Unable to write cache file "%s".', $path.$file));
+    }
+
+    if ($this->readControl)
+    {
+      @fwrite($fp, $this->hash($data), 32);
+    }
+    @fwrite($fp, $data);
+    @fclose($fp);
+
+    // Hack from Agavi (http://trac.agavi.org/changeset/3979)
+    // With php < 5.2.6 on win32, renaming to an already existing file doesn't work, but copy does,
+    // so we simply assume that when rename() fails that we are on win32 and try to use copy()
+    if (!@rename($tmpFile, $path.$file))
+    {
+      if (copy($tmpFile, $path.$file))
       {
-        if ($this->fileLocking)
-        {
-          @flock($fp, LOCK_EX);
-        }
-        if ($this->readControl)
-        {
-          @fwrite($fp, $this->hash($data), 32);
-        }
-        @fwrite($fp, $data);
-        if ($this->fileLocking)
-        {
-          @flock($fp, LOCK_UN);
-        }
-        @fclose($fp);
-
-        // change file mode
-        $current_umask = umask();
-        umask(0000);
-        chmod($path.$file, 0666);
-        umask($current_umask);
-
-        return true;
-      }
-      else
-      {
-        if ($try == 1 && !is_dir($path))
-        {
-          // create directory structure if needed
-          $current_umask = umask(0000);
-          mkdir($path, 0777, true);
-          umask($current_umask);
-
-          $try = 2;
-        }
-        else
-        {
-          $try = 999;
-        }
+        unlink($tmpFile);
       }
     }
 
-    throw new sfCacheException('Unable to write cache file "'.$path.$file.'"');
+    chmod($path.$file, 0666);
+    umask($current_umask);
+
+    return true;
   }
 
  /**

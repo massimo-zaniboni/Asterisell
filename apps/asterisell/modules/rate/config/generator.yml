@@ -5,35 +5,40 @@ generator:
     theme:            default
    
     fields:
-      ar_rate_category_id: { name: Customer Category }
-      ar_party:            { name: Vendor }
-      ar_party_id:         { name: Vendor }
-      start_time:          { name: Applicable from (inclusive)  } 
-      end_time:            { name: Applicable until (exclusive) } 
-      is_exception:        { name: Exception }
-
-      php_class_serialization: {name: Rate }
-      note:                { name: Note }
-
-      rate_category_link: { name: Customer Category }
+      destination_type:        { name: Type }
+      iscurrent:               { name: Is current, help: "The rate is applicable to new calls." }
+      my_customer_or_vendor:   { name: On call performed by, help: "Rate is applicable on calls performed by customers of the specified category or routed from the specified vendor." }
+      my_customer:             { name: On Customer, help: "Rate is applicable on customers of the specified price category." }
+      my_vendor:               { name: For Vendor, help: "Rate is applicated from the specified vendor." }
+      ar_rate_category_id:     { name: Customer Category }
+      ar_party:                { name: Vendor }
+      ar_party_id:             { name: Vendor }
+      start_time:              { name: Applicable from (inclusive)  } 
+      end_time:                { name: Applicable until (exclusive), help: "Leave empty if the rate is always applicable." }
+      is_exception:            { name: Exception, help: "Set only if the Rate is an exception with higher priority respect normal rates." }
+      php_class_serialization: { name: Rate }	  
+      note:                    { name: Note }
+      rate_category_link:      { name: Customer Category }
       display_short_description: { name: Rate Description }
-      display_cv_type: { name: Type  }
+      display_cv_type:           { name: Type  }
+      my_classification_state:   { name: For Calls of type, help: "Rate is applicable only to calls of the given type." }
 
-      edit_of_php_class_serialization: { name: Rate Method }
+      edit_of_php_class_serialization: { name: Rate Method, help: "After selecting a rate method, press the APPLY button. Use CHANGE RATE PARAMS button in order to customize rate method behaviour." }
 
       mycv: { name: Type }
+
+      filter_on_end_time: { name: Applicable at , filter_criteria_disabled: true }
+
+      filter_only_applicable: { name: Only current, filter_criteria_disabled: true } 
 
     list:
       title: Rates
 
-      fields:
-        iscurrent: { name: Is current }
+      display: [_iscurrent, =_my_classification_state, is_exception, _my_vendor, _my_customer, start_time, end_time,  _display_short_description, id]
 
-      display: [=id, _iscurrent, is_exception, _rate_category_link, ar_party, start_time, end_time,  _display_short_description, note]
-
-      filters: [ar_rate_category_id, _ar_party_id]
+      filters: [_filter_on_end_time, ar_rate_category_id, _ar_party_id]
       
-      sort: [start_time, desc]
+      sort: [destination_type, desc]
 
     edit:
       title: Rate
@@ -41,12 +46,12 @@ generator:
       fields:
         select_customer_category: { name: Customer Category }
         select_vendor:            { name: Vendor } 
+        select_destination_type:  { name: Call type, help: "Rate method is applicable only on calls of this type.. Note: this field depends also from the selected rate method." }
 
       display:
-        "Set only if the Rate is an Exception with higher priority respect normal rates": [is_exception]
-        "Compile only for Price List applied to Customers": [_select_customer_category]
-        "Compile only for a rate applied by a Vendor": [_select_vendor]
-
-        "Parameters - if you set dates in the past then you should re-execute rating process on old CDRs": [start_time, end_time]
-        "Method": [id, _edit_of_php_class_serialization, note]
+        "Applicability": [_select_destination_type, start_time, end_time, is_exception]
+        "Compile only if the Rate is applied to Customers of the specified category (income of call) ": [_select_customer_category]
+        "Compile only if the Rate is applied from a Vendor (cost of call)": [_select_vendor]
+        "Method": [_edit_of_php_class_serialization]
+        "Administration notes abount rate usage / scope / behaviour":  [note]
  

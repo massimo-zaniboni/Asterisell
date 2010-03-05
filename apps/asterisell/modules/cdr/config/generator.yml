@@ -5,12 +5,15 @@ generator:
     theme:            default
 
     list:
-      title: Call Detail Records (CDRs)
+      title: Low level report of unprocessed and ignored calls
+
+      filters: [calldate]
+
 
       actions: []
 
     edit:
-      title: CDR can not modified
+      title: CDR can not be modified
       display: []
       actions: []
 

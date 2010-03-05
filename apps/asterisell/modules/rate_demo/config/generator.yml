@@ -1,0 +1,32 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArCustomRateForm
+    #
+    # do not change this class
+
+    theme:            default
+
+    # Add custom fields. These fields must be explicitely
+    # managed as "template/_custom_field_name.php"
+    # because the "ArCustomRateForm" contains only
+    # a reference to its parent/owner ArRate object.
+    #
+    fields:
+      owner_ar_rate_id: { name: The owner rate }
+      #
+      # this is the only real field of the class.
+
+      dst_channel: { name: Destination channel prefix, help: "This rate will be applied only to calls having a destination channel starting with this prefix. The prefix is case insensitive." }
+
+      called_telephone_number: { name: Destination telephone number prefix, help: "This rate will be applied only to calls having telephone destination numbers starting with this prefix." }
+
+      cost: { name: Cost of call, help: "Use a format like 1.23" }
+
+    edit:
+      title:          Demo Rate
+      actions:
+        _save: ~
+      display:
+        "Filter on call fields": [_dst_channel, _called_telephone_number]
+        "Rate method": [_cost]

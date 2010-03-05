@@ -10,10 +10,6 @@ A Customer / VoIP Account / Administrator can access the Asterisell Web Applicat
 
 Every type of account has different information access priviligies.
 
-## Edit
-
-Click on the **Login** field and not the **Owner** field.
-
 ');
 //}
 

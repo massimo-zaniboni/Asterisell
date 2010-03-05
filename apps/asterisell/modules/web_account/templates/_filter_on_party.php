@@ -2,6 +2,7 @@
 if ($sf_user->hasCredential('admin')) {
   $c = new Criteria();
   $c->addAscendingOrderByColumn(ArPartyPeer::NAME);
+  $c->add(ArPartyPeer::CUSTOMER_OR_VENDOR, 'C');
   $parties = ArPartyPeer::doSelect($c);
   // add a blank option
   $options = array("" => "");

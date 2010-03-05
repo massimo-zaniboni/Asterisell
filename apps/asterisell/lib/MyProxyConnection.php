@@ -1,24 +1,26 @@
 <?php
-/*
-* Copyright (C) 2007, 2008, 2009
-* Massimo Zaniboni <massimo.zaniboni@profitoss.com>
-*
-*   This file is part of Asterisell.
-*
-*   Asterisell is free software; you can redistribute it and/or modify
-*   it under the terms of the GNU General Public License as published by
-*   the Free Software Foundation; either version 3 of the License, or
-*   (at your option) any later version.
-*
-*   Asterisell is distributed in the hope that it will be useful,
-*   but WITHOUT ANY WARRANTY; without even the implied warranty of
-*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*   GNU General Public License for more details.
-*
-*   You should have received a copy of the GNU General Public License
-*   along with Asterisell. If not, see <http://www.gnu.org/licenses/>.
-*    
-*/
+
+/* $LICENSE 2009, 2010:
+ *
+ * Copyright (C) 2009, 2010 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
+ *
+ * This file is part of Asterisell.
+ *
+ * Asterisell is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Asterisell is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Asterisell. If not, see <http://www.gnu.org/licenses/>.
+ * $
+ */
+
 sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
 /**
  * Apply a MySQL specific optimization.
@@ -38,6 +40,13 @@ class MyProxyConnection implements Connection {
     // > SELECT cdr.CALLDATE, cdr.CLID, cdr.SRC, ...
     // > FROM cdr, ar_asterisk_account, ...
     // > WHERE cdr.INCOME IS NULL AND cdr.CALLDATE>='2009-01-20' ...
+    //
+    // and tranform to
+    //
+    // > ... cdr FORCE INDEX (cdr_calldate_index) 
+    //
+    // in order to give MySQL an hint on the index to use
+    // for query processing.
     //
     $wrappedSql = str_ireplace(" cdr,", " cdr FORCE INDEX (cdr_calldate_index),", $sql);
     return $wrappedSql;

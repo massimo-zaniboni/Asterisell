@@ -5,21 +5,23 @@ generator:
     theme:            default
  
     fields:
-      name:           { name: User Name }
-      account_code:   { name: Asterisk Code }
-      ar_party:       { name: Customer }
-      ar_party_id:    { name: Customer }
+      name:                  { name: Name, help: "A user readable name for the VoIP account. This name is used also inside call report in order to identify the internal telephone number of the call." }
+      account_code:          { name: Asterisk Code, help: "A unique code used from the Asterisk server to identify this VoIP account. The code is inserted from the Asterisk server in the accountcode field of the CDR table." }
+      ar_office:             { name: Customer Office   }
+      ar_office_id:          { name: Customer Office   }
+      mycustomeroffice:      { name: Customer Office   }
+      displaycustomeroffice: { name: Office/Building   }
 
     list:
       title: Asterisk VoIP Accounts
       
       fields:
-        filter_on_party: { name: Customer, filter_criteria_disabled: true }
+        filter_on_party: { name: Customer Office, filter_criteria_disabled: true }
 
-      display: [=name, ar_party, account_code]
+      display: [=_displaycustomeroffice, name, account_code]
       filters: [name, _filter_on_party, account_code]
       
     edit:
       title: Asterisk VoIP Account
 
-      display: [name, ar_party_id, account_code]
+      display: [_mycustomeroffice, name, account_code]

@@ -58,11 +58,15 @@ class CdrMapBuilder {
 
 		$tMap->addColumn('AMAFLAGS', 'Amaflags', 'int', CreoleTypes::INTEGER, true, 11);
 
-		$tMap->addForeignKey('ACCOUNTCODE', 'Accountcode', 'string', CreoleTypes::VARCHAR, 'ar_asterisk_account', 'ACCOUNT_CODE', true, 30);
+		$tMap->addColumn('ACCOUNTCODE', 'Accountcode', 'string', CreoleTypes::VARCHAR, false, 30);
 
 		$tMap->addColumn('UNIQUEID', 'Uniqueid', 'string', CreoleTypes::VARCHAR, true, 32);
 
 		$tMap->addColumn('USERFIELD', 'Userfield', 'string', CreoleTypes::VARCHAR, true, 255);
+
+		$tMap->addColumn('DESTINATION_TYPE', 'DestinationType', 'int', CreoleTypes::INTEGER, true, 1);
+
+		$tMap->addForeignKey('AR_ASTERISK_ACCOUNT_ID', 'ArAsteriskAccountId', 'int', CreoleTypes::INTEGER, 'ar_asterisk_account', 'ID', false, null);
 
 		$tMap->addForeignKey('INCOME_AR_RATE_ID', 'IncomeArRateId', 'int', CreoleTypes::INTEGER, 'ar_rate', 'ID', false, 20);
 
@@ -75,6 +79,16 @@ class CdrMapBuilder {
 		$tMap->addColumn('COST', 'Cost', 'int', CreoleTypes::INTEGER, false, 20);
 
 		$tMap->addForeignKey('AR_TELEPHONE_PREFIX_ID', 'ArTelephonePrefixId', 'int', CreoleTypes::INTEGER, 'ar_telephone_prefix', 'ID', false, null);
+
+		$tMap->addColumn('CACHED_INTERNAL_TELEPHONE_NUMBER', 'CachedInternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 256);
+
+		$tMap->addColumn('CACHED_EXTERNAL_TELEPHONE_NUMBER', 'CachedExternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 256);
+
+		$tMap->addColumn('EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY', 'ExternalTelephoneNumberWithAppliedPortability', 'string', CreoleTypes::VARCHAR, false, 256);
+
+		$tMap->addColumn('CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER', 'CachedMaskedExternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 256);
+
+		$tMap->addColumn('SOURCE_ID', 'SourceId', 'int', CreoleTypes::INTEGER, false, 11);
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 

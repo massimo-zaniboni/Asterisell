@@ -1,0 +1,23 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      ArOffice
+    theme:            default
+
+    fields:
+      ar_party_id:      { name: Owner Customer      }
+      ar_party:         { name: Owner Customer      }
+      name:             { name: Name        }
+      description:      { name: Description }
+
+    list:
+      title: Costumer Offices
+
+      display: [=ar_party, name, description]
+      filters: [ar_party_id, name]
+
+    edit:
+      title: Customer Offices
+
+      display: [=ar_party_id, name, description]
+

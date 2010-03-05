@@ -1,0 +1,5 @@
+# NEVER CHANGE THIS
+#
+all:
+  is_secure: on
+  credentials: admin
