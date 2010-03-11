@@ -95,10 +95,9 @@ all:
   # is that you can account to customers only showed costs
   # in the call report.
   #
-  # Ignored and Unprocessed calls are not displayed by default,
-  # and only the administrator can view them.
+  # Ignored and Unprocessed calls are not displayed by default.
   #
-  # The administrator can see every type of calls, 
+  # The administrator can all these type of calls, 
   # in any case, indipendently from these settings.
   #
   # allowed values: true / false (case sensitive)

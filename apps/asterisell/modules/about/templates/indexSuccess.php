@@ -19,7 +19,8 @@ $str = <<<VERYLONGSTRING
 
 ## Version
 
-asterisell-stable-free-3.0.0
+asterisell-free-stable-3.0.0
+
 ## Authors / Contributors
 
 Massimo Zaniboni <massimo.zaniboni@profitoss.com>

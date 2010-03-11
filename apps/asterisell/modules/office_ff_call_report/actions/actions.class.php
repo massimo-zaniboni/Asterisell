@@ -218,10 +218,10 @@ class office_ff_call_reportActions extends autoOffice_ff_call_reportActions {
 
           // Normal users do not see unprocessed/ignored calls
       //
-      if ($filterOnDestinationTypeApplied == false) {
+      if (!$filterOnDestinationTypeApplied) {
 	DestinationType::addCustomerFiltersAccordingConfiguration($c);
       }
-       
+     
     // NOTE: filter_on_account and filter_on_office are enabled
     // only if it is enabled also filter_on_party 
 

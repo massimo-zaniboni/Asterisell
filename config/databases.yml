@@ -7,7 +7,7 @@ all:
 
       # NOTE: if you change this name update also:
       #   * config/propel.ini
-      #   * scripts/makedb.sh
+      #   * scripts/initdb.sh
       #   * scripts/abilis2asterisk/abilis2asterisk.php
       #
       database:   asterisell3

@@ -1,3 +1,9 @@
+# UPDATE THIS FIELD IF YOU WANT USE ANOTHER DATABASE NAME
+#
+# NOTE: if you change this value, update also config/databases.yml
+#
+DBNAME=asterisell3
+
 #
 # Load a DB supposing the Symfony Schema is already built.
 # 
@@ -6,10 +12,6 @@ BASE=`basename $PWD`
 
 if [ "$BASE" = "scripts" ]; then
 
-
-# NOTE: if you change this value, update also config/databases.yml
-#
-DBNAME=asterisell3
 
 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo "!!! WARNING: This script will delete all data !!!"

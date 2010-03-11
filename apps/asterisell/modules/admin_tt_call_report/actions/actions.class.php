@@ -235,6 +235,13 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
       }
     }
 
+          // Admin can view all types of destination types except
+      // unprocessed and ignored calls, that are displayed on
+      // separate reports.
+      //
+      if (!$filterOnDestinationTypeApplied) {
+	DestinationType::addAdminFiltersAccordingConfiguration($c);
+      }
      
     // NOTE: filter_on_account and filter_on_office are enabled
     // only if it is enabled also filter_on_party 

@@ -268,13 +268,21 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     $filterOnDestinationTypeApplied = false;
 <?php } ?>
 
-    <?php if ($generateForAdmin == FALSE) { ?>
+    <?php if ($generateForAdmin) { ?>
+      // Admin can view all types of destination types except
+      // unprocessed and ignored calls, that are displayed on
+      // separate reports.
+      //
+      if (!$filterOnDestinationTypeApplied) {
+	DestinationType::addAdminFiltersAccordingConfiguration($c);
+      }
+    <?php } else { ?>
       // Normal users do not see unprocessed/ignored calls
       //
-      if ($filterOnDestinationTypeApplied == false) {
+      if (!$filterOnDestinationTypeApplied) {
 	DestinationType::addCustomerFiltersAccordingConfiguration($c);
       }
-      <?php } ?>
+    <?php }?>
  
     // NOTE: filter_on_account and filter_on_office are enabled
     // only if it is enabled also filter_on_party 
