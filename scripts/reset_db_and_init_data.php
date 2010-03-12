@@ -44,6 +44,12 @@ main($argc, $argv);
  */
 function runJobProcessorQueue() {
   $webDir = realpath(WEB_DIR);
+
+  $culture = sfConfig::get('app_culture');
+  $I18N = sfContext::getInstance()->getI18N();
+  $I18N->setMessageSourceDir(SF_ROOT_DIR.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'i18n', $culture);
+  $I18N->setCulture($culture);
+
   $processor = new JobQueueProcessor();
   $r = $processor->process($webDir);
 

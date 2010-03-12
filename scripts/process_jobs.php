@@ -37,6 +37,16 @@ sfContext::getInstance();
 
 $webDir = realpath(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'web');
 
+// An external job must set explicitely the culture, because it isn't running
+// inside a request.
+//
+$culture = sfConfig::get('app_culture');
+$I18N = sfContext::getInstance()->getI18N();
+$I18N->setMessageSourceDir(SF_ROOT_DIR.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'i18n', $culture);
+$I18N->setCulture($culture);
+
+// Execute the jobs.
+//
 $processor = new JobQueueProcessor();
 $r = $processor->process($webDir);
 
