@@ -49,6 +49,7 @@ generator:
         my_vendor_cost:          { name: Cost, sort_on_column: cost, help: "The amount requested from the telephone vendor in order to route the call." }
         my_vendor:               { name: Vendor, help: "The telephone vendor that routed / managed the call." }
         earn:                    { name: Earn, help: "The difference between the income and the cost of the call." }
+        filter_on_params:        { name: Customer Type, filter_criteria_disabled: true }
         filter_on_party:         { name: Customer, filter_criteria_disabled: true }
         filter_on_office:        { name: Office, filter_criteria_disabled: true }
         filter_on_account:       { name: "VoIP account", filter_criteria_disabled: true }

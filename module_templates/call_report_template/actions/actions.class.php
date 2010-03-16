@@ -185,17 +185,25 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     $filterOnPartyApplied = false;
     $partyId = null;
 <?php if ($generateForAdmin) { ?>
-    if (isset($this->filters['filter_on_party'])) {
-      $partyId = $this->filters['filter_on_party'];
-      if ($partyId != "" && $partyId != -1) {
-        if ($this->getUser()->hasCredentialOnParty($partyId)) {
-	  $filterOnPartyApplied = true;
-        } else {
-          $partyId = null;
-          unset($this->filters['filter_on_party']);
-        }
-      }
-    }
+   if (isset($this->filters['filter_on_params'])) {
+     $paramId = $this->filters['filter_on_params'];
+     if ($paramId == "" || $paramId == -1) {
+       $paramId = null;
+       unset($this->filters['filter_on_params']);
+     } else {
+       $c->add(ArPartyPeer::AR_PARAMS_ID, $paramId);
+     }
+   }
+
+   if (isset($this->filters['filter_on_party'])) {
+     $partyId = $this->filters['filter_on_party'];
+     $filterOnPartyApplied = true;
+     if ($partyId == "" || $partyId == -1) {
+       $filterOnPartyApplied = false;
+       $partyId = null;
+       unset($this->filters['filter_on_party']);
+     }
+   }
 <?php } else { ?>
       // a customer/office has a default filter on party
       //
