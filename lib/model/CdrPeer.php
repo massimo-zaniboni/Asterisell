@@ -66,16 +66,6 @@ class CdrPeer extends BaseCdrPeer
   }
 
   /**
-   * Display only a fixed number of results avoiding a separate count 
-   * of all available results (slow query).
-   */
-  public static function doCount(Criteria $criteria, $distinct = false, $con = null)
-  {
-    return 5000;
-  }
-
-
-  /**
    * Update $c with the Criteria used from self::doSelectJoinAllExceptVendor.
    * It adds only join conditions.
    */
