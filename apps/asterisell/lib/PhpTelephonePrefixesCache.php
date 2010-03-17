@@ -71,6 +71,14 @@ class PhpTelephonePrefixesCache {
       return NULL;
     }
 
+    if (is_null($number)) {
+      return NULL;
+    }
+
+    if (strlen($number)==0) {
+      return NULL;
+    }
+
     $c = strlen($number);
     $r = null;
     $again = true;
