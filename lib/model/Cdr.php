@@ -198,24 +198,8 @@ class Cdr extends BaseCdr
       return ("CALLDATE field is NULL");
     }
 
-    if (is_null($this->getChannel())) {
-      return ("CHANNEL field is NULL");
-    }
-    
     if (is_null($this->getAccountcode())) {
       return ("ACCOUNTCODE field is NULL");
-    }
-
-    if (is_null($this->getDstchannel())) {
-      return ("DSTCHANNEL field is NULL");
-    }
-
-    if (is_null($this->getDisposition())) {
-      return ("DISPOSITION field is NULL");
-    }
-
-    if (is_null($this->getAmaflags())) {
-      return ("AMAFLAGS field is NULL");
     }
 
     return null;
