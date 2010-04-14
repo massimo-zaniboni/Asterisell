@@ -26,13 +26,16 @@ class ArAsteriskAccountByCodeCache {
   protected $cache = array();
 
   public function getArAsteriskAccountByCode($code) {
-    if (!array_key_exists($code, $this->cache)) {
+    // SQL queries are case insensitive, so also cache lookup
+    $normalCode = mb_strtolower($code);
+
+    if (!array_key_exists($normalCode, $this->cache)) {
       $criteria = new Criteria(ArAsteriskAccountPeer::DATABASE_NAME);
       $criteria->add(ArAsteriskAccountPeer::ACCOUNT_CODE, $code);
       $account = ArAsteriskAccountPeer::doSelectOne($criteria);
-      $this->cache[$code] = $account;
+      $this->cache[$normalCode] = $account;
     }
-    return $this->cache[$code];
+    return $this->cache[$normalCode];
   }
 }
 ?>
