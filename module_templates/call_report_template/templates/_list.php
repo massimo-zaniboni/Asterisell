@@ -189,19 +189,19 @@ foreach($rs as $r) {
 
   <?php if ($generateForAdmin): ?>
   echo '<td>' . $r[$partyNameIndex] . '</td>';
-  <? endif; ?>
+  <?php endif; ?>
 
   <?php if ($showOffice): ?>
   echo '<td>' . $r[$officeNameIndex] . '</td>';
-  <? endif; ?>
+  <?php endif; ?>
 
   <?php if ($showAccount): ?>
   echo '<td>' . $r[$internalNumberIndex] . '</td>';
-  <? endif; ?>
+  <?php endif; ?>
 
   <?php if ($displayCallDirection): ?>
   echo '<td>' . DestinationType::getSymbol($r[$typeIndex]) . '</td>';
-  <? endif; ?>
+  <?php endif; ?>
 
   echo '<td>' . $r[$externalNumberIndex] . '</td>';
 
@@ -229,7 +229,7 @@ foreach($rs as $r) {
     } else {
       echo '<td></td>';
     }
-    <? endif; ?>
+    <?php endif; ?>
 
   } else {
     echo '<td>?</td>';
@@ -238,7 +238,7 @@ foreach($rs as $r) {
     echo '<td>?</td>';
     echo '<td>?</td>';
     echo '<td>?</td>';
-    <? endif; ?>
+    <?php endif; ?>
   }
 
   echo '</tr>';

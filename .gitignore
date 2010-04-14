@@ -2,5 +2,6 @@
 log/*
 cache/*
 web/generated_graphs/*
+web/*.lock
 TAGS
 
