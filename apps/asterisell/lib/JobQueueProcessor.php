@@ -129,10 +129,10 @@ class JobQueueProcessor {
 	  }
 	  
 	  $allOk = FALSE;
-	  
+
 	  $p = new ArProblem();
-	  $p->setDuplicationKey("FixedJobs Processor");
-	  $p->setDescription("Error during the execution of always_scheduled_jobs. The error message is: " . $e->getMessage() . ". Stack trace: " . $e->getTraceAsString());
+	  $p->setDuplicationKey("FixedJobs Processor " . $jobClass);
+	  $p->setDescription("Error during the execution of always_scheduled_job $jobClass . The error message is: " . $e->getMessage() . ". Stack trace: " . $e->getTraceAsString());
 	  $p->setEffect("This error prevent the execution of the specified jobs, but not the execution of other always-scheduled and normal jobs.");
 	  $p->setProposedSolution("Fix the problem. If you change the configuration file, you should probably re-rate all previous calls in order to back-propagate changes.");
 	  ArProblemException::addProblemIntoDBOnlyIfNew($p);
