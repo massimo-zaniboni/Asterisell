@@ -77,6 +77,8 @@ echo '<tr class="sf_admin_row_0">';
 
   echo '<td>' . form_tag("$moduleName/resetCallsCost") .submit_tag(__('Re-rate Calls in Timeframe (see Help)')) . '</form>' . '</td>';
 
+  echo '<td></td>';
+
 echo '</tr>';
 
 // End of table
