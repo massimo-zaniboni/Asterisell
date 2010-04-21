@@ -54,6 +54,9 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     return $this->redirect('commercial_feature/index');
   }
 
+  /**
+   * Call this function before call other functions on filters.
+   */
   protected function initBeforeCalcCondition() {
     $this->processSort();
     $this->processFilters();
@@ -349,75 +352,46 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     // CODE SPECIFIC FOR ADMIN //
 
   /**
-   * Force calculation of unrated calls.
-   */
-  public function executeRateCallsCost() {
-    $re = new JobQueueProcessor();
-    $re->process();
-    return $this->redirect('admin_tt_call_report/list');
-  }
-
-  /**
    * Set to null all the income fields of selected cdrs.
    */
   public function executeResetCallsCost() {
+    try {
 
-    $this->initBeforeCalcCondition();
+      // Reset CDRs in the date range
+      //
+      $this->initBeforeCalcCondition();
+      list($fromDate, $toDate) = $this->getAndUpdateTimeFrame();
 
-    // Process only not already resetted calls in order
-    // to allow a progressive execution of the job.
-    //
-    $c = new Criteria();
-    $c->add(CdrPeer::DESTINATION_TYPE, DestinationType::unprocessed, Criteria::NOT_EQUAL);
+      $sql = "UPDATE cdr SET destination_type = ? WHERE calldate >= ?";
 
-    // Apply the reset on ignored calls inside the specified
-    // timeframe. I do not use the full filters because
-    // they involve joins on tables that are not setted for
-    // ignored calls, but I only use filters 
-    // on selected time frame.
-    //
-    $this->addFilterOnTimeFrame($c);
-    $this->resetCallsCostOnQuery($c);
-    return $this->redirect('admin_tt_call_report/list');
-  }
-
-  /**
-   * Set to null all the income fields of selected cdrs inside
-   * the specified query.
-   *
-   * @param a Condition on CdrPeer   
-   */
-  protected function resetCallsCostOnQuery($c) {
-    CdrPeer::addSelectColumns($c);
-    $rs = CdrPeer::doSelectRS($c);
-    $totNr = 0;
-    $notDeletedNr = 0;
-    while ($rs->next()) {
-      try {
-        $totNr++;
-        $cdr = new Cdr();
-        $cdr->hydrate($rs);
-        $cdr->resetAll();
-        $cdr->save();
+      if (! is_null($toDate)) {
+	$sql .= " AND calldate < ?";
       }
-      catch(Exception $e) {
-        $notDeletedNr++;
-        // Display only the first error message
-        //
-        if ($notDeletedNr == 1) {
-          $p = new ArProblem();
-          $p->setDuplicationKey($e->getCode());
-          $p->setDescription('Error during reset of Calls Cost ' . $e->getCode() . ': ' . $e->getMessage());
-          ArProblemException::addProblemIntoDBOnlyIfNew($p);
-        }
+
+      $conn = Propel::getConnection();
+      $stmt = $conn->prepareStatement($sql);
+
+      $stmt->setInt(1, DestinationType::unprocessed);
+      $stmt->setTimestamp(2, $fromDate);
+
+      if (! is_null($toDate)) {
+	$stmt->setTimestamp(3, $toDate);
       }
-    }
-    if ($notDeletedNr > 0) {
+
+      $stmt->executeUpdate();
+    } catch(Exception $e) {
       $p = new ArProblem();
-      $p->setDuplicationKey('Error during delete of CDRs');
-      $p->setDescription($notDeletedNr . ' CDRs were not deleted/rerated for various problems.');
+      $p->setDuplicationKey($e->getCode());
+      $p->setDescription('Error during reset of Calls Cost ' . $e->getCode() . ': ' . $e->getMessage());
       ArProblemException::addProblemIntoDBOnlyIfNew($p);
     }
+
+    // Rerate calls.
+    //
+    $re = new JobQueueProcessor();
+    $re->process();
+
+    return $this->redirect('admin_tt_call_report/list');
   }
 
   <?php } ?>
@@ -428,6 +402,7 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
    * and VariableFrame::$endFilterDate = $endDate.
    *
    * @return list($startDate, $endDate) in unix timestamp format.
+   * @pre call first $this->initBeforeCalcCondition();
    */
   protected function getAndUpdateTimeFrame() {
     if ($this->areDateCached == TRUE) {

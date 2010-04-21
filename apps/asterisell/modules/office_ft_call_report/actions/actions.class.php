@@ -47,6 +47,9 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     return $this->redirect('commercial_feature/index');
   }
 
+  /**
+   * Call this function before call other functions on filters.
+   */
   protected function initBeforeCalcCondition() {
     $this->processSort();
     $this->processFilters();
@@ -271,6 +274,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
    * and VariableFrame::$endFilterDate = $endDate.
    *
    * @return list($startDate, $endDate) in unix timestamp format.
+   * @pre call first $this->initBeforeCalcCondition();
    */
   protected function getAndUpdateTimeFrame() {
     if ($this->areDateCached == TRUE) {

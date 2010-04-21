@@ -131,9 +131,7 @@ echo '<tr class="sf_admin_row_0">';
 
   echo '<td>' . form_tag("$moduleName/exportToExcel") . submit_tag(__('Export to MS Excel')) . '</form>' . '</td>';
 
-  echo '<td>' . form_tag("$moduleName/resetCallsCost") .submit_tag(__('Reset Calls (see Help)')) . '</form>' . '</td>';
-
-  echo '<td>' . form_tag("$moduleName/rateCallsCost") .  submit_tag(__('Rate All Unrated Calls')) . '</form>' . '</td>';
+  echo '<td>' . form_tag("$moduleName/resetCallsCost") .submit_tag(__('Re-rate Calls in Timeframe (see Help)')) . '</form>' . '</td>';
 
 <?php } else { ?>
 

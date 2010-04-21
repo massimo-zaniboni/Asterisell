@@ -40,19 +40,17 @@ Contrary to other modules, the **receiver** filter field accepts a string prefix
 
 This graph shows the number of concurrent calls. It is usefull in order to view the used resources. Only calls respecting the current filter are displayed in the graph.
 
-## Reset Button
+## Re-rate Button
 
-The reset button will delete the calls in the selected/filtered date range. All other filters are not applied. This is counterintuive, but it is usefull in order to reset calls containing errors and that are not joined with other records of the database, and also ignored calls. 
+The re-rate button will reset the calls in the selected timeframe. Other filters are not take in consideration: only the timeframe. 
 
-The reset processing is very slow, so if there are many calls to reset, it can be interrupt due to PHP time constraints. In this case you can press RELOAD-PAGE button one or more time and subsequent calls will be deleted. At the end of the proess the normal CALL REPORT PAGE will be displayed.
+This behaviour is counterintuive, but it is usefull in order to reset calls containing errors and that are not joined with other records of the database, and also ignored calls. 
 
-## Re-Rate
+Then the resetted calls will be rated, so there is no permanent loss of information.
 
-You can rerate the calls using the "Reset" button, and then forcing their re-rating. In any case, resetted calls will be rerated at the next execution of cron job process.
+This behaviour allows also to write a fast updating query.
 
-Changes in configuration/run-time parameters are applied only to new calls. This action allows to back-propagate these changes also to older calls.
-
-If there is a high number of calls to rate, the PHP process can use all available time and then stop. The remaining calls will be rated from the cron job or if you press again the "rate all unrated calls" button.
+If there is a high number of calls to rate, the PHP process can use all available time and then stop. The remaining calls will be rated from the cron job at the next step, or can be forced using the Job Log button.
 
 ## Update of Receiver Type
 
