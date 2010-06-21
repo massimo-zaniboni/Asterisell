@@ -145,50 +145,6 @@ class RateCalls extends FixedJobProcessor {
 	$office = VariableFrame::getOfficeCache()->getArOffice($account->getArOfficeId());
 	$party = VariableFrame::getVendorCache()->getArParty($office->getArPartyId());
 
-	// Assign internal and external telephone numbers
-	//
-	// NOTE: wait to assign masked telephone number because
-	// it depends also from the type of the call
-	// and up to date it is not setted.
-	//
-	$cdr->setCachedInternalTelephoneNumber($cdr->getInternalTelephoneNumber());
-	$cdr->setCachedExternalTelephoneNumber($cdr->getExternalTelephoneNumber());
-
-	// Assign a end-point-type (or NULL)
-	//
-	$dstNumber = $cdr->getExternalTelephoneNumber();
-	if (is_null($dstNumber)) {
-	  $p = new ArProblem();
-	  $p->setDuplicationKey("CDR without external telephone number " . $cdr->getId());
-	  $p->setCreatedAt(date("c"));
-	  $p->setDescription("The CDR record with id " . $cdr->getId() . " has no external telephone number.");
-	  $p->setEffect("The CDR is not rated.");
-	  $p->setProposedSolution("The problem can reside in the CDR record or in the application configuration. If you change a lot the configuration, you must force a reset and rerate of old calls in order to propagate the effects.");
-	  throw (new ArProblemException($p));
-	}
-
-	// Apply number portability
-	//
-	if ($numberPortabilityCache->isUnderNumberPortability($dstNumber)) {
-	  $dstNumber = ArNumberPortability::checkPortability($dstNumber, $cdr->getCalldate());
-	}
-
-        $cdr->setExternalTelephoneNumberWithAppliedPortability($dstNumber);
-
-	// Associate the call to its Telephone Operator
-	//
-	$telephonePrefixId = $telephonePrefixCache->getTelephonePrefixId($dstNumber);
-	if (is_null($telephonePrefixId)) {
-	  $p = new ArProblem();
-	  $p->setDuplicationKey("no telephone operator prefix");
-	  $p->setCreatedAt(date("c"));
-	  $p->setDescription('There is no a telephone operator prefix entry associated to the destination number ' . $dstNumber);
-	  $p->setEffect("CDRs with destination number of the same type will not be rated.");
-	  $p->setProposedSolution("Complete the Telephone Prefixes Table. If you are not interested to classification of calls according their operator, then you can also add an Empty Prefix matching all destination numbers and calling it None.");
-	  throw (new ArProblemException($p));
-	}
-	$cdr->setArTelephonePrefixId($telephonePrefixId);
-
 	// First apply a rate of type "isForUnprocessedCDR"
 	//
 	if ($cdr->getDestinationType() == DestinationType::unprocessed) {
@@ -208,18 +164,65 @@ class RateCalls extends FixedJobProcessor {
 	  }
         }
 
-	// Now that the rate is classified, calculate also the masked external telephone number
-	//
-	$cdr->setCachedMaskedExternalTelephoneNumber($cdr->getMaskedExternalTelephoneNumber());
-
-	// Rate the processed CDR
-	//
+	// Exclude additional work on CDR that must be ignored because they
+        // can contain some inconsistent state.
+        //
 	if ($cdr->getDestinationType() == DestinationType::ignored) {
           // this $cdr is makerd as "ignored" so its cost/income is simply 0.
           //
           $cdr->setCost(0);
           $cdr->setIncome(0);
+
         } else {
+
+	  // Assign internal and external telephone numbers
+	  //
+	  // NOTE: wait to assign masked telephone number because
+	  // it depends also from the type of the call
+	  // and up to date it is not setted.
+	  //
+	  $cdr->setCachedInternalTelephoneNumber($cdr->getInternalTelephoneNumber());
+	  $cdr->setCachedExternalTelephoneNumber($cdr->getExternalTelephoneNumber());
+	  
+	  // Assign a end-point-type (or NULL)
+	  //
+	  $dstNumber = $cdr->getExternalTelephoneNumber();
+	  if (is_null($dstNumber)) {
+	    $p = new ArProblem();
+	    $p->setDuplicationKey("CDR without external telephone number " . $cdr->getId());
+	    $p->setCreatedAt(date("c"));
+	    $p->setDescription("The CDR record with id " . $cdr->getId() . " has no external telephone number.");
+	    $p->setEffect("The CDR is not rated.");
+	    $p->setProposedSolution("The problem can reside in the CDR record or in the application configuration. If you change a lot the configuration, you must force a reset and rerate of old calls in order to propagate the effects.");
+	    throw (new ArProblemException($p));
+	  }
+	  
+	  // Apply number portability
+	  //
+	  if ($numberPortabilityCache->isUnderNumberPortability($dstNumber)) {
+	    $dstNumber = ArNumberPortability::checkPortability($dstNumber, $cdr->getCalldate());
+	  }
+	  
+	  $cdr->setExternalTelephoneNumberWithAppliedPortability($dstNumber);
+	  
+	  // Associate the call to its Telephone Operator
+	  //
+	  $telephonePrefixId = $telephonePrefixCache->getTelephonePrefixId($dstNumber);
+	  if (is_null($telephonePrefixId)) {
+	    $p = new ArProblem();
+	    $p->setDuplicationKey("no telephone operator prefix");
+	    $p->setCreatedAt(date("c"));
+	    $p->setDescription('There is no a telephone operator prefix entry associated to the destination number ' . $dstNumber);
+	    $p->setEffect("CDRs with destination number of the same type will not be rated.");
+	    $p->setProposedSolution("Complete the Telephone Prefixes Table. If you are not interested to classification of calls according their operator, then you can also add an Empty Prefix matching all destination numbers and calling it None.");
+	    throw (new ArProblemException($p));
+	  }
+	  $cdr->setArTelephonePrefixId($telephonePrefixId);
+
+	  // Now that the rate is classified, calculate also the masked external telephone number
+	  //
+	  $cdr->setCachedMaskedExternalTelephoneNumber($cdr->getMaskedExternalTelephoneNumber());
+
 	  // calc cost
 	  //
 	  list($rate, $phpRate) = $this->getPhpRate($cdr, null);
