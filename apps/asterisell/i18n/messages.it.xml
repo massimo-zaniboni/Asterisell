@@ -20,7 +20,7 @@
 
     <trans-unit id="2b">
       <source>Login:</source>
-      <target>Note Utente:</target>
+      <target>Nome Utente:</target>
     </trans-unit>
 
     <trans-unit id="2">
