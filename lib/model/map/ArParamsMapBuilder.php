@@ -44,7 +44,7 @@ class ArParamsMapBuilder {
 
 		$tMap->addColumn('SERVICE_PROVIDER_EMAIL', 'ServiceProviderEmail', 'string', CreoleTypes::VARCHAR, false, 120);
 
-		$tMap->addColumn('VAT_TAX_PERC', 'VatTaxPerc', 'int', CreoleTypes::INTEGER, true, 3);
+		$tMap->addColumn('VAT_TAX_PERC', 'VatTaxPerc', 'int', CreoleTypes::INTEGER, true, 20);
 
 		$tMap->addColumn('LOGO_IMAGE', 'LogoImage', 'string', CreoleTypes::VARCHAR, false, 120);
 

@@ -219,6 +219,7 @@ all:
   #
   # EUR: 128
   # US: 26
+  # GBP: 163
   # 
   # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
   #

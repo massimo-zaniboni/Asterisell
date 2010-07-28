@@ -425,9 +425,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -441,9 +439,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setName($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -467,9 +463,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setServiceName($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -483,9 +477,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setServiceProviderWebsite($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -499,9 +491,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setServiceProviderEmail($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -515,9 +505,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setVatTaxPerc($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -531,9 +519,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLogoImage($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -547,9 +533,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSlogan($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -563,9 +547,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setFooter($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -579,9 +561,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setUserMessage($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -595,9 +575,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLastViewedFeedsMd5($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -611,9 +589,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setCurrentFeedsMd5($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -627,9 +603,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalName($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -643,9 +617,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setExternalCrmCode($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -659,9 +631,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setVat($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -675,9 +645,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalAddress($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -691,9 +659,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalWebsite($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -707,9 +673,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalCity($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -723,9 +687,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalZipcode($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -739,9 +701,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalStateProvince($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -755,9 +715,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalCountry($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -771,9 +729,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalEmail($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -787,9 +743,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalPhone($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -803,9 +757,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setPhone2($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -819,9 +771,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setLegalFax($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -835,9 +785,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSenderNameOnInvoicingEmails($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -851,9 +799,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setInvoicingEmailAddress($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -867,9 +813,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setAccountantEmailAddress($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -883,9 +827,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSmtpHost($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -899,9 +841,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSmtpPort($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -915,9 +855,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSmtpUsername($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -931,9 +869,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSmtpPassword($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -947,9 +883,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSmtpEncryption($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -963,9 +897,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSmtpReconnectAfterNrOfMessages($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -979,9 +911,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	public function setSmtpSecondsOfPauseAfterReconnection($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

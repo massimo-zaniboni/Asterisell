@@ -144,9 +144,7 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -160,9 +158,7 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	public function setLogin($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -176,9 +172,7 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	public function setPassword($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -192,9 +186,7 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	public function setArPartyId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -212,9 +204,7 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	public function setArOfficeId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -266,9 +256,7 @@ abstract class BaseArWebAccount extends BaseObject  implements Persistent {
 	public function setArParamsId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

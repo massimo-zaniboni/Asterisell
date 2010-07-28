@@ -10,6 +10,7 @@
  */
 class paramsActions extends autoparamsActions
 {
+
   /**
    * Executes index action
    *

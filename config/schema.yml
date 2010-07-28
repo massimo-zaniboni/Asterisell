@@ -321,9 +321,10 @@ propel:
     #
     # the mail associated to the VoIP service
 
-    vat_tax_perc: { type: integer, size: 3, required: true, default: 0 }
+    vat_tax_perc: { type: integer, size: 20, required: true, default: 0 }
     #
-    # from 0% to 999% for VAT tax to apply to invoice amount
+    # VAT tax to apply to invoice amount, using the decimal format 
+    # used also for incomes/costs.
 
     logo_image: varchar(120)
     #

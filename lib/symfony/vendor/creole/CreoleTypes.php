@@ -36,7 +36,7 @@ abstract class CreoleTypes {
         const INTEGER = 5;
         const CHAR = 6;
         const VARCHAR = 7;
-        const TEXT = 17;
+        const TEXT = 30;  // php 5.3.0 fix, using an unused int 
         const FLOAT = 8;
         const DOUBLE = 9;
         const DATE = 10;

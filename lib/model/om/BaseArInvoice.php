@@ -252,9 +252,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -268,9 +266,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setArPartyId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -288,9 +284,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setType($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -314,9 +308,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setNr($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -381,9 +373,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setTotalWithoutTax($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -397,9 +387,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setVatPerc($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -413,9 +401,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setTotalVat($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -429,9 +415,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setTotal($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -445,9 +429,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setHtmlDetails($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -482,9 +464,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setEmailSubject($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -498,9 +478,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	public function setEmailMessage($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

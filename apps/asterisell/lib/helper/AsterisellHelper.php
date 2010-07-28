@@ -194,6 +194,7 @@ function format_minute($seconds) {
     return ($sec . 's');
   }
 }
+
 function csv_field($val, $isFirst) {
   if ($isFirst) {
     $r = "";
@@ -249,6 +250,16 @@ function from_db_decimal_to_php_decimal($value) {
   $decimalPlaces = get_decimal_places_for_currency();
   $scaleFactor = bcpow(10, $decimalPlaces);
   return bcdiv($value, $scaleFactor, $decimalPlaces);
+}
+
+/** 
+ * Like `from_db_decimal_to_php_decimal` but eliminating
+ * non necessary decimal digits. For example "19.5" instead of "19.5000"
+ */
+function from_db_decimal_to_smart_php_decimal($value) {
+  $d = from_db_decimal_to_php_decimal($value);
+  $d = $d + "0";
+  return sprintf($d);
 }
 
 /**
@@ -370,6 +381,13 @@ function from_db_decimal_to_pdf_txt_decimal($value) {
 function convertToDbMoney($moneyStr) {
   $sourcePrecision = get_decimal_places_for_currency();
   return  number_format($moneyStr, $sourcePrecision, '', '');
+}
+
+/**
+ * Synonimous for `convertToDbMoney`
+ */
+function from_php_decimal_to_db_decimal($v) {
+  return convertToDbMoney($v);
 }
 
 /**

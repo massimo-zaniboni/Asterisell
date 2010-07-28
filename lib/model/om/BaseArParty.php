@@ -271,9 +271,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -287,9 +285,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setCustomerOrVendor($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -303,9 +299,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setName($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -319,9 +313,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setExternalCrmCode($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -335,9 +327,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setVat($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -351,9 +341,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setLegalAddress($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -367,9 +355,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setLegalCity($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -383,9 +369,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setLegalZipcode($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -399,9 +383,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setLegalStateProvince($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -415,9 +397,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setLegalCountry($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -431,9 +411,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setEmail($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -447,9 +425,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setPhone($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -463,9 +439,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setPhone2($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -479,9 +453,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setFax($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -495,9 +467,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setArRateCategoryId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -515,9 +485,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setArParamsId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -535,9 +503,7 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	public function setMaxLimit30($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

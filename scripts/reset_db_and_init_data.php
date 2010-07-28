@@ -28,6 +28,8 @@ define('SF_DEBUG',       false);
 
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 
+sfLoader::loadHelpers(array('I18N', 'Debug', 'Asterisell'));
+
 sfContext::getInstance();
 
 define('WEB_DIR', SF_ROOT_DIR.DIRECTORY_SEPARATOR.'web');
@@ -153,7 +155,7 @@ function createDefaultParams() {
   $params->setFooter("<center>For info contact:<a href=\"mailto:info@example.com\">info@example.com</a></center>");
   $params->setUserMessage("");
 
-  $params->setVatTaxPerc(20);
+  $params->setVatTaxPercAsPhpDecimal("20");
 
   $params->setLegalName("ACME Example VoIP Corporation");
   $params->setVat("WRLD 0000000000000");

@@ -75,6 +75,25 @@ from Template
 
   use_helper('Asterisell');
 
+== Custom Fields in Forms ==
+
+Supposing to have a custom ar_params.vat_tax_perc field.
+
+Create inside "lib/model/ArParams.php" the get and setter methods
+
+  public function getVatTaxPercAsPhpDecimal() {
+    return from_db_decimal_to_php_decimal($this->getVatTaxPerc());
+  }
+
+  public function setVatTaxPercAsPhpDecimal($d) {
+    $this->setVatTaxPerc(from_php_decimal_to_db_decimal($d));
+  }
+
+and add the field inside "generator.yml"
+      vat_tax_perc_as_php_decimal: { name: Tax %, type: input_tag, help: "VAT Tax % to apply in invoices. Something like '19.5' without the '%' symbol and '.' as decimal separator." }
+
+     Company legal information (used on invoices): [vat_tax_perc_as_php_decimal, legal_address, legal_city]
+
 == Low Level Access to DB ==
 
   http://creole.phpdb.org/trac/wiki/Documentation/CreoleGuide

@@ -391,9 +391,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setClid($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -407,9 +405,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setSrc($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -423,9 +419,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setDst($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -439,9 +433,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setDcontext($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -455,9 +447,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setChannel($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -471,9 +461,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setDstchannel($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -487,9 +475,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setLastapp($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -503,9 +489,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setLastdata($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -519,9 +503,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setDuration($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -535,9 +517,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setBillsec($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -551,9 +531,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setDisposition($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -567,9 +545,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setAmaflags($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -583,9 +559,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setAccountcode($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -599,9 +573,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setUniqueid($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -615,9 +587,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setUserfield($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -631,9 +601,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setDestinationType($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -647,9 +615,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setArAsteriskAccountId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -667,9 +633,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setIncomeArRateId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -687,9 +651,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setIncome($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -703,9 +665,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setCostArRateId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -723,9 +683,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setVendorId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -739,9 +697,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setCost($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -755,9 +711,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setArTelephonePrefixId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -775,9 +729,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setCachedInternalTelephoneNumber($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -791,9 +743,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setCachedExternalTelephoneNumber($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -807,9 +757,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setExternalTelephoneNumberWithAppliedPortability($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -823,9 +771,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setCachedMaskedExternalTelephoneNumber($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -839,9 +785,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setSourceId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -855,9 +799,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

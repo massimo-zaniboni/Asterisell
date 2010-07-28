@@ -78,9 +78,7 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -94,9 +92,7 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 	public function setPrefix($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -110,9 +106,7 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 	public function setName($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -126,9 +120,7 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 	public function setGeographicLocation($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -142,9 +134,7 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 	public function setOperatorType($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

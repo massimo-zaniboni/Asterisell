@@ -181,9 +181,7 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -197,9 +195,7 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	public function setDestinationType($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -223,9 +219,7 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	public function setArRateCategoryId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -243,9 +237,7 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	public function setArPartyId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -339,9 +331,7 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	public function setNote($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

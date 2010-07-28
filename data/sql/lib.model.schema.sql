@@ -190,7 +190,7 @@ CREATE TABLE `ar_params`
 	`service_name` VARCHAR(120),
 	`service_provider_website` VARCHAR(120),
 	`service_provider_email` VARCHAR(120),
-	`vat_tax_perc` INTEGER(3) default 0 NOT NULL,
+	`vat_tax_perc` INTEGER(20) default 0 NOT NULL,
 	`logo_image` VARCHAR(120),
 	`slogan` VARCHAR(255),
 	`footer` VARCHAR(255),

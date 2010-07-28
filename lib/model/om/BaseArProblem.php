@@ -131,9 +131,7 @@ abstract class BaseArProblem extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -164,9 +162,7 @@ abstract class BaseArProblem extends BaseObject  implements Persistent {
 	public function setDuplicationKey($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -180,9 +176,7 @@ abstract class BaseArProblem extends BaseObject  implements Persistent {
 	public function setDescription($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -196,9 +190,7 @@ abstract class BaseArProblem extends BaseObject  implements Persistent {
 	public function setEffect($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -212,9 +204,7 @@ abstract class BaseArProblem extends BaseObject  implements Persistent {
 	public function setProposedSolution($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -228,9 +218,7 @@ abstract class BaseArProblem extends BaseObject  implements Persistent {
 	public function setUserNotes($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
