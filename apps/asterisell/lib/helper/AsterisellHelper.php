@@ -335,9 +335,8 @@ function from_db_decimal_to_scientific_notation($value) {
 function from_db_decimal_to_vat_perc_according_culture($value) {
   $culture = sfConfig::get('app_culture');
 
-  $value2 = from_db_decimal_to_php_decimal($value);
-  $value3 = sprintf("%.0F", $value2);
-  return format_number($value3, $culture);
+  $value = from_db_decimal_to_smart_php_decimal($value);
+  return format_number($value, $culture);
 }
 
 /**
