@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # UPDATE THIS FIELD IF YOU WANT USE ANOTHER DATABASE NAME
 #
 # NOTE: if you change this value, update also config/databases.yml
@@ -19,7 +21,7 @@ echo "!!! in asterisell3 MySQL database.            !!!"
 echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo " "
 echo "Press Ctrl-C to exit."
-echo "Enter the MySQL administrator user, to procedee (somthing like root/admin): "
+echo "Enter the MySQL administrator user, to procedee (something like root/admin): "
 read -e ADMIN
 
 cd ..
