@@ -65,6 +65,10 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 
 	
+	protected $pdf_call_report;
+
+
+	
 	protected $email_subject;
 
 
@@ -225,6 +229,13 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	{
 
 		return $this->pdf_invoice;
+	}
+
+	
+	public function getPdfCallReport()
+	{
+
+		return $this->pdf_call_report;
 	}
 
 	
@@ -461,6 +472,27 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setPdfCallReport($v)
+	{
+
+								if ($v instanceof Lob && $v === $this->pdf_call_report) {
+			$changed = $v->isModified();
+		} else {
+			$changed = ($this->pdf_call_report !== $v);
+		}
+		if ($changed) {
+			if ( !($v instanceof Lob) ) {
+				$obj = new Blob();
+				$obj->setContents($v);
+			} else {
+				$obj = $v;
+			}
+			$this->pdf_call_report = $obj;
+			$this->modifiedColumns[] = ArInvoicePeer::PDF_CALL_REPORT;
+		}
+
+	} 
+	
 	public function setEmailSubject($v)
 	{
 
@@ -531,17 +563,19 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 			$this->pdf_invoice = $rs->getBlob($startcol + 13);
 
-			$this->email_subject = $rs->getString($startcol + 14);
+			$this->pdf_call_report = $rs->getBlob($startcol + 14);
 
-			$this->email_message = $rs->getString($startcol + 15);
+			$this->email_subject = $rs->getString($startcol + 15);
 
-			$this->already_sent = $rs->getBoolean($startcol + 16);
+			$this->email_message = $rs->getString($startcol + 16);
+
+			$this->already_sent = $rs->getBoolean($startcol + 17);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 17; 
+						return $startcol + 18; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArInvoice object", $e);
 		}
@@ -728,12 +762,15 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				return $this->getPdfInvoice();
 				break;
 			case 14:
-				return $this->getEmailSubject();
+				return $this->getPdfCallReport();
 				break;
 			case 15:
-				return $this->getEmailMessage();
+				return $this->getEmailSubject();
 				break;
 			case 16:
+				return $this->getEmailMessage();
+				break;
+			case 17:
 				return $this->getAlreadySent();
 				break;
 			default:
@@ -760,9 +797,10 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 			$keys[11] => $this->getTotal(),
 			$keys[12] => $this->getHtmlDetails(),
 			$keys[13] => $this->getPdfInvoice(),
-			$keys[14] => $this->getEmailSubject(),
-			$keys[15] => $this->getEmailMessage(),
-			$keys[16] => $this->getAlreadySent(),
+			$keys[14] => $this->getPdfCallReport(),
+			$keys[15] => $this->getEmailSubject(),
+			$keys[16] => $this->getEmailMessage(),
+			$keys[17] => $this->getAlreadySent(),
 		);
 		return $result;
 	}
@@ -821,12 +859,15 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				$this->setPdfInvoice($value);
 				break;
 			case 14:
-				$this->setEmailSubject($value);
+				$this->setPdfCallReport($value);
 				break;
 			case 15:
-				$this->setEmailMessage($value);
+				$this->setEmailSubject($value);
 				break;
 			case 16:
+				$this->setEmailMessage($value);
+				break;
+			case 17:
 				$this->setAlreadySent($value);
 				break;
 		} 	}
@@ -850,9 +891,10 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[11], $arr)) $this->setTotal($arr[$keys[11]]);
 		if (array_key_exists($keys[12], $arr)) $this->setHtmlDetails($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setPdfInvoice($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setEmailSubject($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setEmailMessage($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setAlreadySent($arr[$keys[16]]);
+		if (array_key_exists($keys[14], $arr)) $this->setPdfCallReport($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setEmailSubject($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setEmailMessage($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setAlreadySent($arr[$keys[17]]);
 	}
 
 	
@@ -874,6 +916,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArInvoicePeer::TOTAL)) $criteria->add(ArInvoicePeer::TOTAL, $this->total);
 		if ($this->isColumnModified(ArInvoicePeer::HTML_DETAILS)) $criteria->add(ArInvoicePeer::HTML_DETAILS, $this->html_details);
 		if ($this->isColumnModified(ArInvoicePeer::PDF_INVOICE)) $criteria->add(ArInvoicePeer::PDF_INVOICE, $this->pdf_invoice);
+		if ($this->isColumnModified(ArInvoicePeer::PDF_CALL_REPORT)) $criteria->add(ArInvoicePeer::PDF_CALL_REPORT, $this->pdf_call_report);
 		if ($this->isColumnModified(ArInvoicePeer::EMAIL_SUBJECT)) $criteria->add(ArInvoicePeer::EMAIL_SUBJECT, $this->email_subject);
 		if ($this->isColumnModified(ArInvoicePeer::EMAIL_MESSAGE)) $criteria->add(ArInvoicePeer::EMAIL_MESSAGE, $this->email_message);
 		if ($this->isColumnModified(ArInvoicePeer::ALREADY_SENT)) $criteria->add(ArInvoicePeer::ALREADY_SENT, $this->already_sent);
@@ -932,6 +975,8 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		$copyObj->setHtmlDetails($this->html_details);
 
 		$copyObj->setPdfInvoice($this->pdf_invoice);
+
+		$copyObj->setPdfCallReport($this->pdf_call_report);
 
 		$copyObj->setEmailSubject($this->email_subject);
 

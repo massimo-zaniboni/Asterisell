@@ -13,7 +13,7 @@ abstract class BaseArInvoicePeer {
 	const CLASS_DEFAULT = 'lib.model.ArInvoice';
 
 	
-	const NUM_COLUMNS = 17;
+	const NUM_COLUMNS = 18;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -62,6 +62,9 @@ abstract class BaseArInvoicePeer {
 	const PDF_INVOICE = 'ar_invoice.PDF_INVOICE';
 
 	
+	const PDF_CALL_REPORT = 'ar_invoice.PDF_CALL_REPORT';
+
+	
 	const EMAIL_SUBJECT = 'ar_invoice.EMAIL_SUBJECT';
 
 	
@@ -76,18 +79,18 @@ abstract class BaseArInvoicePeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'ArPartyId', 'Type', 'IsRevenueSharing', 'Nr', 'InvoiceDate', 'ArCdrFrom', 'ArCdrTo', 'TotalWithoutTax', 'VatPerc', 'TotalVat', 'Total', 'HtmlDetails', 'PdfInvoice', 'EmailSubject', 'EmailMessage', 'AlreadySent', ),
-		BasePeer::TYPE_COLNAME => array (ArInvoicePeer::ID, ArInvoicePeer::AR_PARTY_ID, ArInvoicePeer::TYPE, ArInvoicePeer::IS_REVENUE_SHARING, ArInvoicePeer::NR, ArInvoicePeer::INVOICE_DATE, ArInvoicePeer::AR_CDR_FROM, ArInvoicePeer::AR_CDR_TO, ArInvoicePeer::TOTAL_WITHOUT_TAX, ArInvoicePeer::VAT_PERC, ArInvoicePeer::TOTAL_VAT, ArInvoicePeer::TOTAL, ArInvoicePeer::HTML_DETAILS, ArInvoicePeer::PDF_INVOICE, ArInvoicePeer::EMAIL_SUBJECT, ArInvoicePeer::EMAIL_MESSAGE, ArInvoicePeer::ALREADY_SENT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'ar_party_id', 'type', 'is_revenue_sharing', 'nr', 'invoice_date', 'ar_cdr_from', 'ar_cdr_to', 'total_without_tax', 'vat_perc', 'total_vat', 'total', 'html_details', 'pdf_invoice', 'email_subject', 'email_message', 'already_sent', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'ArPartyId', 'Type', 'IsRevenueSharing', 'Nr', 'InvoiceDate', 'ArCdrFrom', 'ArCdrTo', 'TotalWithoutTax', 'VatPerc', 'TotalVat', 'Total', 'HtmlDetails', 'PdfInvoice', 'PdfCallReport', 'EmailSubject', 'EmailMessage', 'AlreadySent', ),
+		BasePeer::TYPE_COLNAME => array (ArInvoicePeer::ID, ArInvoicePeer::AR_PARTY_ID, ArInvoicePeer::TYPE, ArInvoicePeer::IS_REVENUE_SHARING, ArInvoicePeer::NR, ArInvoicePeer::INVOICE_DATE, ArInvoicePeer::AR_CDR_FROM, ArInvoicePeer::AR_CDR_TO, ArInvoicePeer::TOTAL_WITHOUT_TAX, ArInvoicePeer::VAT_PERC, ArInvoicePeer::TOTAL_VAT, ArInvoicePeer::TOTAL, ArInvoicePeer::HTML_DETAILS, ArInvoicePeer::PDF_INVOICE, ArInvoicePeer::PDF_CALL_REPORT, ArInvoicePeer::EMAIL_SUBJECT, ArInvoicePeer::EMAIL_MESSAGE, ArInvoicePeer::ALREADY_SENT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'ar_party_id', 'type', 'is_revenue_sharing', 'nr', 'invoice_date', 'ar_cdr_from', 'ar_cdr_to', 'total_without_tax', 'vat_perc', 'total_vat', 'total', 'html_details', 'pdf_invoice', 'pdf_call_report', 'email_subject', 'email_message', 'already_sent', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ArPartyId' => 1, 'Type' => 2, 'IsRevenueSharing' => 3, 'Nr' => 4, 'InvoiceDate' => 5, 'ArCdrFrom' => 6, 'ArCdrTo' => 7, 'TotalWithoutTax' => 8, 'VatPerc' => 9, 'TotalVat' => 10, 'Total' => 11, 'HtmlDetails' => 12, 'PdfInvoice' => 13, 'EmailSubject' => 14, 'EmailMessage' => 15, 'AlreadySent' => 16, ),
-		BasePeer::TYPE_COLNAME => array (ArInvoicePeer::ID => 0, ArInvoicePeer::AR_PARTY_ID => 1, ArInvoicePeer::TYPE => 2, ArInvoicePeer::IS_REVENUE_SHARING => 3, ArInvoicePeer::NR => 4, ArInvoicePeer::INVOICE_DATE => 5, ArInvoicePeer::AR_CDR_FROM => 6, ArInvoicePeer::AR_CDR_TO => 7, ArInvoicePeer::TOTAL_WITHOUT_TAX => 8, ArInvoicePeer::VAT_PERC => 9, ArInvoicePeer::TOTAL_VAT => 10, ArInvoicePeer::TOTAL => 11, ArInvoicePeer::HTML_DETAILS => 12, ArInvoicePeer::PDF_INVOICE => 13, ArInvoicePeer::EMAIL_SUBJECT => 14, ArInvoicePeer::EMAIL_MESSAGE => 15, ArInvoicePeer::ALREADY_SENT => 16, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'ar_party_id' => 1, 'type' => 2, 'is_revenue_sharing' => 3, 'nr' => 4, 'invoice_date' => 5, 'ar_cdr_from' => 6, 'ar_cdr_to' => 7, 'total_without_tax' => 8, 'vat_perc' => 9, 'total_vat' => 10, 'total' => 11, 'html_details' => 12, 'pdf_invoice' => 13, 'email_subject' => 14, 'email_message' => 15, 'already_sent' => 16, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ArPartyId' => 1, 'Type' => 2, 'IsRevenueSharing' => 3, 'Nr' => 4, 'InvoiceDate' => 5, 'ArCdrFrom' => 6, 'ArCdrTo' => 7, 'TotalWithoutTax' => 8, 'VatPerc' => 9, 'TotalVat' => 10, 'Total' => 11, 'HtmlDetails' => 12, 'PdfInvoice' => 13, 'PdfCallReport' => 14, 'EmailSubject' => 15, 'EmailMessage' => 16, 'AlreadySent' => 17, ),
+		BasePeer::TYPE_COLNAME => array (ArInvoicePeer::ID => 0, ArInvoicePeer::AR_PARTY_ID => 1, ArInvoicePeer::TYPE => 2, ArInvoicePeer::IS_REVENUE_SHARING => 3, ArInvoicePeer::NR => 4, ArInvoicePeer::INVOICE_DATE => 5, ArInvoicePeer::AR_CDR_FROM => 6, ArInvoicePeer::AR_CDR_TO => 7, ArInvoicePeer::TOTAL_WITHOUT_TAX => 8, ArInvoicePeer::VAT_PERC => 9, ArInvoicePeer::TOTAL_VAT => 10, ArInvoicePeer::TOTAL => 11, ArInvoicePeer::HTML_DETAILS => 12, ArInvoicePeer::PDF_INVOICE => 13, ArInvoicePeer::PDF_CALL_REPORT => 14, ArInvoicePeer::EMAIL_SUBJECT => 15, ArInvoicePeer::EMAIL_MESSAGE => 16, ArInvoicePeer::ALREADY_SENT => 17, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'ar_party_id' => 1, 'type' => 2, 'is_revenue_sharing' => 3, 'nr' => 4, 'invoice_date' => 5, 'ar_cdr_from' => 6, 'ar_cdr_to' => 7, 'total_without_tax' => 8, 'vat_perc' => 9, 'total_vat' => 10, 'total' => 11, 'html_details' => 12, 'pdf_invoice' => 13, 'pdf_call_report' => 14, 'email_subject' => 15, 'email_message' => 16, 'already_sent' => 17, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
 	);
 
 	
@@ -168,6 +171,8 @@ abstract class BaseArInvoicePeer {
 		$criteria->addSelectColumn(ArInvoicePeer::HTML_DETAILS);
 
 		$criteria->addSelectColumn(ArInvoicePeer::PDF_INVOICE);
+
+		$criteria->addSelectColumn(ArInvoicePeer::PDF_CALL_REPORT);
 
 		$criteria->addSelectColumn(ArInvoicePeer::EMAIL_SUBJECT);
 

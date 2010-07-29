@@ -411,6 +411,8 @@ propel:
 
     smtp_seconds_of_pause_after_reconnection: { type: integer, size: 2 }
 
+    current_invoice_nr: { type: integer, size: 11, required: true, default: 1 }
+
   ar_web_account:
   
     id:
@@ -485,6 +487,11 @@ propel:
     pdf_invoice: blob
     #
     # pdf version of the invoice
+
+    pdf_call_report: blob
+    #
+    # pdf version of a call report with information
+    # about the called numbers and so on...
 
     email_subject: varchar(1024)
 

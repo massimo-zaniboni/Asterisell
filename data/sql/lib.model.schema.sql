@@ -220,6 +220,7 @@ CREATE TABLE `ar_params`
 	`smtp_encryption` VARCHAR(60),
 	`smtp_reconnect_after_nr_of_messages` INTEGER(4),
 	`smtp_seconds_of_pause_after_reconnection` INTEGER(2),
+	`current_invoice_nr` INTEGER(11) default 1 NOT NULL,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -279,6 +280,7 @@ CREATE TABLE `ar_invoice`
 	`total` INTEGER(20) default null,
 	`html_details` TEXT,
 	`pdf_invoice` LONGBLOB,
+	`pdf_call_report` LONGBLOB,
 	`email_subject` VARCHAR(1024),
 	`email_message` TEXT,
 	`already_sent` INTEGER,

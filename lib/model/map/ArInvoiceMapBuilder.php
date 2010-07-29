@@ -60,6 +60,8 @@ class ArInvoiceMapBuilder {
 
 		$tMap->addColumn('PDF_INVOICE', 'PdfInvoice', 'string', CreoleTypes::BLOB, false, null);
 
+		$tMap->addColumn('PDF_CALL_REPORT', 'PdfCallReport', 'string', CreoleTypes::BLOB, false, null);
+
 		$tMap->addColumn('EMAIL_SUBJECT', 'EmailSubject', 'string', CreoleTypes::VARCHAR, false, 1024);
 
 		$tMap->addColumn('EMAIL_MESSAGE', 'EmailMessage', 'string', CreoleTypes::LONGVARCHAR, false, null);

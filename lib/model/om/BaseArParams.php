@@ -151,6 +151,10 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	
 	protected $smtp_seconds_of_pause_after_reconnection;
 
+
+	
+	protected $current_invoice_nr = 1;
+
 	
 	protected $collArPartys;
 
@@ -419,6 +423,13 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	{
 
 		return $this->smtp_seconds_of_pause_after_reconnection;
+	}
+
+	
+	public function getCurrentInvoiceNr()
+	{
+
+		return $this->current_invoice_nr;
 	}
 
 	
@@ -922,6 +933,20 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setCurrentInvoiceNr($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->current_invoice_nr !== $v || $v === 1) {
+			$this->current_invoice_nr = $v;
+			$this->modifiedColumns[] = ArParamsPeer::CURRENT_INVOICE_NR;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -998,11 +1023,13 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 			$this->smtp_seconds_of_pause_after_reconnection = $rs->getInt($startcol + 35);
 
+			$this->current_invoice_nr = $rs->getInt($startcol + 36);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 36; 
+						return $startcol + 37; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArParams object", $e);
 		}
@@ -1269,6 +1296,9 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			case 35:
 				return $this->getSmtpSecondsOfPauseAfterReconnection();
 				break;
+			case 36:
+				return $this->getCurrentInvoiceNr();
+				break;
 			default:
 				return null;
 				break;
@@ -1315,6 +1345,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			$keys[33] => $this->getSmtpEncryption(),
 			$keys[34] => $this->getSmtpReconnectAfterNrOfMessages(),
 			$keys[35] => $this->getSmtpSecondsOfPauseAfterReconnection(),
+			$keys[36] => $this->getCurrentInvoiceNr(),
 		);
 		return $result;
 	}
@@ -1438,6 +1469,9 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			case 35:
 				$this->setSmtpSecondsOfPauseAfterReconnection($value);
 				break;
+			case 36:
+				$this->setCurrentInvoiceNr($value);
+				break;
 		} 	}
 
 	
@@ -1481,6 +1515,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[33], $arr)) $this->setSmtpEncryption($arr[$keys[33]]);
 		if (array_key_exists($keys[34], $arr)) $this->setSmtpReconnectAfterNrOfMessages($arr[$keys[34]]);
 		if (array_key_exists($keys[35], $arr)) $this->setSmtpSecondsOfPauseAfterReconnection($arr[$keys[35]]);
+		if (array_key_exists($keys[36], $arr)) $this->setCurrentInvoiceNr($arr[$keys[36]]);
 	}
 
 	
@@ -1524,6 +1559,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArParamsPeer::SMTP_ENCRYPTION)) $criteria->add(ArParamsPeer::SMTP_ENCRYPTION, $this->smtp_encryption);
 		if ($this->isColumnModified(ArParamsPeer::SMTP_RECONNECT_AFTER_NR_OF_MESSAGES)) $criteria->add(ArParamsPeer::SMTP_RECONNECT_AFTER_NR_OF_MESSAGES, $this->smtp_reconnect_after_nr_of_messages);
 		if ($this->isColumnModified(ArParamsPeer::SMTP_SECONDS_OF_PAUSE_AFTER_RECONNECTION)) $criteria->add(ArParamsPeer::SMTP_SECONDS_OF_PAUSE_AFTER_RECONNECTION, $this->smtp_seconds_of_pause_after_reconnection);
+		if ($this->isColumnModified(ArParamsPeer::CURRENT_INVOICE_NR)) $criteria->add(ArParamsPeer::CURRENT_INVOICE_NR, $this->current_invoice_nr);
 
 		return $criteria;
 	}
@@ -1623,6 +1659,8 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		$copyObj->setSmtpReconnectAfterNrOfMessages($this->smtp_reconnect_after_nr_of_messages);
 
 		$copyObj->setSmtpSecondsOfPauseAfterReconnection($this->smtp_seconds_of_pause_after_reconnection);
+
+		$copyObj->setCurrentInvoiceNr($this->current_invoice_nr);
 
 
 		if ($deepCopy) {

@@ -104,5 +104,7 @@ class ArParamsMapBuilder {
 
 		$tMap->addColumn('SMTP_SECONDS_OF_PAUSE_AFTER_RECONNECTION', 'SmtpSecondsOfPauseAfterReconnection', 'int', CreoleTypes::INTEGER, false, 2);
 
+		$tMap->addColumn('CURRENT_INVOICE_NR', 'CurrentInvoiceNr', 'int', CreoleTypes::INTEGER, true, 11);
+
 	} 
 } 
