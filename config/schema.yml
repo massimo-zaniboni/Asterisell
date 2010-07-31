@@ -334,6 +334,14 @@ propel:
     #
     # the slogan to display near the logo
 
+    logo_image_in_invoices: varchar(120)
+    #
+    # the logo to use in invoices
+
+    logo_image_dpi_in_invoices: { type: integer, size: 5, required: true, default: 72 }
+    #
+    # the resolution to use for display the logo image in invoices 
+
     footer: varchar(255)
     #
     # the text to display in the footer
