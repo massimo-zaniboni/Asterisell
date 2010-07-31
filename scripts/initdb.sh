@@ -22,7 +22,7 @@ echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo " "
 echo "Press Ctrl-C to exit."
 echo "Enter the MySQL administrator user, to procedee (something like root/admin): "
-read -e ADMIN
+read ADMIN
 
 cd ..
 echo "Drop $DBNAME database."
