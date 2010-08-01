@@ -19,7 +19,7 @@ generator:
 
       slogan:  { name: Slogan, help: Slogan message displayed under the logo image }
 
-      logo_image_in_invoices: { name: "Logo image inside invoices", help: "Optional logo image to show in invoices. Usually it has an higher resolution respect logo image inside website." }
+      logo_image_in_invoices: { name: "Logo image inside invoices", help: "Optional logo image to show in invoices. Usually it has an higher resolution respect logo image inside website. Alpha channel (transparency) is not supported. They are searched inside web/images directory." }
 
       logo_image_dpi_in_invoices: { name: "DPI resolution of logo image", help: "DPI resolution of the logo image inside invoices." }
 
