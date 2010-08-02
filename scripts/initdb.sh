@@ -24,13 +24,16 @@ echo "Press Ctrl-C to exit."
 echo "Enter the MySQL administrator user, to procedee (something like root/admin): "
 read ADMIN
 
+echo "Enter MySQL $ADMIN password:"
+read PASSWORD
+
 cd ..
 echo "Drop $DBNAME database."
-mysqladmin -u $ADMIN -p drop $DBNAME
+mysqladmin -u $ADMIN --password=$PASSWORD drop $DBNAME
 
 echo "Create $DBNAME database."
-mysqladmin -u $ADMIN -p create $DBNAME
-mysql -u $ADMIN -p $DBNAME < data/sql/lib.model.schema.sql
+mysqladmin -u $ADMIN --password=$PASSWORD create $DBNAME
+mysql -u $ADMIN --password=$PASSWORD $DBNAME < data/sql/lib.model.schema.sql
 
 echo "Resetting symfony environment"
 sh configure.sh

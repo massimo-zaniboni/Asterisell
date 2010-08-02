@@ -295,7 +295,7 @@ propel:
 
   ar_params:
   #
-  # Params associated to customer/account
+  # Params/resellers associated to customer/account
 
     id:
 
@@ -419,6 +419,8 @@ propel:
     smtp_seconds_of_pause_after_reconnection: { type: integer, size: 2 }
 
     current_invoice_nr: { type: integer, size: 11, required: true, default: 1 }
+    #
+    # It is not used anymore!
 
   ar_web_account:
   
@@ -464,6 +466,8 @@ propel:
     #
     # TRUE if the invoice contains revenue sharing
     # FALSE if it is a normal invoice
+    # NOTE: there can be invoice creation jobs that does not respect this parameter,
+    # in particular for invoices containing both incoming and outcoming calls
 
     nr: { type: varchar, size: 20, index: true, required: true, unique: true } 
 
@@ -514,6 +518,10 @@ propel:
  
     id:
 
+    ar_params_id:
+    #
+    # create invoices about customers associated to the given parameter/resellers
+
     type: { type: char, size: 1, required: true, index: true, default: 'C' }
     #
     # 'C' for a an invoice to send to a customer (incomes)
@@ -523,6 +531,8 @@ propel:
     #
     # TRUE if the invoice contains revenue sharing
     # FALSE if it is a normal invoice
+    # NOTE: there can be invoice creation jobs that does not respect this parameter,
+    # in particular for invoices containing both incoming and outcoming calls
 
     first_nr: varchar(20)
     #
