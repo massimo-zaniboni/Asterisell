@@ -52,8 +52,6 @@ class ArParamsMapBuilder {
 
 		$tMap->addColumn('LOGO_IMAGE_IN_INVOICES', 'LogoImageInInvoices', 'string', CreoleTypes::VARCHAR, false, 120);
 
-		$tMap->addColumn('LOGO_IMAGE_DPI_IN_INVOICES', 'LogoImageDpiInInvoices', 'int', CreoleTypes::INTEGER, true, 5);
-
 		$tMap->addColumn('FOOTER', 'Footer', 'string', CreoleTypes::VARCHAR, false, 255);
 
 		$tMap->addColumn('USER_MESSAGE', 'UserMessage', 'string', CreoleTypes::VARCHAR, false, 2048);

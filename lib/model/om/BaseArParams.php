@@ -49,10 +49,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 
 	
-	protected $logo_image_dpi_in_invoices = 72;
-
-
-	
 	protected $footer;
 
 
@@ -249,13 +245,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	{
 
 		return $this->logo_image_in_invoices;
-	}
-
-	
-	public function getLogoImageDpiInInvoices()
-	{
-
-		return $this->logo_image_dpi_in_invoices;
 	}
 
 	
@@ -587,20 +576,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if ($this->logo_image_in_invoices !== $v) {
 			$this->logo_image_in_invoices = $v;
 			$this->modifiedColumns[] = ArParamsPeer::LOGO_IMAGE_IN_INVOICES;
-		}
-
-	} 
-	
-	public function setLogoImageDpiInInvoices($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->logo_image_dpi_in_invoices !== $v || $v === 72) {
-			$this->logo_image_dpi_in_invoices = $v;
-			$this->modifiedColumns[] = ArParamsPeer::LOGO_IMAGE_DPI_IN_INVOICES;
 		}
 
 	} 
@@ -1021,69 +996,67 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 			$this->logo_image_in_invoices = $rs->getString($startcol + 9);
 
-			$this->logo_image_dpi_in_invoices = $rs->getInt($startcol + 10);
+			$this->footer = $rs->getString($startcol + 10);
 
-			$this->footer = $rs->getString($startcol + 11);
+			$this->user_message = $rs->getString($startcol + 11);
 
-			$this->user_message = $rs->getString($startcol + 12);
+			$this->last_viewed_feeds_md5 = $rs->getString($startcol + 12);
 
-			$this->last_viewed_feeds_md5 = $rs->getString($startcol + 13);
+			$this->current_feeds_md5 = $rs->getString($startcol + 13);
 
-			$this->current_feeds_md5 = $rs->getString($startcol + 14);
+			$this->legal_name = $rs->getString($startcol + 14);
 
-			$this->legal_name = $rs->getString($startcol + 15);
+			$this->external_crm_code = $rs->getString($startcol + 15);
 
-			$this->external_crm_code = $rs->getString($startcol + 16);
+			$this->vat = $rs->getString($startcol + 16);
 
-			$this->vat = $rs->getString($startcol + 17);
+			$this->legal_address = $rs->getString($startcol + 17);
 
-			$this->legal_address = $rs->getString($startcol + 18);
+			$this->legal_website = $rs->getString($startcol + 18);
 
-			$this->legal_website = $rs->getString($startcol + 19);
+			$this->legal_city = $rs->getString($startcol + 19);
 
-			$this->legal_city = $rs->getString($startcol + 20);
+			$this->legal_zipcode = $rs->getString($startcol + 20);
 
-			$this->legal_zipcode = $rs->getString($startcol + 21);
+			$this->legal_state_province = $rs->getString($startcol + 21);
 
-			$this->legal_state_province = $rs->getString($startcol + 22);
+			$this->legal_country = $rs->getString($startcol + 22);
 
-			$this->legal_country = $rs->getString($startcol + 23);
+			$this->legal_email = $rs->getString($startcol + 23);
 
-			$this->legal_email = $rs->getString($startcol + 24);
+			$this->legal_phone = $rs->getString($startcol + 24);
 
-			$this->legal_phone = $rs->getString($startcol + 25);
+			$this->phone2 = $rs->getString($startcol + 25);
 
-			$this->phone2 = $rs->getString($startcol + 26);
+			$this->legal_fax = $rs->getString($startcol + 26);
 
-			$this->legal_fax = $rs->getString($startcol + 27);
+			$this->sender_name_on_invoicing_emails = $rs->getString($startcol + 27);
 
-			$this->sender_name_on_invoicing_emails = $rs->getString($startcol + 28);
+			$this->invoicing_email_address = $rs->getString($startcol + 28);
 
-			$this->invoicing_email_address = $rs->getString($startcol + 29);
+			$this->accountant_email_address = $rs->getString($startcol + 29);
 
-			$this->accountant_email_address = $rs->getString($startcol + 30);
+			$this->smtp_host = $rs->getString($startcol + 30);
 
-			$this->smtp_host = $rs->getString($startcol + 31);
+			$this->smtp_port = $rs->getInt($startcol + 31);
 
-			$this->smtp_port = $rs->getInt($startcol + 32);
+			$this->smtp_username = $rs->getString($startcol + 32);
 
-			$this->smtp_username = $rs->getString($startcol + 33);
+			$this->smtp_password = $rs->getString($startcol + 33);
 
-			$this->smtp_password = $rs->getString($startcol + 34);
+			$this->smtp_encryption = $rs->getString($startcol + 34);
 
-			$this->smtp_encryption = $rs->getString($startcol + 35);
+			$this->smtp_reconnect_after_nr_of_messages = $rs->getInt($startcol + 35);
 
-			$this->smtp_reconnect_after_nr_of_messages = $rs->getInt($startcol + 36);
+			$this->smtp_seconds_of_pause_after_reconnection = $rs->getInt($startcol + 36);
 
-			$this->smtp_seconds_of_pause_after_reconnection = $rs->getInt($startcol + 37);
-
-			$this->current_invoice_nr = $rs->getInt($startcol + 38);
+			$this->current_invoice_nr = $rs->getInt($startcol + 37);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 39; 
+						return $startcol + 38; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArParams object", $e);
 		}
@@ -1273,90 +1246,87 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 				return $this->getLogoImageInInvoices();
 				break;
 			case 10:
-				return $this->getLogoImageDpiInInvoices();
-				break;
-			case 11:
 				return $this->getFooter();
 				break;
-			case 12:
+			case 11:
 				return $this->getUserMessage();
 				break;
-			case 13:
+			case 12:
 				return $this->getLastViewedFeedsMd5();
 				break;
-			case 14:
+			case 13:
 				return $this->getCurrentFeedsMd5();
 				break;
-			case 15:
+			case 14:
 				return $this->getLegalName();
 				break;
-			case 16:
+			case 15:
 				return $this->getExternalCrmCode();
 				break;
-			case 17:
+			case 16:
 				return $this->getVat();
 				break;
-			case 18:
+			case 17:
 				return $this->getLegalAddress();
 				break;
-			case 19:
+			case 18:
 				return $this->getLegalWebsite();
 				break;
-			case 20:
+			case 19:
 				return $this->getLegalCity();
 				break;
-			case 21:
+			case 20:
 				return $this->getLegalZipcode();
 				break;
-			case 22:
+			case 21:
 				return $this->getLegalStateProvince();
 				break;
-			case 23:
+			case 22:
 				return $this->getLegalCountry();
 				break;
-			case 24:
+			case 23:
 				return $this->getLegalEmail();
 				break;
-			case 25:
+			case 24:
 				return $this->getLegalPhone();
 				break;
-			case 26:
+			case 25:
 				return $this->getPhone2();
 				break;
-			case 27:
+			case 26:
 				return $this->getLegalFax();
 				break;
-			case 28:
+			case 27:
 				return $this->getSenderNameOnInvoicingEmails();
 				break;
-			case 29:
+			case 28:
 				return $this->getInvoicingEmailAddress();
 				break;
-			case 30:
+			case 29:
 				return $this->getAccountantEmailAddress();
 				break;
-			case 31:
+			case 30:
 				return $this->getSmtpHost();
 				break;
-			case 32:
+			case 31:
 				return $this->getSmtpPort();
 				break;
-			case 33:
+			case 32:
 				return $this->getSmtpUsername();
 				break;
-			case 34:
+			case 33:
 				return $this->getSmtpPassword();
 				break;
-			case 35:
+			case 34:
 				return $this->getSmtpEncryption();
 				break;
-			case 36:
+			case 35:
 				return $this->getSmtpReconnectAfterNrOfMessages();
 				break;
-			case 37:
+			case 36:
 				return $this->getSmtpSecondsOfPauseAfterReconnection();
 				break;
-			case 38:
+			case 37:
 				return $this->getCurrentInvoiceNr();
 				break;
 			default:
@@ -1379,35 +1349,34 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			$keys[7] => $this->getLogoImage(),
 			$keys[8] => $this->getSlogan(),
 			$keys[9] => $this->getLogoImageInInvoices(),
-			$keys[10] => $this->getLogoImageDpiInInvoices(),
-			$keys[11] => $this->getFooter(),
-			$keys[12] => $this->getUserMessage(),
-			$keys[13] => $this->getLastViewedFeedsMd5(),
-			$keys[14] => $this->getCurrentFeedsMd5(),
-			$keys[15] => $this->getLegalName(),
-			$keys[16] => $this->getExternalCrmCode(),
-			$keys[17] => $this->getVat(),
-			$keys[18] => $this->getLegalAddress(),
-			$keys[19] => $this->getLegalWebsite(),
-			$keys[20] => $this->getLegalCity(),
-			$keys[21] => $this->getLegalZipcode(),
-			$keys[22] => $this->getLegalStateProvince(),
-			$keys[23] => $this->getLegalCountry(),
-			$keys[24] => $this->getLegalEmail(),
-			$keys[25] => $this->getLegalPhone(),
-			$keys[26] => $this->getPhone2(),
-			$keys[27] => $this->getLegalFax(),
-			$keys[28] => $this->getSenderNameOnInvoicingEmails(),
-			$keys[29] => $this->getInvoicingEmailAddress(),
-			$keys[30] => $this->getAccountantEmailAddress(),
-			$keys[31] => $this->getSmtpHost(),
-			$keys[32] => $this->getSmtpPort(),
-			$keys[33] => $this->getSmtpUsername(),
-			$keys[34] => $this->getSmtpPassword(),
-			$keys[35] => $this->getSmtpEncryption(),
-			$keys[36] => $this->getSmtpReconnectAfterNrOfMessages(),
-			$keys[37] => $this->getSmtpSecondsOfPauseAfterReconnection(),
-			$keys[38] => $this->getCurrentInvoiceNr(),
+			$keys[10] => $this->getFooter(),
+			$keys[11] => $this->getUserMessage(),
+			$keys[12] => $this->getLastViewedFeedsMd5(),
+			$keys[13] => $this->getCurrentFeedsMd5(),
+			$keys[14] => $this->getLegalName(),
+			$keys[15] => $this->getExternalCrmCode(),
+			$keys[16] => $this->getVat(),
+			$keys[17] => $this->getLegalAddress(),
+			$keys[18] => $this->getLegalWebsite(),
+			$keys[19] => $this->getLegalCity(),
+			$keys[20] => $this->getLegalZipcode(),
+			$keys[21] => $this->getLegalStateProvince(),
+			$keys[22] => $this->getLegalCountry(),
+			$keys[23] => $this->getLegalEmail(),
+			$keys[24] => $this->getLegalPhone(),
+			$keys[25] => $this->getPhone2(),
+			$keys[26] => $this->getLegalFax(),
+			$keys[27] => $this->getSenderNameOnInvoicingEmails(),
+			$keys[28] => $this->getInvoicingEmailAddress(),
+			$keys[29] => $this->getAccountantEmailAddress(),
+			$keys[30] => $this->getSmtpHost(),
+			$keys[31] => $this->getSmtpPort(),
+			$keys[32] => $this->getSmtpUsername(),
+			$keys[33] => $this->getSmtpPassword(),
+			$keys[34] => $this->getSmtpEncryption(),
+			$keys[35] => $this->getSmtpReconnectAfterNrOfMessages(),
+			$keys[36] => $this->getSmtpSecondsOfPauseAfterReconnection(),
+			$keys[37] => $this->getCurrentInvoiceNr(),
 		);
 		return $result;
 	}
@@ -1454,90 +1423,87 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 				$this->setLogoImageInInvoices($value);
 				break;
 			case 10:
-				$this->setLogoImageDpiInInvoices($value);
-				break;
-			case 11:
 				$this->setFooter($value);
 				break;
-			case 12:
+			case 11:
 				$this->setUserMessage($value);
 				break;
-			case 13:
+			case 12:
 				$this->setLastViewedFeedsMd5($value);
 				break;
-			case 14:
+			case 13:
 				$this->setCurrentFeedsMd5($value);
 				break;
-			case 15:
+			case 14:
 				$this->setLegalName($value);
 				break;
-			case 16:
+			case 15:
 				$this->setExternalCrmCode($value);
 				break;
-			case 17:
+			case 16:
 				$this->setVat($value);
 				break;
-			case 18:
+			case 17:
 				$this->setLegalAddress($value);
 				break;
-			case 19:
+			case 18:
 				$this->setLegalWebsite($value);
 				break;
-			case 20:
+			case 19:
 				$this->setLegalCity($value);
 				break;
-			case 21:
+			case 20:
 				$this->setLegalZipcode($value);
 				break;
-			case 22:
+			case 21:
 				$this->setLegalStateProvince($value);
 				break;
-			case 23:
+			case 22:
 				$this->setLegalCountry($value);
 				break;
-			case 24:
+			case 23:
 				$this->setLegalEmail($value);
 				break;
-			case 25:
+			case 24:
 				$this->setLegalPhone($value);
 				break;
-			case 26:
+			case 25:
 				$this->setPhone2($value);
 				break;
-			case 27:
+			case 26:
 				$this->setLegalFax($value);
 				break;
-			case 28:
+			case 27:
 				$this->setSenderNameOnInvoicingEmails($value);
 				break;
-			case 29:
+			case 28:
 				$this->setInvoicingEmailAddress($value);
 				break;
-			case 30:
+			case 29:
 				$this->setAccountantEmailAddress($value);
 				break;
-			case 31:
+			case 30:
 				$this->setSmtpHost($value);
 				break;
-			case 32:
+			case 31:
 				$this->setSmtpPort($value);
 				break;
-			case 33:
+			case 32:
 				$this->setSmtpUsername($value);
 				break;
-			case 34:
+			case 33:
 				$this->setSmtpPassword($value);
 				break;
-			case 35:
+			case 34:
 				$this->setSmtpEncryption($value);
 				break;
-			case 36:
+			case 35:
 				$this->setSmtpReconnectAfterNrOfMessages($value);
 				break;
-			case 37:
+			case 36:
 				$this->setSmtpSecondsOfPauseAfterReconnection($value);
 				break;
-			case 38:
+			case 37:
 				$this->setCurrentInvoiceNr($value);
 				break;
 		} 	}
@@ -1557,35 +1523,34 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[7], $arr)) $this->setLogoImage($arr[$keys[7]]);
 		if (array_key_exists($keys[8], $arr)) $this->setSlogan($arr[$keys[8]]);
 		if (array_key_exists($keys[9], $arr)) $this->setLogoImageInInvoices($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setLogoImageDpiInInvoices($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setFooter($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setUserMessage($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setLastViewedFeedsMd5($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setCurrentFeedsMd5($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setLegalName($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setExternalCrmCode($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setVat($arr[$keys[17]]);
-		if (array_key_exists($keys[18], $arr)) $this->setLegalAddress($arr[$keys[18]]);
-		if (array_key_exists($keys[19], $arr)) $this->setLegalWebsite($arr[$keys[19]]);
-		if (array_key_exists($keys[20], $arr)) $this->setLegalCity($arr[$keys[20]]);
-		if (array_key_exists($keys[21], $arr)) $this->setLegalZipcode($arr[$keys[21]]);
-		if (array_key_exists($keys[22], $arr)) $this->setLegalStateProvince($arr[$keys[22]]);
-		if (array_key_exists($keys[23], $arr)) $this->setLegalCountry($arr[$keys[23]]);
-		if (array_key_exists($keys[24], $arr)) $this->setLegalEmail($arr[$keys[24]]);
-		if (array_key_exists($keys[25], $arr)) $this->setLegalPhone($arr[$keys[25]]);
-		if (array_key_exists($keys[26], $arr)) $this->setPhone2($arr[$keys[26]]);
-		if (array_key_exists($keys[27], $arr)) $this->setLegalFax($arr[$keys[27]]);
-		if (array_key_exists($keys[28], $arr)) $this->setSenderNameOnInvoicingEmails($arr[$keys[28]]);
-		if (array_key_exists($keys[29], $arr)) $this->setInvoicingEmailAddress($arr[$keys[29]]);
-		if (array_key_exists($keys[30], $arr)) $this->setAccountantEmailAddress($arr[$keys[30]]);
-		if (array_key_exists($keys[31], $arr)) $this->setSmtpHost($arr[$keys[31]]);
-		if (array_key_exists($keys[32], $arr)) $this->setSmtpPort($arr[$keys[32]]);
-		if (array_key_exists($keys[33], $arr)) $this->setSmtpUsername($arr[$keys[33]]);
-		if (array_key_exists($keys[34], $arr)) $this->setSmtpPassword($arr[$keys[34]]);
-		if (array_key_exists($keys[35], $arr)) $this->setSmtpEncryption($arr[$keys[35]]);
-		if (array_key_exists($keys[36], $arr)) $this->setSmtpReconnectAfterNrOfMessages($arr[$keys[36]]);
-		if (array_key_exists($keys[37], $arr)) $this->setSmtpSecondsOfPauseAfterReconnection($arr[$keys[37]]);
-		if (array_key_exists($keys[38], $arr)) $this->setCurrentInvoiceNr($arr[$keys[38]]);
+		if (array_key_exists($keys[10], $arr)) $this->setFooter($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setUserMessage($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setLastViewedFeedsMd5($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setCurrentFeedsMd5($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setLegalName($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setExternalCrmCode($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setVat($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setLegalAddress($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setLegalWebsite($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setLegalCity($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setLegalZipcode($arr[$keys[20]]);
+		if (array_key_exists($keys[21], $arr)) $this->setLegalStateProvince($arr[$keys[21]]);
+		if (array_key_exists($keys[22], $arr)) $this->setLegalCountry($arr[$keys[22]]);
+		if (array_key_exists($keys[23], $arr)) $this->setLegalEmail($arr[$keys[23]]);
+		if (array_key_exists($keys[24], $arr)) $this->setLegalPhone($arr[$keys[24]]);
+		if (array_key_exists($keys[25], $arr)) $this->setPhone2($arr[$keys[25]]);
+		if (array_key_exists($keys[26], $arr)) $this->setLegalFax($arr[$keys[26]]);
+		if (array_key_exists($keys[27], $arr)) $this->setSenderNameOnInvoicingEmails($arr[$keys[27]]);
+		if (array_key_exists($keys[28], $arr)) $this->setInvoicingEmailAddress($arr[$keys[28]]);
+		if (array_key_exists($keys[29], $arr)) $this->setAccountantEmailAddress($arr[$keys[29]]);
+		if (array_key_exists($keys[30], $arr)) $this->setSmtpHost($arr[$keys[30]]);
+		if (array_key_exists($keys[31], $arr)) $this->setSmtpPort($arr[$keys[31]]);
+		if (array_key_exists($keys[32], $arr)) $this->setSmtpUsername($arr[$keys[32]]);
+		if (array_key_exists($keys[33], $arr)) $this->setSmtpPassword($arr[$keys[33]]);
+		if (array_key_exists($keys[34], $arr)) $this->setSmtpEncryption($arr[$keys[34]]);
+		if (array_key_exists($keys[35], $arr)) $this->setSmtpReconnectAfterNrOfMessages($arr[$keys[35]]);
+		if (array_key_exists($keys[36], $arr)) $this->setSmtpSecondsOfPauseAfterReconnection($arr[$keys[36]]);
+		if (array_key_exists($keys[37], $arr)) $this->setCurrentInvoiceNr($arr[$keys[37]]);
 	}
 
 	
@@ -1603,7 +1568,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArParamsPeer::LOGO_IMAGE)) $criteria->add(ArParamsPeer::LOGO_IMAGE, $this->logo_image);
 		if ($this->isColumnModified(ArParamsPeer::SLOGAN)) $criteria->add(ArParamsPeer::SLOGAN, $this->slogan);
 		if ($this->isColumnModified(ArParamsPeer::LOGO_IMAGE_IN_INVOICES)) $criteria->add(ArParamsPeer::LOGO_IMAGE_IN_INVOICES, $this->logo_image_in_invoices);
-		if ($this->isColumnModified(ArParamsPeer::LOGO_IMAGE_DPI_IN_INVOICES)) $criteria->add(ArParamsPeer::LOGO_IMAGE_DPI_IN_INVOICES, $this->logo_image_dpi_in_invoices);
 		if ($this->isColumnModified(ArParamsPeer::FOOTER)) $criteria->add(ArParamsPeer::FOOTER, $this->footer);
 		if ($this->isColumnModified(ArParamsPeer::USER_MESSAGE)) $criteria->add(ArParamsPeer::USER_MESSAGE, $this->user_message);
 		if ($this->isColumnModified(ArParamsPeer::LAST_VIEWED_FEEDS_MD5)) $criteria->add(ArParamsPeer::LAST_VIEWED_FEEDS_MD5, $this->last_viewed_feeds_md5);
@@ -1679,8 +1643,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		$copyObj->setSlogan($this->slogan);
 
 		$copyObj->setLogoImageInInvoices($this->logo_image_in_invoices);
-
-		$copyObj->setLogoImageDpiInInvoices($this->logo_image_dpi_in_invoices);
 
 		$copyObj->setFooter($this->footer);
 

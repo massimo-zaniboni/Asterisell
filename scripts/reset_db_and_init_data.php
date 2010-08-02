@@ -151,6 +151,7 @@ function createDefaultParams() {
   $params->setLegalWebsite("http://www.example.com");
   $params->setServiceProviderEmail("info@example.com");
   $params->setLogoImage("asterisell.png");
+  $params->setLogoImageInInvoices("asterisell.jpeg");
   $params->setSlogan("open source web application for rating, showing to customers, and billing Asterisk VoIP calls.");
   $params->setFooter("<center>For info contact:<a href=\"mailto:info@example.com\">info@example.com</a></center>");
   $params->setUserMessage("");

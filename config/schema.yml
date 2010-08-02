@@ -338,7 +338,6 @@ propel:
     #
     # the logo to use in invoices
 
-    logo_image_dpi_in_invoices: { type: integer, size: 5, required: true, default: 72 }
     #
     # the resolution to use for display the logo image in invoices 
 

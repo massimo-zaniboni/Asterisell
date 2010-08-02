@@ -194,7 +194,6 @@ CREATE TABLE `ar_params`
 	`logo_image` VARCHAR(120),
 	`slogan` VARCHAR(255),
 	`logo_image_in_invoices` VARCHAR(120),
-	`logo_image_dpi_in_invoices` INTEGER(5) default 72 NOT NULL,
 	`footer` VARCHAR(255),
 	`user_message` VARCHAR(2048),
 	`last_viewed_feeds_md5` VARCHAR(1024),
