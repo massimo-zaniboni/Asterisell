@@ -26,6 +26,7 @@ all:
     phpRates: 
       PhpCDRProcessing: CDR initial classification
       PhpRateByDuration: By Duration
+      PhpRateInCommercialVersion: CSV File with Tel.Prefixes and Rates
 
     # These jobs are executed every time the job-queue processor
     # is invoked. They are indipendent from job-data or events.
