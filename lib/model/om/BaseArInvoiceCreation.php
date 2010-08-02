@@ -13,6 +13,10 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 
 
 	
+	protected $ar_params_id;
+
+
+	
 	protected $type = 'C';
 
 
@@ -36,6 +40,9 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 	protected $ar_cdr_to;
 
 	
+	protected $aArParams;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -46,6 +53,13 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 	{
 
 		return $this->id;
+	}
+
+	
+	public function getArParamsId()
+	{
+
+		return $this->ar_params_id;
 	}
 
 	
@@ -150,6 +164,24 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setArParamsId($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->ar_params_id !== $v) {
+			$this->ar_params_id = $v;
+			$this->modifiedColumns[] = ArInvoiceCreationPeer::AR_PARAMS_ID;
+		}
+
+		if ($this->aArParams !== null && $this->aArParams->getId() !== $v) {
+			$this->aArParams = null;
+		}
+
+	} 
+	
 	public function setType($v)
 	{
 
@@ -245,23 +277,25 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 
 			$this->id = $rs->getInt($startcol + 0);
 
-			$this->type = $rs->getString($startcol + 1);
+			$this->ar_params_id = $rs->getInt($startcol + 1);
 
-			$this->is_revenue_sharing = $rs->getBoolean($startcol + 2);
+			$this->type = $rs->getString($startcol + 2);
 
-			$this->first_nr = $rs->getString($startcol + 3);
+			$this->is_revenue_sharing = $rs->getBoolean($startcol + 3);
 
-			$this->invoice_date = $rs->getDate($startcol + 4, null);
+			$this->first_nr = $rs->getString($startcol + 4);
 
-			$this->ar_cdr_from = $rs->getDate($startcol + 5, null);
+			$this->invoice_date = $rs->getDate($startcol + 5, null);
 
-			$this->ar_cdr_to = $rs->getDate($startcol + 6, null);
+			$this->ar_cdr_from = $rs->getDate($startcol + 6, null);
+
+			$this->ar_cdr_to = $rs->getDate($startcol + 7, null);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 7; 
+						return $startcol + 8; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArInvoiceCreation object", $e);
 		}
@@ -318,6 +352,15 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 			$this->alreadyInSave = true;
 
 
+												
+			if ($this->aArParams !== null) {
+				if ($this->aArParams->isModified()) {
+					$affectedRows += $this->aArParams->save($con);
+				}
+				$this->setArParams($this->aArParams);
+			}
+
+
 						if ($this->isModified()) {
 				if ($this->isNew()) {
 					$pk = ArInvoiceCreationPeer::doInsert($this, $con);
@@ -365,6 +408,14 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 			$failureMap = array();
 
 
+												
+			if ($this->aArParams !== null) {
+				if (!$this->aArParams->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArParams->getValidationFailures());
+				}
+			}
+
+
 			if (($retval = ArInvoiceCreationPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
@@ -392,21 +443,24 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getType();
+				return $this->getArParamsId();
 				break;
 			case 2:
-				return $this->getIsRevenueSharing();
+				return $this->getType();
 				break;
 			case 3:
-				return $this->getFirstNr();
+				return $this->getIsRevenueSharing();
 				break;
 			case 4:
-				return $this->getInvoiceDate();
+				return $this->getFirstNr();
 				break;
 			case 5:
-				return $this->getArCdrFrom();
+				return $this->getInvoiceDate();
 				break;
 			case 6:
+				return $this->getArCdrFrom();
+				break;
+			case 7:
 				return $this->getArCdrTo();
 				break;
 			default:
@@ -420,12 +474,13 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		$keys = ArInvoiceCreationPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getType(),
-			$keys[2] => $this->getIsRevenueSharing(),
-			$keys[3] => $this->getFirstNr(),
-			$keys[4] => $this->getInvoiceDate(),
-			$keys[5] => $this->getArCdrFrom(),
-			$keys[6] => $this->getArCdrTo(),
+			$keys[1] => $this->getArParamsId(),
+			$keys[2] => $this->getType(),
+			$keys[3] => $this->getIsRevenueSharing(),
+			$keys[4] => $this->getFirstNr(),
+			$keys[5] => $this->getInvoiceDate(),
+			$keys[6] => $this->getArCdrFrom(),
+			$keys[7] => $this->getArCdrTo(),
 		);
 		return $result;
 	}
@@ -445,21 +500,24 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setType($value);
+				$this->setArParamsId($value);
 				break;
 			case 2:
-				$this->setIsRevenueSharing($value);
+				$this->setType($value);
 				break;
 			case 3:
-				$this->setFirstNr($value);
+				$this->setIsRevenueSharing($value);
 				break;
 			case 4:
-				$this->setInvoiceDate($value);
+				$this->setFirstNr($value);
 				break;
 			case 5:
-				$this->setArCdrFrom($value);
+				$this->setInvoiceDate($value);
 				break;
 			case 6:
+				$this->setArCdrFrom($value);
+				break;
+			case 7:
 				$this->setArCdrTo($value);
 				break;
 		} 	}
@@ -470,12 +528,13 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		$keys = ArInvoiceCreationPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setType($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setIsRevenueSharing($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setFirstNr($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setInvoiceDate($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setArCdrFrom($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setArCdrTo($arr[$keys[6]]);
+		if (array_key_exists($keys[1], $arr)) $this->setArParamsId($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setType($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setIsRevenueSharing($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setFirstNr($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setInvoiceDate($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setArCdrFrom($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setArCdrTo($arr[$keys[7]]);
 	}
 
 	
@@ -484,6 +543,7 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		$criteria = new Criteria(ArInvoiceCreationPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(ArInvoiceCreationPeer::ID)) $criteria->add(ArInvoiceCreationPeer::ID, $this->id);
+		if ($this->isColumnModified(ArInvoiceCreationPeer::AR_PARAMS_ID)) $criteria->add(ArInvoiceCreationPeer::AR_PARAMS_ID, $this->ar_params_id);
 		if ($this->isColumnModified(ArInvoiceCreationPeer::TYPE)) $criteria->add(ArInvoiceCreationPeer::TYPE, $this->type);
 		if ($this->isColumnModified(ArInvoiceCreationPeer::IS_REVENUE_SHARING)) $criteria->add(ArInvoiceCreationPeer::IS_REVENUE_SHARING, $this->is_revenue_sharing);
 		if ($this->isColumnModified(ArInvoiceCreationPeer::FIRST_NR)) $criteria->add(ArInvoiceCreationPeer::FIRST_NR, $this->first_nr);
@@ -520,6 +580,8 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
+		$copyObj->setArParamsId($this->ar_params_id);
+
 		$copyObj->setType($this->type);
 
 		$copyObj->setIsRevenueSharing($this->is_revenue_sharing);
@@ -554,6 +616,35 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 			self::$peer = new ArInvoiceCreationPeer();
 		}
 		return self::$peer;
+	}
+
+	
+	public function setArParams($v)
+	{
+
+
+		if ($v === null) {
+			$this->setArParamsId(NULL);
+		} else {
+			$this->setArParamsId($v->getId());
+		}
+
+
+		$this->aArParams = $v;
+	}
+
+
+	
+	public function getArParams($con = null)
+	{
+		if ($this->aArParams === null && ($this->ar_params_id !== null)) {
+						include_once 'lib/model/om/BaseArParamsPeer.php';
+
+			$this->aArParams = ArParamsPeer::retrieveByPK($this->ar_params_id, $con);
+
+			
+		}
+		return $this->aArParams;
 	}
 
 } 

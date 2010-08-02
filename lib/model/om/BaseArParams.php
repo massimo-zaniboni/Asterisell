@@ -117,6 +117,14 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 
 	
+	protected $invoice_notes;
+
+
+	
+	protected $invoice_payment_terms;
+
+
+	
 	protected $sender_name_on_invoicing_emails;
 
 
@@ -170,6 +178,12 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 	
 	protected $lastArWebAccountCriteria = null;
+
+	
+	protected $collArInvoiceCreations;
+
+	
+	protected $lastArInvoiceCreationCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -364,6 +378,20 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	{
 
 		return $this->legal_fax;
+	}
+
+	
+	public function getInvoiceNotes()
+	{
+
+		return $this->invoice_notes;
+	}
+
+	
+	public function getInvoicePaymentTerms()
+	{
+
+		return $this->invoice_payment_terms;
 	}
 
 	
@@ -818,6 +846,34 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setInvoiceNotes($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->invoice_notes !== $v) {
+			$this->invoice_notes = $v;
+			$this->modifiedColumns[] = ArParamsPeer::INVOICE_NOTES;
+		}
+
+	} 
+	
+	public function setInvoicePaymentTerms($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->invoice_payment_terms !== $v) {
+			$this->invoice_payment_terms = $v;
+			$this->modifiedColumns[] = ArParamsPeer::INVOICE_PAYMENT_TERMS;
+		}
+
+	} 
+	
 	public function setSenderNameOnInvoicingEmails($v)
 	{
 
@@ -1030,33 +1086,37 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 			$this->legal_fax = $rs->getString($startcol + 26);
 
-			$this->sender_name_on_invoicing_emails = $rs->getString($startcol + 27);
+			$this->invoice_notes = $rs->getString($startcol + 27);
 
-			$this->invoicing_email_address = $rs->getString($startcol + 28);
+			$this->invoice_payment_terms = $rs->getString($startcol + 28);
 
-			$this->accountant_email_address = $rs->getString($startcol + 29);
+			$this->sender_name_on_invoicing_emails = $rs->getString($startcol + 29);
 
-			$this->smtp_host = $rs->getString($startcol + 30);
+			$this->invoicing_email_address = $rs->getString($startcol + 30);
 
-			$this->smtp_port = $rs->getInt($startcol + 31);
+			$this->accountant_email_address = $rs->getString($startcol + 31);
 
-			$this->smtp_username = $rs->getString($startcol + 32);
+			$this->smtp_host = $rs->getString($startcol + 32);
 
-			$this->smtp_password = $rs->getString($startcol + 33);
+			$this->smtp_port = $rs->getInt($startcol + 33);
 
-			$this->smtp_encryption = $rs->getString($startcol + 34);
+			$this->smtp_username = $rs->getString($startcol + 34);
 
-			$this->smtp_reconnect_after_nr_of_messages = $rs->getInt($startcol + 35);
+			$this->smtp_password = $rs->getString($startcol + 35);
 
-			$this->smtp_seconds_of_pause_after_reconnection = $rs->getInt($startcol + 36);
+			$this->smtp_encryption = $rs->getString($startcol + 36);
 
-			$this->current_invoice_nr = $rs->getInt($startcol + 37);
+			$this->smtp_reconnect_after_nr_of_messages = $rs->getInt($startcol + 37);
+
+			$this->smtp_seconds_of_pause_after_reconnection = $rs->getInt($startcol + 38);
+
+			$this->current_invoice_nr = $rs->getInt($startcol + 39);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 38; 
+						return $startcol + 40; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArParams object", $e);
 		}
@@ -1140,6 +1200,14 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collArInvoiceCreations !== null) {
+				foreach($this->collArInvoiceCreations as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -1191,6 +1259,14 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 				if ($this->collArWebAccounts !== null) {
 					foreach($this->collArWebAccounts as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collArInvoiceCreations !== null) {
+					foreach($this->collArInvoiceCreations as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1297,36 +1373,42 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 				return $this->getLegalFax();
 				break;
 			case 27:
-				return $this->getSenderNameOnInvoicingEmails();
+				return $this->getInvoiceNotes();
 				break;
 			case 28:
-				return $this->getInvoicingEmailAddress();
+				return $this->getInvoicePaymentTerms();
 				break;
 			case 29:
-				return $this->getAccountantEmailAddress();
+				return $this->getSenderNameOnInvoicingEmails();
 				break;
 			case 30:
-				return $this->getSmtpHost();
+				return $this->getInvoicingEmailAddress();
 				break;
 			case 31:
-				return $this->getSmtpPort();
+				return $this->getAccountantEmailAddress();
 				break;
 			case 32:
-				return $this->getSmtpUsername();
+				return $this->getSmtpHost();
 				break;
 			case 33:
-				return $this->getSmtpPassword();
+				return $this->getSmtpPort();
 				break;
 			case 34:
-				return $this->getSmtpEncryption();
+				return $this->getSmtpUsername();
 				break;
 			case 35:
-				return $this->getSmtpReconnectAfterNrOfMessages();
+				return $this->getSmtpPassword();
 				break;
 			case 36:
-				return $this->getSmtpSecondsOfPauseAfterReconnection();
+				return $this->getSmtpEncryption();
 				break;
 			case 37:
+				return $this->getSmtpReconnectAfterNrOfMessages();
+				break;
+			case 38:
+				return $this->getSmtpSecondsOfPauseAfterReconnection();
+				break;
+			case 39:
 				return $this->getCurrentInvoiceNr();
 				break;
 			default:
@@ -1366,17 +1448,19 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			$keys[24] => $this->getLegalPhone(),
 			$keys[25] => $this->getPhone2(),
 			$keys[26] => $this->getLegalFax(),
-			$keys[27] => $this->getSenderNameOnInvoicingEmails(),
-			$keys[28] => $this->getInvoicingEmailAddress(),
-			$keys[29] => $this->getAccountantEmailAddress(),
-			$keys[30] => $this->getSmtpHost(),
-			$keys[31] => $this->getSmtpPort(),
-			$keys[32] => $this->getSmtpUsername(),
-			$keys[33] => $this->getSmtpPassword(),
-			$keys[34] => $this->getSmtpEncryption(),
-			$keys[35] => $this->getSmtpReconnectAfterNrOfMessages(),
-			$keys[36] => $this->getSmtpSecondsOfPauseAfterReconnection(),
-			$keys[37] => $this->getCurrentInvoiceNr(),
+			$keys[27] => $this->getInvoiceNotes(),
+			$keys[28] => $this->getInvoicePaymentTerms(),
+			$keys[29] => $this->getSenderNameOnInvoicingEmails(),
+			$keys[30] => $this->getInvoicingEmailAddress(),
+			$keys[31] => $this->getAccountantEmailAddress(),
+			$keys[32] => $this->getSmtpHost(),
+			$keys[33] => $this->getSmtpPort(),
+			$keys[34] => $this->getSmtpUsername(),
+			$keys[35] => $this->getSmtpPassword(),
+			$keys[36] => $this->getSmtpEncryption(),
+			$keys[37] => $this->getSmtpReconnectAfterNrOfMessages(),
+			$keys[38] => $this->getSmtpSecondsOfPauseAfterReconnection(),
+			$keys[39] => $this->getCurrentInvoiceNr(),
 		);
 		return $result;
 	}
@@ -1474,36 +1558,42 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 				$this->setLegalFax($value);
 				break;
 			case 27:
-				$this->setSenderNameOnInvoicingEmails($value);
+				$this->setInvoiceNotes($value);
 				break;
 			case 28:
-				$this->setInvoicingEmailAddress($value);
+				$this->setInvoicePaymentTerms($value);
 				break;
 			case 29:
-				$this->setAccountantEmailAddress($value);
+				$this->setSenderNameOnInvoicingEmails($value);
 				break;
 			case 30:
-				$this->setSmtpHost($value);
+				$this->setInvoicingEmailAddress($value);
 				break;
 			case 31:
-				$this->setSmtpPort($value);
+				$this->setAccountantEmailAddress($value);
 				break;
 			case 32:
-				$this->setSmtpUsername($value);
+				$this->setSmtpHost($value);
 				break;
 			case 33:
-				$this->setSmtpPassword($value);
+				$this->setSmtpPort($value);
 				break;
 			case 34:
-				$this->setSmtpEncryption($value);
+				$this->setSmtpUsername($value);
 				break;
 			case 35:
-				$this->setSmtpReconnectAfterNrOfMessages($value);
+				$this->setSmtpPassword($value);
 				break;
 			case 36:
-				$this->setSmtpSecondsOfPauseAfterReconnection($value);
+				$this->setSmtpEncryption($value);
 				break;
 			case 37:
+				$this->setSmtpReconnectAfterNrOfMessages($value);
+				break;
+			case 38:
+				$this->setSmtpSecondsOfPauseAfterReconnection($value);
+				break;
+			case 39:
 				$this->setCurrentInvoiceNr($value);
 				break;
 		} 	}
@@ -1540,17 +1630,19 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[24], $arr)) $this->setLegalPhone($arr[$keys[24]]);
 		if (array_key_exists($keys[25], $arr)) $this->setPhone2($arr[$keys[25]]);
 		if (array_key_exists($keys[26], $arr)) $this->setLegalFax($arr[$keys[26]]);
-		if (array_key_exists($keys[27], $arr)) $this->setSenderNameOnInvoicingEmails($arr[$keys[27]]);
-		if (array_key_exists($keys[28], $arr)) $this->setInvoicingEmailAddress($arr[$keys[28]]);
-		if (array_key_exists($keys[29], $arr)) $this->setAccountantEmailAddress($arr[$keys[29]]);
-		if (array_key_exists($keys[30], $arr)) $this->setSmtpHost($arr[$keys[30]]);
-		if (array_key_exists($keys[31], $arr)) $this->setSmtpPort($arr[$keys[31]]);
-		if (array_key_exists($keys[32], $arr)) $this->setSmtpUsername($arr[$keys[32]]);
-		if (array_key_exists($keys[33], $arr)) $this->setSmtpPassword($arr[$keys[33]]);
-		if (array_key_exists($keys[34], $arr)) $this->setSmtpEncryption($arr[$keys[34]]);
-		if (array_key_exists($keys[35], $arr)) $this->setSmtpReconnectAfterNrOfMessages($arr[$keys[35]]);
-		if (array_key_exists($keys[36], $arr)) $this->setSmtpSecondsOfPauseAfterReconnection($arr[$keys[36]]);
-		if (array_key_exists($keys[37], $arr)) $this->setCurrentInvoiceNr($arr[$keys[37]]);
+		if (array_key_exists($keys[27], $arr)) $this->setInvoiceNotes($arr[$keys[27]]);
+		if (array_key_exists($keys[28], $arr)) $this->setInvoicePaymentTerms($arr[$keys[28]]);
+		if (array_key_exists($keys[29], $arr)) $this->setSenderNameOnInvoicingEmails($arr[$keys[29]]);
+		if (array_key_exists($keys[30], $arr)) $this->setInvoicingEmailAddress($arr[$keys[30]]);
+		if (array_key_exists($keys[31], $arr)) $this->setAccountantEmailAddress($arr[$keys[31]]);
+		if (array_key_exists($keys[32], $arr)) $this->setSmtpHost($arr[$keys[32]]);
+		if (array_key_exists($keys[33], $arr)) $this->setSmtpPort($arr[$keys[33]]);
+		if (array_key_exists($keys[34], $arr)) $this->setSmtpUsername($arr[$keys[34]]);
+		if (array_key_exists($keys[35], $arr)) $this->setSmtpPassword($arr[$keys[35]]);
+		if (array_key_exists($keys[36], $arr)) $this->setSmtpEncryption($arr[$keys[36]]);
+		if (array_key_exists($keys[37], $arr)) $this->setSmtpReconnectAfterNrOfMessages($arr[$keys[37]]);
+		if (array_key_exists($keys[38], $arr)) $this->setSmtpSecondsOfPauseAfterReconnection($arr[$keys[38]]);
+		if (array_key_exists($keys[39], $arr)) $this->setCurrentInvoiceNr($arr[$keys[39]]);
 	}
 
 	
@@ -1585,6 +1677,8 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArParamsPeer::LEGAL_PHONE)) $criteria->add(ArParamsPeer::LEGAL_PHONE, $this->legal_phone);
 		if ($this->isColumnModified(ArParamsPeer::PHONE2)) $criteria->add(ArParamsPeer::PHONE2, $this->phone2);
 		if ($this->isColumnModified(ArParamsPeer::LEGAL_FAX)) $criteria->add(ArParamsPeer::LEGAL_FAX, $this->legal_fax);
+		if ($this->isColumnModified(ArParamsPeer::INVOICE_NOTES)) $criteria->add(ArParamsPeer::INVOICE_NOTES, $this->invoice_notes);
+		if ($this->isColumnModified(ArParamsPeer::INVOICE_PAYMENT_TERMS)) $criteria->add(ArParamsPeer::INVOICE_PAYMENT_TERMS, $this->invoice_payment_terms);
 		if ($this->isColumnModified(ArParamsPeer::SENDER_NAME_ON_INVOICING_EMAILS)) $criteria->add(ArParamsPeer::SENDER_NAME_ON_INVOICING_EMAILS, $this->sender_name_on_invoicing_emails);
 		if ($this->isColumnModified(ArParamsPeer::INVOICING_EMAIL_ADDRESS)) $criteria->add(ArParamsPeer::INVOICING_EMAIL_ADDRESS, $this->invoicing_email_address);
 		if ($this->isColumnModified(ArParamsPeer::ACCOUNTANT_EMAIL_ADDRESS)) $criteria->add(ArParamsPeer::ACCOUNTANT_EMAIL_ADDRESS, $this->accountant_email_address);
@@ -1678,6 +1772,10 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 		$copyObj->setLegalFax($this->legal_fax);
 
+		$copyObj->setInvoiceNotes($this->invoice_notes);
+
+		$copyObj->setInvoicePaymentTerms($this->invoice_payment_terms);
+
 		$copyObj->setSenderNameOnInvoicingEmails($this->sender_name_on_invoicing_emails);
 
 		$copyObj->setInvoicingEmailAddress($this->invoicing_email_address);
@@ -1710,6 +1808,10 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 			foreach($this->getArWebAccounts() as $relObj) {
 				$copyObj->addArWebAccount($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getArInvoiceCreations() as $relObj) {
+				$copyObj->addArInvoiceCreation($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1980,6 +2082,76 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		$this->lastArWebAccountCriteria = $criteria;
 
 		return $this->collArWebAccounts;
+	}
+
+	
+	public function initArInvoiceCreations()
+	{
+		if ($this->collArInvoiceCreations === null) {
+			$this->collArInvoiceCreations = array();
+		}
+	}
+
+	
+	public function getArInvoiceCreations($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArInvoiceCreationPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArInvoiceCreations === null) {
+			if ($this->isNew()) {
+			   $this->collArInvoiceCreations = array();
+			} else {
+
+				$criteria->add(ArInvoiceCreationPeer::AR_PARAMS_ID, $this->getId());
+
+				ArInvoiceCreationPeer::addSelectColumns($criteria);
+				$this->collArInvoiceCreations = ArInvoiceCreationPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArInvoiceCreationPeer::AR_PARAMS_ID, $this->getId());
+
+				ArInvoiceCreationPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArInvoiceCreationCriteria) || !$this->lastArInvoiceCreationCriteria->equals($criteria)) {
+					$this->collArInvoiceCreations = ArInvoiceCreationPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArInvoiceCreationCriteria = $criteria;
+		return $this->collArInvoiceCreations;
+	}
+
+	
+	public function countArInvoiceCreations($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArInvoiceCreationPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArInvoiceCreationPeer::AR_PARAMS_ID, $this->getId());
+
+		return ArInvoiceCreationPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArInvoiceCreation(ArInvoiceCreation $l)
+	{
+		$this->collArInvoiceCreations[] = $l;
+		$l->setArParams($this);
 	}
 
 } 

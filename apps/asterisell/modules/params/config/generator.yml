@@ -49,6 +49,10 @@ generator:
 
       phone2:               { name: Telephon 2 }
 
+      invoice_notes:        { name: Invoice footer notes }
+
+      invoice_payment_terms: { name: Invoice payment terms, help: "Invoice payment terms, and other legal terms." }
+
       legal_fax:            { name: Fax, help: "If not empty, it will be displayed in address." }
 
       invoicing_email_address: { name: Email address }
@@ -73,5 +77,5 @@ generator:
       display:
         Params: [name, is_default]
         VoIP service information (used on website): [service_name, service_provider_website, service_provider_email, logo_image, slogan, footer]
-        Company legal information (used on invoices): [legal_name, vat, vat_tax_perc_as_php_decimal, legal_address, legal_city, legal_zipcode, legal_state_province, legal_country, legal_email, legal_website, legal_phone, phone2, legal_fax, logo_image_in_invoices]
+        Company legal information (used on invoices): [legal_name, vat, vat_tax_perc_as_php_decimal, legal_address, legal_city, legal_zipcode, legal_state_province, legal_country, legal_email, legal_website, legal_phone, phone2, legal_fax, invoice_notes, invoice_payment_terms, logo_image_in_invoices]
         Parameters for emails, used for sending to customer invoices and/or reports: [invoicing_email_address, sender_name_on_invoicing_emails, accountant_email_address, smtp_host, smtp_port, smtp_username, smtp_password, smtp_encryption, smtp_reconnect_after_nr_of_messages, smtp_seconds_of_pause_after_reconnection]

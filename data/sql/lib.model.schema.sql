@@ -211,6 +211,8 @@ CREATE TABLE `ar_params`
 	`legal_phone` VARCHAR(60),
 	`phone2` VARCHAR(60),
 	`legal_fax` VARCHAR(60),
+	`invoice_notes` VARCHAR(2048),
+	`invoice_payment_terms` VARCHAR(2048),
 	`sender_name_on_invoicing_emails` VARCHAR(120),
 	`invoicing_email_address` VARCHAR(120),
 	`accountant_email_address` VARCHAR(120),
@@ -310,6 +312,7 @@ DROP TABLE IF EXISTS `ar_invoice_creation`;
 CREATE TABLE `ar_invoice_creation`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`ar_params_id` INTEGER,
 	`type` CHAR(1) default 'C' NOT NULL,
 	`is_revenue_sharing` INTEGER default 0 NOT NULL,
 	`first_nr` VARCHAR(20),
@@ -319,7 +322,11 @@ CREATE TABLE `ar_invoice_creation`
 	PRIMARY KEY (`id`),
 	KEY `ar_invoice_creation_type_index`(`type`),
 	KEY `ar_invoice_creation_is_revenue_sharing_index`(`is_revenue_sharing`),
-	KEY `ar_invoice_creation_invoice_date_index`(`invoice_date`)
+	KEY `ar_invoice_creation_invoice_date_index`(`invoice_date`),
+	INDEX `ar_invoice_creation_FI_1` (`ar_params_id`),
+	CONSTRAINT `ar_invoice_creation_FK_1`
+		FOREIGN KEY (`ar_params_id`)
+		REFERENCES `ar_params` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------

@@ -389,6 +389,10 @@ propel:
 
     legal_fax: varchar(60)
 
+    invoice_notes: varchar(2048)
+ 
+    invoice_payment_terms: varchar(2048)
+
     sender_name_on_invoicing_emails: varchar(120)
     #
     # the name used in invoices / reports

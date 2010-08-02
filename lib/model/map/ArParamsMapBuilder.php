@@ -86,6 +86,10 @@ class ArParamsMapBuilder {
 
 		$tMap->addColumn('LEGAL_FAX', 'LegalFax', 'string', CreoleTypes::VARCHAR, false, 60);
 
+		$tMap->addColumn('INVOICE_NOTES', 'InvoiceNotes', 'string', CreoleTypes::VARCHAR, false, 2048);
+
+		$tMap->addColumn('INVOICE_PAYMENT_TERMS', 'InvoicePaymentTerms', 'string', CreoleTypes::VARCHAR, false, 2048);
+
 		$tMap->addColumn('SENDER_NAME_ON_INVOICING_EMAILS', 'SenderNameOnInvoicingEmails', 'string', CreoleTypes::VARCHAR, false, 120);
 
 		$tMap->addColumn('INVOICING_EMAIL_ADDRESS', 'InvoicingEmailAddress', 'string', CreoleTypes::VARCHAR, false, 120);
