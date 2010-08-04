@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -p cache
 mkdir -p log
 mkdir -p web/generated_graphs

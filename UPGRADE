@@ -1,0 +1,9 @@
+Each 3.x version of Asterisell can contain small changes to the database. 
+
+In order to upgrade, execute 
+
+  cd scripts
+  ./upgrade_db.sh
+
+and follow the instructions.
+
