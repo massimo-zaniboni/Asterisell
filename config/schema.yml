@@ -338,9 +338,6 @@ propel:
     #
     # the logo to use in invoices
 
-    #
-    # the resolution to use for display the logo image in invoices 
-
     footer: varchar(255)
     #
     # the text to display in the footer
