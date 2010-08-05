@@ -1,4 +1,11 @@
 <?php
+
+require 'generator_header.php';
+
+echo '<?php';
+
+?>
+
   /**************************************************************
    !!!                                                        !!!
    !!! WARNING: This file is automatic generated.             !!!
@@ -14,7 +21,7 @@
    **************************************************************/
 
 sfLoader::loadHelpers(array('I18N', 'Debug', 'Asterisell'));
-class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
+class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
 
   protected $cachedStartDate = NULL;
   protected $cachedEndDate = NULL;
@@ -157,7 +164,14 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     // NOTE: the joins are already added/processed from
     // "lib/model/CdrPeer::doSelectJoinAllExceptVendor()"
     //
-      }
+    <?php if ($generateForCustomer || $generateForOffice) { ?>
+      $partyId = $this->getUser()->getPartyId();
+      $c->add(ArOfficePeer::AR_PARTY_ID, $partyId);
+    <?php } else if ($generateForOffice) { ?>
+      $officeId = $this->getUser()->getOfficeId();
+      $c->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $officeId);
+    <?php } ?>
+  }
 
   /**
    * Override addSortCriteris in order to add a more strict filter.
@@ -173,6 +187,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     //
     $filterOnPartyApplied = false;
     $partyId = null;
+<?php if ($generateForAdmin) { ?>
    if (isset($this->filters['filter_on_params'])) {
      $paramId = $this->filters['filter_on_params'];
      if ($paramId == "" || $paramId == -1) {
@@ -192,6 +207,12 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
        unset($this->filters['filter_on_party']);
      }
    }
+<?php } else { ?>
+      // a customer/office has a default filter on party
+      //
+      $partyId = $this->getUser()->getPartyId();
+      $filterOnPartyApplied = true;
+<?php } ?>
 
       // apply the filter
       //
@@ -205,6 +226,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     $filterOnOfficeApplied = false;
     $accountId = null;
 
+<?php if ($generateForAdmin || $generateForCustomer) { ?>
 
     if (isset($this->filters['filter_on_office']) && $filterOnPartyApplied == true) {
       $officeId = $this->filters['filter_on_office'];
@@ -217,6 +239,13 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 	}
       }
     }
+<?php } else { ?>
+  
+    // in case of office account this filter is applied by default
+    //
+    $officeId = $this->getUser()->getOfficeId();
+    $filterOnOfficeApplied = true;
+<?php } ?>
 
     // apply the filter
     //
@@ -237,6 +266,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 
     // Process filter_on_destination_type
     // 
+<?php if ($displayFilterOnCallDirection) { ?>
     $filterOnDestinationTypeApplied = false;
     if (isset($this->filters['filter_on_destination_type'])) {
       $destinationType = $this->filters['filter_on_destination_type'];
@@ -245,20 +275,32 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 	$filterOnDestinationTypeApplied = true;
       }
     }
+<?php } else { ?>
+    $filterOnDestinationTypeApplied = false;
+<?php } ?>
 
-          // Admin can view all types of destination types except
+    <?php if ($generateForAdmin) { ?>
+      // Admin can view all types of destination types except
       // unprocessed and ignored calls, that are displayed on
       // separate reports.
       //
       if (!$filterOnDestinationTypeApplied) {
 	DestinationType::addAdminFiltersAccordingConfiguration($c);
       }
-     
+    <?php } else { ?>
+      // Normal users do not see unprocessed/ignored calls
+      //
+      if (!$filterOnDestinationTypeApplied) {
+	DestinationType::addCustomerFiltersAccordingConfiguration($c);
+      }
+    <?php }?>
+ 
     // NOTE: filter_on_account and filter_on_office are enabled
     // only if it is enabled also filter_on_party 
 
     // Process filter_on_vendor
     //
+<?php if ($generateForAdmin) { ?>
     if (isset($this->filters['filter_on_vendor'])) {
       $vendorId = $this->filters['filter_on_vendor'];
       if ($vendorId != "") {
@@ -267,6 +309,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
         unset($this->filters['filter_on_vendor']);
       }
     }
+<?php } ?>
 
     // Manage time frame
     //
@@ -304,6 +347,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     parent::addFiltersCriteria($c);
   }
 
+<?php if ($generateForAdmin) { ?>
 
     // CODE SPECIFIC FOR ADMIN //
 
@@ -350,7 +394,8 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     return $this->redirect('admin_tt_call_report/list');
   }
 
-  
+  <?php } ?>
+
 
   /**
    * Update also VariableFrame::$startFilterDate, 
@@ -489,4 +534,6 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
   }
 }
 
+<?php 
+echo '?>' . "\n";
 ?>
