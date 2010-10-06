@@ -21,12 +21,20 @@
  * $
  */
 
+sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
 
 /**
- * Implement a MUTEX using "flock" PHP function.
+ * Implement a MUTEX using a file as mutex/lock.
+ * If the file exits, then a Job process is running, and no other Job processor can start.
  *
- * This class guarantee that all lock files generated
- * have the ".lock" suffix.
+ * In order to prevent infinite locking to a fault Job Processor, existed without releasing the lock/mutex,
+ * a lock can persist for only two pass of scheduled Job Processor. The considerations are:
+ *   - it is very unlikely that a job processor takes more than the scheduled time;
+ *   - if a job processor takes more than the scheduled time, then it is likely that there were a fault error;
+ *   - in any case, it is not a big problem if there two or more job processors running contemporaney;
+ * 
+ * NOTE: previous code was using `flock` PHP instruction, but it does not work, because
+ * in Unix its behaviour is not mandatory.
  */
 class Mutex {
 
@@ -75,27 +83,29 @@ class Mutex {
   /**
    * If the file were unlocked, lock it and return TRUE.
    * If the file is already locked return FALSE.
+   * In case of CRON processor, delete the lock file if it exists.
+   *
+   * @return TRUE if the lock can be acquired, FALSE otherwise.
    */
-  public function maybeLock() {
+  public function maybeLock($isCronProcess) {
+    $h = fopen($this->fileName, "x");
 
-    if (! file_exists($this->fileName)) {
-      $f = fopen($this->fileName, "w");
-    } else {
-      $f = fopen($this->fileName, "r+");
-    }
-  
-    if ($f != FALSE) {
-      if (flock($f, LOCK_EX | LOCK_NB)) {
-        $this->isLocked = TRUE;
-        return TRUE;
-	// NOTE: does not close the file because 
-	// it will release the lock...
-      } else {
-	fclose($f);
-        return FALSE;
+    if ($h == FALSE) {
+      // file already exists, and lock can not be acquired
+      //
+      if ($isCronProcess) {
+        $this->forceUnlock();
       }
-    } else {
+
       return FALSE;
+       
+    } else {
+      // ok file was created, and lock acquired!
+      //
+      fclose($h);
+
+      $this->isLocked = TRUE;
+      return TRUE;
     }
   }
 
@@ -104,13 +114,27 @@ class Mutex {
    */
   public function unlock() {
     if ($this->isLocked == TRUE) {
-      $f = fopen($this->fileName, "r+");
-      if ($f != FALSE) {
-	flock($f, LOCK_UN);
-	fclose($f);
-      }
+      $this->forceUnlock();
       $this->isLocked = FALSE;
     }
+  }
+
+  public function forceUnlock() {
+    $u = unlink($this->fileName);
+    if ($u == FALSE) {
+      if (file_exists($this->fileName)) {
+        // sometime is directly the CRON job processor deleting the lock file,
+        // so before generating the error, test it!
+        //
+        $p = new ArProblem();
+        $p->setDuplicationKey("Unable to delete lock file");
+        $p->setDescription("The lock file " . $this->fileName . " can not be deleted.");
+        $p->setEffect("Probably the Job Processor can not start. So all update functions of Asterisell are blocked. New CDR are not processed.");
+        $p->setProposedSolution('Delete the problem table. Check if the problem persist. Check the JOB LOG. See if new jobs are processed. In case of errors check using a ssh connnection to the server the problems with the lock file. Maybe there access rights, related problems.');
+        ArProblemException::addProblemIntoDBOnlyIfNew($p);
+      }
+    }
+
   }
 
 }
