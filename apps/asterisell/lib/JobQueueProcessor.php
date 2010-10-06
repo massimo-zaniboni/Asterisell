@@ -64,12 +64,18 @@ class JobQueueProcessor {
    * @param $lockFileDirectory NULL if it is invoked from a normal web-session,
    * otherwise use the path to asterisell/web directory, 
    * if called from an external script. 
-   * This allows to use the same lock file of the running web application.
+   * This allows to use the same lock file of the running web application, and
+   * also recognizing cron job processor invocation, that are managed a little differently.
    *
    * @return TRUE if it is all OK, FALSE if there are problems, 
    * NULL if th job queue processor is already locked.
    */
   public function process($lockFileDirectory = NULL) {
+
+    $isCronProcess = FALSE;
+    if (!is_null($lockFileDirectory)) {
+      $isCronProcess = TRUE;
+    }
 
     // Only one processor can execute jobs because they can change the
     // external environment.
@@ -80,14 +86,14 @@ class JobQueueProcessor {
       Mutex::$baseDirectory = $lockFileDirectory;
     }
     $mutex = new Mutex(JobQueueProcessor::MUTEX_FILE_NAME);
-    $isLocked = $mutex->maybeLock();
+    $isLocked = $mutex->maybeLock($isCronProcess);
 
-    // exit if there is no lock
+    // exit if there is no acquired lock
     // (another job-queue-processor is running).
     //
     if (! $isLocked) return NULL;
 
-    // Signal the problem
+    // Signal the problem if some old job were not completely executed.
     //
     $this->areThereAbortedJobs();
 
@@ -276,13 +282,5 @@ class JobQueueProcessor {
 
 }
 
-/**
- * Signal a problem using an Exception.
- * This allows to intercept more Exceptions respect normal try .. catch code.
- * But in PHP not all errors are caught from this handler...
- *
- */ 
-function my_exceptions_error_handler($severity, $message, $filename, $lineno) {
-  throw new ErrorException('On file "' . $filename . '" - line ' . $lineno . ' - ' . $message, 0, $severity, $filename, $lineno);
-}
+
 ?>
