@@ -19,7 +19,7 @@ generator:
 
       destination_type: { name: Call type, help: "The call will be classified as a call of this type." }
 
-      destination_channel: { name: Destination channel prefix, help: "This rate will be applied only to calls having a destination channel starting with this prefix. The prefix is case insensitive." }
+      destination_channel: { name: Destination channel prefix, help: "This rate will be applied only to calls having a destination channel starting with this prefix. The prefix is case insensitive. If prefix starts with %%, then a regular expressions is expected." }
 
       disposition: { name: Disposition, help: "The call is recognized from this rate only if its disposition field has the specified value. " }
 
