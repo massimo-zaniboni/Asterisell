@@ -49,7 +49,7 @@ class PhpCDRProcessing extends PhpRate {
   }
 
   public function isApplicable(Cdr $cdr) {
-    if ((PhpRateWithDstChannel::isPrefixOf($this->dstChannel, $cdr->getDstchannel())) &&
+    if ((PhpRateWithDstChannel::isPrefixOf($this->dstChannel, $cdr->getDstchannel(), true)) &&
            ($this->disposition == $cdr->getDisposition()) &&
            ($this->amaflags == $cdr->getAmaflags())) {
       return 1;

@@ -52,8 +52,9 @@ abstract class PhpRateWithDstChannel extends PhpRate {
   }
 
   public function isApplicable(Cdr $cdr) {
-    return PhpRateWithDstChannel::isPrefixOf($this->dstChannelPattern, $cdr->getDstchannel());
+    return PhpRateWithDstChannel::isPrefixOf($this->dstChannelPattern, $cdr->getDstchannel(), true);
   }
+
   /**
    * Test if $prefix is prefix of $number
    * in case insensitive mode.
@@ -61,23 +62,41 @@ abstract class PhpRateWithDstChannel extends PhpRate {
    * @return 0 if $prefix is not a prefix of $number
    *         the lenght of $prefix + 1 in other case
    */
-  public static function isPrefixOf($prefix, $number) {
+  public static function isPrefixOf($prefix, $number, $useRegex = false) {
+
     if (is_null($prefix)) {
       return 1;
       // a NULL channel is a NULL filter wich is applicable to every CDR
-      
     }
-    $prefix2 = trim($prefix);
-    $prefixLen = strlen($prefix2);
+
+    $prefix = trim($prefix);
+
+    $isRegex = false;
+    if ($useRegex && (strlen($prefix) > 2) && ($prefix[0] == '%' && $prefix[1] == '%')) {
+        $isRegex = true;
+        $prefix = substr($prefix, 2, strlen($prefix) - 2);
+    } 
+
+    $prefixLen = strlen($prefix);
+
     if ($prefixLen == 0) {
       return 1;
       // an empty channel is a filter wich is applicable to every CDR
-      
     }
-    if (substr_compare($prefix2, $number, 0, $prefixLen, TRUE) == 0) {
-      return $prefixLen;
+
+    if ($isRegex) {
+        $matches = false;
+        if (preg_match($prefix, $number, $matches) > 0) {
+	    return strlen($matches[0]);
+        } else {
+            return 0;
+	}
     } else {
-      return 0;
+      if (substr_compare($prefix, $number, 0, $prefixLen, TRUE) == 0) {
+        return $prefixLen;
+      } else {
+        return 0;
+      }
     }
   }
 }

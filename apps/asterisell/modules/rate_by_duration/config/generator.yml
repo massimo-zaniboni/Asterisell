@@ -17,7 +17,7 @@ generator:
       #
       # this is the only real field of the class.
 
-      destination_channel: { name: Destination channel prefix, help: "This rate will be applied only to calls having a destination channel starting with this prefix. The prefix is case insensitive." }
+      destination_channel: { name: Destination channel prefix, help: "This rate will be applied only to calls having a destination channel starting with this prefix. The prefix is case insensitive. If prefix starts with %%, then a regular expressions is expected." }
 
       internal_telephone_prefix: { name: Internal telephone number, help: "This rate will be applied only to calls having an internal telephone number with the specified prefix. Read general Asterisell instructions, about the precise meaning of internal and external telephone numbers." }
 
