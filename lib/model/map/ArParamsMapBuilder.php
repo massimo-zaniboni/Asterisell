@@ -112,5 +112,25 @@ class ArParamsMapBuilder {
 
 		$tMap->addColumn('CURRENT_INVOICE_NR', 'CurrentInvoiceNr', 'int', CreoleTypes::INTEGER, true, 11);
 
+		$tMap->addColumn('LOGO_HTML_COLOR', 'LogoHtmlColor', 'string', CreoleTypes::VARCHAR, false, 12);
+
+		$tMap->addColumn('PAYMENT_DAYS', 'PaymentDays', 'int', CreoleTypes::INTEGER, false, 20);
+
+		$tMap->addColumn('RECONNECTION_FEE', 'ReconnectionFee', 'string', CreoleTypes::VARCHAR, false, 40);
+
+		$tMap->addColumn('INFO_TELEPHONE_NUMBER', 'InfoTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 512);
+
+		$tMap->addColumn('LATE_PAYMENT_FEE', 'LatePaymentFee', 'string', CreoleTypes::VARCHAR, false, 40);
+
+		$tMap->addColumn('ETF_BBS', 'EtfBbs', 'string', CreoleTypes::VARCHAR, false, 512);
+
+		$tMap->addColumn('ETF_ACC_NO', 'EtfAccNo', 'string', CreoleTypes::VARCHAR, false, 512);
+
+		$tMap->addColumn('ACCOUNT_DEPARTMENT', 'AccountDepartment', 'string', CreoleTypes::VARCHAR, false, 512);
+
+		$tMap->addColumn('DIRECT_DEBIT_PAYMENT_EMAIL', 'DirectDebitPaymentEmail', 'string', CreoleTypes::VARCHAR, false, 512);
+
+		$tMap->addColumn('DIRECT_DEBIT_PAYMENT_TELEPHONE_NUMBER', 'DirectDebitPaymentTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 512);
+
 	} 
 } 

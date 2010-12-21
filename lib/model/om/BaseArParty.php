@@ -108,10 +108,22 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	protected $lastArInvoiceCriteria = null;
 
 	
+	protected $collArPayments;
+
+	
+	protected $lastArPaymentCriteria = null;
+
+	
 	protected $collArRates;
 
 	
 	protected $lastArRateCriteria = null;
+
+	
+	protected $collArRateIncrementalInfos;
+
+	
+	protected $lastArRateIncrementalInfoCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -695,8 +707,24 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collArPayments !== null) {
+				foreach($this->collArPayments as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collArRates !== null) {
 				foreach($this->collArRates as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collArRateIncrementalInfos !== null) {
+				foreach($this->collArRateIncrementalInfos as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -782,8 +810,24 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 					}
 				}
 
+				if ($this->collArPayments !== null) {
+					foreach($this->collArPayments as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 				if ($this->collArRates !== null) {
 					foreach($this->collArRates as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collArRateIncrementalInfos !== null) {
+					foreach($this->collArRateIncrementalInfos as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1100,8 +1144,16 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 				$copyObj->addArInvoice($relObj->copy($deepCopy));
 			}
 
+			foreach($this->getArPayments() as $relObj) {
+				$copyObj->addArPayment($relObj->copy($deepCopy));
+			}
+
 			foreach($this->getArRates() as $relObj) {
 				$copyObj->addArRate($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getArRateIncrementalInfos() as $relObj) {
+				$copyObj->addArRateIncrementalInfo($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1467,6 +1519,111 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		$l->setArParty($this);
 	}
 
+
+	
+	public function getArInvoicesJoinArParams($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArInvoicePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArInvoices === null) {
+			if ($this->isNew()) {
+				$this->collArInvoices = array();
+			} else {
+
+				$criteria->add(ArInvoicePeer::AR_PARTY_ID, $this->getId());
+
+				$this->collArInvoices = ArInvoicePeer::doSelectJoinArParams($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArInvoicePeer::AR_PARTY_ID, $this->getId());
+
+			if (!isset($this->lastArInvoiceCriteria) || !$this->lastArInvoiceCriteria->equals($criteria)) {
+				$this->collArInvoices = ArInvoicePeer::doSelectJoinArParams($criteria, $con);
+			}
+		}
+		$this->lastArInvoiceCriteria = $criteria;
+
+		return $this->collArInvoices;
+	}
+
+	
+	public function initArPayments()
+	{
+		if ($this->collArPayments === null) {
+			$this->collArPayments = array();
+		}
+	}
+
+	
+	public function getArPayments($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArPaymentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArPayments === null) {
+			if ($this->isNew()) {
+			   $this->collArPayments = array();
+			} else {
+
+				$criteria->add(ArPaymentPeer::AR_PARTY_ID, $this->getId());
+
+				ArPaymentPeer::addSelectColumns($criteria);
+				$this->collArPayments = ArPaymentPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArPaymentPeer::AR_PARTY_ID, $this->getId());
+
+				ArPaymentPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArPaymentCriteria) || !$this->lastArPaymentCriteria->equals($criteria)) {
+					$this->collArPayments = ArPaymentPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArPaymentCriteria = $criteria;
+		return $this->collArPayments;
+	}
+
+	
+	public function countArPayments($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArPaymentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArPaymentPeer::AR_PARTY_ID, $this->getId());
+
+		return ArPaymentPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArPayment(ArPayment $l)
+	{
+		$this->collArPayments[] = $l;
+		$l->setArParty($this);
+	}
+
 	
 	public function initArRates()
 	{
@@ -1570,6 +1727,111 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		$this->lastArRateCriteria = $criteria;
 
 		return $this->collArRates;
+	}
+
+	
+	public function initArRateIncrementalInfos()
+	{
+		if ($this->collArRateIncrementalInfos === null) {
+			$this->collArRateIncrementalInfos = array();
+		}
+	}
+
+	
+	public function getArRateIncrementalInfos($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArRateIncrementalInfoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArRateIncrementalInfos === null) {
+			if ($this->isNew()) {
+			   $this->collArRateIncrementalInfos = array();
+			} else {
+
+				$criteria->add(ArRateIncrementalInfoPeer::AR_PARTY_ID, $this->getId());
+
+				ArRateIncrementalInfoPeer::addSelectColumns($criteria);
+				$this->collArRateIncrementalInfos = ArRateIncrementalInfoPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArRateIncrementalInfoPeer::AR_PARTY_ID, $this->getId());
+
+				ArRateIncrementalInfoPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArRateIncrementalInfoCriteria) || !$this->lastArRateIncrementalInfoCriteria->equals($criteria)) {
+					$this->collArRateIncrementalInfos = ArRateIncrementalInfoPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArRateIncrementalInfoCriteria = $criteria;
+		return $this->collArRateIncrementalInfos;
+	}
+
+	
+	public function countArRateIncrementalInfos($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArRateIncrementalInfoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArRateIncrementalInfoPeer::AR_PARTY_ID, $this->getId());
+
+		return ArRateIncrementalInfoPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArRateIncrementalInfo(ArRateIncrementalInfo $l)
+	{
+		$this->collArRateIncrementalInfos[] = $l;
+		$l->setArParty($this);
+	}
+
+
+	
+	public function getArRateIncrementalInfosJoinArRate($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArRateIncrementalInfoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArRateIncrementalInfos === null) {
+			if ($this->isNew()) {
+				$this->collArRateIncrementalInfos = array();
+			} else {
+
+				$criteria->add(ArRateIncrementalInfoPeer::AR_PARTY_ID, $this->getId());
+
+				$this->collArRateIncrementalInfos = ArRateIncrementalInfoPeer::doSelectJoinArRate($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArRateIncrementalInfoPeer::AR_PARTY_ID, $this->getId());
+
+			if (!isset($this->lastArRateIncrementalInfoCriteria) || !$this->lastArRateIncrementalInfoCriteria->equals($criteria)) {
+				$this->collArRateIncrementalInfos = ArRateIncrementalInfoPeer::doSelectJoinArRate($criteria, $con);
+			}
+		}
+		$this->lastArRateIncrementalInfoCriteria = $criteria;
+
+		return $this->collArRateIncrementalInfos;
 	}
 
 } 

@@ -22,6 +22,7 @@
  */
 
 sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Number', 'Debug'));
+
 /**
  * Rate calls by duration plus additional parameters.
  */
@@ -74,6 +75,10 @@ class PhpRateByDuration extends PhpRateWithDstChannel {
     return $r;
   }
 
+  public function getPriorityMethod() {
+    return "Telephone Number";
+  }
+
   /**
    * Priority of match depends from externalTelephonePrefix lenght,
    * in this way a rate with a more specific prefix is stronger
@@ -82,14 +87,14 @@ class PhpRateByDuration extends PhpRateWithDstChannel {
    * @return 0 if it is no applicable,
    *         the lenght of externalTelephonePrefix + 1 otherwise.
    */
-  public function isApplicable(Cdr $cdr) {
-    if (parent::isApplicable($cdr) != 0 && $this->isPrefixOf($this->internalTelephonePrefix, $cdr->getInternalTelephoneNumber()) != 0) {
-      return $this->isPrefixOf($this->externalTelephonePrefix, $cdr->getExternalTelephoneNumberWithAppliedPortability());
+  public function isApplicable($cdr, $rateInfo = null) {
+    if (parent::isApplicable($cdr) != 0 && $this->isPrefixOf($this->internalTelephonePrefix, $cdr->getCachedInternalTelephoneNumber()) != 0) {
+      return $this->isPrefixOf($this->externalTelephonePrefix, $cdr->getCachedExternalTelephoneNumberWithAppliedPortability());
     } else {
       return 0;
     }
   }
-  protected function rateCDR(Cdr $cdr) {
+  protected function rateCDR($cdr, $rateInfo = null) {
     return PhpRateOnlyCalc::calcCostByDuration($cdr, $this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
   }
 

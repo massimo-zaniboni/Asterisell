@@ -13,7 +13,7 @@ abstract class BaseArInvoiceCreationPeer {
 	const CLASS_DEFAULT = 'lib.model.ArInvoiceCreation';
 
 	
-	const NUM_COLUMNS = 8;
+	const NUM_COLUMNS = 10;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -44,23 +44,29 @@ abstract class BaseArInvoiceCreationPeer {
 	const AR_CDR_TO = 'ar_invoice_creation.AR_CDR_TO';
 
 	
+	const INFO_OR_ADS_IMAGE1 = 'ar_invoice_creation.INFO_OR_ADS_IMAGE1';
+
+	
+	const INFO_OR_ADS_IMAGE2 = 'ar_invoice_creation.INFO_OR_ADS_IMAGE2';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'ArParamsId', 'Type', 'IsRevenueSharing', 'FirstNr', 'InvoiceDate', 'ArCdrFrom', 'ArCdrTo', ),
-		BasePeer::TYPE_COLNAME => array (ArInvoiceCreationPeer::ID, ArInvoiceCreationPeer::AR_PARAMS_ID, ArInvoiceCreationPeer::TYPE, ArInvoiceCreationPeer::IS_REVENUE_SHARING, ArInvoiceCreationPeer::FIRST_NR, ArInvoiceCreationPeer::INVOICE_DATE, ArInvoiceCreationPeer::AR_CDR_FROM, ArInvoiceCreationPeer::AR_CDR_TO, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'ar_params_id', 'type', 'is_revenue_sharing', 'first_nr', 'invoice_date', 'ar_cdr_from', 'ar_cdr_to', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'ArParamsId', 'Type', 'IsRevenueSharing', 'FirstNr', 'InvoiceDate', 'ArCdrFrom', 'ArCdrTo', 'InfoOrAdsImage1', 'InfoOrAdsImage2', ),
+		BasePeer::TYPE_COLNAME => array (ArInvoiceCreationPeer::ID, ArInvoiceCreationPeer::AR_PARAMS_ID, ArInvoiceCreationPeer::TYPE, ArInvoiceCreationPeer::IS_REVENUE_SHARING, ArInvoiceCreationPeer::FIRST_NR, ArInvoiceCreationPeer::INVOICE_DATE, ArInvoiceCreationPeer::AR_CDR_FROM, ArInvoiceCreationPeer::AR_CDR_TO, ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE1, ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE2, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'ar_params_id', 'type', 'is_revenue_sharing', 'first_nr', 'invoice_date', 'ar_cdr_from', 'ar_cdr_to', 'info_or_ads_image1', 'info_or_ads_image2', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ArParamsId' => 1, 'Type' => 2, 'IsRevenueSharing' => 3, 'FirstNr' => 4, 'InvoiceDate' => 5, 'ArCdrFrom' => 6, 'ArCdrTo' => 7, ),
-		BasePeer::TYPE_COLNAME => array (ArInvoiceCreationPeer::ID => 0, ArInvoiceCreationPeer::AR_PARAMS_ID => 1, ArInvoiceCreationPeer::TYPE => 2, ArInvoiceCreationPeer::IS_REVENUE_SHARING => 3, ArInvoiceCreationPeer::FIRST_NR => 4, ArInvoiceCreationPeer::INVOICE_DATE => 5, ArInvoiceCreationPeer::AR_CDR_FROM => 6, ArInvoiceCreationPeer::AR_CDR_TO => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'ar_params_id' => 1, 'type' => 2, 'is_revenue_sharing' => 3, 'first_nr' => 4, 'invoice_date' => 5, 'ar_cdr_from' => 6, 'ar_cdr_to' => 7, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ArParamsId' => 1, 'Type' => 2, 'IsRevenueSharing' => 3, 'FirstNr' => 4, 'InvoiceDate' => 5, 'ArCdrFrom' => 6, 'ArCdrTo' => 7, 'InfoOrAdsImage1' => 8, 'InfoOrAdsImage2' => 9, ),
+		BasePeer::TYPE_COLNAME => array (ArInvoiceCreationPeer::ID => 0, ArInvoiceCreationPeer::AR_PARAMS_ID => 1, ArInvoiceCreationPeer::TYPE => 2, ArInvoiceCreationPeer::IS_REVENUE_SHARING => 3, ArInvoiceCreationPeer::FIRST_NR => 4, ArInvoiceCreationPeer::INVOICE_DATE => 5, ArInvoiceCreationPeer::AR_CDR_FROM => 6, ArInvoiceCreationPeer::AR_CDR_TO => 7, ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE1 => 8, ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE2 => 9, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'ar_params_id' => 1, 'type' => 2, 'is_revenue_sharing' => 3, 'first_nr' => 4, 'invoice_date' => 5, 'ar_cdr_from' => 6, 'ar_cdr_to' => 7, 'info_or_ads_image1' => 8, 'info_or_ads_image2' => 9, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	
@@ -129,6 +135,10 @@ abstract class BaseArInvoiceCreationPeer {
 		$criteria->addSelectColumn(ArInvoiceCreationPeer::AR_CDR_FROM);
 
 		$criteria->addSelectColumn(ArInvoiceCreationPeer::AR_CDR_TO);
+
+		$criteria->addSelectColumn(ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE1);
+
+		$criteria->addSelectColumn(ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE2);
 
 	}
 

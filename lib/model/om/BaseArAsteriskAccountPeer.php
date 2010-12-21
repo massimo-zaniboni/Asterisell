@@ -13,7 +13,7 @@ abstract class BaseArAsteriskAccountPeer {
 	const CLASS_DEFAULT = 'lib.model.ArAsteriskAccount';
 
 	
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 5;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -32,23 +32,26 @@ abstract class BaseArAsteriskAccountPeer {
 	const AR_OFFICE_ID = 'ar_asterisk_account.AR_OFFICE_ID';
 
 	
+	const IS_ACTIVE = 'ar_asterisk_account.IS_ACTIVE';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AccountCode', 'ArOfficeId', ),
-		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID, ArAsteriskAccountPeer::NAME, ArAsteriskAccountPeer::ACCOUNT_CODE, ArAsteriskAccountPeer::AR_OFFICE_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'account_code', 'ar_office_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AccountCode', 'ArOfficeId', 'IsActive', ),
+		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID, ArAsteriskAccountPeer::NAME, ArAsteriskAccountPeer::ACCOUNT_CODE, ArAsteriskAccountPeer::AR_OFFICE_ID, ArAsteriskAccountPeer::IS_ACTIVE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'account_code', 'ar_office_id', 'is_active', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AccountCode' => 2, 'ArOfficeId' => 3, ),
-		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID => 0, ArAsteriskAccountPeer::NAME => 1, ArAsteriskAccountPeer::ACCOUNT_CODE => 2, ArAsteriskAccountPeer::AR_OFFICE_ID => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'account_code' => 2, 'ar_office_id' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AccountCode' => 2, 'ArOfficeId' => 3, 'IsActive' => 4, ),
+		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID => 0, ArAsteriskAccountPeer::NAME => 1, ArAsteriskAccountPeer::ACCOUNT_CODE => 2, ArAsteriskAccountPeer::AR_OFFICE_ID => 3, ArAsteriskAccountPeer::IS_ACTIVE => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'account_code' => 2, 'ar_office_id' => 3, 'is_active' => 4, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	
@@ -109,6 +112,8 @@ abstract class BaseArAsteriskAccountPeer {
 		$criteria->addSelectColumn(ArAsteriskAccountPeer::ACCOUNT_CODE);
 
 		$criteria->addSelectColumn(ArAsteriskAccountPeer::AR_OFFICE_ID);
+
+		$criteria->addSelectColumn(ArAsteriskAccountPeer::IS_ACTIVE);
 
 	}
 

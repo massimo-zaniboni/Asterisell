@@ -36,7 +36,7 @@ sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
  * Another advantage is that the system is like a blackboard, where
  * developers can add new Jobs. Every Job is activated when it recognize
  * a certain event and it can generate other events.
- *  
+ *
  * TODO: in PHP there can be errors that are not received from
  * error handler. So the job processor can be interrupted.
  * This behaviour is different from intended behaviour.
@@ -50,7 +50,7 @@ sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
  * This design is also more coherent with the division between events and jobs.
  * Up to date an hack is inserted: there is a job signaling a problem
  * if there are pending jobs, not executed correctly.
- * 
+ *
  * @return TRUE if all Jobs are executed without problems,
  * FALSE otherwise. The probem description is put on the Problem table.
  */
@@ -59,16 +59,42 @@ class JobQueueProcessor {
   const MUTEX_FILE_NAME = "jobqueueprocessor";
 
   /**
-   * Execute all pending jobs.
+   * Execute all pending jobs, from an administrator connected online.
+   * In this working mode, new errors are sent to the error table, but they are not notified
+   * via mail to administrators. This allows reducing noise.
    *
    * @param $lockFileDirectory NULL if it is invoked from a normal web-session,
-   * otherwise use the path to asterisell/web directory, 
-   * if called from an external script. 
+   * otherwise use the path to asterisell/web directory,
+   * if called from an external script.
    * This allows to use the same lock file of the running web application, and
    * also recognizing cron job processor invocation, that are managed a little differently.
    *
-   * @return TRUE if it is all OK, FALSE if there are problems, 
+   * @return TRUE if it is all OK, FALSE if there are problems,
    * NULL if th job queue processor is already locked.
+   *
+   * NOTE: never add "string $lockFileDirectory" for parameter declaration
+   * because it crash old version of PHP...
+   */
+  public function processOnline($lockFileDirectory = NULL) {
+    ArProblemException::disableNotificationsToAdmin();
+    return $this->process($lockFileDirectory);
+  }
+
+  /**
+   * Execute all pending jobs.
+   *
+   * @param $lockFileDirectory NULL if it is invoked from a normal web-session,
+   * otherwise use the path to asterisell/web directory,
+   * if called from an external script.
+   * This allows to use the same lock file of the running web application, and
+   * also recognizing cron job processor invocation, that are managed a little differently.
+   *
+   * @return TRUE if it is all OK, FALSE if there are problems,
+   * NULL if th job queue processor is already locked.
+   *
+   * NOTE: never add "string $lockFileDirectory" for parameter declaration
+   * because it crash old version of PHP...
+   *
    */
   public function process($lockFileDirectory = NULL) {
 
@@ -77,28 +103,28 @@ class JobQueueProcessor {
       $isCronProcess = TRUE;
     }
 
+    if (!is_null($lockFileDirectory)) {
+          Mutex::$baseDirectory = $lockFileDirectory;
+    }
+
     // Only one processor can execute jobs because they can change the
     // external environment.
     // In any case if there is another job processor running, then
     // current jobs will be executed in any case so it is not a problem.
     //
-    if (!is_null($lockFileDirectory)) {
-      Mutex::$baseDirectory = $lockFileDirectory;
-    }
     $mutex = new Mutex(JobQueueProcessor::MUTEX_FILE_NAME);
     $isLocked = $mutex->maybeLock($isCronProcess);
 
     // exit if there is no acquired lock
     // (another job-queue-processor is running).
     //
-    if (! $isLocked) return NULL;
+    if (!$isLocked) return NULL;
 
     // Signal the problem if some old job were not completely executed.
     //
     $this->areThereAbortedJobs();
 
     $allOk = TRUE;
-    set_error_handler('my_exceptions_error_handler', E_ALL);
 
     // Intercept all errors.
     //
@@ -113,36 +139,36 @@ class JobQueueProcessor {
       // executed.
       //
       $jobs = sfConfig::get('app_available_always_scheduled_jobs');
-      foreach($jobs as $jobClass) {
-	try {
-	  $jobLog = NULL;
-	  $job = new $jobClass();
+      foreach ($jobs as $jobClass) {
+        try {
+          $jobLog = NULL;
+          $job = new $jobClass();
 
-	  $jobData = new NullJobData();
-	  $jobLog = ArJobQueue::addNewWithStateAndDescription($jobData, NULL, ArJobQueue::RUNNING, $jobClass);
-	  
-	  $msg = $job->process();
+          $jobData = new NullJobData();
+          $jobLog = ArJobQueue::addNewWithStateAndDescription($jobData, NULL, ArJobQueue::RUNNING, $jobClass);
 
-	  $jobLog->setState(ArJobQueue::DONE);
-	  $jobLog->setDescription($jobLog->getDescription() . ": " . $msg);
-	  $jobLog->setEndAt(date("c"));
-	  $jobLog->save();
-	} catch (Exception $e) { 
-	  if (! is_null($jobLog)) {
-	    $jobLog->setState(ArJobQueue::ERROR);
-	    $jobLog->setEndAt(date("c"));
-	    $jobLog->save();
-	  }
-	  
-	  $allOk = FALSE;
+          $msg = $job->process();
 
-	  $p = new ArProblem();
-	  $p->setDuplicationKey("FixedJobs Processor " . $jobClass);
-	  $p->setDescription("Error during the execution of always_scheduled_job $jobClass . The error message is: " . $e->getMessage() . ". Stack trace: " . $e->getTraceAsString());
-	  $p->setEffect("This error prevent the execution of the specified jobs, but not the execution of other always-scheduled and normal jobs.");
-	  $p->setProposedSolution("Fix the problem. If you change the configuration file, you should probably re-rate all previous calls in order to back-propagate changes.");
-	  ArProblemException::addProblemIntoDBOnlyIfNew($p);
-	}
+          $jobLog->setState(ArJobQueue::DONE);
+          $jobLog->setDescription($jobLog->getDescription() . ": " . $msg);
+          $jobLog->setEndAt(date("c"));
+          $jobLog->save();
+        } catch (Exception $e) {
+          if (!is_null($jobLog)) {
+            $jobLog->setState(ArJobQueue::ERROR);
+            $jobLog->setEndAt(date("c"));
+            $jobLog->save();
+          }
+
+          $allOk = FALSE;
+
+          $p = new ArProblem();
+          $p->setDuplicationKey("FixedJobs Processor " . $jobClass);
+          $p->setDescription("Error during the execution of always_scheduled_job $jobClass . The error message is: " . $e->getMessage() . ". Stack trace: " . $e->getTraceAsString());
+          $p->setEffect("This error prevent the execution of the specified jobs, but not the execution of other always-scheduled and normal jobs.");
+          $p->setProposedSolution("Fix the problem. If you change the configuration file, you should probably re-rate all previous calls in order to back-propagate changes.");
+          ArProblemException::addProblemIntoDBOnlyIfNew($p);
+        }
       }
 
       // Query the jobs-data / events to process.
@@ -152,77 +178,77 @@ class JobQueueProcessor {
       $c = new Criteria();
       $c->addAscendingOrderByColumn(ArJobQueuePeer::IS_PART_OF);
       $c->add(ArJobQueuePeer::STATE, ArJobQueue::TODO);
-      
+
       $jobProcessors = null;
 
       $again = TRUE;
       while ($again) {
-	$job = ArJobQueuePeer::doSelectOne($c);
+        $job = ArJobQueuePeer::doSelectOne($c);
         //
         // NOTE: re-execute the query because a Job can add new jobs
         // inside the queue.
 
-	if (is_null($job)) {
-	  $again = FALSE;
-	} else {
-	  // init "$jobProcessors"
+        if (is_null($job)) {
+          $again = FALSE;
+        } else {
+          // init "$jobProcessors"
           // only if there are
           // jobs to execute.
-	  //
-	  if (is_null($jobProcessors)) {
-	    $jobProcessors = array();
-	    $processors = sfConfig::get('app_available_jobs');
-	    foreach($processors as $processorClass) {
-	      $processor = new $processorClass();
-	      array_push($jobProcessors, $processor);
-	    }
-	  }
-  
+          //
+          if (is_null($jobProcessors)) {
+            $jobProcessors = array();
+            $processors = sfConfig::get('app_available_jobs');
+            foreach ($processors as $processorClass) {
+              $processor = new $processorClass();
+              array_push($jobProcessors, $processor);
+            }
+          }
+
           // Intercept errors specific of current job processing.
           // These errors block only current job.
           //
           $report = $job->getDescription();
           try {
-  	    $job->setStartAt(date('c'));
-	    $job->setState(ArJobQueue::RUNNING);
-	    $job->save();
+            $job->setStartAt(date('c'));
+            $job->setState(ArJobQueue::RUNNING);
+            $job->save();
 
-	    $jobData = $job->unserializeDataJob();
+            $jobData = $job->unserializeDataJob();
 
             $report .= " (Jobs executed for event \"" . get_class($jobData) . "\":";
 
-	    foreach($jobProcessors as $process) {
-	      $applied = $process->process($jobData, $job->getId());
+            foreach ($jobProcessors as $process) {
+              $applied = $process->process($jobData, $job->getId());
               if ($applied == TRUE) {
-		$report .= ' "' . get_class($process) . '"';
-	      }
-	    }
+                $report .= ' "' . get_class($process) . '"';
+              }
+            }
 
             $report .= ')';
 
- 	    $job->setState(ArJobQueue::DONE);
+            $job->setState(ArJobQueue::DONE);
             $job->setDescription($report);
-	    $job->setEndAt(date('c'));
-	    $job->save();
+            $job->setEndAt(date('c'));
+            $job->save();
 
-	  } catch (Exception $e) {
-	    $allOk = FALSE;
+          } catch (Exception $e) {
+            $allOk = FALSE;
 
             $report .= ')';
 
-	    $job->setState(ArJobQueue::ERROR);
+            $job->setState(ArJobQueue::ERROR);
             $job->setDescription($report);
-	    $job->setEndAt(date('c'));
-	    $job->save();
+            $job->setEndAt(date('c'));
+            $job->save();
 
-	    $p = new ArProblem();
-	    $p->setDuplicationKey('job ' . $job->getId() . ' - ' . $e->getCode());
-	    $p->setDescription("Error on job " . $job->getId() . ": ". $e->getCode() . ' - ' . $e->getMessage());
-	    ArProblemException::addProblemIntoDBOnlyIfNew($p);
-	  }
-	} // if
+            $p = new ArProblem();
+            $p->setDuplicationKey('job ' . $job->getId() . ' - ' . $e->getCode());
+            $p->setDescription("Error on job " . $job->getId() . ": " . $e->getCode() . ' - ' . $e->getMessage());
+            ArProblemException::addProblemIntoDBOnlyIfNew($p);
+          }
+        } // if
       } // while 
-    } catch (Exception $e) { 
+    } catch (Exception $e) {
       $allOk = FALSE;
 
       $p = new ArProblem();
@@ -239,10 +265,8 @@ class JobQueueProcessor {
     //
     $mutex->unlock();
 
-    restore_error_handler();
-
     return $allOk;
- }
+  }
 
   /**
    * Signal if there are aborted jobs.
@@ -257,7 +281,7 @@ class JobQueueProcessor {
     // Set PEDING JOBS to ERROR
     //
     $signalProblem = FALSE;
-    foreach($jobs as $job) {
+    foreach ($jobs as $job) {
       $signalProblem = TRUE;
 
       $job->setState(ArJobQueue::ERROR);

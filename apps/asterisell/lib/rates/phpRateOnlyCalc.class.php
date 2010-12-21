@@ -57,8 +57,9 @@ abstract class PhpRateOnlyCalc extends PhpRate {
    * Applicable only if the call is billable by minute.
    */
   public $whenRound_0_59 = 0;
+
   public function getShortDescription() {
-    return calcShortDescription_static($this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
+    return self::calcShortDescription($this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
   }
   static public function calcShortDescription($costForMinute, $costOnCall, $rateByMinute, $atLeastXSeconds, $whenRound_0_59) {
     $r = "";
@@ -80,7 +81,7 @@ abstract class PhpRateOnlyCalc extends PhpRate {
     $r = $r . "<br/>";
     return $r;
   }
-  public function isApplicable(Cdr $cdr) {
+  public function isApplicable($cdr, $rateInfo = null) {
     return 1;
   }
 
@@ -88,8 +89,8 @@ abstract class PhpRateOnlyCalc extends PhpRate {
     return false;
   }
 
-  protected function rateCDR(Cdr $cdr) {
-    return calcCostByDuration($this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
+  protected function rateCDR($cdr, $rateInfo = null) {
+    return self::calcCostByDuration($cdr, $this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
   }
   /**
    * The method used to calculate a telephone call

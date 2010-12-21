@@ -17,7 +17,7 @@ all:
 
     unavailable_module:   exception   # To be called when a user requests a page
     unavailable_action:   error404  # From an application disabled via the available setting below
-    
+
 prod:
   .settings:
     error_reporting:        341

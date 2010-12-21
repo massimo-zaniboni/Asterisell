@@ -4,134 +4,89 @@
  * Subclass for representing a row from the 'cdr' table.
  *
  * @package lib.model
- */ 
-class Cdr extends BaseCdr
-{
+ */
+class Cdr extends BaseCdr {
 
-  /**
-   * An internal telephone number is the source for an outgoing call,
-   * the destination for an incoming call.
-   * 
-   * See comments of "internal_external_telephone_numbers" field of 
-   * application configuration file "apps/asterisell/config/app.yml" 
-   * for more details.
-   *
-   * @return the internal telephone number, according the setting
-   * of "apps/asterisell/config/app.yml", or if present, the cached value.
-   */
-  public function getInternalTelephoneNumber() {
-    $cached = $this->getCachedInternalTelephoneNumber();
+  public function calcExternalTelephoneNumber() {
     $destinationType = $this->getDestinationType();
-    if ((! is_null($cached)) && $destinationType != DestinationType::unprocessed) {
-      return $cached;
-    }
 
     $telephoneNumbersConfig = sfConfig::get('app_internal_external_telephone_numbers');
 
-    switch($telephoneNumbersConfig) {
-    case 0:
-      $account = VariableFrame::getArAsteriskAccountByCodeCache()->getArAsteriskAccountByCode($this->getAccountcode());
-      return $account->getName();
-      break;
-    case 1:
-      switch($destinationType) {
-      case DestinationType::incoming:
-	return $this->getSrc();
-	break;
-      case DestinationType::outgoing:
-	return $this->getActualDestinationNumber();
-	break;
+    switch ($telephoneNumbersConfig) {
+      case 0:
+        return $this->getActualDestinationNumber();
+        break;
+      case 1:
+        switch ($destinationType) {
+          case DestinationType::incoming:
+            return $this->getActualDestinationNumber();
+            break;
+          case DestinationType::outgoing:
+            return $this->getSrc();
+            break;
+          default:
+            return $this->getActualDestinationNumber();
+            break;
+        }
+        break;
+      case 2:
+        return $this->getActualDestinationNumber();
+        break;
+      case 3:
+        die("When \"app_internal_external_telephone_numbers\" field is 3, the cached_external_telephone_number must be always setted." . $telephoneNumbersConfig);
+        break;
       default:
-	return $this->getSrc();
-	break;
-      }
-      break;
-    case 2:
-      return $this->getSrc();
-      break;
-    default:
-      die("Unrecognized \"app_internal_external_telephone_numbers\" field value: " . $telephoneNumbersConfig);
-      break;
+        die("Unrecognized \"app_internal_external_telephone_numbers\" field value: " . $telephoneNumbersConfig);
+        break;
     }
   }
 
-  /**
-   * An external telephone number is the destination for an outgoing call,
-   * the source for an incoming call.
-   * 
-   * See comments of "internal_external_telephone_numbers" field of 
-   * application configuration file "apps/asterisell/config/app.yml" 
-   * for more details.
-   *
-   * @return the external telephone number, according the setting
-   * of "apps/asterisell/config/app.yml".
-   */
-  public function getExternalTelephoneNumber() {
-    $cached = $this->getCachedExternalTelephoneNumber();
+  public function calcInternalTelephoneNumber() {
     $destinationType = $this->getDestinationType();
-    if ((! is_null($cached)) && $destinationType != DestinationType::unprocessed) {
-      return $cached;
-    }
-
     $telephoneNumbersConfig = sfConfig::get('app_internal_external_telephone_numbers');
 
-    switch($telephoneNumbersConfig) {
-    case 0:
-      return $this->getActualDestinationNumber();
-      break;
-    case 1:
-      switch($destinationType) {
-      case DestinationType::incoming:
-	return $this->getActualDestinationNumber();
-	break;
-      case DestinationType::outgoing:
-	return $this->getSrc();
-	break;
+    switch ($telephoneNumbersConfig) {
+      case 0:
+        $account = VariableFrame::getArAsteriskAccountByCodeCache()->getArAsteriskAccountByCode($this->getAccountcode());
+        return $account->getName();
+        break;
+      case 1:
+        switch ($destinationType) {
+          case DestinationType::incoming:
+            return $this->getSrc();
+            break;
+          case DestinationType::outgoing:
+            return $this->getActualDestinationNumber();
+            break;
+          default:
+            return $this->getSrc();
+            break;
+        }
+        break;
+      case 2:
+        return $this->getSrc();
+        break;
+      case 3:
+        die("When \"app_internal_external_telephone_numbers\" field is 3, the cahed_internal_telephone_number must be always setted." . $telephoneNumbersConfig);
+        break;
       default:
-	return $this->getActualDestinationNumber();
-	break;
-      }
-      break;
-    case 2:
-      return $this->getActualDestinationNumber();
-      break;
-    default:
-      die("Unrecognized \"app_internal_external_telephone_numbers\" field value: " . $telephoneNumbersConfig);
-      break;
+        die("Unrecognized \"app_internal_external_telephone_numbers\" field value: " . $telephoneNumbersConfig);
+        break;
     }
   }
 
-  /**
-   * A masked external telephone number.
-   *
-   * If the call is internal then there is no applied mask.
-   *
-   * See comments of "mask_for_external_telephone_number" field of 
-   * application configuration file "apps/asterisell/config/app.yml" 
-   * for more details.
-   *
-   * Apply also the option "not_displayed_telephone_prefix".
-   *
-   * @return the external telephone number, according the setting
-   * of "apps/asterisell/config/app.yml".
-   */
-  public function getMaskedExternalTelephoneNumber() {
-    $cached = $this->getCachedMaskedExternalTelephoneNumber();
+
+  public function calcMaskedTelephoneNumber($unmasked) {
     $destinationType = $this->getDestinationType();
-    if ((! is_null($cached)) && $destinationType != DestinationType::unprocessed) {
-      return $cached;
-    }
-
-    $unmasked = $this->getExternalTelephoneNumber();
-
+    
     // Remove common/default prefix
     //
     $commonPrefix = sfConfig::get('app_not_displayed_telephone_prefix');
     if ($commonPrefix != "-") {
       if (strlen($unmasked) > strlen($commonPrefix)) {
-	if (substr($unmasked, 0, strlen($commonPrefix)) == $commonPrefix) {
-	  $unmasked = substr($unmasked, strlen($commonPrefix));
-	}
+        if (substr($unmasked, 0, strlen($commonPrefix)) == $commonPrefix) {
+          $unmasked = substr($unmasked, strlen($commonPrefix));
+        }
       }
     }
 
@@ -147,7 +102,7 @@ class Cdr extends BaseCdr
       $unmasked = trim($unmasked);
       $len = strlen($unmasked);
       if ($len > $mask) {
-	return substr($unmasked, 0, $len - $mask) . str_repeat("X", $mask);
+        return substr($unmasked, 0, $len - $mask) . str_repeat("X", $mask);
       }
     }
 
@@ -157,10 +112,8 @@ class Cdr extends BaseCdr
   /**
    * @return the actual destination number according
    * the application settings.
-   * NULL if "cdr.lastapp" is not a value 
+   * NULL if "cdr.lastapp" is not a value
    * of "app_lastapp_accepted_values".
-   *
-   * NOTE: use always this function instead of getDst().
    *
    * See application configuration file "app.yml" for more details.
    */
@@ -190,7 +143,7 @@ class Cdr extends BaseCdr
   }
 
   /**
-   * @return null if the Cdr is consistent, 
+   * @return null if the Cdr is consistent,
    * a string desccribing the problem otherwise.
    */
   public function isConsistent() {
@@ -210,6 +163,7 @@ class Cdr extends BaseCdr
     $this->setCost(null);
     $this->setIncomeArRateId(null);
     $this->setCostArRateId(null);
+    $this->setVendorId(null);
   }
 
   public function resetAll() {
@@ -220,6 +174,8 @@ class Cdr extends BaseCdr
     $this->setCachedInternalTelephoneNumber(NULL);
     $this->setCachedMaskedExternalTelephoneNumber(NULL);
     $this->setExternalTelephoneNumberWithAppliedPortability(NULL);
+    $this->setArTelephonePrefixId(NULL);
+    // note: cdr.source_id maintain its value, because it can depend from an external job processor...
   }
 
   /**
@@ -265,5 +221,16 @@ class Cdr extends BaseCdr
 
     return true;
   }
- 
+
+  /**
+   * A synonimous of getExternalTelephoneNumberWithAppliedPortability()
+   */
+  public function getCachedExternalTelephoneNumberWithAppliedPortability() {
+    return $this->getExternalTelephoneNumberWithAppliedPortability();
+  }
+
+  public function setCachedExternalTelephoneNumberWithAppliedPortability($v) {
+    $this->setExternalTelephoneNumberWithAppliedPortability($v);
+  }
+
 }

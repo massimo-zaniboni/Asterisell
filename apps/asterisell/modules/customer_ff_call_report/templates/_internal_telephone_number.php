@@ -13,5 +13,5 @@
    !!!                                                        !!!
    **************************************************************/
 
-echo $cdr->getInternalTelephoneNumber();
+echo $cdr->getCachedInternalTelephoneNumber();
 ?>

@@ -41,6 +41,14 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 
 	
+	protected $total_bundle_without_tax = 0;
+
+
+	
+	protected $total_calls_without_tax = 0;
+
+
+	
 	protected $total_without_tax = 0;
 
 
@@ -79,8 +87,23 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	
 	protected $already_sent;
 
+
+	
+	protected $info_or_ads_image1;
+
+
+	
+	protected $info_or_ads_image2;
+
+
+	
+	protected $ar_params_id;
+
 	
 	protected $aArParty;
+
+	
+	protected $aArParams;
 
 	
 	protected $alreadyInSave = false;
@@ -190,6 +213,20 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	}
 
 	
+	public function getTotalBundleWithoutTax()
+	{
+
+		return $this->total_bundle_without_tax;
+	}
+
+	
+	public function getTotalCallsWithoutTax()
+	{
+
+		return $this->total_calls_without_tax;
+	}
+
+	
 	public function getTotalWithoutTax()
 	{
 
@@ -257,6 +294,27 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	{
 
 		return $this->already_sent;
+	}
+
+	
+	public function getInfoOrAdsImage1()
+	{
+
+		return $this->info_or_ads_image1;
+	}
+
+	
+	public function getInfoOrAdsImage2()
+	{
+
+		return $this->info_or_ads_image2;
+	}
+
+	
+	public function getArParamsId()
+	{
+
+		return $this->ar_params_id;
 	}
 
 	
@@ -377,6 +435,34 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if ($this->ar_cdr_to !== $ts) {
 			$this->ar_cdr_to = $ts;
 			$this->modifiedColumns[] = ArInvoicePeer::AR_CDR_TO;
+		}
+
+	} 
+	
+	public function setTotalBundleWithoutTax($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->total_bundle_without_tax !== $v || $v === 0) {
+			$this->total_bundle_without_tax = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::TOTAL_BUNDLE_WITHOUT_TAX;
+		}
+
+	} 
+	
+	public function setTotalCallsWithoutTax($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->total_calls_without_tax !== $v || $v === 0) {
+			$this->total_calls_without_tax = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::TOTAL_CALLS_WITHOUT_TAX;
 		}
 
 	} 
@@ -531,6 +617,52 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setInfoOrAdsImage1($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->info_or_ads_image1 !== $v) {
+			$this->info_or_ads_image1 = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::INFO_OR_ADS_IMAGE1;
+		}
+
+	} 
+	
+	public function setInfoOrAdsImage2($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->info_or_ads_image2 !== $v) {
+			$this->info_or_ads_image2 = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::INFO_OR_ADS_IMAGE2;
+		}
+
+	} 
+	
+	public function setArParamsId($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->ar_params_id !== $v) {
+			$this->ar_params_id = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::AR_PARAMS_ID;
+		}
+
+		if ($this->aArParams !== null && $this->aArParams->getId() !== $v) {
+			$this->aArParams = null;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -551,31 +683,41 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 			$this->ar_cdr_to = $rs->getDate($startcol + 7, null);
 
-			$this->total_without_tax = $rs->getInt($startcol + 8);
+			$this->total_bundle_without_tax = $rs->getInt($startcol + 8);
 
-			$this->vat_perc = $rs->getInt($startcol + 9);
+			$this->total_calls_without_tax = $rs->getInt($startcol + 9);
 
-			$this->total_vat = $rs->getInt($startcol + 10);
+			$this->total_without_tax = $rs->getInt($startcol + 10);
 
-			$this->total = $rs->getInt($startcol + 11);
+			$this->vat_perc = $rs->getInt($startcol + 11);
 
-			$this->html_details = $rs->getString($startcol + 12);
+			$this->total_vat = $rs->getInt($startcol + 12);
 
-			$this->pdf_invoice = $rs->getBlob($startcol + 13);
+			$this->total = $rs->getInt($startcol + 13);
 
-			$this->pdf_call_report = $rs->getBlob($startcol + 14);
+			$this->html_details = $rs->getString($startcol + 14);
 
-			$this->email_subject = $rs->getString($startcol + 15);
+			$this->pdf_invoice = $rs->getBlob($startcol + 15);
 
-			$this->email_message = $rs->getString($startcol + 16);
+			$this->pdf_call_report = $rs->getBlob($startcol + 16);
 
-			$this->already_sent = $rs->getBoolean($startcol + 17);
+			$this->email_subject = $rs->getString($startcol + 17);
+
+			$this->email_message = $rs->getString($startcol + 18);
+
+			$this->already_sent = $rs->getBoolean($startcol + 19);
+
+			$this->info_or_ads_image1 = $rs->getString($startcol + 20);
+
+			$this->info_or_ads_image2 = $rs->getString($startcol + 21);
+
+			$this->ar_params_id = $rs->getInt($startcol + 22);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 18; 
+						return $startcol + 23; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArInvoice object", $e);
 		}
@@ -640,6 +782,13 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				$this->setArParty($this->aArParty);
 			}
 
+			if ($this->aArParams !== null) {
+				if ($this->aArParams->isModified()) {
+					$affectedRows += $this->aArParams->save($con);
+				}
+				$this->setArParams($this->aArParams);
+			}
+
 
 						if ($this->isModified()) {
 				if ($this->isNew()) {
@@ -695,6 +844,12 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aArParams !== null) {
+				if (!$this->aArParams->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArParams->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = ArInvoicePeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -744,34 +899,49 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				return $this->getArCdrTo();
 				break;
 			case 8:
-				return $this->getTotalWithoutTax();
+				return $this->getTotalBundleWithoutTax();
 				break;
 			case 9:
-				return $this->getVatPerc();
+				return $this->getTotalCallsWithoutTax();
 				break;
 			case 10:
-				return $this->getTotalVat();
+				return $this->getTotalWithoutTax();
 				break;
 			case 11:
-				return $this->getTotal();
+				return $this->getVatPerc();
 				break;
 			case 12:
-				return $this->getHtmlDetails();
+				return $this->getTotalVat();
 				break;
 			case 13:
-				return $this->getPdfInvoice();
+				return $this->getTotal();
 				break;
 			case 14:
-				return $this->getPdfCallReport();
+				return $this->getHtmlDetails();
 				break;
 			case 15:
-				return $this->getEmailSubject();
+				return $this->getPdfInvoice();
 				break;
 			case 16:
-				return $this->getEmailMessage();
+				return $this->getPdfCallReport();
 				break;
 			case 17:
+				return $this->getEmailSubject();
+				break;
+			case 18:
+				return $this->getEmailMessage();
+				break;
+			case 19:
 				return $this->getAlreadySent();
+				break;
+			case 20:
+				return $this->getInfoOrAdsImage1();
+				break;
+			case 21:
+				return $this->getInfoOrAdsImage2();
+				break;
+			case 22:
+				return $this->getArParamsId();
 				break;
 			default:
 				return null;
@@ -791,16 +961,21 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 			$keys[5] => $this->getInvoiceDate(),
 			$keys[6] => $this->getArCdrFrom(),
 			$keys[7] => $this->getArCdrTo(),
-			$keys[8] => $this->getTotalWithoutTax(),
-			$keys[9] => $this->getVatPerc(),
-			$keys[10] => $this->getTotalVat(),
-			$keys[11] => $this->getTotal(),
-			$keys[12] => $this->getHtmlDetails(),
-			$keys[13] => $this->getPdfInvoice(),
-			$keys[14] => $this->getPdfCallReport(),
-			$keys[15] => $this->getEmailSubject(),
-			$keys[16] => $this->getEmailMessage(),
-			$keys[17] => $this->getAlreadySent(),
+			$keys[8] => $this->getTotalBundleWithoutTax(),
+			$keys[9] => $this->getTotalCallsWithoutTax(),
+			$keys[10] => $this->getTotalWithoutTax(),
+			$keys[11] => $this->getVatPerc(),
+			$keys[12] => $this->getTotalVat(),
+			$keys[13] => $this->getTotal(),
+			$keys[14] => $this->getHtmlDetails(),
+			$keys[15] => $this->getPdfInvoice(),
+			$keys[16] => $this->getPdfCallReport(),
+			$keys[17] => $this->getEmailSubject(),
+			$keys[18] => $this->getEmailMessage(),
+			$keys[19] => $this->getAlreadySent(),
+			$keys[20] => $this->getInfoOrAdsImage1(),
+			$keys[21] => $this->getInfoOrAdsImage2(),
+			$keys[22] => $this->getArParamsId(),
 		);
 		return $result;
 	}
@@ -841,34 +1016,49 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				$this->setArCdrTo($value);
 				break;
 			case 8:
-				$this->setTotalWithoutTax($value);
+				$this->setTotalBundleWithoutTax($value);
 				break;
 			case 9:
-				$this->setVatPerc($value);
+				$this->setTotalCallsWithoutTax($value);
 				break;
 			case 10:
-				$this->setTotalVat($value);
+				$this->setTotalWithoutTax($value);
 				break;
 			case 11:
-				$this->setTotal($value);
+				$this->setVatPerc($value);
 				break;
 			case 12:
-				$this->setHtmlDetails($value);
+				$this->setTotalVat($value);
 				break;
 			case 13:
-				$this->setPdfInvoice($value);
+				$this->setTotal($value);
 				break;
 			case 14:
-				$this->setPdfCallReport($value);
+				$this->setHtmlDetails($value);
 				break;
 			case 15:
-				$this->setEmailSubject($value);
+				$this->setPdfInvoice($value);
 				break;
 			case 16:
-				$this->setEmailMessage($value);
+				$this->setPdfCallReport($value);
 				break;
 			case 17:
+				$this->setEmailSubject($value);
+				break;
+			case 18:
+				$this->setEmailMessage($value);
+				break;
+			case 19:
 				$this->setAlreadySent($value);
+				break;
+			case 20:
+				$this->setInfoOrAdsImage1($value);
+				break;
+			case 21:
+				$this->setInfoOrAdsImage2($value);
+				break;
+			case 22:
+				$this->setArParamsId($value);
 				break;
 		} 	}
 
@@ -885,16 +1075,21 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[5], $arr)) $this->setInvoiceDate($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setArCdrFrom($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setArCdrTo($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setTotalWithoutTax($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setVatPerc($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setTotalVat($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setTotal($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setHtmlDetails($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setPdfInvoice($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setPdfCallReport($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setEmailSubject($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setEmailMessage($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setAlreadySent($arr[$keys[17]]);
+		if (array_key_exists($keys[8], $arr)) $this->setTotalBundleWithoutTax($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setTotalCallsWithoutTax($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setTotalWithoutTax($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setVatPerc($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setTotalVat($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setTotal($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setHtmlDetails($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setPdfInvoice($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setPdfCallReport($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setEmailSubject($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setEmailMessage($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setAlreadySent($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setInfoOrAdsImage1($arr[$keys[20]]);
+		if (array_key_exists($keys[21], $arr)) $this->setInfoOrAdsImage2($arr[$keys[21]]);
+		if (array_key_exists($keys[22], $arr)) $this->setArParamsId($arr[$keys[22]]);
 	}
 
 	
@@ -910,6 +1105,8 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArInvoicePeer::INVOICE_DATE)) $criteria->add(ArInvoicePeer::INVOICE_DATE, $this->invoice_date);
 		if ($this->isColumnModified(ArInvoicePeer::AR_CDR_FROM)) $criteria->add(ArInvoicePeer::AR_CDR_FROM, $this->ar_cdr_from);
 		if ($this->isColumnModified(ArInvoicePeer::AR_CDR_TO)) $criteria->add(ArInvoicePeer::AR_CDR_TO, $this->ar_cdr_to);
+		if ($this->isColumnModified(ArInvoicePeer::TOTAL_BUNDLE_WITHOUT_TAX)) $criteria->add(ArInvoicePeer::TOTAL_BUNDLE_WITHOUT_TAX, $this->total_bundle_without_tax);
+		if ($this->isColumnModified(ArInvoicePeer::TOTAL_CALLS_WITHOUT_TAX)) $criteria->add(ArInvoicePeer::TOTAL_CALLS_WITHOUT_TAX, $this->total_calls_without_tax);
 		if ($this->isColumnModified(ArInvoicePeer::TOTAL_WITHOUT_TAX)) $criteria->add(ArInvoicePeer::TOTAL_WITHOUT_TAX, $this->total_without_tax);
 		if ($this->isColumnModified(ArInvoicePeer::VAT_PERC)) $criteria->add(ArInvoicePeer::VAT_PERC, $this->vat_perc);
 		if ($this->isColumnModified(ArInvoicePeer::TOTAL_VAT)) $criteria->add(ArInvoicePeer::TOTAL_VAT, $this->total_vat);
@@ -920,6 +1117,9 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArInvoicePeer::EMAIL_SUBJECT)) $criteria->add(ArInvoicePeer::EMAIL_SUBJECT, $this->email_subject);
 		if ($this->isColumnModified(ArInvoicePeer::EMAIL_MESSAGE)) $criteria->add(ArInvoicePeer::EMAIL_MESSAGE, $this->email_message);
 		if ($this->isColumnModified(ArInvoicePeer::ALREADY_SENT)) $criteria->add(ArInvoicePeer::ALREADY_SENT, $this->already_sent);
+		if ($this->isColumnModified(ArInvoicePeer::INFO_OR_ADS_IMAGE1)) $criteria->add(ArInvoicePeer::INFO_OR_ADS_IMAGE1, $this->info_or_ads_image1);
+		if ($this->isColumnModified(ArInvoicePeer::INFO_OR_ADS_IMAGE2)) $criteria->add(ArInvoicePeer::INFO_OR_ADS_IMAGE2, $this->info_or_ads_image2);
+		if ($this->isColumnModified(ArInvoicePeer::AR_PARAMS_ID)) $criteria->add(ArInvoicePeer::AR_PARAMS_ID, $this->ar_params_id);
 
 		return $criteria;
 	}
@@ -964,6 +1164,10 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 		$copyObj->setArCdrTo($this->ar_cdr_to);
 
+		$copyObj->setTotalBundleWithoutTax($this->total_bundle_without_tax);
+
+		$copyObj->setTotalCallsWithoutTax($this->total_calls_without_tax);
+
 		$copyObj->setTotalWithoutTax($this->total_without_tax);
 
 		$copyObj->setVatPerc($this->vat_perc);
@@ -983,6 +1187,12 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		$copyObj->setEmailMessage($this->email_message);
 
 		$copyObj->setAlreadySent($this->already_sent);
+
+		$copyObj->setInfoOrAdsImage1($this->info_or_ads_image1);
+
+		$copyObj->setInfoOrAdsImage2($this->info_or_ads_image2);
+
+		$copyObj->setArParamsId($this->ar_params_id);
 
 
 		$copyObj->setNew(true);
@@ -1035,6 +1245,35 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 			
 		}
 		return $this->aArParty;
+	}
+
+	
+	public function setArParams($v)
+	{
+
+
+		if ($v === null) {
+			$this->setArParamsId(NULL);
+		} else {
+			$this->setArParamsId($v->getId());
+		}
+
+
+		$this->aArParams = $v;
+	}
+
+
+	
+	public function getArParams($con = null)
+	{
+		if ($this->aArParams === null && ($this->ar_params_id !== null)) {
+						include_once 'lib/model/om/BaseArParamsPeer.php';
+
+			$this->aArParams = ArParamsPeer::retrieveByPK($this->ar_params_id, $con);
+
+			
+		}
+		return $this->aArParams;
 	}
 
 } 

@@ -9,7 +9,7 @@
    !!!                                                        !!!
    !!! and execute                                            !!!
    !!!                                                        !!!
-   !!!    sh generate_modules.sh                              !!! 
+   !!!    sh generate_modules.sh                              !!!
    !!!                                                        !!!
    **************************************************************/
 
@@ -32,7 +32,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     // execute templates/getSvgSuccess.php
     //
     // NOTE: I'm using this method for retrieving files
-    // in order to set the http header 
+    // in order to set the http header
     // "content-type" to "image/svg+xml" as required
     // from the browser for SVG files.
     //
@@ -44,7 +44,8 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
   }
 
   public function executeHideChannelUsage() {
-    return $this->redirect('commercial_feature/index');
+    $this->setFlash('show_channel_usage', FALSE);
+    return $this->forward('admin_tt_call_report', 'list');
   }
 
   /**
@@ -58,7 +59,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 
   /**
    * @pre call first self::initBeforeCalcCondition()
-   * @return a Condition 
+   * @return a Condition
    */
   protected function calcConditionWithoutJoins() {
     $fullCondition = new Criteria();
@@ -100,7 +101,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 
     $filterWithOrder = clone($c);
     $this->addOrder($filterWithOrder);
-    
+
     VariableFrame::$filterConditionWithOrder = $filterWithOrder;
 
     list($startDate, $endDate) = $this->getAndUpdateTimeFrame();
@@ -111,7 +112,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     if (is_null(VariableFrame::$showChannelUsage)) {
       VariableFrame::$showChannelUsage = FALSE;
     }
-    
+
     // Compute values
 
     $c2 = clone($c);
@@ -125,13 +126,13 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     // NOTE: use a personalized "useCalldateIndex" of "lib/model/CdrPeer.php"
     // in order to create an optimized version of MySQL query associated
     // to the current filter.
-    
+
     $totCalls = 0;
     $totSeconds = 0;
     $totIncomes = 0;
     $totCosts = 0;
     $totEarn = 0;
-    
+
     foreach($rs as $rec) {
       $totCalls += $rec[0];
       $totSeconds += $rec[1];
@@ -139,7 +140,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
       $totCosts += $rec[3];
       $totEarn += $totIncomes - $totCosts;
     }
-    
+
     VariableFrame::$countOfRecords = $totCalls;
     VariableFrame::$totSeconds = $totSeconds;
     VariableFrame::$totIncomes = $totIncomes;
@@ -165,8 +166,8 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
    * POSTCONDITION: the resulting $c does not contain any select field
    * (required from the pager that adds its fields)
    *
-   * NOTE: the enabled/disabled filters must the same configured in 
-   * generator.yml, filters section. 
+   * NOTE: the enabled/disabled filters must the same configured in
+   * generator.yml, filters section.
    */
   protected function addFiltersCriteria($c) {
     // Process filter_on_party
@@ -236,7 +237,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     }
 
     // Process filter_on_destination_type
-    // 
+    //
     $filterOnDestinationTypeApplied = false;
     if (isset($this->filters['filter_on_destination_type'])) {
       $destinationType = $this->filters['filter_on_destination_type'];
@@ -253,9 +254,9 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
       if (!$filterOnDestinationTypeApplied) {
 	DestinationType::addAdminFiltersAccordingConfiguration($c);
       }
-     
+    
     // NOTE: filter_on_account and filter_on_office are enabled
-    // only if it is enabled also filter_on_party 
+    // only if it is enabled also filter_on_party
 
     // Process filter_on_vendor
     //
@@ -294,7 +295,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
         $c->add(CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER, $loc .'%', Criteria::LIKE);
       }
     }
-    
+
     // Show only proper calls for administrator/party/account
     // in the case no relevant filter on it is applied
     //
@@ -312,29 +313,28 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
    */
   public function executeResetCallsCost() {
     try {
+      ArProblemException::disableNotificationsToAdmin();
 
-      // Reset CDRs in the date range
-      //
       $this->initBeforeCalcCondition();
       list($fromDate, $toDate) = $this->getAndUpdateTimeFrame();
 
-      $sql = "UPDATE cdr SET destination_type = ? WHERE calldate >= ?";
+      $sql = "UPDATE cdr SET destination_type = " . DestinationType::unprocessed . " WHERE calldate >= \"" . fromUnixTimestampToMySQLTimestamp($fromDate) . "\"";
 
-      if (! is_null($toDate)) {
-	$sql .= " AND calldate < ?";
+      if (is_null($toDate)) {
+      } else {
+        $sql .= " AND calldate < \"" . fromUnixTimestampToMySQLTimestamp($toDate) . "\"";
       }
 
       $conn = Propel::getConnection();
-      $stmt = $conn->prepareStatement($sql);
+      $nr = $conn->executeUpdate($sql);
 
-      $stmt->setInt(1, DestinationType::unprocessed);
-      $stmt->setTimestamp(2, $fromDate);
+      $p = new ArProblem();
+      $p->setDuplicationKey("Reset of calls at " . date('c'));
+      $p->setDescription("The administrator reset (and forced recalculations) of " . $nr . " calls, using query " . $sql);
+      $p->setEffect("This in not an error, only an informative message. The calls were rerated under this PHP process. If there is a timeout, then the rest of calls will be rated at next execution of cron process. User will not see unrated calls, in the meantime. ");
+      $p->setProposedSolution("");
+      ArProblemException::addProblemIntoDBOnlyIfNew($p);
 
-      if (! is_null($toDate)) {
-	$stmt->setTimestamp(3, $toDate);
-      }
-
-      $stmt->executeUpdate();
     } catch(Exception $e) {
       $p = new ArProblem();
       $p->setDuplicationKey($e->getCode());
@@ -345,7 +345,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     // Rerate calls.
     //
     $re = new JobQueueProcessor();
-    $re->process();
+    $re->processOnline();
 
     return $this->redirect('admin_tt_call_report/list');
   }
@@ -353,9 +353,6 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
   
 
   /**
-   * Update also VariableFrame::$startFilterDate, 
-   * and VariableFrame::$endFilterDate = $endDate.
-   *
    * @return list($startDate, $endDate) in unix timestamp format.
    * @pre call first $this->initBeforeCalcCondition();
    */
@@ -368,11 +365,11 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     $toDate = null;
 
     if (isset($this->filters['filter_on_calldate_from']) && trim($this->filters['filter_on_calldate_from']) != '') {
-      $fromDate = fromSymfonyDateToUnixTimestamp($this->filters['filter_on_calldate_from']);
+      $fromDate = fromSymfonyTimestampToUnixTimestamp($this->filters['filter_on_calldate_from']);
     }
 
     if (isset($this->filters['filter_on_calldate_to']) && trim($this->filters['filter_on_calldate_to'] != '')) {
-      $toDate = fromSymfonyDateToUnixTimestamp($this->filters['filter_on_calldate_to']);
+      $toDate = fromSymfonyTimestampToUnixTimestamp($this->filters['filter_on_calldate_to']);
     }
 
     if (isset($this->filters['filter_on_timeframe'])) {
@@ -380,6 +377,10 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     } else {
       $frame = 0;
     }
+
+    // start from today, removing the time...
+    //
+    $baseDate = strtotime(fromUnixTimestampToMySQLDate(time()));
 
     switch ($frame) {
       case '0':
@@ -391,36 +392,52 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 	    // only 2 days for an admin because he sees the calls
 	    // of all his customers and so it is a lot of data.
 	    //
-	    $fromDate = strtotime("-1 day");
+	    $fromDate = strtotime("-1 day", $baseDate);
+      $toDate = null;
+
 	    $this->filters['filter_on_timeframe'] = '2';
 	  } else {
 	    // a reasonable default for a customer
 	    //
-	    $fromDate = strtotime("-2 week");
+	    $fromDate = strtotime("-2 week", $baseDate);
+      $toDate = null;
+
 	    $this->filters['filter_on_timeframe'] = '4';
 	  }
 	}
 	break;
       case '1':
         $fromDate = strtotime("today");
+        $toDate = null;
       break;
       case '2':
-        $fromDate = strtotime("-1 day");
+        $fromDate = strtotime("-1 day", $baseDate);
+        $toDate = null;
+
       break;
       case '3':
-        $fromDate = strtotime("-1 week");
+        $fromDate = strtotime("-1 week", $baseDate);
+        $toDate = null;
+
       break;
       case '4':
-        $fromDate = strtotime("-2 week");
+        $fromDate = strtotime("-2 week", $baseDate);
+        $toDate = null;
+
       break;
       case '5':
-        $fromDate = strtotime("-1 month");
+        $fromDate = strtotime("-1 month", $baseDate);
+        $toDate = null;
+
       break;
       case '6':
-        $fromDate = strtotime("-2 month");
+        $fromDate = strtotime("-2 month", $baseDate);
+        $toDate = null;
+
       break;
       case '7':
-        $fromDate = strtotime("-4 month");
+        $fromDate = strtotime("-4 month", $baseDate);
+        $toDate = null;
       break;
       case '20':
 	// this month
@@ -462,7 +479,6 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     return array($fromDate, $toDate);
   }
 
-
   /**
    * Apply a filter on time frame.
    *
@@ -473,11 +489,11 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     list($fromDate, $toDate) = $this->getAndUpdateTimeFrame();
 
     if (is_null($toDate)) {
-      $filterFromDate = fromUnixTimestampToMySQLDate($fromDate);
+      $filterFromDate = fromUnixTimestampToMySQLTimestamp($fromDate);
       $c->add(CdrPeer::CALLDATE, $filterFromDate, Criteria::GREATER_EQUAL);
     } else {
-      $filterFromDate = fromUnixTimestampToMySQLDate($fromDate);
-      $filterToDate = fromUnixTimestampToMySQLDate($toDate);
+      $filterFromDate = fromUnixTimestampToMySQLTimestamp($fromDate);
+      $filterToDate = fromUnixTimestampToMySQLTimestamp($toDate);
 
       $c2  = $c->getNewCriterion(CdrPeer::CALLDATE, $filterFromDate, Criteria::GREATER_EQUAL);
       $c2->addAnd($c->getNewCriterion(CdrPeer::CALLDATE, $filterToDate, Criteria::LESS_THAN));

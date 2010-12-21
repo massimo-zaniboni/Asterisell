@@ -43,7 +43,7 @@ class CleanCacheFromOldItems extends FixedJobProcessor {
 
     $connection = Propel::getConnection();
     $stmt = $connection->createStatement();
-    $stmt->executeUpdate('DELETE FROM ar_job_queue WHERE created_at < ' . $oldDate);
+    $stmt->executeUpdate('DELETE FROM ar_job_queue WHERE created_at < "' . $oldDate . '"');
 
     // Remove old files inside "web/generated_graphs" directory.
     //

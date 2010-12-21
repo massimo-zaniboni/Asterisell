@@ -22,6 +22,7 @@ generator:
       display_short_description: { name: Rate Description }
       display_cv_type:           { name: Type  }
       my_classification_state:   { name: For Calls of type, help: "Rate is applicable only to calls of the given type." }
+      my_priority_method:        { name: Priority Method, help: "Only rate with the same priority method are comparable. " }
 
       edit_of_php_class_serialization: { name: Rate Method, help: "After selecting a rate method, press the APPLY button. Use CHANGE RATE PARAMS button in order to customize rate method behaviour." }
 
@@ -34,7 +35,7 @@ generator:
     list:
       title: Rates
 
-      display: [_iscurrent, =_my_classification_state, is_exception, _my_vendor, _my_customer, start_time, end_time,  _display_short_description, id]
+      display: [_iscurrent, =_my_classification_state, _my_priority_method, is_exception, _my_vendor, _my_customer, start_time, end_time,  _display_short_description, id]
 
       filters: [_filter_on_end_time, ar_rate_category_id, _ar_party_id]
       
@@ -49,7 +50,7 @@ generator:
         select_destination_type:  { name: Call type, help: "Rate method is applicable only on calls of this type.. Note: this field depends also from the selected rate method." }
 
       display:
-        "Applicability": [_select_destination_type, start_time, end_time, is_exception]
+        "Applicability": [_select_destination_type, start_time, end_time, is_exception, _my_priority_method]
         "Compile only if the Rate is applied to Customers of the specified category (income of call) ": [_select_customer_category]
         "Compile only if the Rate is applied from a Vendor (cost of call)": [_select_vendor]
         "Method": [_edit_of_php_class_serialization]

@@ -51,6 +51,9 @@ all:
       - CleanCacheFromOldItems
       - CheckWebsiteUpdates
       - AdviseAdminOfNewProblems
+      # - CheckCallCostLimit                # Check if customers have reached theirs call cost limit.
+      # - CheckSafeLimitForConcurrentCalls  # Check if the server has reached his limit about the maximum (safe) number of concurrent calls. In case advise the administrator via mail
+
 
     # The jobs that are activate when there is a compatible event
     # on the job queue.
@@ -66,19 +69,7 @@ all:
     # rated calls.
     #
     jobs:
-      - GenerateInvoices
-      - GenerateInvoiceDetails
-      - GenerateInvoiceReportAsHTML
-      - GenerateInvoiceReportAsPDF
-      - GenerateInvoiceEmail
-      - SendInvoiceEmails
-      - SendInvoiceEmail
-      - SendInvoiceNotificationToAccountant
-      # - GenerateMailWarningCustomerForHighCallCost
-      # - WarnCustomerForHighCallCost
-      #  
-      # activate these two jobs if you want send an email
-      # directly to customer in case of high call costs.
+      - WarnCustomerForHighCallCost  # This job is executed only if it active also the `CheckCallCostLimit` corresponding job. It sends the emails to customers.
 
   # Enable/disable displaying of incoming/incoming/internal 
   # calls in the customer call report.
@@ -214,12 +205,14 @@ all:
   # the default currency used for rates, cost and incomes.
   #
   currency: EUR
+  # currency: USD
+  # currency: AUD
 
   # The ASCII char to use for representing the currency
   # in PDF and textual forms.
   #
   # EUR: 128
-  # US: 26
+  # US: 36
   # GBP: 163
   # 
   # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
@@ -235,8 +228,9 @@ all:
   # set the culture of the session to this value, but it is 
   # a safe setting.
   #
-  culture: en_US
+  # culture: en_US
   # culture: it_IT
+  culture: en_US
 
   # decimal places to use for currency when stored in the database CDR table
   #
@@ -287,7 +281,7 @@ all:
   #
   # > | INTERNAL VoIP Account | Call Direction | EXTERNAL Telephone Number |
   # > +-----------------------+----------------+---------------------------+
-  # > | account123            |    outgoing   | 390423XXXX                |
+  # > | account123            |    outgoing    | 390423XXXX                |
   # > | account123            |    incoming    | 39343XXXXX                |
   #
   # so the distinction is between internal and external telephone number
@@ -308,6 +302,15 @@ all:
   # * 2: use "src" field as internal telephone number,
   #      use "dst/lastapp_accepted_values" field as external telephone number.
   #      in case of unprocessed/ignored/internal use always "src" field for internal calls.
+  # * 3: it is assigned from the CDRInitialProcessing rate, that must complete during initial processing of a rate,
+  #      these fields:
+  #        - `cdr.ar_asterisk_account_id` (null if it is missing, and RateProcess will inform the user of the error);
+  #        - `cdr.cached_internal_telephone_number`;
+  #        - `cdr.cached_external_telephone_number`;
+  #        - `cdr.cached_masked_external_telephone_number`, can be null (it is completed from the framework), or with an explicit value
+  #        - `cdr.ar_telephone_prefix.id` can be null (it is completed from the framework),
+  #           or with an explicit value, in this case number portability is not automatically transferred to the telephone prefix,
+  #           and it must be explicitely managed from the CDR processor;
   #
   # IMPORTANT: Changes to this parameter make effect only on new rated calls,
   # so you must force a rerate if you want apply the new mask only to already
@@ -347,4 +350,14 @@ all:
   #
   months_after_removing_a_job_log_entry: 2
 
-  
+  # Where uploaded files are put/read.
+  # This is a directory inside "web" directory,
+  # and it must be web-server readable and writable.
+  #
+  # This default directory is already created.
+  # If you set up a new directory, you must manually
+  # create it.
+  #
+  sfMediaLibrary:
+    upload_dir: uploads/assets
+    

@@ -107,7 +107,7 @@ class rateActions extends autorateActions {
   /**
    * Override addSortCriteris in order to add a more strict filter.
    *
-   * POSTCONDITION: the resulting $c does not contain any select field
+   * @ensure the resulting $c does not contain any select field
    * (required from the pager that adds its fields)
    */
   protected function addFiltersCriteria($c) {
@@ -116,19 +116,19 @@ class rateActions extends autorateActions {
     // Set default filter on date
     // 
     if (isset($this->filters['filter_on_end_time']) && trim($this->filters['filter_on_end_time']) != '') {
-	$fromDate = fromSymfonyDateToUnixTimestamp($this->filters['filter_on_end_time']);
+      $fromDate = fromSymfonyDateToUnixTimestamp($this->filters['filter_on_end_time']);
     } else {
       $fromDate = time();
     }
     $this->filters['filter_on_end_time'] = $fromDate;
 
     $filterFromDate = fromUnixTimestampToMySQLDate($fromDate);
-    $c1  = $c->getNewCriterion(ArRatePeer::START_TIME, $filterFromDate, Criteria::LESS_EQUAL);
-    $c2  = $c->getNewCriterion(ArRatePeer::END_TIME, $filterFromDate, Criteria::GREATER_THAN);
-    $c3  = $c->getNewCriterion(ArRatePeer::END_TIME, null, Criteria::ISNULL);
+    $c1 = $c->getNewCriterion(ArRatePeer::START_TIME, $filterFromDate, Criteria::LESS_EQUAL);
+    $c2 = $c->getNewCriterion(ArRatePeer::END_TIME, $filterFromDate, Criteria::GREATER_THAN);
+    $c3 = $c->getNewCriterion(ArRatePeer::END_TIME, null, Criteria::ISNULL);
 
     $c2->addOr($c3);
-      
+
     $c1->addAnd($c2);
 
     $c->add($c1);

@@ -56,15 +56,15 @@ class PhpDemoRate extends PhpRateWithDstChannel {
    * @return 0 if it is no applicable,
    *         the lenght of destinationTelephonePrefix + 1 otherwise.
    */
-  public function isApplicable(Cdr $cdr) {
+  public function isApplicable($cdr, $rateInfo = null) {
     if (parent::isApplicable($cdr) != 0 && $this->isPrefixOf($this->sourceTelephonePrefix, $cdr->getSrc()) != 0) {
-      return $this->isPrefixOf($this->$calledTelephoneNumber, $cdr->getExternalTelephoneNumberWithAppliedPortability());
+      return $this->isPrefixOf($this->$calledTelephoneNumber, $cdr->getCachedExternalTelephoneNumberWithAppliedPortability());
     } else {
       return 0;
     }
   }
 
-  protected function rateCDR(Cdr $cdr) {
+  protected function rateCDR($cdr, $rateInfo = null) {
     return PhpRateOnlyCalc::calcCostByDuration($cdr, 0, $this->cost, 0, 0, 0);
   }
 

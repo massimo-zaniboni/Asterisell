@@ -22,6 +22,15 @@ processAllCallReportTemplate("templates/_filter_on_destination_type.php");
 processAllCallReportTemplate("actions/actions.class.php");
 
 
+// Invoice - Template 
+
+copyModule("invoice_template", "customer_invoice");
+copyModule("invoice_template", "vendor_invoice");
+
+processAllInvoiceTemplate("config/generator.yml");
+processAllInvoiceTemplate("actions/actions.class.php");
+processAllInvoiceTemplate("templates/_creation_actions.php");
+
 // About - Template
 
 copyModule("about_template", "about");

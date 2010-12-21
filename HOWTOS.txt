@@ -1,3 +1,28 @@
+= Code Starting Points =
+
+The database schema with annotations is described in
+
+  config/schema.yml
+
+The
+
+  apps/asterisell/config/app.yml
+
+contains many annotations on how configure Asterisell.
+
+The application has on-line help, useful for understanding important concepts.
+
+  apps/asterisell/lib/jobs/RateCalls.php
+
+is the job rating all the calls.
+
+  apps/asterisell/lib/jobs/invoices/GenerateInvoiceDetails.php
+
+is the job calculating the invoices.
+   
+
+== Customizations ==
+
 = Developer Annotations =
 
 == Add a Custom Rate Method ==
@@ -26,7 +51,7 @@ to
 
   > class web_accountActions extends autoweb_accountActions {
 
-NOTA: deve corrispondere sia il nome della classe che quello del parent.
+NOTA: update both class name and parent name.
 
 Remove the content of "executeIndex" function.
 
@@ -98,6 +123,10 @@ and add the field inside "generator.yml"
 
   http://creole.phpdb.org/trac/wiki/Documentation/CreoleGuide
 
+  GenerateInvoiceDetails for an example of SQL Query.
+
+  RateCalls for examples of UPDATE Queries.
+
 == Adding User Messages ==
 
 In Action code:
@@ -122,10 +151,10 @@ Outside an action
   sfContext::getInstance()->getLogger()->info($message);
   sfContext::getInstance()->getLogger()->err($message);
 
-Inside a template if the erroe must be viewed on the web toolbar
+Inside a template if the error must be viewed on the web toolbar
 
-  echo log_message(...)
-
+  echo log_message(...);
+  
 == Simple Queries ==
 
 This retrieve the first record:
@@ -139,6 +168,20 @@ This retrieve all the records:
     $c = new Criteria();
     $c->add(ArParamsPeer::IS_DEFAULT, TRUE);
     $results = ArParamsPeer::doSelect($c);
+
+== Create Queries directly in SQL ==
+
+$connection = Propel::getConnection();
+$query = 'SELECT id FROM ar_rate';
+$stm = $connection->createStatement();
+$rs = $stm->executeQuery($query);
+
+while($rs->next()) {
+  echo $rs->getInt("id");
+  echo "\n";
+}
+
+Date inside "..." and respect SQL syntax.
 
 == Create Complex Custom Queries ==
 
@@ -164,4 +207,10 @@ Access user data at run-time using:
   * create JobData (eventually);
   * create a JobProcessor following the schema of other JobProcesorrs;
   * register the JobProcessor inside app.yml;
+
+= Common Errors in Code =
+
+  * mismatched PHP variable names, not detected because in code-path that are not executed often, especially error signal;
+    * PhpStorm signals many of these problems. Check always the source code with it.
+    
 

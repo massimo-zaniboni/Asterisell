@@ -40,5 +40,7 @@ class ArAsteriskAccountMapBuilder {
 
 		$tMap->addForeignKey('AR_OFFICE_ID', 'ArOfficeId', 'int', CreoleTypes::INTEGER, 'ar_office', 'ID', false, null);
 
+		$tMap->addColumn('IS_ACTIVE', 'IsActive', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
 	} 
 } 

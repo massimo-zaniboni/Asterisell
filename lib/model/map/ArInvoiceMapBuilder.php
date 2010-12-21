@@ -48,6 +48,10 @@ class ArInvoiceMapBuilder {
 
 		$tMap->addColumn('AR_CDR_TO', 'ArCdrTo', 'int', CreoleTypes::DATE, false, null);
 
+		$tMap->addColumn('TOTAL_BUNDLE_WITHOUT_TAX', 'TotalBundleWithoutTax', 'int', CreoleTypes::INTEGER, false, 20);
+
+		$tMap->addColumn('TOTAL_CALLS_WITHOUT_TAX', 'TotalCallsWithoutTax', 'int', CreoleTypes::INTEGER, false, 20);
+
 		$tMap->addColumn('TOTAL_WITHOUT_TAX', 'TotalWithoutTax', 'int', CreoleTypes::INTEGER, false, 20);
 
 		$tMap->addColumn('VAT_PERC', 'VatPerc', 'int', CreoleTypes::INTEGER, false, 20);
@@ -67,6 +71,12 @@ class ArInvoiceMapBuilder {
 		$tMap->addColumn('EMAIL_MESSAGE', 'EmailMessage', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('ALREADY_SENT', 'AlreadySent', 'boolean', CreoleTypes::BOOLEAN, false, null);
+
+		$tMap->addColumn('INFO_OR_ADS_IMAGE1', 'InfoOrAdsImage1', 'string', CreoleTypes::VARCHAR, false, 1024);
+
+		$tMap->addColumn('INFO_OR_ADS_IMAGE2', 'InfoOrAdsImage2', 'string', CreoleTypes::VARCHAR, false, 1024);
+
+		$tMap->addForeignKey('AR_PARAMS_ID', 'ArParamsId', 'int', CreoleTypes::INTEGER, 'ar_params', 'ID', false, null);
 
 	} 
 } 

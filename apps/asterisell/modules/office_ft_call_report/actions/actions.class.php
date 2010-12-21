@@ -9,7 +9,7 @@
    !!!                                                        !!!
    !!! and execute                                            !!!
    !!!                                                        !!!
-   !!!    sh generate_modules.sh                              !!! 
+   !!!    sh generate_modules.sh                              !!!
    !!!                                                        !!!
    **************************************************************/
 
@@ -32,7 +32,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     // execute templates/getSvgSuccess.php
     //
     // NOTE: I'm using this method for retrieving files
-    // in order to set the http header 
+    // in order to set the http header
     // "content-type" to "image/svg+xml" as required
     // from the browser for SVG files.
     //
@@ -44,7 +44,8 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
   }
 
   public function executeHideChannelUsage() {
-    return $this->redirect('commercial_feature/index');
+    $this->setFlash('show_channel_usage', FALSE);
+    return $this->forward('admin_tt_call_report', 'list');
   }
 
   /**
@@ -58,7 +59,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
 
   /**
    * @pre call first self::initBeforeCalcCondition()
-   * @return a Condition 
+   * @return a Condition
    */
   protected function calcConditionWithoutJoins() {
     $fullCondition = new Criteria();
@@ -100,7 +101,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
 
     $filterWithOrder = clone($c);
     $this->addOrder($filterWithOrder);
-    
+
     VariableFrame::$filterConditionWithOrder = $filterWithOrder;
 
     list($startDate, $endDate) = $this->getAndUpdateTimeFrame();
@@ -111,7 +112,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     if (is_null(VariableFrame::$showChannelUsage)) {
       VariableFrame::$showChannelUsage = FALSE;
     }
-    
+
     // Compute values
 
     $c2 = clone($c);
@@ -125,13 +126,13 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     // NOTE: use a personalized "useCalldateIndex" of "lib/model/CdrPeer.php"
     // in order to create an optimized version of MySQL query associated
     // to the current filter.
-    
+
     $totCalls = 0;
     $totSeconds = 0;
     $totIncomes = 0;
     $totCosts = 0;
     $totEarn = 0;
-    
+
     foreach($rs as $rec) {
       $totCalls += $rec[0];
       $totSeconds += $rec[1];
@@ -139,7 +140,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
       $totCosts += $rec[3];
       $totEarn += $totIncomes - $totCosts;
     }
-    
+
     VariableFrame::$countOfRecords = $totCalls;
     VariableFrame::$totSeconds = $totSeconds;
     VariableFrame::$totIncomes = $totIncomes;
@@ -167,8 +168,8 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
    * POSTCONDITION: the resulting $c does not contain any select field
    * (required from the pager that adds its fields)
    *
-   * NOTE: the enabled/disabled filters must the same configured in 
-   * generator.yml, filters section. 
+   * NOTE: the enabled/disabled filters must the same configured in
+   * generator.yml, filters section.
    */
   protected function addFiltersCriteria($c) {
     // Process filter_on_party
@@ -192,7 +193,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     $filterOnOfficeApplied = false;
     $accountId = null;
 
-  
+
     // in case of office account this filter is applied by default
     //
     $officeId = $this->getUser()->getOfficeId();
@@ -216,7 +217,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     }
 
     // Process filter_on_destination_type
-    // 
+    //
     $filterOnDestinationTypeApplied = false;
 
           // Normal users do not see unprocessed/ignored calls
@@ -224,9 +225,9 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
       if (!$filterOnDestinationTypeApplied) {
 	DestinationType::addCustomerFiltersAccordingConfiguration($c);
       }
-     
+    
     // NOTE: filter_on_account and filter_on_office are enabled
-    // only if it is enabled also filter_on_party 
+    // only if it is enabled also filter_on_party
 
     // Process filter_on_vendor
     //
@@ -257,7 +258,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
         $c->add(CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER, $loc .'%', Criteria::LIKE);
       }
     }
-    
+
     // Show only proper calls for administrator/party/account
     // in the case no relevant filter on it is applied
     //
@@ -270,9 +271,6 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
 
 
   /**
-   * Update also VariableFrame::$startFilterDate, 
-   * and VariableFrame::$endFilterDate = $endDate.
-   *
    * @return list($startDate, $endDate) in unix timestamp format.
    * @pre call first $this->initBeforeCalcCondition();
    */
@@ -285,11 +283,11 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     $toDate = null;
 
     if (isset($this->filters['filter_on_calldate_from']) && trim($this->filters['filter_on_calldate_from']) != '') {
-      $fromDate = fromSymfonyDateToUnixTimestamp($this->filters['filter_on_calldate_from']);
+      $fromDate = fromSymfonyTimestampToUnixTimestamp($this->filters['filter_on_calldate_from']);
     }
 
     if (isset($this->filters['filter_on_calldate_to']) && trim($this->filters['filter_on_calldate_to'] != '')) {
-      $toDate = fromSymfonyDateToUnixTimestamp($this->filters['filter_on_calldate_to']);
+      $toDate = fromSymfonyTimestampToUnixTimestamp($this->filters['filter_on_calldate_to']);
     }
 
     if (isset($this->filters['filter_on_timeframe'])) {
@@ -297,6 +295,10 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     } else {
       $frame = 0;
     }
+
+    // start from today, removing the time...
+    //
+    $baseDate = strtotime(fromUnixTimestampToMySQLDate(time()));
 
     switch ($frame) {
       case '0':
@@ -308,36 +310,52 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
 	    // only 2 days for an admin because he sees the calls
 	    // of all his customers and so it is a lot of data.
 	    //
-	    $fromDate = strtotime("-1 day");
+	    $fromDate = strtotime("-1 day", $baseDate);
+      $toDate = null;
+
 	    $this->filters['filter_on_timeframe'] = '2';
 	  } else {
 	    // a reasonable default for a customer
 	    //
-	    $fromDate = strtotime("-2 week");
+	    $fromDate = strtotime("-2 week", $baseDate);
+      $toDate = null;
+
 	    $this->filters['filter_on_timeframe'] = '4';
 	  }
 	}
 	break;
       case '1':
         $fromDate = strtotime("today");
+        $toDate = null;
       break;
       case '2':
-        $fromDate = strtotime("-1 day");
+        $fromDate = strtotime("-1 day", $baseDate);
+        $toDate = null;
+
       break;
       case '3':
-        $fromDate = strtotime("-1 week");
+        $fromDate = strtotime("-1 week", $baseDate);
+        $toDate = null;
+
       break;
       case '4':
-        $fromDate = strtotime("-2 week");
+        $fromDate = strtotime("-2 week", $baseDate);
+        $toDate = null;
+
       break;
       case '5':
-        $fromDate = strtotime("-1 month");
+        $fromDate = strtotime("-1 month", $baseDate);
+        $toDate = null;
+
       break;
       case '6':
-        $fromDate = strtotime("-2 month");
+        $fromDate = strtotime("-2 month", $baseDate);
+        $toDate = null;
+
       break;
       case '7':
-        $fromDate = strtotime("-4 month");
+        $fromDate = strtotime("-4 month", $baseDate);
+        $toDate = null;
       break;
       case '20':
 	// this month
@@ -379,7 +397,6 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     return array($fromDate, $toDate);
   }
 
-
   /**
    * Apply a filter on time frame.
    *
@@ -390,11 +407,11 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     list($fromDate, $toDate) = $this->getAndUpdateTimeFrame();
 
     if (is_null($toDate)) {
-      $filterFromDate = fromUnixTimestampToMySQLDate($fromDate);
+      $filterFromDate = fromUnixTimestampToMySQLTimestamp($fromDate);
       $c->add(CdrPeer::CALLDATE, $filterFromDate, Criteria::GREATER_EQUAL);
     } else {
-      $filterFromDate = fromUnixTimestampToMySQLDate($fromDate);
-      $filterToDate = fromUnixTimestampToMySQLDate($toDate);
+      $filterFromDate = fromUnixTimestampToMySQLTimestamp($fromDate);
+      $filterToDate = fromUnixTimestampToMySQLTimestamp($toDate);
 
       $c2  = $c->getNewCriterion(CdrPeer::CALLDATE, $filterFromDate, Criteria::GREATER_EQUAL);
       $c2->addAnd($c->getNewCriterion(CdrPeer::CALLDATE, $filterToDate, Criteria::LESS_THAN));

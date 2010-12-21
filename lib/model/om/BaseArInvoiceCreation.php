@@ -39,6 +39,14 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 	
 	protected $ar_cdr_to;
 
+
+	
+	protected $info_or_ads_image1;
+
+
+	
+	protected $info_or_ads_image2;
+
 	
 	protected $aArParams;
 
@@ -147,6 +155,20 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		} else {
 			return date($format, $ts);
 		}
+	}
+
+	
+	public function getInfoOrAdsImage1()
+	{
+
+		return $this->info_or_ads_image1;
+	}
+
+	
+	public function getInfoOrAdsImage2()
+	{
+
+		return $this->info_or_ads_image2;
 	}
 
 	
@@ -271,6 +293,34 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setInfoOrAdsImage1($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->info_or_ads_image1 !== $v) {
+			$this->info_or_ads_image1 = $v;
+			$this->modifiedColumns[] = ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE1;
+		}
+
+	} 
+	
+	public function setInfoOrAdsImage2($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->info_or_ads_image2 !== $v) {
+			$this->info_or_ads_image2 = $v;
+			$this->modifiedColumns[] = ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE2;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -291,11 +341,15 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 
 			$this->ar_cdr_to = $rs->getDate($startcol + 7, null);
 
+			$this->info_or_ads_image1 = $rs->getString($startcol + 8);
+
+			$this->info_or_ads_image2 = $rs->getString($startcol + 9);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 8; 
+						return $startcol + 10; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArInvoiceCreation object", $e);
 		}
@@ -463,6 +517,12 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 			case 7:
 				return $this->getArCdrTo();
 				break;
+			case 8:
+				return $this->getInfoOrAdsImage1();
+				break;
+			case 9:
+				return $this->getInfoOrAdsImage2();
+				break;
 			default:
 				return null;
 				break;
@@ -481,6 +541,8 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 			$keys[5] => $this->getInvoiceDate(),
 			$keys[6] => $this->getArCdrFrom(),
 			$keys[7] => $this->getArCdrTo(),
+			$keys[8] => $this->getInfoOrAdsImage1(),
+			$keys[9] => $this->getInfoOrAdsImage2(),
 		);
 		return $result;
 	}
@@ -520,6 +582,12 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 			case 7:
 				$this->setArCdrTo($value);
 				break;
+			case 8:
+				$this->setInfoOrAdsImage1($value);
+				break;
+			case 9:
+				$this->setInfoOrAdsImage2($value);
+				break;
 		} 	}
 
 	
@@ -535,6 +603,8 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[5], $arr)) $this->setInvoiceDate($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setArCdrFrom($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setArCdrTo($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setInfoOrAdsImage1($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setInfoOrAdsImage2($arr[$keys[9]]);
 	}
 
 	
@@ -550,6 +620,8 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArInvoiceCreationPeer::INVOICE_DATE)) $criteria->add(ArInvoiceCreationPeer::INVOICE_DATE, $this->invoice_date);
 		if ($this->isColumnModified(ArInvoiceCreationPeer::AR_CDR_FROM)) $criteria->add(ArInvoiceCreationPeer::AR_CDR_FROM, $this->ar_cdr_from);
 		if ($this->isColumnModified(ArInvoiceCreationPeer::AR_CDR_TO)) $criteria->add(ArInvoiceCreationPeer::AR_CDR_TO, $this->ar_cdr_to);
+		if ($this->isColumnModified(ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE1)) $criteria->add(ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE1, $this->info_or_ads_image1);
+		if ($this->isColumnModified(ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE2)) $criteria->add(ArInvoiceCreationPeer::INFO_OR_ADS_IMAGE2, $this->info_or_ads_image2);
 
 		return $criteria;
 	}
@@ -593,6 +665,10 @@ abstract class BaseArInvoiceCreation extends BaseObject  implements Persistent {
 		$copyObj->setArCdrFrom($this->ar_cdr_from);
 
 		$copyObj->setArCdrTo($this->ar_cdr_to);
+
+		$copyObj->setInfoOrAdsImage1($this->info_or_ads_image1);
+
+		$copyObj->setInfoOrAdsImage2($this->info_or_ads_image2);
 
 
 		$copyObj->setNew(true);

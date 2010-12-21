@@ -39,12 +39,14 @@ abstract class TypeTable {
   static public $destinationType_ignore = 4;
 
   static public $types = array(
-    "processing_state_type" => array(0 => "unprocessed",
+    "processing_state_type" => array(
+             0 => "unprocessed",
 				     1 => "unrated",
 				     2 => "rated",
 				     3 => "error"),
 
-    "destination_type" => array(0 => "unknown",
+    "destination_type" => array(
+        0 => "unknown",
 				1 => "incoming",
 				2 => "outgoing",
 				3 => "internal",

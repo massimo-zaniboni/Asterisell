@@ -54,6 +54,7 @@ if ($sf_user->hasCredential('admin')) {
   echo '<li><a href="" target="_self" >' . __('Params') . '</a>'. "\n";
   echo '<ul>'. "\n";
   echo '<li>' . link_to(__('Main Params/Resellers'), 'params/list') . '</li>'. "\n";
+  echo '<li>' . link_to(__('Upload Files'), 'sfMediaLibrary/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('Price Categories'), 'rate_category/list') . '</li>'. "\n";
   echo '<li>' . link_to(__('Telephone Prefixes'), 'telephone_prefix/list') . '</li>'. "\n";
   echo '<li>' . link_to(__('Number Portability'), 'commercial_feature/index') . '</li>'. "\n";
@@ -71,6 +72,7 @@ if ($sf_user->hasCredential('admin')) {
   echo '</ul>'. "\n";
   echo '</li>'. "\n";
 
+
   echo '<li><a href="" target="_self" >' . __('Calls') . '</a>'. "\n";
   echo '<ul>'. "\n";
   echo '<li>' . link_to(__('Calls Report'), 'admin_tt_call_report/list') . '</li>'. "\n";
@@ -84,6 +86,7 @@ if ($sf_user->hasCredential('admin')) {
   echo '<li>' . link_to(__('Customer Invoices'), 'commercial_feature/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('Vendor Invoices'), 'commercial_feature/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('Batch Invoice Creation'), 'commercial_feature/index') . '</li>'. "\n";
+  echo '<li>' . link_to(__('Customer Payments'), 'commercial_feature/index') . '</li>'. "\n";
   echo '</ul>'. "\n";
   echo '</li>'. "\n";
 

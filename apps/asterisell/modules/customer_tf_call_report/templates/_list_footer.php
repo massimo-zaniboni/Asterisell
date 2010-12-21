@@ -46,11 +46,10 @@ The re-rate button will reset the calls in the selected timeframe. Other filters
 
 This behaviour is counterintuive, but it is usefull in order to reset calls containing errors and that are not joined with other records of the database, and also ignored calls. 
 
-Then the resetted calls will be rated, so there is no permanent loss of information.
-
-This behaviour allows also to write a fast updating query.
-
+The resetted calls will be rated, so there is no permanent loss of information.
 If there is a high number of calls to rate, the PHP process can use all available time and then stop. The remaining calls will be rated from the cron job at the next step, or can be forced using the Job Log button.
+
+All the error messages generated during the re-rating are put inside the "Current Problems" table, but they are (intentionally) not emailed to administrators, in order to avoid sending warning emails, during the work of an administrator on the system.
 
 ## Update of Receiver Type
 

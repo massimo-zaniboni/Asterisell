@@ -23,6 +23,10 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 	
 	protected $ar_office_id;
 
+
+	
+	protected $is_active = true;
+
 	
 	protected $aArOffice;
 
@@ -64,6 +68,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 	{
 
 		return $this->ar_office_id;
+	}
+
+	
+	public function getIsActive()
+	{
+
+		return $this->is_active;
 	}
 
 	
@@ -127,6 +138,16 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setIsActive($v)
+	{
+
+		if ($this->is_active !== $v || $v === true) {
+			$this->is_active = $v;
+			$this->modifiedColumns[] = ArAsteriskAccountPeer::IS_ACTIVE;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -139,11 +160,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 			$this->ar_office_id = $rs->getInt($startcol + 3);
 
+			$this->is_active = $rs->getBoolean($startcol + 4);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 4; 
+						return $startcol + 5; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArAsteriskAccount object", $e);
 		}
@@ -315,6 +338,9 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			case 3:
 				return $this->getArOfficeId();
 				break;
+			case 4:
+				return $this->getIsActive();
+				break;
 			default:
 				return null;
 				break;
@@ -329,6 +355,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getAccountCode(),
 			$keys[3] => $this->getArOfficeId(),
+			$keys[4] => $this->getIsActive(),
 		);
 		return $result;
 	}
@@ -356,6 +383,9 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			case 3:
 				$this->setArOfficeId($value);
 				break;
+			case 4:
+				$this->setIsActive($value);
+				break;
 		} 	}
 
 	
@@ -367,6 +397,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setAccountCode($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setArOfficeId($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setIsActive($arr[$keys[4]]);
 	}
 
 	
@@ -378,6 +409,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArAsteriskAccountPeer::NAME)) $criteria->add(ArAsteriskAccountPeer::NAME, $this->name);
 		if ($this->isColumnModified(ArAsteriskAccountPeer::ACCOUNT_CODE)) $criteria->add(ArAsteriskAccountPeer::ACCOUNT_CODE, $this->account_code);
 		if ($this->isColumnModified(ArAsteriskAccountPeer::AR_OFFICE_ID)) $criteria->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $this->ar_office_id);
+		if ($this->isColumnModified(ArAsteriskAccountPeer::IS_ACTIVE)) $criteria->add(ArAsteriskAccountPeer::IS_ACTIVE, $this->is_active);
 
 		return $criteria;
 	}
@@ -413,6 +445,8 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		$copyObj->setAccountCode($this->account_code);
 
 		$copyObj->setArOfficeId($this->ar_office_id);
+
+		$copyObj->setIsActive($this->is_active);
 
 
 		if ($deepCopy) {

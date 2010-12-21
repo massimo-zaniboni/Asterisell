@@ -227,6 +227,8 @@ propel:
     # the office of the customer that
     # is accountable (pays) for the call of this asterisk_account
 
+    is_active: { type: boolean, required: true, default: 1 }
+
   ar_office:
   #
   # every customer can have one or more offices/seat/centers
@@ -423,6 +425,28 @@ propel:
     #
     # It is not used anymore!
 
+    logo_html_color: varchar(12)
+    #
+    # The main color of the logo, that can be used for customizing invoices, reports and screens
+
+    payment_days: { type: integer, size: 20, required: false, default: null }
+
+    reconnection_fee: varchar(40)
+
+    info_telephone_number: varchar(512)
+
+    late_payment_fee: varchar(40)
+
+    etf_bbs: varchar(512)
+
+    etf_acc_no: varchar(512)
+
+    account_department: varchar(512)
+
+    direct_debit_payment_email: varchar(512)
+
+    direct_debit_payment_telephone_number: varchar(512)
+
   ar_web_account:
   
     id:
@@ -484,7 +508,18 @@ propel:
     #
     # consider calls until this date (excluse this date)
 
+    total_bundle_without_tax: { type: integer, size: 20, required: false, default: 0 }
+    #
+    # the sum of cost of bundles active at the start date of the invoice,
+    # associated to the same rate category of the invoice customer
+
+    total_calls_without_tax: { type: integer, size: 20, required: false, default: 0 }
+    #
+    # the sum of calls cost
+
     total_without_tax: { type: integer, size: 20, index: false, required: false, default: NULL }
+    #
+    # the sumo of total_bundle_without_tax and total_calls_without_tax
 
     vat_perc: { type: integer, size: 20, index: false, required: false, default: NULL }
 
@@ -512,6 +547,20 @@ propel:
     already_sent: boolean
     #
     # true if the invoice is already sent to customer or received from vendor
+
+    info_or_ads_image1: varchar(1024)
+    #
+    # a path to a file containing an info/ads image to (maybe) add inside the invoice during creation
+
+    info_or_ads_image2: varchar(1024)
+    #
+    # a path to a file containing an info/ads image to (maybe) add inside the invoice during creation
+
+    ar_params_id:
+    #
+    # in case of Vendor invoice, the invoice contains the costs of all (and only of) party associated to
+    # the specified params, that act as a filter on reseller.
+
 
   ar_invoice_creation:
   #
@@ -550,6 +599,34 @@ propel:
     ar_cdr_to: date
     #
     # consider calls until this date (exclise this date)
+
+    info_or_ads_image1: varchar(1024)
+    #
+    # a path to a file containing an info/ads image to (maybe) add inside the invoice during creation
+
+    info_or_ads_image2: varchar(1024)
+    #
+    # a path to a file containing an info/ads image to (maybe) add inside the invoice during creation
+
+  ar_payment:
+    id:
+
+    ar_party_id:
+
+    date: { type: date, index: true }
+
+    invoice_nr: { type: varchar, size: 20, index: true, required: false, unique: false }
+    #
+    # an optional link to the invoice that was (maybe partially) payed
+
+    payment_method: varchar(1024)
+
+    payment_references: varchar(1024)
+    
+    amount: { type: integer, size: 20, index: false, required: true, default: 0 }
+
+    note: longvarchar
+
 
   ar_rate_category:
   #
@@ -609,7 +686,7 @@ propel:
 
     user_input: clob
     #
-    # description of the user input eventually 
+    # description of the user input eventually
     # used to initialize the rate.
     # Few rate methods use this field to store
     # private informations.
@@ -621,7 +698,33 @@ propel:
     # from Symfony framework.
 
     note: longvarchar
-    
+
+  ar_rate_incremental_info:
+  #
+  # Stores incremental info that a rate method can use during rating.
+  # Each incremental info is associated to a tuple <ar_party_id, ar_rate_id, period>
+  # and the incremental info is valid only if CDR are processed in a consecutive way
+  # and last_processed_cdr_... fields are used for checking this condition.
+    id:
+
+    ar_party_id:
+
+    ar_rate_id:
+
+    period: { type: varchar(1024), index: true }
+    #
+    # identifies the period where the incremental info can be applied.
+    # The meaning of the field depends uniquely from the
+    # used PhpRate method.
+
+    last_processed_cdr_date: timestamp
+
+    last_processed_cdr_id: { type: integer, size: 20 }
+
+    bundle_rate: clob
+    #
+    # serialization of the data as PHP class
+
   ar_telephone_prefix:
   #
   # A telephone prefix identifing a certain area or telephone operator.
@@ -656,9 +759,8 @@ propel:
 
     duplication_key: { type: varchar(160), required: true, unique: true, index: true }
     # 
-    # a key that represent in a unique manner a problem in order
-
-    # to avoid annoiance duplicate problems in the table
+    # a unique-key representing the problem type, used in order to avoid many problems
+    # of the same type in the table
 
     description: longvarchar
 

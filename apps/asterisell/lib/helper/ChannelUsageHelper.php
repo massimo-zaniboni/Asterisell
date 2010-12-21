@@ -31,13 +31,16 @@ spl_autoload_register( array( 'ezcBase', 'autoload' ) );
 /**
  * Allows to use a data array for graph display
  */
-class GraphDataIterator implements Iterator {
+class DayByDayGraphDataIterator implements Iterator {
+
+  protected $arrLabels;
 
   protected $arr;
 
   protected $pos = 0;
 
-  public function __construct($a) {
+  public function __construct($l, $a) {
+    $this->arrLabels = $l;
     $this->arr = $a;
     $this->position = 0;
   }
@@ -46,7 +49,7 @@ class GraphDataIterator implements Iterator {
    * Convert an element of the key to a value.
    */
   protected function convertKey($k) {
-    return $k;
+    return $this->arrLabels[$k];
   }
 
   protected function convertValue($v) {
@@ -58,7 +61,7 @@ class GraphDataIterator implements Iterator {
   }
 
   function current() {
-    return $this->convertValue($this->arr[$this->pos]);
+    return $this->convertValue($this->arr[$this->arrLabels[$this->pos]]);
   }
 
   function key() {
@@ -70,26 +73,7 @@ class GraphDataIterator implements Iterator {
   }
 
   function valid() {
-    return isset($this->arr[$this->pos]);
-  }
-}
-
-class DayByDayGraphDataIterator extends GraphDataIterator {
-
-  protected $startDate;
-
-  public function __construct($a, $startDate) {
-    parent::__construct($a);
-    $this->startDate = $startDate;
-  }
-
-  /**
-   * Use INVOICE format.
-   */
-  protected function convertKey($k) {
-    $date = strtotime("+$k day", $this->startDate);
-    $label = format_invoice_timestamp_according_config($date);
-    return $label;
+    return isset($this->arrLabels[$this->pos]);
   }
 }
 
@@ -97,15 +81,14 @@ class MaxLimitGraphDataIterator extends DayByDayGraphDataIterator {
 
   protected $limit;
 
-  public function __construct($a, $startDate, $limit) {
-    parent::__construct($a, $startDate);
+  public function __construct($l, $a, $limit) {
+    parent::__construct($l, $a);
     $this->limit = $limit;
   }
 
   protected function convertValue($v) {
     return $this->limit;
   }
-
 }
 
 /**
@@ -151,10 +134,20 @@ class CalculatedGraph {
    * @param $concurrentCallLimit not NULL if the graph is about concurrent calls,
    * NULL otherwise.
    */
-  public function __construct($title, $description, $startDate, $data, $concurrentCallLimit = NULL) {
+  public function __construct($title, $description, $data, $concurrentCallLimit = NULL) {
     $this->description = $description;
     $count = count($data);
-    $graphData = new ezcGraphArrayDataSet(new DayByDayGraphDataIterator($data, $startDate));
+
+    // Separate labels from data
+    //
+    $labels = array();
+    $i = 0;
+    foreach($data as $l => $v) {
+      $labels[$i] = $l;
+      $i++;
+    }
+
+    $graphData = new ezcGraphArrayDataSet(new DayByDayGraphDataIterator($labels, $data));
 
     $height = 450;
     $width = $count * 25;
@@ -184,7 +177,7 @@ class CalculatedGraph {
     $maxValue = max($data);
     
     if (! is_null($concurrentCallLimit)) {
-      $limitData = new ezcGraphArrayDataSet(new MaxLimitGraphDataIterator($data, $startDate, $concurrentCallLimit));
+      $limitData = new ezcGraphArrayDataSet(new MaxLimitGraphDataIterator($labels, $data, $concurrentCallLimit));
       
       $dataId = __('Safe Limit');
       $graph->data[$dataId] = $limitData;
@@ -231,7 +224,6 @@ class CalculatedGraph {
 	}
 	$r .= "</ul></p>";
       }
-
       $this->alternativeGraphDisplay .= $r;
     }
   }
@@ -309,6 +301,9 @@ class CalculatedDistributionGraph extends CalculatedGraph {
     }
 
     $step = intval(ceil($maxKey / $finalRanges));
+    if ($step == 0) {
+      $step = 1;
+    }
 
     // Init result array.
     //
@@ -367,7 +362,11 @@ class StatsOnCalls {
    * Mean calls for each day.
    */
   public function getMeanCalls() {
-    return intval($this->totCalls / $this->numDays);
+    if ($this->numDays != 0) {
+      return intval($this->totCalls / $this->numDays);
+    } else {
+      return intval($this->totCalls);
+    }
   }
 
   /**
@@ -388,10 +387,22 @@ class StatsOnCalls {
   }
 
   /**
+   * Normalize a date into a label
+   */
+  public function getDateLabel($d) {
+    $label = format_invoice_timestamp_according_config($d);
+    return $label;
+  }
+
+  /**
    * Perc. of dangerous calls.
    */
   public function getDangerousCallsPerc() {
-    return ($this->dangerousCalls / $this->totCalls) * 100.0;
+    if ($this->totCalls != 0) {
+      return ($this->dangerousCalls / $this->totCalls) * 100.0;
+    } else {
+      return 0;
+    }
   }
 
   /**
@@ -452,9 +463,9 @@ class StatsOnCalls {
 
     // Debug
     //
-    // sfContext::getInstance()->getLogger()->info("ChannelUsage START");
-    // sfContext::getInstance()->getLogger()->info("Date from $startFilterDate to $endFilterDate");
-    // sfContext::getInstance()->getLogger()->info("Days to process: " . $this->numDays);
+    //sfContext::getInstance()->getLogger()->info("ChannelUsage START");
+    //sfContext::getInstance()->getLogger()->info("Date from $startFilterDate to $endFilterDate");
+    //sfContext::getInstance()->getLogger()->info("Days to process: " . $this->numDays);
 
     // Init arrays.
     //
@@ -462,8 +473,10 @@ class StatsOnCalls {
     $this->nrOfConcurrentCalls = array();
     $this->concurrentCallsDistribution = array();
     for ($i = 0; $i <= $this->numDays; $i++) {
-      $this->nrOfTotCalls[$i] = 0;
-      $this->nrOfConcurrentCalls[$i] = 0;
+      $d = strtotime("+$i days", $startFilterDate);
+      $l = $this->getDateLabel($d);
+      $this->nrOfTotCalls[$l] = 0;
+      $this->nrOfConcurrentCalls[$l] = 0;
     }
 
     // This array contains the active calls.
@@ -510,11 +523,12 @@ class StatsOnCalls {
       $this->totCalls++;
       
       $endDate = $callDate + $duration;
-      $day = getDaysBetween($startFilterDate, $callDate);
+
+      $day = $this->getDateLabel($callDate);
       
       // Debug
       //
-      // sfContext::getInstance()->getLogger()->info("At calldate: $callDateStamp ($callDate) is day $day");
+      //sfContext::getInstance()->getLogger()->info("At calldate: $callDateStamp ($callDate) is day $day");
 
       // Safety measure in case of calls after "now" time.
       //
@@ -553,8 +567,10 @@ class StatsOnCalls {
       // $this->nrOfConcurrentCalls[$day] contains the max number
       // of concurrent calls for the current day.
       //
-      if ($this->nrOfConcurrentCalls[$day] < $countConcurrentCalls) {
-	$this->nrOfConcurrentCalls[$day] = $countConcurrentCalls;
+      if (isset($this->nrOfConcurrentCalls[$day])) {
+	if ($this->nrOfConcurrentCalls[$day] < $countConcurrentCalls) {
+	  $this->nrOfConcurrentCalls[$day] = $countConcurrentCalls;
+	}
       }
       
       // Update distribution of concurrent calls.
@@ -575,8 +591,7 @@ class StatsOnCalls {
 
     // Debug 
     //
-    // sfContext::getInstance()->getLogger()->info("ChannelUsage END");
-
+    //sfContext::getInstance()->getLogger()->info("ChannelUsage END");
   }
 
   /**

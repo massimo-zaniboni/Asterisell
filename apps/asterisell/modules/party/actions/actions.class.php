@@ -22,6 +22,7 @@
  */
 sfLoader::loadHelpers(array('Asterisell'));
 class partyActions extends autopartyActions {
+
   protected function updateArPartyFromRequest() {
     $this->ar_party->setCustomerOrVendor($this->getRequestParameter('editcv'));
     $limit30_str = $this->getRequestParameter('insert_money_value');

@@ -13,7 +13,7 @@ abstract class BaseArInvoicePeer {
 	const CLASS_DEFAULT = 'lib.model.ArInvoice';
 
 	
-	const NUM_COLUMNS = 18;
+	const NUM_COLUMNS = 23;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -42,6 +42,12 @@ abstract class BaseArInvoicePeer {
 
 	
 	const AR_CDR_TO = 'ar_invoice.AR_CDR_TO';
+
+	
+	const TOTAL_BUNDLE_WITHOUT_TAX = 'ar_invoice.TOTAL_BUNDLE_WITHOUT_TAX';
+
+	
+	const TOTAL_CALLS_WITHOUT_TAX = 'ar_invoice.TOTAL_CALLS_WITHOUT_TAX';
 
 	
 	const TOTAL_WITHOUT_TAX = 'ar_invoice.TOTAL_WITHOUT_TAX';
@@ -74,23 +80,32 @@ abstract class BaseArInvoicePeer {
 	const ALREADY_SENT = 'ar_invoice.ALREADY_SENT';
 
 	
+	const INFO_OR_ADS_IMAGE1 = 'ar_invoice.INFO_OR_ADS_IMAGE1';
+
+	
+	const INFO_OR_ADS_IMAGE2 = 'ar_invoice.INFO_OR_ADS_IMAGE2';
+
+	
+	const AR_PARAMS_ID = 'ar_invoice.AR_PARAMS_ID';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'ArPartyId', 'Type', 'IsRevenueSharing', 'Nr', 'InvoiceDate', 'ArCdrFrom', 'ArCdrTo', 'TotalWithoutTax', 'VatPerc', 'TotalVat', 'Total', 'HtmlDetails', 'PdfInvoice', 'PdfCallReport', 'EmailSubject', 'EmailMessage', 'AlreadySent', ),
-		BasePeer::TYPE_COLNAME => array (ArInvoicePeer::ID, ArInvoicePeer::AR_PARTY_ID, ArInvoicePeer::TYPE, ArInvoicePeer::IS_REVENUE_SHARING, ArInvoicePeer::NR, ArInvoicePeer::INVOICE_DATE, ArInvoicePeer::AR_CDR_FROM, ArInvoicePeer::AR_CDR_TO, ArInvoicePeer::TOTAL_WITHOUT_TAX, ArInvoicePeer::VAT_PERC, ArInvoicePeer::TOTAL_VAT, ArInvoicePeer::TOTAL, ArInvoicePeer::HTML_DETAILS, ArInvoicePeer::PDF_INVOICE, ArInvoicePeer::PDF_CALL_REPORT, ArInvoicePeer::EMAIL_SUBJECT, ArInvoicePeer::EMAIL_MESSAGE, ArInvoicePeer::ALREADY_SENT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'ar_party_id', 'type', 'is_revenue_sharing', 'nr', 'invoice_date', 'ar_cdr_from', 'ar_cdr_to', 'total_without_tax', 'vat_perc', 'total_vat', 'total', 'html_details', 'pdf_invoice', 'pdf_call_report', 'email_subject', 'email_message', 'already_sent', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'ArPartyId', 'Type', 'IsRevenueSharing', 'Nr', 'InvoiceDate', 'ArCdrFrom', 'ArCdrTo', 'TotalBundleWithoutTax', 'TotalCallsWithoutTax', 'TotalWithoutTax', 'VatPerc', 'TotalVat', 'Total', 'HtmlDetails', 'PdfInvoice', 'PdfCallReport', 'EmailSubject', 'EmailMessage', 'AlreadySent', 'InfoOrAdsImage1', 'InfoOrAdsImage2', 'ArParamsId', ),
+		BasePeer::TYPE_COLNAME => array (ArInvoicePeer::ID, ArInvoicePeer::AR_PARTY_ID, ArInvoicePeer::TYPE, ArInvoicePeer::IS_REVENUE_SHARING, ArInvoicePeer::NR, ArInvoicePeer::INVOICE_DATE, ArInvoicePeer::AR_CDR_FROM, ArInvoicePeer::AR_CDR_TO, ArInvoicePeer::TOTAL_BUNDLE_WITHOUT_TAX, ArInvoicePeer::TOTAL_CALLS_WITHOUT_TAX, ArInvoicePeer::TOTAL_WITHOUT_TAX, ArInvoicePeer::VAT_PERC, ArInvoicePeer::TOTAL_VAT, ArInvoicePeer::TOTAL, ArInvoicePeer::HTML_DETAILS, ArInvoicePeer::PDF_INVOICE, ArInvoicePeer::PDF_CALL_REPORT, ArInvoicePeer::EMAIL_SUBJECT, ArInvoicePeer::EMAIL_MESSAGE, ArInvoicePeer::ALREADY_SENT, ArInvoicePeer::INFO_OR_ADS_IMAGE1, ArInvoicePeer::INFO_OR_ADS_IMAGE2, ArInvoicePeer::AR_PARAMS_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'ar_party_id', 'type', 'is_revenue_sharing', 'nr', 'invoice_date', 'ar_cdr_from', 'ar_cdr_to', 'total_bundle_without_tax', 'total_calls_without_tax', 'total_without_tax', 'vat_perc', 'total_vat', 'total', 'html_details', 'pdf_invoice', 'pdf_call_report', 'email_subject', 'email_message', 'already_sent', 'info_or_ads_image1', 'info_or_ads_image2', 'ar_params_id', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ArPartyId' => 1, 'Type' => 2, 'IsRevenueSharing' => 3, 'Nr' => 4, 'InvoiceDate' => 5, 'ArCdrFrom' => 6, 'ArCdrTo' => 7, 'TotalWithoutTax' => 8, 'VatPerc' => 9, 'TotalVat' => 10, 'Total' => 11, 'HtmlDetails' => 12, 'PdfInvoice' => 13, 'PdfCallReport' => 14, 'EmailSubject' => 15, 'EmailMessage' => 16, 'AlreadySent' => 17, ),
-		BasePeer::TYPE_COLNAME => array (ArInvoicePeer::ID => 0, ArInvoicePeer::AR_PARTY_ID => 1, ArInvoicePeer::TYPE => 2, ArInvoicePeer::IS_REVENUE_SHARING => 3, ArInvoicePeer::NR => 4, ArInvoicePeer::INVOICE_DATE => 5, ArInvoicePeer::AR_CDR_FROM => 6, ArInvoicePeer::AR_CDR_TO => 7, ArInvoicePeer::TOTAL_WITHOUT_TAX => 8, ArInvoicePeer::VAT_PERC => 9, ArInvoicePeer::TOTAL_VAT => 10, ArInvoicePeer::TOTAL => 11, ArInvoicePeer::HTML_DETAILS => 12, ArInvoicePeer::PDF_INVOICE => 13, ArInvoicePeer::PDF_CALL_REPORT => 14, ArInvoicePeer::EMAIL_SUBJECT => 15, ArInvoicePeer::EMAIL_MESSAGE => 16, ArInvoicePeer::ALREADY_SENT => 17, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'ar_party_id' => 1, 'type' => 2, 'is_revenue_sharing' => 3, 'nr' => 4, 'invoice_date' => 5, 'ar_cdr_from' => 6, 'ar_cdr_to' => 7, 'total_without_tax' => 8, 'vat_perc' => 9, 'total_vat' => 10, 'total' => 11, 'html_details' => 12, 'pdf_invoice' => 13, 'pdf_call_report' => 14, 'email_subject' => 15, 'email_message' => 16, 'already_sent' => 17, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ArPartyId' => 1, 'Type' => 2, 'IsRevenueSharing' => 3, 'Nr' => 4, 'InvoiceDate' => 5, 'ArCdrFrom' => 6, 'ArCdrTo' => 7, 'TotalBundleWithoutTax' => 8, 'TotalCallsWithoutTax' => 9, 'TotalWithoutTax' => 10, 'VatPerc' => 11, 'TotalVat' => 12, 'Total' => 13, 'HtmlDetails' => 14, 'PdfInvoice' => 15, 'PdfCallReport' => 16, 'EmailSubject' => 17, 'EmailMessage' => 18, 'AlreadySent' => 19, 'InfoOrAdsImage1' => 20, 'InfoOrAdsImage2' => 21, 'ArParamsId' => 22, ),
+		BasePeer::TYPE_COLNAME => array (ArInvoicePeer::ID => 0, ArInvoicePeer::AR_PARTY_ID => 1, ArInvoicePeer::TYPE => 2, ArInvoicePeer::IS_REVENUE_SHARING => 3, ArInvoicePeer::NR => 4, ArInvoicePeer::INVOICE_DATE => 5, ArInvoicePeer::AR_CDR_FROM => 6, ArInvoicePeer::AR_CDR_TO => 7, ArInvoicePeer::TOTAL_BUNDLE_WITHOUT_TAX => 8, ArInvoicePeer::TOTAL_CALLS_WITHOUT_TAX => 9, ArInvoicePeer::TOTAL_WITHOUT_TAX => 10, ArInvoicePeer::VAT_PERC => 11, ArInvoicePeer::TOTAL_VAT => 12, ArInvoicePeer::TOTAL => 13, ArInvoicePeer::HTML_DETAILS => 14, ArInvoicePeer::PDF_INVOICE => 15, ArInvoicePeer::PDF_CALL_REPORT => 16, ArInvoicePeer::EMAIL_SUBJECT => 17, ArInvoicePeer::EMAIL_MESSAGE => 18, ArInvoicePeer::ALREADY_SENT => 19, ArInvoicePeer::INFO_OR_ADS_IMAGE1 => 20, ArInvoicePeer::INFO_OR_ADS_IMAGE2 => 21, ArInvoicePeer::AR_PARAMS_ID => 22, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'ar_party_id' => 1, 'type' => 2, 'is_revenue_sharing' => 3, 'nr' => 4, 'invoice_date' => 5, 'ar_cdr_from' => 6, 'ar_cdr_to' => 7, 'total_bundle_without_tax' => 8, 'total_calls_without_tax' => 9, 'total_without_tax' => 10, 'vat_perc' => 11, 'total_vat' => 12, 'total' => 13, 'html_details' => 14, 'pdf_invoice' => 15, 'pdf_call_report' => 16, 'email_subject' => 17, 'email_message' => 18, 'already_sent' => 19, 'info_or_ads_image1' => 20, 'info_or_ads_image2' => 21, 'ar_params_id' => 22, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
 	);
 
 	
@@ -160,6 +175,10 @@ abstract class BaseArInvoicePeer {
 
 		$criteria->addSelectColumn(ArInvoicePeer::AR_CDR_TO);
 
+		$criteria->addSelectColumn(ArInvoicePeer::TOTAL_BUNDLE_WITHOUT_TAX);
+
+		$criteria->addSelectColumn(ArInvoicePeer::TOTAL_CALLS_WITHOUT_TAX);
+
 		$criteria->addSelectColumn(ArInvoicePeer::TOTAL_WITHOUT_TAX);
 
 		$criteria->addSelectColumn(ArInvoicePeer::VAT_PERC);
@@ -179,6 +198,12 @@ abstract class BaseArInvoicePeer {
 		$criteria->addSelectColumn(ArInvoicePeer::EMAIL_MESSAGE);
 
 		$criteria->addSelectColumn(ArInvoicePeer::ALREADY_SENT);
+
+		$criteria->addSelectColumn(ArInvoicePeer::INFO_OR_ADS_IMAGE1);
+
+		$criteria->addSelectColumn(ArInvoicePeer::INFO_OR_ADS_IMAGE2);
+
+		$criteria->addSelectColumn(ArInvoicePeer::AR_PARAMS_ID);
 
 	}
 
@@ -287,6 +312,34 @@ abstract class BaseArInvoicePeer {
 
 
 	
+	public static function doCountJoinArParams(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArInvoicePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArInvoicePeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArInvoicePeer::AR_PARAMS_ID, ArParamsPeer::ID);
+
+		$rs = ArInvoicePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
 	public static function doSelectJoinArParty(Criteria $c, $con = null)
 	{
 		$c = clone $c;
@@ -334,6 +387,53 @@ abstract class BaseArInvoicePeer {
 
 
 	
+	public static function doSelectJoinArParams(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+				if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArInvoicePeer::addSelectColumns($c);
+		$startcol = (ArInvoicePeer::NUM_COLUMNS - ArInvoicePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		ArParamsPeer::addSelectColumns($c);
+
+		$c->addJoin(ArInvoicePeer::AR_PARAMS_ID, ArParamsPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArInvoicePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArParamsPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getArParams(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+										$temp_obj2->addArInvoice($obj1); 					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initArInvoices();
+				$obj2->addArInvoice($obj1); 			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
 	public static function doCountJoinAll(Criteria $criteria, $distinct = false, $con = null)
 	{
 		$criteria = clone $criteria;
@@ -351,6 +451,8 @@ abstract class BaseArInvoicePeer {
 		}
 
 		$criteria->addJoin(ArInvoicePeer::AR_PARTY_ID, ArPartyPeer::ID);
+
+		$criteria->addJoin(ArInvoicePeer::AR_PARAMS_ID, ArParamsPeer::ID);
 
 		$rs = ArInvoicePeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -376,7 +478,12 @@ abstract class BaseArInvoicePeer {
 		ArPartyPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + ArPartyPeer::NUM_COLUMNS;
 
+		ArParamsPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + ArParamsPeer::NUM_COLUMNS;
+
 		$c->addJoin(ArInvoicePeer::AR_PARTY_ID, ArPartyPeer::ID);
+
+		$c->addJoin(ArInvoicePeer::AR_PARAMS_ID, ArParamsPeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -405,6 +512,199 @@ abstract class BaseArInvoicePeer {
 				$temp_obj2 = $temp_obj1->getArParty(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addArInvoice($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initArInvoices();
+				$obj2->addArInvoice($obj1);
+			}
+
+
+					
+			$omClass = ArParamsPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getArParams(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addArInvoice($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initArInvoices();
+				$obj3->addArInvoice($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doCountJoinAllExceptArParty(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArInvoicePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArInvoicePeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArInvoicePeer::AR_PARAMS_ID, ArParamsPeer::ID);
+
+		$rs = ArInvoicePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doCountJoinAllExceptArParams(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArInvoicePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArInvoicePeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArInvoicePeer::AR_PARTY_ID, ArPartyPeer::ID);
+
+		$rs = ArInvoicePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doSelectJoinAllExceptArParty(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArInvoicePeer::addSelectColumns($c);
+		$startcol2 = (ArInvoicePeer::NUM_COLUMNS - ArInvoicePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ArParamsPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ArParamsPeer::NUM_COLUMNS;
+
+		$c->addJoin(ArInvoicePeer::AR_PARAMS_ID, ArParamsPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArInvoicePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArParamsPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getArParams(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addArInvoice($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initArInvoices();
+				$obj2->addArInvoice($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doSelectJoinAllExceptArParams(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArInvoicePeer::addSelectColumns($c);
+		$startcol2 = (ArInvoicePeer::NUM_COLUMNS - ArInvoicePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ArPartyPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ArPartyPeer::NUM_COLUMNS;
+
+		$c->addJoin(ArInvoicePeer::AR_PARTY_ID, ArPartyPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArInvoicePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArPartyPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getArParty(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addArInvoice($obj1);
+					break;
 				}
 			}
 

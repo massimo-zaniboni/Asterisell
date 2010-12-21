@@ -28,7 +28,22 @@
  * The policy is to add English error message with date in universal format (yyyy/mm/dd).
  */
 class ArProblemException extends Exception {
+
+  static public $disableNotifications = 0;
+
+  /**
+   * Call this method if the notification to admin must be temporary
+   * disabled. In this case all new problems will be considered
+   * as already sent. This allows to work-online with the program,
+   * without sending many warning emails.
+   */
+  public static function disableNotificationsToAdmin() {
+    ArProblemException::$disableNotifications = 1;
+  }
+
   protected $arProblem = null;
+
+
   public function __construct(ArProblem $p) {
     $this->arProblem = $p;
     parent::__construct($p->getDescription(), 0);
@@ -61,9 +76,17 @@ class ArProblemException extends Exception {
    * Add the $p ar_problem only if not already present.
    */
   static public function addProblemIntoDBOnlyIfNew(ArProblem $p) {
+
+    if (ArProblemException::$disableNotifications == 1) {
+      // add the problem, but does not advise admin of the problem via mail
+      //
+      $p->setSignaledToAdmin(1);
+    }
+
     $c = new Criteria();
     $c->add(ArProblemPeer::DUPLICATION_KEY, $p->getDuplicationKey());
     $result = ArProblemPeer::doSelect($c);
+
     // save the problem only if not present.
     //
     if (empty($result)) {

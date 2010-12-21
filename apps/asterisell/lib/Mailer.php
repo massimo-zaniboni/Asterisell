@@ -34,15 +34,42 @@ class Mailer {
    * STMP server using the same connection and using throtling and
    * other advanced tecniques.
    */
-  protected static $from_stmpServer_username_to_SwiftMailer = array ();
+  protected static $from_stmpServer_username_to_SwiftMailer = array();
+
+  /**
+   * @param $params the params with the SMTP configuration.
+   * @return TRUE if the mailer is properly configured and email can be sent.
+   */
+  public static function isConfigured($params) {
+    $host = $params->getSmtpHost();
+    $username = $params->getSmtpUsername();
+
+    if (is_null($host)) {
+      return false;
+    }
+
+    if (is_null($username)) {
+      return false;
+    }
+
+    if (strlen(trim($username)) == 0) {
+      return false;
+    }
+
+    if (strlen(trim($host)) == 0) {
+      return false;
+    }
+
+    return true;
+  }
 
   /**
    * This method allows to reuse the same open Swift_Mailers.
    *
    * @param $params the params with the SMTP configuration.
    * @return a configured / initialized Swift_Mailer.
-   */ 
-  public static function getNewInstance($params) { 
+   */
+  public static function getNewInstance($params) {
     $host = $params->getSmtpHost();
     $username = $params->getSmtpUsername();
 
@@ -50,23 +77,22 @@ class Mailer {
     //
     if (isset(self::$from_stmpServer_username_to_SwiftMailer[$host])) {
       if (isset(self::$from_stmpServer_username_to_SwiftMailer[$host][$username])) {
-	return self::$from_stmpServer_username_to_SwiftMailer[$host][$username];
-      }      
+        return self::$from_stmpServer_username_to_SwiftMailer[$host][$username];
+      }
     }
 
     // If not here, then create a new Mailer
     //
     $transport = Swift_SmtpTransport::newInstance()
-      ->setHost($params->getSmtpHost())
-      ->setPort($params->getSmtpPort())
-      ->setUsername($username)
-      ->setPassword($params->getSmtpPassword())
-      ;
+            ->setHost($params->getSmtpHost())
+            ->setPort($params->getSmtpPort())
+            ->setUsername($username)
+            ->setPassword($params->getSmtpPassword());
 
     if (!is_null($params->getSmtpEncryption())) {
       $encryption = trim(strtolower($params->getSmtpEncryption()));
       if ($encryption != 'plain') {
-	$transport->setEncryption($encryption);
+        $transport->setEncryption($encryption);
       }
     }
 
@@ -79,10 +105,10 @@ class Mailer {
       $plugin = new Swift_Plugins_AntiFloodPlugin();
       $plugin->setThreshold($emailsLimit);
       if (!is_null($pause) && $pause != 0) {
-	$plugin->setSleepTime($pause);
+        $plugin->setSleepTime($pause);
       }
       $mailer->registerPlugin($plugin);
-    } 
+    }
 
     self::$from_stmpServer_username_to_SwiftMailer[$host][$username] = $mailer;
 

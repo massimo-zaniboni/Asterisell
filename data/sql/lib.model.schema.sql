@@ -105,6 +105,7 @@ CREATE TABLE `ar_asterisk_account`
 	`name` VARCHAR(160),
 	`account_code` VARCHAR(30)  NOT NULL,
 	`ar_office_id` INTEGER,
+	`is_active` INTEGER default 1 NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `ar_asterisk_account_account_code_index`(`account_code`),
 	INDEX `ar_asterisk_account_FI_1` (`ar_office_id`),
@@ -224,6 +225,16 @@ CREATE TABLE `ar_params`
 	`smtp_reconnect_after_nr_of_messages` INTEGER(4),
 	`smtp_seconds_of_pause_after_reconnection` INTEGER(2),
 	`current_invoice_nr` INTEGER(11) default 1 NOT NULL,
+	`logo_html_color` VARCHAR(12),
+	`payment_days` INTEGER(20) default null,
+	`reconnection_fee` VARCHAR(40),
+	`info_telephone_number` VARCHAR(512),
+	`late_payment_fee` VARCHAR(40),
+	`etf_bbs` VARCHAR(512),
+	`etf_acc_no` VARCHAR(512),
+	`account_department` VARCHAR(512),
+	`direct_debit_payment_email` VARCHAR(512),
+	`direct_debit_payment_telephone_number` VARCHAR(512),
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -277,6 +288,8 @@ CREATE TABLE `ar_invoice`
 	`invoice_date` DATE,
 	`ar_cdr_from` DATE,
 	`ar_cdr_to` DATE,
+	`total_bundle_without_tax` INTEGER(20) default 0,
+	`total_calls_without_tax` INTEGER(20) default 0,
 	`total_without_tax` INTEGER(20) default null,
 	`vat_perc` INTEGER(20) default null,
 	`total_vat` INTEGER(20) default null,
@@ -287,6 +300,9 @@ CREATE TABLE `ar_invoice`
 	`email_subject` VARCHAR(1024),
 	`email_message` TEXT,
 	`already_sent` INTEGER,
+	`info_or_ads_image1` VARCHAR(1024),
+	`info_or_ads_image2` VARCHAR(1024),
+	`ar_params_id` INTEGER,
 	PRIMARY KEY (`id`),
 	KEY `ar_invoice_type_index`(`type`),
 	KEY `ar_invoice_is_revenue_sharing_index`(`is_revenue_sharing`),
@@ -299,7 +315,11 @@ CREATE TABLE `ar_invoice`
 	INDEX `ar_invoice_FI_1` (`ar_party_id`),
 	CONSTRAINT `ar_invoice_FK_1`
 		FOREIGN KEY (`ar_party_id`)
-		REFERENCES `ar_party` (`id`)
+		REFERENCES `ar_party` (`id`),
+	INDEX `ar_invoice_FI_2` (`ar_params_id`),
+	CONSTRAINT `ar_invoice_FK_2`
+		FOREIGN KEY (`ar_params_id`)
+		REFERENCES `ar_params` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -319,6 +339,8 @@ CREATE TABLE `ar_invoice_creation`
 	`invoice_date` DATE,
 	`ar_cdr_from` DATE,
 	`ar_cdr_to` DATE,
+	`info_or_ads_image1` VARCHAR(1024),
+	`info_or_ads_image2` VARCHAR(1024),
 	PRIMARY KEY (`id`),
 	KEY `ar_invoice_creation_type_index`(`type`),
 	KEY `ar_invoice_creation_is_revenue_sharing_index`(`is_revenue_sharing`),
@@ -327,6 +349,33 @@ CREATE TABLE `ar_invoice_creation`
 	CONSTRAINT `ar_invoice_creation_FK_1`
 		FOREIGN KEY (`ar_params_id`)
 		REFERENCES `ar_params` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- ar_payment
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ar_payment`;
+
+
+CREATE TABLE `ar_payment`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`ar_party_id` INTEGER,
+	`date` DATE,
+	`invoice_nr` VARCHAR(20),
+	`payment_method` VARCHAR(1024),
+	`payment_references` VARCHAR(1024),
+	`amount` INTEGER(20) default 0 NOT NULL,
+	`note` TEXT,
+	PRIMARY KEY (`id`),
+	KEY `ar_payment_date_index`(`date`),
+	KEY `ar_payment_invoice_nr_index`(`invoice_nr`),
+	KEY `ar_payment_amount_index`(`amount`),
+	INDEX `ar_payment_FI_1` (`ar_party_id`),
+	CONSTRAINT `ar_payment_FK_1`
+		FOREIGN KEY (`ar_party_id`)
+		REFERENCES `ar_party` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -373,6 +422,34 @@ CREATE TABLE `ar_rate`
 	CONSTRAINT `ar_rate_FK_2`
 		FOREIGN KEY (`ar_party_id`)
 		REFERENCES `ar_party` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- ar_rate_incremental_info
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ar_rate_incremental_info`;
+
+
+CREATE TABLE `ar_rate_incremental_info`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`ar_party_id` INTEGER,
+	`ar_rate_id` INTEGER,
+	`period` VARCHAR(1024),
+	`last_processed_cdr_date` DATETIME,
+	`last_processed_cdr_id` INTEGER(20),
+	`bundle_rate` LONGTEXT,
+	PRIMARY KEY (`id`),
+	KEY `ar_rate_incremental_info_period_index`(`period`),
+	INDEX `ar_rate_incremental_info_FI_1` (`ar_party_id`),
+	CONSTRAINT `ar_rate_incremental_info_FK_1`
+		FOREIGN KEY (`ar_party_id`)
+		REFERENCES `ar_party` (`id`),
+	INDEX `ar_rate_incremental_info_FI_2` (`ar_rate_id`),
+	CONSTRAINT `ar_rate_incremental_info_FK_2`
+		FOREIGN KEY (`ar_rate_id`)
+		REFERENCES `ar_rate` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------

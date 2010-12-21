@@ -23,7 +23,7 @@ class jobqueueActions extends autojobqueueActions
 
     $processor = new JobQueueProcessor();
 
-    $allOk = $processor->process();
+    $allOk = $processor->processOnline();
     if (is_null($allOk)) {
       $prop = 'JobQueue processor is already running.';
     } else if ($allOk == TRUE) {

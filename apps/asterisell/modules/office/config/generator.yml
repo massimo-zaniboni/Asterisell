@@ -11,7 +11,7 @@ generator:
       description:      { name: Description }
 
     list:
-      title: Costumer Offices
+      title: Customer Offices
 
       display: [=ar_party, name, description]
       filters: [ar_party_id, name]

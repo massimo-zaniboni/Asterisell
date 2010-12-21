@@ -48,18 +48,22 @@ class PhpCDRProcessing extends PhpRate {
     return $r;
   }
 
-  public function isApplicable(Cdr $cdr) {
-    if ((PhpRateWithDstChannel::isPrefixOf($this->dstChannel, $cdr->getDstchannel(), true)) &&
-           ($this->disposition == $cdr->getDisposition()) &&
-           ($this->amaflags == $cdr->getAmaflags())) {
-      return 1;
-    }  else {
+  public function getPriorityMethod() {
+    return "Dst Channel";
+  }
+  
+  public function isApplicable($cdr, $rateInfo = null) {
+    if (($this->disposition == $cdr->getDisposition()) &&
+        ($this->amaflags == $cdr->getAmaflags())) {
+        return PhpRateWithDstChannel::isPrefixOf($this->dstChannel, $cdr->getDstchannel(), true);
+    } else {    
       return 0;
     }
   }
 
-  protected function rateCDR(Cdr $cdr) {
+  protected function rateCDR($cdr, $rateInfo = null) {
     $cdr->setDestinationType($this->destinationType);
+    return null;
   }
   
   public function getModuleName() {

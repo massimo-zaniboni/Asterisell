@@ -11,6 +11,7 @@ generator:
       ar_office_id:          { name: Customer Office   }
       mycustomeroffice:      { name: Customer Office   }
       displaycustomeroffice: { name: Office/Building   }
+      is_active:             { name: Is Active, help: "The VoIP account is still in use. " }
 
     list:
       title: Asterisk VoIP Accounts
@@ -18,10 +19,10 @@ generator:
       fields:
         filter_on_party: { name: Customer Office, filter_criteria_disabled: true }
 
-      display: [=_displaycustomeroffice, name, account_code]
-      filters: [name, _filter_on_party, account_code]
+      display: [=_displaycustomeroffice, name, account_code, is_active]
+      filters: [name, _filter_on_party, account_code, is_active]
       
     edit:
       title: Asterisk VoIP Account
 
-      display: [_mycustomeroffice, name, account_code]
+      display: [_mycustomeroffice, name, account_code, is_active]

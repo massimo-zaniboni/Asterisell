@@ -66,6 +66,12 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 	protected $lastCdrRelatedByCostArRateIdCriteria = null;
 
 	
+	protected $collArRateIncrementalInfos;
+
+	
+	protected $lastArRateIncrementalInfoCriteria = null;
+
+	
 	protected $collArCustomRateForms;
 
 	
@@ -470,6 +476,14 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collArRateIncrementalInfos !== null) {
+				foreach($this->collArRateIncrementalInfos as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collArCustomRateForms !== null) {
 				foreach($this->collArCustomRateForms as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -543,6 +557,14 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 
 				if ($this->collCdrsRelatedByCostArRateId !== null) {
 					foreach($this->collCdrsRelatedByCostArRateId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collArRateIncrementalInfos !== null) {
+					foreach($this->collArRateIncrementalInfos as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -762,6 +784,10 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 
 			foreach($this->getCdrsRelatedByCostArRateId() as $relObj) {
 				$copyObj->addCdrRelatedByCostArRateId($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getArRateIncrementalInfos() as $relObj) {
+				$copyObj->addArRateIncrementalInfo($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getArCustomRateForms() as $relObj) {
@@ -1129,6 +1155,111 @@ abstract class BaseArRate extends BaseObject  implements Persistent {
 		$this->lastCdrRelatedByCostArRateIdCriteria = $criteria;
 
 		return $this->collCdrsRelatedByCostArRateId;
+	}
+
+	
+	public function initArRateIncrementalInfos()
+	{
+		if ($this->collArRateIncrementalInfos === null) {
+			$this->collArRateIncrementalInfos = array();
+		}
+	}
+
+	
+	public function getArRateIncrementalInfos($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArRateIncrementalInfoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArRateIncrementalInfos === null) {
+			if ($this->isNew()) {
+			   $this->collArRateIncrementalInfos = array();
+			} else {
+
+				$criteria->add(ArRateIncrementalInfoPeer::AR_RATE_ID, $this->getId());
+
+				ArRateIncrementalInfoPeer::addSelectColumns($criteria);
+				$this->collArRateIncrementalInfos = ArRateIncrementalInfoPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArRateIncrementalInfoPeer::AR_RATE_ID, $this->getId());
+
+				ArRateIncrementalInfoPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArRateIncrementalInfoCriteria) || !$this->lastArRateIncrementalInfoCriteria->equals($criteria)) {
+					$this->collArRateIncrementalInfos = ArRateIncrementalInfoPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArRateIncrementalInfoCriteria = $criteria;
+		return $this->collArRateIncrementalInfos;
+	}
+
+	
+	public function countArRateIncrementalInfos($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArRateIncrementalInfoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArRateIncrementalInfoPeer::AR_RATE_ID, $this->getId());
+
+		return ArRateIncrementalInfoPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArRateIncrementalInfo(ArRateIncrementalInfo $l)
+	{
+		$this->collArRateIncrementalInfos[] = $l;
+		$l->setArRate($this);
+	}
+
+
+	
+	public function getArRateIncrementalInfosJoinArParty($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArRateIncrementalInfoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArRateIncrementalInfos === null) {
+			if ($this->isNew()) {
+				$this->collArRateIncrementalInfos = array();
+			} else {
+
+				$criteria->add(ArRateIncrementalInfoPeer::AR_RATE_ID, $this->getId());
+
+				$this->collArRateIncrementalInfos = ArRateIncrementalInfoPeer::doSelectJoinArParty($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArRateIncrementalInfoPeer::AR_RATE_ID, $this->getId());
+
+			if (!isset($this->lastArRateIncrementalInfoCriteria) || !$this->lastArRateIncrementalInfoCriteria->equals($criteria)) {
+				$this->collArRateIncrementalInfos = ArRateIncrementalInfoPeer::doSelectJoinArParty($criteria, $con);
+			}
+		}
+		$this->lastArRateIncrementalInfoCriteria = $criteria;
+
+		return $this->collArRateIncrementalInfos;
 	}
 
 	

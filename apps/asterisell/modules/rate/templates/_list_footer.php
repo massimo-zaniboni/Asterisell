@@ -4,6 +4,14 @@ use_helper('Markdown');
 //
 echo insertHelp('
 
+## Active Rates
+
+By default this list display only current active rates.
+
+A CDR is always rated using the rate active at the moment of its Call-Date.
+
+If you want inspect the rating of a CDR rated in the past, you can  select the date of the CDR, for seeing the rates active when the CDR were rated.
+
 ## Cost
 
 The cost is what you had to pay in order to route the call.
@@ -15,6 +23,18 @@ Every Call must have exactly one cost rate.
 The income is what your customer had to pay for the call.
 
 Every Call must have exactly one income rate.
+
+## Bundle Rates
+
+Bundle Rates are applied both during CDR processing (for assigning cost/income to CDR), and during invoice generation for assigning cost to invoices.
+
+A Bundle Rate is active on a period, typically corresponding to the invoice period.
+
+Up to date, default invoice generation includes in the invoice all the bundle rate of the same category of the invoiced customer, that are active at the start date of the invoice.
+
+Bundle Rate can be also used during generation of invoices related to vendor cost calculations. In this case they are applied to vendors instead to customers.
+
+In case of VENDOR INVOICES, all the bundle rate costs, of the active customers of the params/reseller selected during invoice generation, are calculated.
 
 ## Workflow
 
@@ -56,15 +76,21 @@ Incoming, outgoing and Internal calls can be displayed or not in the customer ca
 
 Note: for completeness reasons, the administrator report contains all the calls, and he can inspect also "ignored" calls.
 
-## Problems / Conflicts
+## Rate Priorities
 
-If there are no rates to apply or more than a rate to apply on a certain CDR record, then the call is not rated/processed and an error is signaled to the Asterisell administrator. 
+Exception rates have major priority respect other rates.
 
-The administrator can freely correct the problem updating this rate table. In the meantime Asterisell continues to work.
+Bundle rates have major priority respect normal rates.
 
-CDR records with problems are not displayed to customers, but they are only visibles to administrators.
+Every rate have a priority method. Two rates are comparable if they have the same priority method, and if they work on the same type of CDR (unprocessed/incoming/outcoming).
 
-When problems are resolved, the administrator can force a rerate of problematic calls.
+If there are no rates to apply on the same CDR, or more than a rate with the same priority, or two no comparable Rates on the same type of CDR, then the CDR is not rated/processed, and an error is signaled to the Asterisell administrator. The administrator can freely correct the problem updating this rate table. In the meantime Asterisell continues to work.
+
+CDR records with problems are not displayed to customers, but they are only visibles to administrators in the `Unprocessed Calls` section. Note that in this section there are also the few CDR records, that were inserted in the CDR table, after the last cron-job processing job. After the nex rating process, they will be moved to `Call Report`.
+
+CDR records that are correctly processed, but according classification rates are considered not important, are put insid `Ignored Calls` section.
+
+In case of big reorganization of active rates, the administrator can force a re-rate of current CDR, in order to propagate changes also to already rated CDRs.
 
 ');
 //}

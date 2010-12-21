@@ -83,6 +83,7 @@ function deleteAllData() {
   myDelete($connection, "ar_invoice");
   myDelete($connection, "ar_problem");
   myDelete($connection, "cdr");
+  myDelete($connection, "ar_rate_incremental_info");
   myDelete($connection, "ar_rate");
   myDelete($connection, "ar_web_account");
   myDelete($connection, "ar_asterisk_account");
@@ -233,7 +234,7 @@ try {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($past);
   $r->setEndTime(null);
@@ -249,7 +250,7 @@ try {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($past);
   $r->setEndTime(null);
@@ -267,7 +268,7 @@ try {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($past);
   $r->setEndTime(null);
@@ -285,7 +286,7 @@ try {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($past);
   $r->setEndTime(null);
@@ -303,7 +304,7 @@ try {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($past);
   $r->setEndTime(null);
@@ -321,7 +322,7 @@ try {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($past);
   $r->setEndTime(null);
@@ -1129,7 +1130,7 @@ function initWithRegressionData() {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($days60);
   $r->setEndTime(null);
@@ -1145,7 +1146,7 @@ function initWithRegressionData() {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($days60);
   $r->setEndTime(null);
@@ -1161,7 +1162,7 @@ function initWithRegressionData() {
 
   $r = new ArRate();
   $r->setDestinationType(DestinationType::unprocessed);
-  $r->setArRateCategoryId();
+  $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
   $r->setStartTime($days60);
   $r->setEndTime(null);
@@ -1727,6 +1728,9 @@ function displayUsage() {
     echo "\n  php reset_db_and_init_data.php regression <some-password>";
     echo "\n      create an empty DB with regression data, and a root user with some-password\n";
     echo "\n";
+    echo "\n  php reset_db_and_init_data.php reset <some-password>";
+    echo "\n      reset all the content of current db without loading any data.\n";
+    echo "\n";
 }
 
 /**
@@ -1752,10 +1756,17 @@ function main($argc, $argv) {
     $paramsId = initWithDemoData();
     addRootUser($password, $paramsId);
   } else if ($command == "regression") {
+    if (trim(sfConfig::get('app_internal_external_telephone_numbers')) == "3") {
+      echo "\napp_internal_external_telephone_numbers must be 0 for regression tests\n";
+      echo "\nTests are not performed!\n";
+      exit(0);
+    }
     $paramsId = initWithRegressionData();
     checkRegressionData();
 
     addRootUser($password, $paramsId);
+  } else if ($command == "reset") {
+    deleteAllData();
   } else {
     displayUsage();
     exit(1);

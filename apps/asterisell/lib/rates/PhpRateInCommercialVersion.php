@@ -45,11 +45,11 @@ class PhpRateInCommercialVersion extends PhpRateWithDstChannel {
    * @return 0 if it is no applicable,
    *         the lenght of destinationTelephonePrefix + 1 otherwise.
    */
-  public function isApplicable(Cdr $cdr) {
+  public function isApplicable($cdr, $rateInfo = null) {
     return 0;
   }
 
-  protected function rateCDR(Cdr $cdr) {
+  protected function rateCDR($cdr, $rateInfo = null) {
     return $cdr;
   }
 }

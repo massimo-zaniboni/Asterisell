@@ -167,6 +167,46 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	
 	protected $current_invoice_nr = 1;
 
+
+	
+	protected $logo_html_color;
+
+
+	
+	protected $payment_days = 0;
+
+
+	
+	protected $reconnection_fee;
+
+
+	
+	protected $info_telephone_number;
+
+
+	
+	protected $late_payment_fee;
+
+
+	
+	protected $etf_bbs;
+
+
+	
+	protected $etf_acc_no;
+
+
+	
+	protected $account_department;
+
+
+	
+	protected $direct_debit_payment_email;
+
+
+	
+	protected $direct_debit_payment_telephone_number;
+
 	
 	protected $collArPartys;
 
@@ -178,6 +218,12 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 	
 	protected $lastArWebAccountCriteria = null;
+
+	
+	protected $collArInvoices;
+
+	
+	protected $lastArInvoiceCriteria = null;
 
 	
 	protected $collArInvoiceCreations;
@@ -469,6 +515,76 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	{
 
 		return $this->current_invoice_nr;
+	}
+
+	
+	public function getLogoHtmlColor()
+	{
+
+		return $this->logo_html_color;
+	}
+
+	
+	public function getPaymentDays()
+	{
+
+		return $this->payment_days;
+	}
+
+	
+	public function getReconnectionFee()
+	{
+
+		return $this->reconnection_fee;
+	}
+
+	
+	public function getInfoTelephoneNumber()
+	{
+
+		return $this->info_telephone_number;
+	}
+
+	
+	public function getLatePaymentFee()
+	{
+
+		return $this->late_payment_fee;
+	}
+
+	
+	public function getEtfBbs()
+	{
+
+		return $this->etf_bbs;
+	}
+
+	
+	public function getEtfAccNo()
+	{
+
+		return $this->etf_acc_no;
+	}
+
+	
+	public function getAccountDepartment()
+	{
+
+		return $this->account_department;
+	}
+
+	
+	public function getDirectDebitPaymentEmail()
+	{
+
+		return $this->direct_debit_payment_email;
+	}
+
+	
+	public function getDirectDebitPaymentTelephoneNumber()
+	{
+
+		return $this->direct_debit_payment_telephone_number;
 	}
 
 	
@@ -1028,6 +1144,146 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setLogoHtmlColor($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->logo_html_color !== $v) {
+			$this->logo_html_color = $v;
+			$this->modifiedColumns[] = ArParamsPeer::LOGO_HTML_COLOR;
+		}
+
+	} 
+	
+	public function setPaymentDays($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->payment_days !== $v || $v === 0) {
+			$this->payment_days = $v;
+			$this->modifiedColumns[] = ArParamsPeer::PAYMENT_DAYS;
+		}
+
+	} 
+	
+	public function setReconnectionFee($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->reconnection_fee !== $v) {
+			$this->reconnection_fee = $v;
+			$this->modifiedColumns[] = ArParamsPeer::RECONNECTION_FEE;
+		}
+
+	} 
+	
+	public function setInfoTelephoneNumber($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->info_telephone_number !== $v) {
+			$this->info_telephone_number = $v;
+			$this->modifiedColumns[] = ArParamsPeer::INFO_TELEPHONE_NUMBER;
+		}
+
+	} 
+	
+	public function setLatePaymentFee($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->late_payment_fee !== $v) {
+			$this->late_payment_fee = $v;
+			$this->modifiedColumns[] = ArParamsPeer::LATE_PAYMENT_FEE;
+		}
+
+	} 
+	
+	public function setEtfBbs($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->etf_bbs !== $v) {
+			$this->etf_bbs = $v;
+			$this->modifiedColumns[] = ArParamsPeer::ETF_BBS;
+		}
+
+	} 
+	
+	public function setEtfAccNo($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->etf_acc_no !== $v) {
+			$this->etf_acc_no = $v;
+			$this->modifiedColumns[] = ArParamsPeer::ETF_ACC_NO;
+		}
+
+	} 
+	
+	public function setAccountDepartment($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->account_department !== $v) {
+			$this->account_department = $v;
+			$this->modifiedColumns[] = ArParamsPeer::ACCOUNT_DEPARTMENT;
+		}
+
+	} 
+	
+	public function setDirectDebitPaymentEmail($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->direct_debit_payment_email !== $v) {
+			$this->direct_debit_payment_email = $v;
+			$this->modifiedColumns[] = ArParamsPeer::DIRECT_DEBIT_PAYMENT_EMAIL;
+		}
+
+	} 
+	
+	public function setDirectDebitPaymentTelephoneNumber($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->direct_debit_payment_telephone_number !== $v) {
+			$this->direct_debit_payment_telephone_number = $v;
+			$this->modifiedColumns[] = ArParamsPeer::DIRECT_DEBIT_PAYMENT_TELEPHONE_NUMBER;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -1112,11 +1368,31 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 			$this->current_invoice_nr = $rs->getInt($startcol + 39);
 
+			$this->logo_html_color = $rs->getString($startcol + 40);
+
+			$this->payment_days = $rs->getInt($startcol + 41);
+
+			$this->reconnection_fee = $rs->getString($startcol + 42);
+
+			$this->info_telephone_number = $rs->getString($startcol + 43);
+
+			$this->late_payment_fee = $rs->getString($startcol + 44);
+
+			$this->etf_bbs = $rs->getString($startcol + 45);
+
+			$this->etf_acc_no = $rs->getString($startcol + 46);
+
+			$this->account_department = $rs->getString($startcol + 47);
+
+			$this->direct_debit_payment_email = $rs->getString($startcol + 48);
+
+			$this->direct_debit_payment_telephone_number = $rs->getString($startcol + 49);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 40; 
+						return $startcol + 50; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArParams object", $e);
 		}
@@ -1200,6 +1476,14 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collArInvoices !== null) {
+				foreach($this->collArInvoices as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collArInvoiceCreations !== null) {
 				foreach($this->collArInvoiceCreations as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -1259,6 +1543,14 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 				if ($this->collArWebAccounts !== null) {
 					foreach($this->collArWebAccounts as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collArInvoices !== null) {
+					foreach($this->collArInvoices as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1411,6 +1703,36 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			case 39:
 				return $this->getCurrentInvoiceNr();
 				break;
+			case 40:
+				return $this->getLogoHtmlColor();
+				break;
+			case 41:
+				return $this->getPaymentDays();
+				break;
+			case 42:
+				return $this->getReconnectionFee();
+				break;
+			case 43:
+				return $this->getInfoTelephoneNumber();
+				break;
+			case 44:
+				return $this->getLatePaymentFee();
+				break;
+			case 45:
+				return $this->getEtfBbs();
+				break;
+			case 46:
+				return $this->getEtfAccNo();
+				break;
+			case 47:
+				return $this->getAccountDepartment();
+				break;
+			case 48:
+				return $this->getDirectDebitPaymentEmail();
+				break;
+			case 49:
+				return $this->getDirectDebitPaymentTelephoneNumber();
+				break;
 			default:
 				return null;
 				break;
@@ -1461,6 +1783,16 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			$keys[37] => $this->getSmtpReconnectAfterNrOfMessages(),
 			$keys[38] => $this->getSmtpSecondsOfPauseAfterReconnection(),
 			$keys[39] => $this->getCurrentInvoiceNr(),
+			$keys[40] => $this->getLogoHtmlColor(),
+			$keys[41] => $this->getPaymentDays(),
+			$keys[42] => $this->getReconnectionFee(),
+			$keys[43] => $this->getInfoTelephoneNumber(),
+			$keys[44] => $this->getLatePaymentFee(),
+			$keys[45] => $this->getEtfBbs(),
+			$keys[46] => $this->getEtfAccNo(),
+			$keys[47] => $this->getAccountDepartment(),
+			$keys[48] => $this->getDirectDebitPaymentEmail(),
+			$keys[49] => $this->getDirectDebitPaymentTelephoneNumber(),
 		);
 		return $result;
 	}
@@ -1596,6 +1928,36 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			case 39:
 				$this->setCurrentInvoiceNr($value);
 				break;
+			case 40:
+				$this->setLogoHtmlColor($value);
+				break;
+			case 41:
+				$this->setPaymentDays($value);
+				break;
+			case 42:
+				$this->setReconnectionFee($value);
+				break;
+			case 43:
+				$this->setInfoTelephoneNumber($value);
+				break;
+			case 44:
+				$this->setLatePaymentFee($value);
+				break;
+			case 45:
+				$this->setEtfBbs($value);
+				break;
+			case 46:
+				$this->setEtfAccNo($value);
+				break;
+			case 47:
+				$this->setAccountDepartment($value);
+				break;
+			case 48:
+				$this->setDirectDebitPaymentEmail($value);
+				break;
+			case 49:
+				$this->setDirectDebitPaymentTelephoneNumber($value);
+				break;
 		} 	}
 
 	
@@ -1643,6 +2005,16 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[37], $arr)) $this->setSmtpReconnectAfterNrOfMessages($arr[$keys[37]]);
 		if (array_key_exists($keys[38], $arr)) $this->setSmtpSecondsOfPauseAfterReconnection($arr[$keys[38]]);
 		if (array_key_exists($keys[39], $arr)) $this->setCurrentInvoiceNr($arr[$keys[39]]);
+		if (array_key_exists($keys[40], $arr)) $this->setLogoHtmlColor($arr[$keys[40]]);
+		if (array_key_exists($keys[41], $arr)) $this->setPaymentDays($arr[$keys[41]]);
+		if (array_key_exists($keys[42], $arr)) $this->setReconnectionFee($arr[$keys[42]]);
+		if (array_key_exists($keys[43], $arr)) $this->setInfoTelephoneNumber($arr[$keys[43]]);
+		if (array_key_exists($keys[44], $arr)) $this->setLatePaymentFee($arr[$keys[44]]);
+		if (array_key_exists($keys[45], $arr)) $this->setEtfBbs($arr[$keys[45]]);
+		if (array_key_exists($keys[46], $arr)) $this->setEtfAccNo($arr[$keys[46]]);
+		if (array_key_exists($keys[47], $arr)) $this->setAccountDepartment($arr[$keys[47]]);
+		if (array_key_exists($keys[48], $arr)) $this->setDirectDebitPaymentEmail($arr[$keys[48]]);
+		if (array_key_exists($keys[49], $arr)) $this->setDirectDebitPaymentTelephoneNumber($arr[$keys[49]]);
 	}
 
 	
@@ -1690,6 +2062,16 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArParamsPeer::SMTP_RECONNECT_AFTER_NR_OF_MESSAGES)) $criteria->add(ArParamsPeer::SMTP_RECONNECT_AFTER_NR_OF_MESSAGES, $this->smtp_reconnect_after_nr_of_messages);
 		if ($this->isColumnModified(ArParamsPeer::SMTP_SECONDS_OF_PAUSE_AFTER_RECONNECTION)) $criteria->add(ArParamsPeer::SMTP_SECONDS_OF_PAUSE_AFTER_RECONNECTION, $this->smtp_seconds_of_pause_after_reconnection);
 		if ($this->isColumnModified(ArParamsPeer::CURRENT_INVOICE_NR)) $criteria->add(ArParamsPeer::CURRENT_INVOICE_NR, $this->current_invoice_nr);
+		if ($this->isColumnModified(ArParamsPeer::LOGO_HTML_COLOR)) $criteria->add(ArParamsPeer::LOGO_HTML_COLOR, $this->logo_html_color);
+		if ($this->isColumnModified(ArParamsPeer::PAYMENT_DAYS)) $criteria->add(ArParamsPeer::PAYMENT_DAYS, $this->payment_days);
+		if ($this->isColumnModified(ArParamsPeer::RECONNECTION_FEE)) $criteria->add(ArParamsPeer::RECONNECTION_FEE, $this->reconnection_fee);
+		if ($this->isColumnModified(ArParamsPeer::INFO_TELEPHONE_NUMBER)) $criteria->add(ArParamsPeer::INFO_TELEPHONE_NUMBER, $this->info_telephone_number);
+		if ($this->isColumnModified(ArParamsPeer::LATE_PAYMENT_FEE)) $criteria->add(ArParamsPeer::LATE_PAYMENT_FEE, $this->late_payment_fee);
+		if ($this->isColumnModified(ArParamsPeer::ETF_BBS)) $criteria->add(ArParamsPeer::ETF_BBS, $this->etf_bbs);
+		if ($this->isColumnModified(ArParamsPeer::ETF_ACC_NO)) $criteria->add(ArParamsPeer::ETF_ACC_NO, $this->etf_acc_no);
+		if ($this->isColumnModified(ArParamsPeer::ACCOUNT_DEPARTMENT)) $criteria->add(ArParamsPeer::ACCOUNT_DEPARTMENT, $this->account_department);
+		if ($this->isColumnModified(ArParamsPeer::DIRECT_DEBIT_PAYMENT_EMAIL)) $criteria->add(ArParamsPeer::DIRECT_DEBIT_PAYMENT_EMAIL, $this->direct_debit_payment_email);
+		if ($this->isColumnModified(ArParamsPeer::DIRECT_DEBIT_PAYMENT_TELEPHONE_NUMBER)) $criteria->add(ArParamsPeer::DIRECT_DEBIT_PAYMENT_TELEPHONE_NUMBER, $this->direct_debit_payment_telephone_number);
 
 		return $criteria;
 	}
@@ -1798,6 +2180,26 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 		$copyObj->setCurrentInvoiceNr($this->current_invoice_nr);
 
+		$copyObj->setLogoHtmlColor($this->logo_html_color);
+
+		$copyObj->setPaymentDays($this->payment_days);
+
+		$copyObj->setReconnectionFee($this->reconnection_fee);
+
+		$copyObj->setInfoTelephoneNumber($this->info_telephone_number);
+
+		$copyObj->setLatePaymentFee($this->late_payment_fee);
+
+		$copyObj->setEtfBbs($this->etf_bbs);
+
+		$copyObj->setEtfAccNo($this->etf_acc_no);
+
+		$copyObj->setAccountDepartment($this->account_department);
+
+		$copyObj->setDirectDebitPaymentEmail($this->direct_debit_payment_email);
+
+		$copyObj->setDirectDebitPaymentTelephoneNumber($this->direct_debit_payment_telephone_number);
+
 
 		if ($deepCopy) {
 									$copyObj->setNew(false);
@@ -1808,6 +2210,10 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 			foreach($this->getArWebAccounts() as $relObj) {
 				$copyObj->addArWebAccount($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getArInvoices() as $relObj) {
+				$copyObj->addArInvoice($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getArInvoiceCreations() as $relObj) {
@@ -2082,6 +2488,111 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		$this->lastArWebAccountCriteria = $criteria;
 
 		return $this->collArWebAccounts;
+	}
+
+	
+	public function initArInvoices()
+	{
+		if ($this->collArInvoices === null) {
+			$this->collArInvoices = array();
+		}
+	}
+
+	
+	public function getArInvoices($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArInvoicePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArInvoices === null) {
+			if ($this->isNew()) {
+			   $this->collArInvoices = array();
+			} else {
+
+				$criteria->add(ArInvoicePeer::AR_PARAMS_ID, $this->getId());
+
+				ArInvoicePeer::addSelectColumns($criteria);
+				$this->collArInvoices = ArInvoicePeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArInvoicePeer::AR_PARAMS_ID, $this->getId());
+
+				ArInvoicePeer::addSelectColumns($criteria);
+				if (!isset($this->lastArInvoiceCriteria) || !$this->lastArInvoiceCriteria->equals($criteria)) {
+					$this->collArInvoices = ArInvoicePeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArInvoiceCriteria = $criteria;
+		return $this->collArInvoices;
+	}
+
+	
+	public function countArInvoices($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArInvoicePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArInvoicePeer::AR_PARAMS_ID, $this->getId());
+
+		return ArInvoicePeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArInvoice(ArInvoice $l)
+	{
+		$this->collArInvoices[] = $l;
+		$l->setArParams($this);
+	}
+
+
+	
+	public function getArInvoicesJoinArParty($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArInvoicePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArInvoices === null) {
+			if ($this->isNew()) {
+				$this->collArInvoices = array();
+			} else {
+
+				$criteria->add(ArInvoicePeer::AR_PARAMS_ID, $this->getId());
+
+				$this->collArInvoices = ArInvoicePeer::doSelectJoinArParty($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArInvoicePeer::AR_PARAMS_ID, $this->getId());
+
+			if (!isset($this->lastArInvoiceCriteria) || !$this->lastArInvoiceCriteria->equals($criteria)) {
+				$this->collArInvoices = ArInvoicePeer::doSelectJoinArParty($criteria, $con);
+			}
+		}
+		$this->lastArInvoiceCriteria = $criteria;
+
+		return $this->collArInvoices;
 	}
 
 	

@@ -19,7 +19,7 @@ generator:
         filter_on_admin:   { name: Only Admins, filter_criteria_disabled: true }
         filter_on_party:   { name: Customer, filter_criteria_disabled: true }
   
-      display: [=login, password, _access_for, activate_at, deactivate_at]
+      display: [=login, _access_for, activate_at, deactivate_at]
 
       filters: [_filter_on_admin, _filter_on_party]
 

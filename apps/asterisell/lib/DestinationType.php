@@ -48,7 +48,7 @@ abstract class DestinationType {
   static public $symbols = array(0 => "unprocessed",
 			         1 => "&larr;",
 			         2 => "&rarr;",
-  			         3 => "&harr;",
+ 			         3 => "&harr;",
 			         4 => "ignored");
 
   /**

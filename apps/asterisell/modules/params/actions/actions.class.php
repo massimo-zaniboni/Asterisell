@@ -11,6 +11,12 @@
 class paramsActions extends autoparamsActions
 {
 
+  protected function updateArParamsFromRequest() {
+    $this->ar_params->setLogoImage($this->getRequestParameter('my_logo_image_file'));
+    $this->ar_params->setLogoImageInInvoices($this->getRequestParameter('my_logo_image_in_invoices_file'));
+    parent::updateArParamsFromRequest();
+  }
+
   /**
    * Executes index action
    *

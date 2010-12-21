@@ -49,15 +49,7 @@ class VariableFrame {
   public static $totEarn;
 
 
-  static public function getRateCache() {
-    if (is_null(VariableFrame::$rateCache)) {
-      VariableFrame::$rateCache = new ArPhpRateCache();
-    }
-
-    return VariableFrame::$rateCache;
-  }
-
-  protected static $vendorCache;
+  protected static $vendorCache = null;
 
   static public function getVendorCache() {
     if (is_null(VariableFrame::$vendorCache)) {
@@ -67,7 +59,7 @@ class VariableFrame {
     return VariableFrame::$vendorCache;
   }
 
-  protected static $officeCache;
+  protected static $officeCache = null;
 
   static public function getOfficeCache() {
     if (is_null(VariableFrame::$officeCache)) {
@@ -77,7 +69,7 @@ class VariableFrame {
     return VariableFrame::$officeCache;
   }
 
-  protected static $arAsteriskAccountByCodeCache;
+  protected static $arAsteriskAccountByCodeCache = null;
 
   static public function getArAsteriskAccountByCodeCache() {
     if (is_null(VariableFrame::$arAsteriskAccountByCodeCache)) {
@@ -87,7 +79,7 @@ class VariableFrame {
     return VariableFrame::$arAsteriskAccountByCodeCache;
   }
 
-  protected static $arAsteriskAccountByIdCache;
+  protected static $arAsteriskAccountByIdCache = null;
 
   static public function getArAsteriskAccountByIdCache() {
     if (is_null(VariableFrame::$arAsteriskAccountByIdCache)) {
@@ -96,5 +88,27 @@ class VariableFrame {
 
     return VariableFrame::$arAsteriskAccountByIdCache;
   }
+
+  protected static $numberPortabilityCache = null;
+
+  static public function getNumberPortabilityCache() {
+    if (is_null(VariableFrame::$numberPortabilityCache)) {
+      VariableFrame::$numberPortabilityCache = new ArNumberPortabilityCache();
+    }
+
+    return VariableFrame::$numberPortabilityCache;
+  }
+
+  protected static $telephonePrefixCache= null;
+
+    static public function getTelephonePrefixCache() {
+      if (is_null(VariableFrame::$telephonePrefixCache)) {
+        VariableFrame::$telephonePrefixCache = new PhpTelephonePrefixesCache();
+      }
+
+      return VariableFrame::$telephonePrefixCache;
+    }
+
+
 
 }

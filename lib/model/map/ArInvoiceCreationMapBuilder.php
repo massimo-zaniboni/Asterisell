@@ -48,5 +48,9 @@ class ArInvoiceCreationMapBuilder {
 
 		$tMap->addColumn('AR_CDR_TO', 'ArCdrTo', 'int', CreoleTypes::DATE, false, null);
 
+		$tMap->addColumn('INFO_OR_ADS_IMAGE1', 'InfoOrAdsImage1', 'string', CreoleTypes::VARCHAR, false, 1024);
+
+		$tMap->addColumn('INFO_OR_ADS_IMAGE2', 'InfoOrAdsImage2', 'string', CreoleTypes::VARCHAR, false, 1024);
+
 	} 
 } 

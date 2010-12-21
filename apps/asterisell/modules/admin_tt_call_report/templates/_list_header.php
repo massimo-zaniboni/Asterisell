@@ -105,10 +105,10 @@ echo '<br/>';
       $graph1 = new CalculatedDistributionGraph(__('Concurrent Calls Grouped by Occurrence'), __('Show the number of calls, performed when there were already a certain number of active calls. This graph shows the typical bandwidth usage/requirements.'), $stats->concurrentCallsDistribution, $stats->concurrentCallsSafeLimit);
       echo $graph1->getGraphInsert();
   
-      $graph2 = new CalculatedGraph(__('Concurrent Calls'), __('Show for each day, the max number of active concurrent calls. This allows to inspect the maximum bandwidth usage over time.'),  VariableFrame::$startFilterDate, $stats->nrOfConcurrentCalls, $stats->concurrentCallsSafeLimit);
+      $graph2 = new CalculatedGraph(__('Concurrent Calls'), __('Show for each day, the max number of active concurrent calls. This allows to inspect the maximum bandwidth usage over time.'),  $stats->nrOfConcurrentCalls, $stats->concurrentCallsSafeLimit);
       echo $graph2->getGraphInsert();
 
-      $graph3 = new CalculatedGraph(__('Total Calls'), __('Show for each day, the total number of processed calls.'), VariableFrame::$startFilterDate, $stats->nrOfTotCalls);
+      $graph3 = new CalculatedGraph(__('Total Calls'), __('Show for each day, the total number of processed calls.'), $stats->nrOfTotCalls);
       echo $graph3->getGraphInsert();
     }
   }

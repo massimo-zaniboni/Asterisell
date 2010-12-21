@@ -19,7 +19,7 @@ $str = <<<VERYLONGSTRING
 
 ## Version
 
-asterisell-free-stable-3.3.0
+asterisell-free-stable-3.4.0
 
 ## Authors / Contributors
 
@@ -29,8 +29,6 @@ Massimo Zaniboni <massimo.zaniboni@profitoss.com>
 ## Copyright Owner
 
     Copyright (C) 2007, 2008, 2009, 2010 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
-    
-    This file is part of Asterisell.
     
     Asterisell is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

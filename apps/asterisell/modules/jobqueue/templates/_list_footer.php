@@ -10,9 +10,12 @@ This is a simple and persistent log of executed/pending jobs.
 
 A detailed description of encountered errors and problems is inside the "Problems" module.
 
-## Always Scheduled Jobs
+## Execute Jobs
 
 "Execute Jobs" button, execute both always scheduled jobs, and pending jobs.
+
+NOTE: Using this button, error messages are not sent to administrator via mail, but they are only displayed in the error table.
+This allows reducing the noise of many error mails, that are typical during the on-line test of the program.
 
 ## Jobs Execution
 

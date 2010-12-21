@@ -51,7 +51,11 @@ abstract class PhpRateWithDstChannel extends PhpRate {
     return TypeTable::$processingStateType_toRate;
   }
 
-  public function isApplicable(Cdr $cdr) {
+  public function getPriorityMethod() {
+    return "Dst Channel";
+  }
+
+  public function isApplicable($cdr, $rateInfo = null) {
     return PhpRateWithDstChannel::isPrefixOf($this->dstChannelPattern, $cdr->getDstchannel(), true);
   }
 
@@ -87,13 +91,13 @@ abstract class PhpRateWithDstChannel extends PhpRate {
     if ($isRegex) {
         $matches = false;
         if (preg_match($prefix, $number, $matches) > 0) {
-	    return strlen($matches[0]);
+	    return strlen($matches[0]) + 1;
         } else {
             return 0;
 	}
     } else {
       if (substr_compare($prefix, $number, 0, $prefixLen, TRUE) == 0) {
-        return $prefixLen;
+        return $prefixLen + 1;
       } else {
         return 0;
       }
