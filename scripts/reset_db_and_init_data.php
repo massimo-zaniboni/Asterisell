@@ -1238,10 +1238,16 @@ try {
 
   $r = new ArParty();
   $r->setCustomerOrVendor("V");
-  $r->setName("VoIP Vendor");
-  $r->setExternalCrmCode("");
+  $r->setName("VoIP Provider");
   $r->setArRateCategoryId(null);
   $r->setArParamsId($defaultParamsId);
+  $r->setVat("WRLD1111115555"); 
+  $r->setLegalAddress("Street Edison, 2");
+  $r->setLegalCity("Someplace");
+  $r->setLegalZipcode("41055");
+  $r->setLegalStateProvince("Texas");
+  $r->setLegalCountry("USA");
+  $r->setEmail("alpha@example.com");
   $r->save();
   $defaultVendorId = $r->getId();
 
@@ -1566,21 +1572,6 @@ try {
   $r->save();
   $gammaPartyId = $r->getId();
 
-  $r = new ArParty();
-  $r->setCustomerOrVendor("V");
-  $r->setName("VoIP Provider");
-  $r->setArRateCategoryId(null);
-  $r->setArParamsId($defaultParamsId);
-  $r->setVat("WRLD1111115555"); 
-  $r->setLegalAddress("Street Edison, 2");
-  $r->setLegalCity("Someplace");
-  $r->setLegalZipcode("41055");
-  $r->setLegalStateProvince("Texas");
-  $r->setLegalCountry("USA");
-  $r->setEmail("alpha@example.com");
-  $r->save();
-  $voipProviderId = $r->getId();
-
   /////////////
   // OFFICES //
   /////////////
@@ -1774,7 +1765,7 @@ try {
 
   for($i = 1; $i <= $recordsToAdd; $i++) {
     if ($i % 1000 == 0) {
-      echo "Added $i CDR records\n";
+      echo "\nAdded $i CDR records\n";
     }
     addRandomCDR(
       $ar_asterisk_accounts,
@@ -1785,7 +1776,7 @@ try {
       $telephone_numbers);
   }
 
-  echo "Added $recordsToAdd CDR records.\n";
+  echo "\nAdded $recordsToAdd CDR records.\n";
 
   $now = time();
   $from = $now - 31*24*60*60;
