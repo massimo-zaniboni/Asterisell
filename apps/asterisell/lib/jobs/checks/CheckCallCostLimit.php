@@ -59,18 +59,9 @@ class CheckCallCostLimit extends FixedJobProcessor {
     $timeFrameInMinutes = sfConfig::get('app_check_cost_limits_after_minutes');
 
     $checkFile = Mutex::getCompleteFileName(CheckCallCostLimit::FILE_WITH_LAST_CHECK_DATE);
-
-    if (! file_exists($checkFile)) {
-      $f = fopen($checkFile, "w");
-      fclose($f);
-      $lastCheck = strtotime("-1 year");
-    } else {
-      $lastCheck = filemtime($checkFile);
-    }
-
     $checkLimit = strtotime("-$timeFrameInMinutes minutes");
-
-    if ($checkLimit > $lastCheck) {
+    $mutex = new Mutex();
+    if ($mutex->maybeTouch($checkFile, $checkLimit)) {
       $this->checkAllLimits();
       touch($checkFile);
 

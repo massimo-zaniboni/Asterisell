@@ -46,41 +46,37 @@ class CheckSafeLimitForConcurrentCalls extends FixedJobProcessor {
     $time1 = microtime_float();
 
     $checkFile = Mutex::getCompleteFileName(self::FILE_WITH_LAST_CHECK_DATE);
+    $checkLimit = strtotime("-4 hour");
+    $mutex = new Mutex();
+    if ($mutex->maybeTouch($checkFile, $checkLimit)) {
+      $startDate = $checkLimit;
 
-    if (! file_exists($checkFile)) {
-      $f = fopen($checkFile, "w");
-      fclose($f);
+      $cond = new Criteria();
+      $cond->add(CdrPeer::CALLDATE, fromUnixTimestampToMySQLDate($startDate), Criteria::GREATER_EQUAL);
+      $stats = new StatsOnCalls($cond, $startDate, NULL);
+
+      if ($stats->maxNrOfConcurrentCalls > getConcurrentCallsSafeLimit()) {
+        $p = new ArProblem();
+        $p->setCreatedAt(date("c"));
+
+        $p->setDuplicationKey("Dangerous concurrent calls " . $stats->dangerousCalls);
+        // 
+        // note: use also the number of concurrent calls as index in order
+        // to advise of more important problems later the administrator
+
+        $p->setDescription("There were " . $stats->dangerousCalls . " calls made when there were more concurrent calls than " . getConcurrentCallsSafeLimit() . ". The max number of concurrent calls in the system were " . $stats->maxNrOfConcurrentCalls . ".");
+        $p->setEffect("If the system has no enough bandwidth, then it can not manage correctly some calls.");
+        $p->setProposedSolution("First inspect the calls usage pattern, using the stats of call report module. Check if the results of Asterisell application are confirmed from the Asterisk server logs/status.");
+        ArProblemException::addProblemIntoDBOnlyIfNew($p);
+      } 
+      // Profiling
+      //
+      $time2 = microtime_float();
+      $totTime = $time2 - $time1;
+      return "Max number of Concurrent Call checked in $totTime seconds.";
+    } else {
+      return "Max number of Concurrent Call will be checked later according application settings.";
     }
-
-    $startDate = filemtime($checkFile);
-    $startDate = strtotime("-4 hour", $startDate);
-    touch($checkFile);
-
-    $cond = new Criteria();
-    $cond->add(CdrPeer::CALLDATE, fromUnixTimestampToMySQLDate($startDate), Criteria::GREATER_EQUAL);
-    $stats = new StatsOnCalls($cond, $startDate, NULL);
-
-    if ($stats->maxNrOfConcurrentCalls > getConcurrentCallsSafeLimit()) {
-      $p = new ArProblem();
-      $p->setCreatedAt(date("c"));
-
-      $p->setDuplicationKey("Dangerous concurrent calls " . $stats->dangerousCalls);
-      // 
-      // note: use also the number of concurrent calls as index in order
-      // to advise of more important problems later the administrator
-
-      $p->setDescription("There were " . $stats->dangerousCalls . " calls made when there were more concurrent calls than " . getConcurrentCallsSafeLimit() . ". The max number of concurrent calls in the system were " . $stats->maxNrOfConcurrentCalls . ".");
-      $p->setEffect("If the system has no enough bandwidth, then it can not manage correctly some calls.");
-      $p->setProposedSolution("First inspect the calls usage pattern, using the stats of call report module. Check if the results of Asterisell application are confirmed from the Asterisk server logs/status.");
-      ArProblemException::addProblemIntoDBOnlyIfNew($p);
-    }
-
-    // Profiling
-    //
-    $time2 = microtime_float();
-    $totTime = $time2 - $time1;
-    return "Max number of Concurrent Call checked in $totTime seconds.";
   }
-
 }
 ?>

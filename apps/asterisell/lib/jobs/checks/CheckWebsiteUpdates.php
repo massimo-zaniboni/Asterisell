@@ -54,16 +54,13 @@ class CheckWebsiteUpdates extends FixedJobProcessor {
    */
   public function process() {
     $checkFile = Mutex::getCompleteFileName(self::FILE_WITH_LAST_CHECK_DATE);
+    
 
-    if (! file_exists($checkFile)) {
-      $f = fopen($checkFile, "w");
-      fclose($f);
-    }
-
-    $lastCheck = filemtime($checkFile);
     $checkLimit = strtotime("-" . self::HOW_OFTEN_CHECK . " days");
 
-    if ($checkLimit > $lastCheck) {
+    $mutex = new Mutex();
+
+    if ($mutex->maybeTouch($checkFile, $checkLimit)) {
       $handle = fopen(self::WEBSITE_FEEDS, "r");
 
       if ($handle != FALSE) {
@@ -82,18 +79,13 @@ class CheckWebsiteUpdates extends FixedJobProcessor {
 	      $param->save();
 	    }
 	  }
-	
-	  // Update the file date in order to check later
-	  // the feeds.
-	  //
-	  touch($checkFile);
-	  return "Checked " . self::WEBSITE_FEEDS;
-	} else {
+          return "Checked " . self::WEBSITE_FEEDS;
+        } else {
 	  return "Problems reading " . self::WEBSITE_FEEDS . ". It will be checked later.";
-	}
-      } else {
-	return "Problems reading " . self::WEBSITE_FEEDS . ". It will be checked later.";
-      }
+        }
+     } else {
+       return "Problems reading " . self::WEBSITE_FEEDS . ". It will be checked later.";
+     }
     } else {
       return "Check postponed according settings.";
     }

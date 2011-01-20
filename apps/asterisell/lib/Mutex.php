@@ -104,8 +104,39 @@ class Mutex {
       //
       fclose($h);
 
+      // Allows other process to delete the file.
+      // This is usefull, because some time the job processor can be executed from the root user, 
+      // and scheduled jobs from http user.
+      chmod($this->fileName, 0666); // uga+rw
+
       $this->isLocked = TRUE;
       return TRUE;
+    }
+  }
+
+  /**
+   * @param $fileName
+   * @param $maxAge max allowed age of the file, in unix timestamp
+   * 
+   * @return TRUE if the file is expired and in this case touch again the file, FALSE otherwise.
+   */
+  public function maybeTouch($fileName, $maxAge) {
+    $checkFile = $fileName;
+    $checkLimit = $maxAge;
+
+    if (! file_exists($checkFile)) {
+      $f = fopen($checkFile, "w");
+      fclose($f);
+      chmod($checkFile, 0666); // uga+rw
+    }
+
+    $lastCheck = filemtime($checkFile);
+
+    if ($checkLimit > $lastCheck) {
+      touch($checkFile);
+      return TRUE;
+    } else {
+      return FALSE;
     }
   }
 
