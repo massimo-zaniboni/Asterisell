@@ -15,6 +15,10 @@ chmod -R ug+rwx web/
 chmod -R ug+rx ext_libs/
 chmod -R ug+rx apps/
 
+# Remove lock files 
+#
+rm -f web/*.lock
+
 echo "Regenerate modules depending from the new cache values."
 cd module_templates
 php generate.php
