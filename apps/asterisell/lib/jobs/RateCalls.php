@@ -656,7 +656,7 @@ class RateCalls extends FixedJobProcessor {
               //
               $isBestFit = true;
               $thereIsConflict = false;
-            } else if ($ratePriority == $bestRatePriority) {
+            } else if ($ratePriority === $bestRatePriority) {
               if ($bestFitness == 0) {
                 // this is the first rate
                 //
@@ -665,7 +665,7 @@ class RateCalls extends FixedJobProcessor {
                 // it is not admissible to have two different rates with same  priority, but different method
                 $thereIsConflict = true;
               } else if (strcmp($ratePriorityMethod, $bestRatePriorityMethod) == 0) {
-                if ($bestFitness == $fitness) {
+                if ($bestFitness === $fitness) {
                   // it is not admissible to have two rates
                   // with the same fitness
                   //
@@ -777,7 +777,7 @@ class RateCalls extends FixedJobProcessor {
       $c++;
     }
 
-    if ($rate->getDestinationType() == DestinationType::unprocessed && $c != 0) {
+    if ($rate->getDestinationType() === DestinationType::unprocessed && $c != 0) {
       $p = new ArProblem();
       $p->setDuplicationKey("Rate - " . $rate->getId());
       $p->setDescription("Rate with id " . $rate->getId() . " can not be associated to a customer category or to a vendor because it works on unprocessed CDRs.");
