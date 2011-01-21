@@ -36,14 +36,14 @@ class web_accountActions extends autoweb_accountActions {
       $this->ar_web_account->setArOfficeId(null);
     } else if ($this->getRequestParameter('mycustomer')) {
       $customerId = $this->getRequestParameter('mycustomer');
-      if ($customerId == "") {
+      if ($customerId === "") {
         $customerId = null;
       }
       $this->ar_web_account->setArPartyId($customerId);
       $this->ar_web_account->setArOfficeId(null);
     } else if ($this->getRequestParameter('myoffice')) {
       $officeId = $this->getRequestParameter('myoffice');
-      if ($officeId == "") {
+      if ($officeId === "") {
         $officeId = null;
       }
       if (!is_null($officeId)) {

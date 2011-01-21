@@ -52,7 +52,7 @@ class CleanCacheFromOldItems extends FixedJobProcessor {
     if ($handle = opendir($dir)) {
       while (false !== ($file = readdir($handle))) {
 	$completeFile = Mutex::getCompleteFileName("$dir/$file");
-	if ($file[0] == '.' || is_dir($completeFile)) {
+	if ($file[0] === '.' || is_dir($completeFile)) {
 	  continue;
 	}
 	try {

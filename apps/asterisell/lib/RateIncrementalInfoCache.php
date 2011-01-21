@@ -142,7 +142,7 @@ class RateIncrementalInfoCache {
     if ($isCorrupted == false) {
       if ($cdrCallDate < $cachedLastProcessedCdrDate) {
         $isCorrupted = true;
-      } else if ($cdrCallDate == $cachedLastProcessedCdrDate && $cdr->getId() < $cachedLastProcessedCdrId) {
+      } else if ($cdrCallDate === $cachedLastProcessedCdrDate && $cdr->getId() < $cachedLastProcessedCdrId) {
         $isCorrupted = true;
       }
     }
@@ -185,7 +185,7 @@ class RateIncrementalInfoCache {
             $record = ArRateIncrementalInfoPeer::retrieveByPk($cachedIncrementalInfoId);
 
             // some check
-            if (!($partyId == $record->getArPartyId() && $arRateId == $record->getArRateId() && $period == $record->getPeriod())) {
+            if (!($partyId === $record->getArPartyId() && $arRateId === $record->getArRateId() && $period === $record->getPeriod())) {
               $p = new ArProblem();
               $p->setDuplicationKey("RateIncrementalInfoCache - unexpected fields in database");
               $p->setDescription('Unexpected Error during closeAndUpdateDatabase of RateIncrementalInfoCache on database fields.');

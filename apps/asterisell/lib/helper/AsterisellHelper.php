@@ -28,7 +28,7 @@ sfLoader::loadHelpers(array('Form', 'Number', 'Date'));
  * FALSE if it is equal to "m".
  */
 function isCostLimitTimeFrame30Days() {
-  if (trim(sfConfig::get('app_max_cost_limit_timeframe')) == 'm') {
+  if (trim(sfConfig::get('app_max_cost_limit_timeframe')) === 'm') {
     return FALSE;
   } else {
     return TRUE;
@@ -157,7 +157,7 @@ function number_of_lines($s) {
 
 function format_zip_city_address($zipCode, $city, $stateProvince, $country) {
   $culture = sfConfig::get('app_culture');
-  if ($culture == "it_IT") {
+  if ($culture === "it_IT") {
     return $zipCode . " " . $city . maybeAdd(" (", $stateProvince, ")") . maybeAdd(" - ", $country, "");
   } else {
     return $city . "\n" . maybeAdd("", $stateProvince, "\n") . $zipCode . maybeAdd("\n", $country, "");
@@ -589,7 +589,7 @@ function html2rgb($color) {
     return null;
   }
 
-  if ($color[0] == '#')
+  if ($color[0] === '#')
     $color = substr($color, 1);
 
   if (strlen($color) == 6)

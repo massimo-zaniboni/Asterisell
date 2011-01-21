@@ -107,7 +107,7 @@ class CheckCallCostLimit extends FixedJobProcessor {
 
     $timeframeDescription = "";
 
-    if ($method == '30') {
+    if ($method === '30') {
       $timeframe = strtotime("-30 day");
       $timeframeDescription = "in the last 30 days";
     } else {

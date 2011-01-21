@@ -76,7 +76,7 @@ abstract class PhpRateWithDstChannel extends PhpRate {
     $prefix = trim($prefix);
 
     $isRegex = false;
-    if ($useRegex && (strlen($prefix) > 2) && ($prefix[0] == '%' && $prefix[1] == '%')) {
+    if ($useRegex && (strlen($prefix) > 2) && ($prefix[0] === '%' && $prefix[1] === '%')) {
         $isRegex = true;
         $prefix = substr($prefix, 2, strlen($prefix) - 2);
     } 
