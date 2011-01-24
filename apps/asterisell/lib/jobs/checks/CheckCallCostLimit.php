@@ -60,8 +60,8 @@ class CheckCallCostLimit extends FixedJobProcessor {
 
     $checkFile = Mutex::getCompleteFileName(CheckCallCostLimit::FILE_WITH_LAST_CHECK_DATE);
     $checkLimit = strtotime("-$timeFrameInMinutes minutes");
-    $mutex = new Mutex();
-    if ($mutex->maybeTouch($checkFile, $checkLimit)) {
+    $mutex = new Mutex($checkFile);
+    if ($mutex->maybeTouch($checkLimit)) {
       $this->checkAllLimits();
       touch($checkFile);
 

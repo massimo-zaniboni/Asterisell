@@ -120,8 +120,8 @@ class Mutex {
    * 
    * @return TRUE if the file is expired and in this case touch again the file, FALSE otherwise.
    */
-  public function maybeTouch($fileName, $maxAge) {
-    $checkFile = $fileName;
+  public function maybeTouch($maxAge) {
+    $checkFile = $this->fileName;
     $checkLimit = $maxAge;
 
     if (! file_exists($checkFile)) {

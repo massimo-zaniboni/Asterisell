@@ -47,8 +47,8 @@ class CheckSafeLimitForConcurrentCalls extends FixedJobProcessor {
 
     $checkFile = Mutex::getCompleteFileName(self::FILE_WITH_LAST_CHECK_DATE);
     $checkLimit = strtotime("-4 hour");
-    $mutex = new Mutex();
-    if ($mutex->maybeTouch($checkFile, $checkLimit)) {
+    $mutex = new Mutex($checkFile);
+    if ($mutex->maybeTouch($checkLimit)) {
       $startDate = $checkLimit;
 
       $cond = new Criteria();

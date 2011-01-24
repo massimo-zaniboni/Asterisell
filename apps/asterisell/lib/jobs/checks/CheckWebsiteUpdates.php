@@ -58,9 +58,9 @@ class CheckWebsiteUpdates extends FixedJobProcessor {
 
     $checkLimit = strtotime("-" . self::HOW_OFTEN_CHECK . " days");
 
-    $mutex = new Mutex();
+    $mutex = new Mutex($checkFile);
 
-    if ($mutex->maybeTouch($checkFile, $checkLimit)) {
+    if ($mutex->maybeTouch($checkLimit)) {
       $handle = fopen(self::WEBSITE_FEEDS, "r");
 
       if ($handle != FALSE) {
