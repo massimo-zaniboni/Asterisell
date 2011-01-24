@@ -88,12 +88,21 @@ class PhpRateByDuration extends PhpRateWithDstChannel {
    *         the lenght of externalTelephonePrefix + 1 otherwise.
    */
   public function isApplicable($cdr, $rateInfo = null) {
-    if (parent::isApplicable($cdr) != 0 && $this->isPrefixOf($this->internalTelephonePrefix, $cdr->getCachedInternalTelephoneNumber()) != 0) {
-      return $this->isPrefixOf($this->externalTelephonePrefix, $cdr->getCachedExternalTelephoneNumberWithAppliedPortability());
-    } else {
-      return 0;
+    if (parent::isApplicable($cdr) > 0) {
+      // in this case the cdr respects the destination channel conditions
+        
+      if ($this->isPrefixOf($this->internalTelephonePrefix, $cdr->getCachedInternalTelephoneNumber()) >  0) {
+        // in this case the cdr respects the internal telephone conditions
+
+        // now calculate the fitness according external telephone number
+        return $this->isPrefixOf($this->externalTelephonePrefix, $cdr->getCachedExternalTelephoneNumberWithAppliedPortability());
+      }
     }
+
+    // in this case the rate is not applicable
+    return 0;
   }
+
   protected function rateCDR($cdr, $rateInfo = null) {
     return PhpRateOnlyCalc::calcCostByDuration($cdr, $this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
   }
