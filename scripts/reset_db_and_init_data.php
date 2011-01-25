@@ -1778,25 +1778,7 @@ try {
 
   echo "\nAdded $recordsToAdd CDR records.\n";
 
-  $now = time();
-  $from = $now - 31*24*60*60;
-  $to = $now - 1*24*60*60;
-
-  $inv = new ArInvoiceCreation();
-  $inv->setType('C');
-  $inv->setIsRevenueSharing(FALSE);
-  $inv->setFirstNr(1);
-  $inv->setInvoiceDate($now);
-  $inv->setArCdrFrom($from);
-  $inv->setArCdrTo($to);
-  $inv->save();
-  $id = $inv->getId();
-  $d = new GenerateInvoicesData();
-  $d->arInvoiceCreationId = $id;
-  ArJobQueue::addNew($d, NULL);
-
-  echo "Added invoice creation command.\n";
-
+  
 } catch (Exception $e) {
     echo "Caught exceptio: " . $e->getMessage() . "\n";
     echo $e->getTraceAsString();
