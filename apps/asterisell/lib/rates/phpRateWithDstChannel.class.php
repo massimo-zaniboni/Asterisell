@@ -48,7 +48,7 @@ abstract class PhpRateWithDstChannel extends PhpRate {
   ////////////////////////////////
 
   public function getProcessingStateType() {
-    return TypeTable::$processingStateType_toRate;
+    return DestinationType::unprocessed;
   }
 
   public function getPriorityMethod() {
