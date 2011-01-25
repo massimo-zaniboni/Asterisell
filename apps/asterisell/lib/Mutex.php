@@ -40,6 +40,7 @@ class Mutex {
 
   /**
    * Where files will be created/open.
+   * Usually this field is setted-up from JobQueueProcessor before starting job processing.
    * NULL if the current directory or web environment is usued.
    */
   public static $baseDirectory = NULL;
@@ -57,7 +58,7 @@ class Mutex {
    */
   public function __construct($name) {
     $this->name = $name;
-    $this->fileName =  Mutex::getCompleteFileName($name . '.lock');
+    $this->fileName =  Mutex::getCompleteFileName($name);
     $this->isLocked = FALSE;
   }
 
@@ -77,7 +78,7 @@ class Mutex {
     if (!is_null(Mutex::$baseDirectory)) {
       $dir = Mutex::$baseDirectory . DIRECTORY_SEPARATOR;
     }
-    return $dir . $fileName;
+    return $dir . $fileName . '.lock';
   }
 
   /**
@@ -128,6 +129,8 @@ class Mutex {
       $f = fopen($checkFile, "w");
       fclose($f);
       chmod($checkFile, 0666); // uga+rw
+
+      return TRUE;
     }
 
     $lastCheck = filemtime($checkFile);

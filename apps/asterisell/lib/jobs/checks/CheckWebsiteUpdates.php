@@ -31,7 +31,7 @@ class CheckWebsiteUpdates extends FixedJobProcessor {
   /**
    * This file contains the date of last check 
    */
-  const FILE_WITH_LAST_CHECK_DATE = "last_check_website_updates.lock";
+  const FILE_WITH_LAST_CHECK_DATE = "last_check_website_updates";
 
   /**
    * How often (in days) check updates on the website.
@@ -53,7 +53,7 @@ class CheckWebsiteUpdates extends FixedJobProcessor {
    * @return always TRUE. Errors are reported on the error table.
    */
   public function process() {
-    $checkFile = Mutex::getCompleteFileName(self::FILE_WITH_LAST_CHECK_DATE);
+    $checkFile = self::FILE_WITH_LAST_CHECK_DATE;
     
 
     $checkLimit = strtotime("-" . self::HOW_OFTEN_CHECK . " days");

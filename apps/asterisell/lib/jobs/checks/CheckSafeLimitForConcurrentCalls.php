@@ -35,7 +35,7 @@ class CheckSafeLimitForConcurrentCalls extends FixedJobProcessor {
   /**
    * This file contains the date of last check of call cost limits.
    */
-  const FILE_WITH_LAST_CHECK_DATE = "last_check_for_concurrent_calls_safe_limit.lock";
+  const FILE_WITH_LAST_CHECK_DATE = "last_check_for_concurrent_calls_safe_limit";
 
   /**
    * @return always TRUE. Errors are reported on the error table.
@@ -45,7 +45,7 @@ class CheckSafeLimitForConcurrentCalls extends FixedJobProcessor {
     //
     $time1 = microtime_float();
 
-    $checkFile = Mutex::getCompleteFileName(self::FILE_WITH_LAST_CHECK_DATE);
+    $checkFile = self::FILE_WITH_LAST_CHECK_DATE;
     $checkLimit = strtotime("-4 hour");
     $mutex = new Mutex($checkFile);
     if ($mutex->maybeTouch($checkLimit)) {
