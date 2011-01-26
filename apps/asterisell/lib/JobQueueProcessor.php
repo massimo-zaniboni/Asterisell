@@ -103,17 +103,13 @@ class JobQueueProcessor {
       $isCronProcess = TRUE;
     }
 
-    if (!is_null($lockFileDirectory)) {
-          Mutex::$baseDirectory = $lockFileDirectory;
-    }
-
     // Only one processor can execute jobs because they can change the
     // external environment.
     // In any case if there is another job processor running, then
     // current jobs will be executed in any case so it is not a problem.
     //
     $mutex = new Mutex(JobQueueProcessor::MUTEX_FILE_NAME);
-    $isLocked = $mutex->maybeLock($isCronProcess);
+    $isLocked = $mutex->maybeLock();
 
     // exit if there is no acquired lock
     // (another job-queue-processor is running).

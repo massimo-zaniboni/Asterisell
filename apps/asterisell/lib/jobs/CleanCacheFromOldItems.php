@@ -48,10 +48,10 @@ class CleanCacheFromOldItems extends FixedJobProcessor {
     // Remove old files inside "web/generated_graphs" directory.
     //
     $oldTime = strtotime('-1 day'); 
-    $dir = Mutex::getCompleteFileName('generated_graphs');
+    $dir = realpath(dirname(__FILE__).'/../../../../web/generated_graphs');
     if ($handle = opendir($dir)) {
       while (false !== ($file = readdir($handle))) {
-	$completeFile = Mutex::getCompleteFileName("$dir/$file");
+	$completeFile = "$dir/$file";
 	if ($file[0] === '.' || is_dir($completeFile)) {
 	  continue;
 	}

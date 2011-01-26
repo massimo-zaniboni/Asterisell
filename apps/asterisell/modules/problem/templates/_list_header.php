@@ -16,20 +16,6 @@ echo submit_tag(__('See Job Log'));
 echo '</form>';
 echo '</td>';
 
-echo '<td>';
-$params = $sf_user->getParams();
-if ($params->getLastViewedFeedsMd5() != $params->getCurrentFeedsMd5()) {
-  echo form_tag('problem/seeWebsite');
-  echo submit_tag(__('There are news on Asterisell website'));
-  echo '</form>';
-} else {
-  /*
-  echo form_tag('problem/seeWebsite');
-  echo submit_tag(__('There are no news on Asterisell website'));
-  echo '</form>';
-  */
-}
-echo '</td>';
 echo '</tr>';
 
 echo '<tr>';

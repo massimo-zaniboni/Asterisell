@@ -197,8 +197,6 @@ CREATE TABLE `ar_params`
 	`logo_image_in_invoices` VARCHAR(120),
 	`footer` VARCHAR(255),
 	`user_message` VARCHAR(2048),
-	`last_viewed_feeds_md5` VARCHAR(1024),
-	`current_feeds_md5` VARCHAR(1024),
 	`legal_name` VARCHAR(255),
 	`external_crm_code` VARCHAR(40),
 	`vat` VARCHAR(40),
@@ -531,6 +529,23 @@ CREATE TABLE `ar_custom_rate_form`
 		FOREIGN KEY (`id`)
 		REFERENCES `ar_rate` (`id`)
 		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- ar_lock
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ar_lock`;
+
+
+CREATE TABLE `ar_lock`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`name` CHAR(255)  NOT NULL,
+	`time` DATETIME,
+	`info` VARCHAR(1024),
+	PRIMARY KEY (`id`),
+	KEY `ar_lock_name_index`(`name`)
 )Type=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

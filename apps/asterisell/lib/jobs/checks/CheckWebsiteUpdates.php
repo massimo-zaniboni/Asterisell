@@ -40,21 +40,10 @@ class CheckWebsiteUpdates extends FixedJobProcessor {
 
   const WEBSITE_FEEDS = 'http://asterisell.profitoss.com/rss.xml';
 
-  /**
-   * Check cost limits only if last check was done before the 
-   * "check_cost_limits_after_minutes" time frame.
-   *
-   * Inform the CUSTOMER via MAIL 
-   * if there are customers that are not respecting these limits.
-   *
-   * Add an ERROR also on the ERROR TABLE in order to inform
-   * the administrator of the system.
-   *
-   * @return always TRUE. Errors are reported on the error table.
-   */
+  const WEBSITE_HOMEPAGE = 'http://asterisell.profitoss.com';
+
   public function process() {
     $checkFile = self::FILE_WITH_LAST_CHECK_DATE;
-    
 
     $checkLimit = strtotime("-" . self::HOW_OFTEN_CHECK . " days");
 
@@ -68,18 +57,20 @@ class CheckWebsiteUpdates extends FixedJobProcessor {
 
 	if ($feeds != FALSE) {
 	  $md5 = md5($feeds);
+          $oldmd5 = $mutex->getTagInfo();
 
-	  // Update the feeds on all params
-	  // 
-	  $c = new Criteria();
-	  $params = ArParamsPeer::doSelect($c);
-	  foreach ($params as $param) {
-	    if ($param->getCurrentFeedsMd5() != $md5) {
-	      $param->setCurrentFeedsMd5($md5);
-	      $param->save();
-	    }
-	  }
+          if ($md5 !== $oldmd5) {
+            $mutex->setTagInfo($md5);
+            $p = new ArProblem();
+            $p->setDuplicationKey("New RSS Feeds " . $md5);
+            $p->setDescription("There are news on Asterisell web-site: " . self::WEBSITE_HOMEPAGE);
+            $p->setEffect("The news can be about discovered and fixed bugs.");
+            $p->setProposedSolution("Read " . self::WEBSITE_HOMEPAGE);
+            ArProblemException::addProblemIntoDBOnlyIfNew($p);
+          }
+
           return "Checked " . self::WEBSITE_FEEDS;
+
         } else {
 	  return "Problems reading " . self::WEBSITE_FEEDS . ". It will be checked later.";
         }

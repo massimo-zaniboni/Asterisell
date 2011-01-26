@@ -51,7 +51,7 @@ $processor = new JobQueueProcessor();
 $r = $processor->process($webDir);
 
 if (is_null($r)) {
-  echo "Asterisell process_jobs: process was not started, because control file was locked.";
+  echo "Asterisell process_jobs: process was not started, because control lock was locked.";
 } else if ($r == FALSE) {
   echo "Asterisell process_jobs: there were errors. See problem table.";
 } else {

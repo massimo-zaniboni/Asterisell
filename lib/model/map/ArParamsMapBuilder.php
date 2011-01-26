@@ -56,10 +56,6 @@ class ArParamsMapBuilder {
 
 		$tMap->addColumn('USER_MESSAGE', 'UserMessage', 'string', CreoleTypes::VARCHAR, false, 2048);
 
-		$tMap->addColumn('LAST_VIEWED_FEEDS_MD5', 'LastViewedFeedsMd5', 'string', CreoleTypes::VARCHAR, false, 1024);
-
-		$tMap->addColumn('CURRENT_FEEDS_MD5', 'CurrentFeedsMd5', 'string', CreoleTypes::VARCHAR, false, 1024);
-
 		$tMap->addColumn('LEGAL_NAME', 'LegalName', 'string', CreoleTypes::VARCHAR, false, 255);
 
 		$tMap->addColumn('EXTERNAL_CRM_CODE', 'ExternalCrmCode', 'string', CreoleTypes::VARCHAR, false, 40);

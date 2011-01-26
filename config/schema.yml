@@ -348,16 +348,6 @@ propel:
     #
     # an optional informative message to show after login of the account
 
-    last_viewed_feeds_md5: varchar(1024)
-    #
-    # store the md5 checksum code 
-    # of the last viewed feeds.
-    
-    current_feeds_md5: varchar(1024)
-    #
-    # store the md5 checksum code
-    # of the current version of feeds.
-
     legal_name: varchar(255)
 
     external_crm_code: varchar(40)
@@ -836,3 +826,17 @@ propel:
     #
     # it plays both the role of primary key and the role of a reference
     # to the ar_rate owning the custom PhpRate.
+
+  ar_lock:
+  #
+  # locks about process and jobs, in order to avoid concurrent execution of cron process,
+  # and in order to schedule certains jobs at certain intervals.
+
+    id:
+
+    name: { type: char, size: 255, required: true, index: true, unique: true }
+
+    time: timestamp
+
+    info: varchar(1024)
+

@@ -57,14 +57,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 
 	
-	protected $last_viewed_feeds_md5;
-
-
-	
-	protected $current_feeds_md5;
-
-
-	
 	protected $legal_name;
 
 
@@ -319,20 +311,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	{
 
 		return $this->user_message;
-	}
-
-	
-	public function getLastViewedFeedsMd5()
-	{
-
-		return $this->last_viewed_feeds_md5;
-	}
-
-	
-	public function getCurrentFeedsMd5()
-	{
-
-		return $this->current_feeds_md5;
 	}
 
 	
@@ -748,34 +726,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if ($this->user_message !== $v) {
 			$this->user_message = $v;
 			$this->modifiedColumns[] = ArParamsPeer::USER_MESSAGE;
-		}
-
-	} 
-	
-	public function setLastViewedFeedsMd5($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->last_viewed_feeds_md5 !== $v) {
-			$this->last_viewed_feeds_md5 = $v;
-			$this->modifiedColumns[] = ArParamsPeer::LAST_VIEWED_FEEDS_MD5;
-		}
-
-	} 
-	
-	public function setCurrentFeedsMd5($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->current_feeds_md5 !== $v) {
-			$this->current_feeds_md5 = $v;
-			$this->modifiedColumns[] = ArParamsPeer::CURRENT_FEEDS_MD5;
 		}
 
 	} 
@@ -1312,87 +1262,83 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 			$this->user_message = $rs->getString($startcol + 11);
 
-			$this->last_viewed_feeds_md5 = $rs->getString($startcol + 12);
+			$this->legal_name = $rs->getString($startcol + 12);
 
-			$this->current_feeds_md5 = $rs->getString($startcol + 13);
+			$this->external_crm_code = $rs->getString($startcol + 13);
 
-			$this->legal_name = $rs->getString($startcol + 14);
+			$this->vat = $rs->getString($startcol + 14);
 
-			$this->external_crm_code = $rs->getString($startcol + 15);
+			$this->legal_address = $rs->getString($startcol + 15);
 
-			$this->vat = $rs->getString($startcol + 16);
+			$this->legal_website = $rs->getString($startcol + 16);
 
-			$this->legal_address = $rs->getString($startcol + 17);
+			$this->legal_city = $rs->getString($startcol + 17);
 
-			$this->legal_website = $rs->getString($startcol + 18);
+			$this->legal_zipcode = $rs->getString($startcol + 18);
 
-			$this->legal_city = $rs->getString($startcol + 19);
+			$this->legal_state_province = $rs->getString($startcol + 19);
 
-			$this->legal_zipcode = $rs->getString($startcol + 20);
+			$this->legal_country = $rs->getString($startcol + 20);
 
-			$this->legal_state_province = $rs->getString($startcol + 21);
+			$this->legal_email = $rs->getString($startcol + 21);
 
-			$this->legal_country = $rs->getString($startcol + 22);
+			$this->legal_phone = $rs->getString($startcol + 22);
 
-			$this->legal_email = $rs->getString($startcol + 23);
+			$this->phone2 = $rs->getString($startcol + 23);
 
-			$this->legal_phone = $rs->getString($startcol + 24);
+			$this->legal_fax = $rs->getString($startcol + 24);
 
-			$this->phone2 = $rs->getString($startcol + 25);
+			$this->invoice_notes = $rs->getString($startcol + 25);
 
-			$this->legal_fax = $rs->getString($startcol + 26);
+			$this->invoice_payment_terms = $rs->getString($startcol + 26);
 
-			$this->invoice_notes = $rs->getString($startcol + 27);
+			$this->sender_name_on_invoicing_emails = $rs->getString($startcol + 27);
 
-			$this->invoice_payment_terms = $rs->getString($startcol + 28);
+			$this->invoicing_email_address = $rs->getString($startcol + 28);
 
-			$this->sender_name_on_invoicing_emails = $rs->getString($startcol + 29);
+			$this->accountant_email_address = $rs->getString($startcol + 29);
 
-			$this->invoicing_email_address = $rs->getString($startcol + 30);
+			$this->smtp_host = $rs->getString($startcol + 30);
 
-			$this->accountant_email_address = $rs->getString($startcol + 31);
+			$this->smtp_port = $rs->getInt($startcol + 31);
 
-			$this->smtp_host = $rs->getString($startcol + 32);
+			$this->smtp_username = $rs->getString($startcol + 32);
 
-			$this->smtp_port = $rs->getInt($startcol + 33);
+			$this->smtp_password = $rs->getString($startcol + 33);
 
-			$this->smtp_username = $rs->getString($startcol + 34);
+			$this->smtp_encryption = $rs->getString($startcol + 34);
 
-			$this->smtp_password = $rs->getString($startcol + 35);
+			$this->smtp_reconnect_after_nr_of_messages = $rs->getInt($startcol + 35);
 
-			$this->smtp_encryption = $rs->getString($startcol + 36);
+			$this->smtp_seconds_of_pause_after_reconnection = $rs->getInt($startcol + 36);
 
-			$this->smtp_reconnect_after_nr_of_messages = $rs->getInt($startcol + 37);
+			$this->current_invoice_nr = $rs->getInt($startcol + 37);
 
-			$this->smtp_seconds_of_pause_after_reconnection = $rs->getInt($startcol + 38);
+			$this->logo_html_color = $rs->getString($startcol + 38);
 
-			$this->current_invoice_nr = $rs->getInt($startcol + 39);
+			$this->payment_days = $rs->getInt($startcol + 39);
 
-			$this->logo_html_color = $rs->getString($startcol + 40);
+			$this->reconnection_fee = $rs->getString($startcol + 40);
 
-			$this->payment_days = $rs->getInt($startcol + 41);
+			$this->info_telephone_number = $rs->getString($startcol + 41);
 
-			$this->reconnection_fee = $rs->getString($startcol + 42);
+			$this->late_payment_fee = $rs->getString($startcol + 42);
 
-			$this->info_telephone_number = $rs->getString($startcol + 43);
+			$this->etf_bbs = $rs->getString($startcol + 43);
 
-			$this->late_payment_fee = $rs->getString($startcol + 44);
+			$this->etf_acc_no = $rs->getString($startcol + 44);
 
-			$this->etf_bbs = $rs->getString($startcol + 45);
+			$this->account_department = $rs->getString($startcol + 45);
 
-			$this->etf_acc_no = $rs->getString($startcol + 46);
+			$this->direct_debit_payment_email = $rs->getString($startcol + 46);
 
-			$this->account_department = $rs->getString($startcol + 47);
-
-			$this->direct_debit_payment_email = $rs->getString($startcol + 48);
-
-			$this->direct_debit_payment_telephone_number = $rs->getString($startcol + 49);
+			$this->direct_debit_payment_telephone_number = $rs->getString($startcol + 47);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 50; 
+						return $startcol + 48; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArParams object", $e);
 		}
@@ -1620,117 +1566,111 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 				return $this->getUserMessage();
 				break;
 			case 12:
-				return $this->getLastViewedFeedsMd5();
-				break;
-			case 13:
-				return $this->getCurrentFeedsMd5();
-				break;
-			case 14:
 				return $this->getLegalName();
 				break;
-			case 15:
+			case 13:
 				return $this->getExternalCrmCode();
 				break;
-			case 16:
+			case 14:
 				return $this->getVat();
 				break;
-			case 17:
+			case 15:
 				return $this->getLegalAddress();
 				break;
-			case 18:
+			case 16:
 				return $this->getLegalWebsite();
 				break;
-			case 19:
+			case 17:
 				return $this->getLegalCity();
 				break;
-			case 20:
+			case 18:
 				return $this->getLegalZipcode();
 				break;
-			case 21:
+			case 19:
 				return $this->getLegalStateProvince();
 				break;
-			case 22:
+			case 20:
 				return $this->getLegalCountry();
 				break;
-			case 23:
+			case 21:
 				return $this->getLegalEmail();
 				break;
-			case 24:
+			case 22:
 				return $this->getLegalPhone();
 				break;
-			case 25:
+			case 23:
 				return $this->getPhone2();
 				break;
-			case 26:
+			case 24:
 				return $this->getLegalFax();
 				break;
-			case 27:
+			case 25:
 				return $this->getInvoiceNotes();
 				break;
-			case 28:
+			case 26:
 				return $this->getInvoicePaymentTerms();
 				break;
-			case 29:
+			case 27:
 				return $this->getSenderNameOnInvoicingEmails();
 				break;
-			case 30:
+			case 28:
 				return $this->getInvoicingEmailAddress();
 				break;
-			case 31:
+			case 29:
 				return $this->getAccountantEmailAddress();
 				break;
-			case 32:
+			case 30:
 				return $this->getSmtpHost();
 				break;
-			case 33:
+			case 31:
 				return $this->getSmtpPort();
 				break;
-			case 34:
+			case 32:
 				return $this->getSmtpUsername();
 				break;
-			case 35:
+			case 33:
 				return $this->getSmtpPassword();
 				break;
-			case 36:
+			case 34:
 				return $this->getSmtpEncryption();
 				break;
-			case 37:
+			case 35:
 				return $this->getSmtpReconnectAfterNrOfMessages();
 				break;
-			case 38:
+			case 36:
 				return $this->getSmtpSecondsOfPauseAfterReconnection();
 				break;
-			case 39:
+			case 37:
 				return $this->getCurrentInvoiceNr();
 				break;
-			case 40:
+			case 38:
 				return $this->getLogoHtmlColor();
 				break;
-			case 41:
+			case 39:
 				return $this->getPaymentDays();
 				break;
-			case 42:
+			case 40:
 				return $this->getReconnectionFee();
 				break;
-			case 43:
+			case 41:
 				return $this->getInfoTelephoneNumber();
 				break;
-			case 44:
+			case 42:
 				return $this->getLatePaymentFee();
 				break;
-			case 45:
+			case 43:
 				return $this->getEtfBbs();
 				break;
-			case 46:
+			case 44:
 				return $this->getEtfAccNo();
 				break;
-			case 47:
+			case 45:
 				return $this->getAccountDepartment();
 				break;
-			case 48:
+			case 46:
 				return $this->getDirectDebitPaymentEmail();
 				break;
-			case 49:
+			case 47:
 				return $this->getDirectDebitPaymentTelephoneNumber();
 				break;
 			default:
@@ -1755,44 +1695,42 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			$keys[9] => $this->getLogoImageInInvoices(),
 			$keys[10] => $this->getFooter(),
 			$keys[11] => $this->getUserMessage(),
-			$keys[12] => $this->getLastViewedFeedsMd5(),
-			$keys[13] => $this->getCurrentFeedsMd5(),
-			$keys[14] => $this->getLegalName(),
-			$keys[15] => $this->getExternalCrmCode(),
-			$keys[16] => $this->getVat(),
-			$keys[17] => $this->getLegalAddress(),
-			$keys[18] => $this->getLegalWebsite(),
-			$keys[19] => $this->getLegalCity(),
-			$keys[20] => $this->getLegalZipcode(),
-			$keys[21] => $this->getLegalStateProvince(),
-			$keys[22] => $this->getLegalCountry(),
-			$keys[23] => $this->getLegalEmail(),
-			$keys[24] => $this->getLegalPhone(),
-			$keys[25] => $this->getPhone2(),
-			$keys[26] => $this->getLegalFax(),
-			$keys[27] => $this->getInvoiceNotes(),
-			$keys[28] => $this->getInvoicePaymentTerms(),
-			$keys[29] => $this->getSenderNameOnInvoicingEmails(),
-			$keys[30] => $this->getInvoicingEmailAddress(),
-			$keys[31] => $this->getAccountantEmailAddress(),
-			$keys[32] => $this->getSmtpHost(),
-			$keys[33] => $this->getSmtpPort(),
-			$keys[34] => $this->getSmtpUsername(),
-			$keys[35] => $this->getSmtpPassword(),
-			$keys[36] => $this->getSmtpEncryption(),
-			$keys[37] => $this->getSmtpReconnectAfterNrOfMessages(),
-			$keys[38] => $this->getSmtpSecondsOfPauseAfterReconnection(),
-			$keys[39] => $this->getCurrentInvoiceNr(),
-			$keys[40] => $this->getLogoHtmlColor(),
-			$keys[41] => $this->getPaymentDays(),
-			$keys[42] => $this->getReconnectionFee(),
-			$keys[43] => $this->getInfoTelephoneNumber(),
-			$keys[44] => $this->getLatePaymentFee(),
-			$keys[45] => $this->getEtfBbs(),
-			$keys[46] => $this->getEtfAccNo(),
-			$keys[47] => $this->getAccountDepartment(),
-			$keys[48] => $this->getDirectDebitPaymentEmail(),
-			$keys[49] => $this->getDirectDebitPaymentTelephoneNumber(),
+			$keys[12] => $this->getLegalName(),
+			$keys[13] => $this->getExternalCrmCode(),
+			$keys[14] => $this->getVat(),
+			$keys[15] => $this->getLegalAddress(),
+			$keys[16] => $this->getLegalWebsite(),
+			$keys[17] => $this->getLegalCity(),
+			$keys[18] => $this->getLegalZipcode(),
+			$keys[19] => $this->getLegalStateProvince(),
+			$keys[20] => $this->getLegalCountry(),
+			$keys[21] => $this->getLegalEmail(),
+			$keys[22] => $this->getLegalPhone(),
+			$keys[23] => $this->getPhone2(),
+			$keys[24] => $this->getLegalFax(),
+			$keys[25] => $this->getInvoiceNotes(),
+			$keys[26] => $this->getInvoicePaymentTerms(),
+			$keys[27] => $this->getSenderNameOnInvoicingEmails(),
+			$keys[28] => $this->getInvoicingEmailAddress(),
+			$keys[29] => $this->getAccountantEmailAddress(),
+			$keys[30] => $this->getSmtpHost(),
+			$keys[31] => $this->getSmtpPort(),
+			$keys[32] => $this->getSmtpUsername(),
+			$keys[33] => $this->getSmtpPassword(),
+			$keys[34] => $this->getSmtpEncryption(),
+			$keys[35] => $this->getSmtpReconnectAfterNrOfMessages(),
+			$keys[36] => $this->getSmtpSecondsOfPauseAfterReconnection(),
+			$keys[37] => $this->getCurrentInvoiceNr(),
+			$keys[38] => $this->getLogoHtmlColor(),
+			$keys[39] => $this->getPaymentDays(),
+			$keys[40] => $this->getReconnectionFee(),
+			$keys[41] => $this->getInfoTelephoneNumber(),
+			$keys[42] => $this->getLatePaymentFee(),
+			$keys[43] => $this->getEtfBbs(),
+			$keys[44] => $this->getEtfAccNo(),
+			$keys[45] => $this->getAccountDepartment(),
+			$keys[46] => $this->getDirectDebitPaymentEmail(),
+			$keys[47] => $this->getDirectDebitPaymentTelephoneNumber(),
 		);
 		return $result;
 	}
@@ -1845,117 +1783,111 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 				$this->setUserMessage($value);
 				break;
 			case 12:
-				$this->setLastViewedFeedsMd5($value);
-				break;
-			case 13:
-				$this->setCurrentFeedsMd5($value);
-				break;
-			case 14:
 				$this->setLegalName($value);
 				break;
-			case 15:
+			case 13:
 				$this->setExternalCrmCode($value);
 				break;
-			case 16:
+			case 14:
 				$this->setVat($value);
 				break;
-			case 17:
+			case 15:
 				$this->setLegalAddress($value);
 				break;
-			case 18:
+			case 16:
 				$this->setLegalWebsite($value);
 				break;
-			case 19:
+			case 17:
 				$this->setLegalCity($value);
 				break;
-			case 20:
+			case 18:
 				$this->setLegalZipcode($value);
 				break;
-			case 21:
+			case 19:
 				$this->setLegalStateProvince($value);
 				break;
-			case 22:
+			case 20:
 				$this->setLegalCountry($value);
 				break;
-			case 23:
+			case 21:
 				$this->setLegalEmail($value);
 				break;
-			case 24:
+			case 22:
 				$this->setLegalPhone($value);
 				break;
-			case 25:
+			case 23:
 				$this->setPhone2($value);
 				break;
-			case 26:
+			case 24:
 				$this->setLegalFax($value);
 				break;
-			case 27:
+			case 25:
 				$this->setInvoiceNotes($value);
 				break;
-			case 28:
+			case 26:
 				$this->setInvoicePaymentTerms($value);
 				break;
-			case 29:
+			case 27:
 				$this->setSenderNameOnInvoicingEmails($value);
 				break;
-			case 30:
+			case 28:
 				$this->setInvoicingEmailAddress($value);
 				break;
-			case 31:
+			case 29:
 				$this->setAccountantEmailAddress($value);
 				break;
-			case 32:
+			case 30:
 				$this->setSmtpHost($value);
 				break;
-			case 33:
+			case 31:
 				$this->setSmtpPort($value);
 				break;
-			case 34:
+			case 32:
 				$this->setSmtpUsername($value);
 				break;
-			case 35:
+			case 33:
 				$this->setSmtpPassword($value);
 				break;
-			case 36:
+			case 34:
 				$this->setSmtpEncryption($value);
 				break;
-			case 37:
+			case 35:
 				$this->setSmtpReconnectAfterNrOfMessages($value);
 				break;
-			case 38:
+			case 36:
 				$this->setSmtpSecondsOfPauseAfterReconnection($value);
 				break;
-			case 39:
+			case 37:
 				$this->setCurrentInvoiceNr($value);
 				break;
-			case 40:
+			case 38:
 				$this->setLogoHtmlColor($value);
 				break;
-			case 41:
+			case 39:
 				$this->setPaymentDays($value);
 				break;
-			case 42:
+			case 40:
 				$this->setReconnectionFee($value);
 				break;
-			case 43:
+			case 41:
 				$this->setInfoTelephoneNumber($value);
 				break;
-			case 44:
+			case 42:
 				$this->setLatePaymentFee($value);
 				break;
-			case 45:
+			case 43:
 				$this->setEtfBbs($value);
 				break;
-			case 46:
+			case 44:
 				$this->setEtfAccNo($value);
 				break;
-			case 47:
+			case 45:
 				$this->setAccountDepartment($value);
 				break;
-			case 48:
+			case 46:
 				$this->setDirectDebitPaymentEmail($value);
 				break;
-			case 49:
+			case 47:
 				$this->setDirectDebitPaymentTelephoneNumber($value);
 				break;
 		} 	}
@@ -1977,44 +1909,42 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[9], $arr)) $this->setLogoImageInInvoices($arr[$keys[9]]);
 		if (array_key_exists($keys[10], $arr)) $this->setFooter($arr[$keys[10]]);
 		if (array_key_exists($keys[11], $arr)) $this->setUserMessage($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setLastViewedFeedsMd5($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setCurrentFeedsMd5($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setLegalName($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setExternalCrmCode($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setVat($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setLegalAddress($arr[$keys[17]]);
-		if (array_key_exists($keys[18], $arr)) $this->setLegalWebsite($arr[$keys[18]]);
-		if (array_key_exists($keys[19], $arr)) $this->setLegalCity($arr[$keys[19]]);
-		if (array_key_exists($keys[20], $arr)) $this->setLegalZipcode($arr[$keys[20]]);
-		if (array_key_exists($keys[21], $arr)) $this->setLegalStateProvince($arr[$keys[21]]);
-		if (array_key_exists($keys[22], $arr)) $this->setLegalCountry($arr[$keys[22]]);
-		if (array_key_exists($keys[23], $arr)) $this->setLegalEmail($arr[$keys[23]]);
-		if (array_key_exists($keys[24], $arr)) $this->setLegalPhone($arr[$keys[24]]);
-		if (array_key_exists($keys[25], $arr)) $this->setPhone2($arr[$keys[25]]);
-		if (array_key_exists($keys[26], $arr)) $this->setLegalFax($arr[$keys[26]]);
-		if (array_key_exists($keys[27], $arr)) $this->setInvoiceNotes($arr[$keys[27]]);
-		if (array_key_exists($keys[28], $arr)) $this->setInvoicePaymentTerms($arr[$keys[28]]);
-		if (array_key_exists($keys[29], $arr)) $this->setSenderNameOnInvoicingEmails($arr[$keys[29]]);
-		if (array_key_exists($keys[30], $arr)) $this->setInvoicingEmailAddress($arr[$keys[30]]);
-		if (array_key_exists($keys[31], $arr)) $this->setAccountantEmailAddress($arr[$keys[31]]);
-		if (array_key_exists($keys[32], $arr)) $this->setSmtpHost($arr[$keys[32]]);
-		if (array_key_exists($keys[33], $arr)) $this->setSmtpPort($arr[$keys[33]]);
-		if (array_key_exists($keys[34], $arr)) $this->setSmtpUsername($arr[$keys[34]]);
-		if (array_key_exists($keys[35], $arr)) $this->setSmtpPassword($arr[$keys[35]]);
-		if (array_key_exists($keys[36], $arr)) $this->setSmtpEncryption($arr[$keys[36]]);
-		if (array_key_exists($keys[37], $arr)) $this->setSmtpReconnectAfterNrOfMessages($arr[$keys[37]]);
-		if (array_key_exists($keys[38], $arr)) $this->setSmtpSecondsOfPauseAfterReconnection($arr[$keys[38]]);
-		if (array_key_exists($keys[39], $arr)) $this->setCurrentInvoiceNr($arr[$keys[39]]);
-		if (array_key_exists($keys[40], $arr)) $this->setLogoHtmlColor($arr[$keys[40]]);
-		if (array_key_exists($keys[41], $arr)) $this->setPaymentDays($arr[$keys[41]]);
-		if (array_key_exists($keys[42], $arr)) $this->setReconnectionFee($arr[$keys[42]]);
-		if (array_key_exists($keys[43], $arr)) $this->setInfoTelephoneNumber($arr[$keys[43]]);
-		if (array_key_exists($keys[44], $arr)) $this->setLatePaymentFee($arr[$keys[44]]);
-		if (array_key_exists($keys[45], $arr)) $this->setEtfBbs($arr[$keys[45]]);
-		if (array_key_exists($keys[46], $arr)) $this->setEtfAccNo($arr[$keys[46]]);
-		if (array_key_exists($keys[47], $arr)) $this->setAccountDepartment($arr[$keys[47]]);
-		if (array_key_exists($keys[48], $arr)) $this->setDirectDebitPaymentEmail($arr[$keys[48]]);
-		if (array_key_exists($keys[49], $arr)) $this->setDirectDebitPaymentTelephoneNumber($arr[$keys[49]]);
+		if (array_key_exists($keys[12], $arr)) $this->setLegalName($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setExternalCrmCode($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setVat($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setLegalAddress($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setLegalWebsite($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setLegalCity($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setLegalZipcode($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setLegalStateProvince($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setLegalCountry($arr[$keys[20]]);
+		if (array_key_exists($keys[21], $arr)) $this->setLegalEmail($arr[$keys[21]]);
+		if (array_key_exists($keys[22], $arr)) $this->setLegalPhone($arr[$keys[22]]);
+		if (array_key_exists($keys[23], $arr)) $this->setPhone2($arr[$keys[23]]);
+		if (array_key_exists($keys[24], $arr)) $this->setLegalFax($arr[$keys[24]]);
+		if (array_key_exists($keys[25], $arr)) $this->setInvoiceNotes($arr[$keys[25]]);
+		if (array_key_exists($keys[26], $arr)) $this->setInvoicePaymentTerms($arr[$keys[26]]);
+		if (array_key_exists($keys[27], $arr)) $this->setSenderNameOnInvoicingEmails($arr[$keys[27]]);
+		if (array_key_exists($keys[28], $arr)) $this->setInvoicingEmailAddress($arr[$keys[28]]);
+		if (array_key_exists($keys[29], $arr)) $this->setAccountantEmailAddress($arr[$keys[29]]);
+		if (array_key_exists($keys[30], $arr)) $this->setSmtpHost($arr[$keys[30]]);
+		if (array_key_exists($keys[31], $arr)) $this->setSmtpPort($arr[$keys[31]]);
+		if (array_key_exists($keys[32], $arr)) $this->setSmtpUsername($arr[$keys[32]]);
+		if (array_key_exists($keys[33], $arr)) $this->setSmtpPassword($arr[$keys[33]]);
+		if (array_key_exists($keys[34], $arr)) $this->setSmtpEncryption($arr[$keys[34]]);
+		if (array_key_exists($keys[35], $arr)) $this->setSmtpReconnectAfterNrOfMessages($arr[$keys[35]]);
+		if (array_key_exists($keys[36], $arr)) $this->setSmtpSecondsOfPauseAfterReconnection($arr[$keys[36]]);
+		if (array_key_exists($keys[37], $arr)) $this->setCurrentInvoiceNr($arr[$keys[37]]);
+		if (array_key_exists($keys[38], $arr)) $this->setLogoHtmlColor($arr[$keys[38]]);
+		if (array_key_exists($keys[39], $arr)) $this->setPaymentDays($arr[$keys[39]]);
+		if (array_key_exists($keys[40], $arr)) $this->setReconnectionFee($arr[$keys[40]]);
+		if (array_key_exists($keys[41], $arr)) $this->setInfoTelephoneNumber($arr[$keys[41]]);
+		if (array_key_exists($keys[42], $arr)) $this->setLatePaymentFee($arr[$keys[42]]);
+		if (array_key_exists($keys[43], $arr)) $this->setEtfBbs($arr[$keys[43]]);
+		if (array_key_exists($keys[44], $arr)) $this->setEtfAccNo($arr[$keys[44]]);
+		if (array_key_exists($keys[45], $arr)) $this->setAccountDepartment($arr[$keys[45]]);
+		if (array_key_exists($keys[46], $arr)) $this->setDirectDebitPaymentEmail($arr[$keys[46]]);
+		if (array_key_exists($keys[47], $arr)) $this->setDirectDebitPaymentTelephoneNumber($arr[$keys[47]]);
 	}
 
 	
@@ -2034,8 +1964,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArParamsPeer::LOGO_IMAGE_IN_INVOICES)) $criteria->add(ArParamsPeer::LOGO_IMAGE_IN_INVOICES, $this->logo_image_in_invoices);
 		if ($this->isColumnModified(ArParamsPeer::FOOTER)) $criteria->add(ArParamsPeer::FOOTER, $this->footer);
 		if ($this->isColumnModified(ArParamsPeer::USER_MESSAGE)) $criteria->add(ArParamsPeer::USER_MESSAGE, $this->user_message);
-		if ($this->isColumnModified(ArParamsPeer::LAST_VIEWED_FEEDS_MD5)) $criteria->add(ArParamsPeer::LAST_VIEWED_FEEDS_MD5, $this->last_viewed_feeds_md5);
-		if ($this->isColumnModified(ArParamsPeer::CURRENT_FEEDS_MD5)) $criteria->add(ArParamsPeer::CURRENT_FEEDS_MD5, $this->current_feeds_md5);
 		if ($this->isColumnModified(ArParamsPeer::LEGAL_NAME)) $criteria->add(ArParamsPeer::LEGAL_NAME, $this->legal_name);
 		if ($this->isColumnModified(ArParamsPeer::EXTERNAL_CRM_CODE)) $criteria->add(ArParamsPeer::EXTERNAL_CRM_CODE, $this->external_crm_code);
 		if ($this->isColumnModified(ArParamsPeer::VAT)) $criteria->add(ArParamsPeer::VAT, $this->vat);
@@ -2123,10 +2051,6 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		$copyObj->setFooter($this->footer);
 
 		$copyObj->setUserMessage($this->user_message);
-
-		$copyObj->setLastViewedFeedsMd5($this->last_viewed_feeds_md5);
-
-		$copyObj->setCurrentFeedsMd5($this->current_feeds_md5);
 
 		$copyObj->setLegalName($this->legal_name);
 
