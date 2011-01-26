@@ -33,3 +33,6 @@ php generate.php
 cd ..
 ./symfony cc
 
+echo "Generated VERSION "
+cat VERSION
+echo ""
