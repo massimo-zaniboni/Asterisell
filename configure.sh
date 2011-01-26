@@ -4,6 +4,13 @@ mkdir -p cache
 mkdir -p log
 mkdir -p web/generated_graphs
 
+echo "Create VERSION"
+echo -n "asterisell-" > VERSION
+cat VERSION-TYPE >> VERSION
+echo -n "-" >> VERSION
+cat VERSION-NR >> VERSION
+cat VERSION
+
 echo "Clear symfony cache, in order to enable new settings."
 ./symfony cc
 ./symfony fix-perms

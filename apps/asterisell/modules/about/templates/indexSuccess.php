@@ -20,7 +20,6 @@ $str = <<<VERYLONGSTRING
 ## Version
 
 asterisell-free-stable-3.4.0
-
 ## Authors / Contributors
 
 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
