@@ -1217,7 +1217,7 @@ try {
   // This allows to create more "user friendly"
   // demo-data.
   //
-  $pastDate = pastDays(365*2);
+  $past = pastDays(365*2);
 
   // Create default params
   //
@@ -1275,7 +1275,7 @@ try {
   $r->setDestinationType(DestinationType::unprocessed);
   $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1290,7 +1290,7 @@ try {
   $r->setDestinationType(DestinationType::unprocessed);
   $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1305,7 +1305,7 @@ try {
   $r->setDestinationType(DestinationType::unprocessed);
   $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1320,7 +1320,7 @@ try {
   $r->setDestinationType(DestinationType::unprocessed);
   $r->setArRateCategoryId(null);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1343,7 +1343,7 @@ try {
   $r->setDestinationType(DestinationType::outgoing);
   $r->setArRateCategoryId($normalCategoryId);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1362,7 +1362,7 @@ try {
   $r->setDestinationType(DestinationType::outgoing);
   $r->setArRateCategoryId($discountedCategoryId);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1381,7 +1381,7 @@ try {
   $r->setDestinationType(DestinationType::outgoing);
   $r->setArRateCategoryId(null);
   $r->setArPartyId($defaultVendorId);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1400,7 +1400,7 @@ try {
   $r->setDestinationType(DestinationType::internal);
   $r->setArRateCategoryId(null);
   $r->setArPartyId($defaultVendorId);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1419,7 +1419,7 @@ try {
   $r->setDestinationType(DestinationType::internal);
   $r->setArRateCategoryId($normalCategoryId);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1438,7 +1438,7 @@ try {
   $r->setDestinationType(DestinationType::internal);
   $r->setArRateCategoryId($discountedCategoryId);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1457,7 +1457,7 @@ try {
   $r->setDestinationType(DestinationType::incoming);
   $r->setArRateCategoryId($normalCategoryId);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1476,7 +1476,7 @@ try {
   $r->setDestinationType(DestinationType::incoming);
   $r->setArRateCategoryId($discountedCategoryId);
   $r->setArPartyId(null);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1495,7 +1495,7 @@ try {
   $r->setDestinationType(DestinationType::incoming);
   $r->setArRateCategoryId(null);
   $r->setArPartyId($defaultVendorId);
-  $r->setStartTime($pastDate);
+  $r->setStartTime($past);
   $r->setEndTime(null);
   $r->setIsException(false);
   $r->setPhpClassSerialization(serialize($rm));
@@ -1662,7 +1662,7 @@ try {
   $r->setPassword("admin");
   $r->setArPartyId(null);
   $r->setArOfficeId(null);
-  $r->setActivateAt($pastDays);
+  $r->setActivateAt($past);
   $r->setDeactivateAt(null);
   $r->save();
 
@@ -1671,7 +1671,7 @@ try {
   $r->setPassword("alpha");
   $r->setArPartyId($alphaPartyId);
   $r->setArOfficeId(null);
-  $r->setActivateAt($pastDate);
+  $r->setActivateAt($past);
   $r->setDeactivateAt(null);
   $r->save();
 
@@ -1680,7 +1680,7 @@ try {
   $r->setPassword("beta");
   $r->setArPartyId($betaPartyId);
   $r->setArOfficeId(null);
-  $r->setActivateAt($pastDate);
+  $r->setActivateAt($past);
   $r->setDeactivateAt(null);
   $r->save();
 
@@ -1689,7 +1689,7 @@ try {
   $r->setPassword("gamma");
   $r->setArPartyId($gammaPartyId);
   $r->setArOfficeId(null);
-  $r->setActivateAt($pastDate);
+  $r->setActivateAt($past);
   $r->setDeactivateAt(null);
   $r->save();
 
@@ -1698,7 +1698,7 @@ try {
   $r->setPassword("store");
   $r->setArPartyId($gammaPartyId);
   $r->setArOfficeId($gammaOfficeId1);
-  $r->setActivateAt($pastDate);
+  $r->setActivateAt($past);
   $r->setDeactivateAt(null);
   $r->save();
 
