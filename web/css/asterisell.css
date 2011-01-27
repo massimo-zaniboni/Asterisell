@@ -170,3 +170,14 @@ p.asterisellSlogan {
     outline-width:medium;
 }
 
+#loginHelp {
+  padding: 10px;
+}
+
+#loginHelp td {
+  font-size: 16px;
+}
+
+#loginHelp th {
+  font-size: 16px;
+}
