@@ -37,6 +37,7 @@ class rateActions extends autorateActions {
       $phpClassName = $this->getRequestParameter('php_rate_class_name');
       $phpClass = new $phpClassName();
       $this->ar_rate->setPhpClassSerialization(serialize($phpClass));
+      $this->ar_rate->setUserInput(null);
       $this->saveArRate($this->ar_rate);
 
       $ar_rateId = $this->ar_rate->getId();
