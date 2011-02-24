@@ -27,7 +27,7 @@ Massimo Zaniboni <massimo.zaniboni@profitoss.com>
 
 ## Copyright Owner
 
-    Copyright (C) 2007, 2008, 2009, 2010 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
+    Copyright (C) 2007, 2008, 2009, 2010, 2011 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
     
     Asterisell is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
