@@ -562,13 +562,16 @@ class RateCalls extends FixedJobProcessor {
   protected function getPhpRate($cdr, $categoryIndex, $arPartyId) {
     $destinationType = $cdr->getDestinationType();
 
-    // At the end of the process these will be setted to the best found values.
+    // At the end of the process these will be setted to the best found values,
+    // if $thereIsConflict == false.
     //
+    $thereIsConflict = false;
+    $thereIsFitnessMethodConflict = false;
     $resultRate = null;
     $resultPhpRate = null;
     $bestBundleRateInfo = null;
     $bestFitness = 0;
-    $bestRatePriorityMethod = "";
+    $bestRateFitnessMethod = null;
     $bestRatePriority = 0;
 
     // TRUE for a customer rate, FALSE for a vendor rate.
@@ -578,9 +581,6 @@ class RateCalls extends FixedJobProcessor {
       $isCustomer = false;
     }
 
-    // start optimistic
-    //
-    $thereIsConflict = false;
     $cdrDate = $cdr->getCalldate();
 
     // Search the rate in the cache with format
@@ -599,7 +599,7 @@ class RateCalls extends FixedJobProcessor {
       foreach ($arrRates as $index => $rateAndPhpRate) {
         $rate = $rateAndPhpRate[0];
         $phpRate = $rateAndPhpRate[1];
-        $ratePriorityMethod = $phpRate->getPriorityMethod();
+        $rateFitnessMethod = $phpRate->getPriorityMethod();
         $isException = $rate->getIsException();
         $isBundleRate = false;
         $rateInfoId = null;
@@ -647,31 +647,43 @@ class RateCalls extends FixedJobProcessor {
 
           $isBestFit = false; // starts pessimistic
           if ($fitness != 0) {
-            // this rate is applicable, but we must decide if it is better than other rates,
-            // comparing first $ratePriority and then $fitness
-
+            //
+            // This rate is applicable.
+            //
             if ($ratePriority > $bestRatePriority) {
               // An higher priority rate.
-              // Its remove also conflicts caused by other lower priority rates.
+              // Its removes also conflicts caused by other lower priority rates,
+              // also if they are based on different fitness methods.
               //
               $isBestFit = true;
               $thereIsConflict = false;
+              $thereIsFitnessMethodConflict = false;
+            } else if ($ratePriority < $bestRatePriority) {
+                // a low priority rate is never a bestFit
+                $isBestFit = false;
             } else if ($ratePriority === $bestRatePriority) {
-              if ($bestFitness == 0) {
-                // this is the first rate
-                //
+              if (is_null($bestRateFitnessMethod)) {
+                // this is the first applicable rate
                 $isBestFit = true;
-              } else if (strcmp($ratePriorityMethod, $bestRatePriorityMethod) != 0) {
-                // it is not admissible to have two different rates with same  priority, but different method
-                $thereIsConflict = true;
-              } else if (strcmp($ratePriorityMethod, $bestRatePriorityMethod) == 0) {
-                if ($bestFitness === $fitness) {
-                  // it is not admissible to have two rates
-                  // with the same fitness
+              } else {
+                if (strcmp($rateFitnessMethod, $bestRateFitnessMethod) == 0) {
+                  // The two fitness methods are the same, so fitness are comparable...
                   //
-                  $thereIsConflict = true;
-                } else if ($fitness > $bestFitness) {
-                  $isBestFit = true;
+                  if ($bestFitness === $fitness) {
+                    // it is not admissible to have two rates with the same fitness
+                    //
+                    $thereIsConflict = true;
+                  } else if ($fitness > $bestFitness) {
+                    $isBestFit = true;
+                  } else {
+                    $isBestFit = false;
+                  }
+                } else {
+                   // It is not admissible to have two different rates with different fitness methods,
+                   // because their fitness values are not comparable...
+                   //
+                   $thereIsConflict = true;
+                   $thereIsFitnessMethodConflict = true;
                 }
               }
             }
@@ -682,13 +694,17 @@ class RateCalls extends FixedJobProcessor {
           if ($isBestFit) {
             $bestFitness = $fitness;
             $bestRatePriority = $ratePriority;
-            $bestRatePriorityMethod = $ratePriorityMethod;
+            $bestRateFitnessMethod = $rateFitnessMethod;
             $bestBundleRateInfo = $rateInfo;
             $resultPhpRate = $phpRate;
             $resultRate = $rate;
           }
         }
       }
+    }
+
+    if ($thereIsFitnessMethodConflict) {
+        $thereIsConflict = true;
     }
 
     // Analyze the candidate results...
