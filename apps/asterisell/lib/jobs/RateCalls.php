@@ -705,10 +705,10 @@ class RateCalls extends FixedJobProcessor {
       // Create the error descritpion and initialize duplication-key
       // variables.
       //
-      if (is_null($resultRate)) {
-        $startOfDescr = "No Rate to apply";
-      } else {
+      if ($thereIsConflict) {
         $startOfDescr = "Too many Rate to apply";
+      } else {
+        $startOfDescr = "No Rate to apply";
       }
 
       $descr = $startOfDescr;
