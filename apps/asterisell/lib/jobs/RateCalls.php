@@ -1,6 +1,6 @@
 <?php
 
-/* $LICENSE 2009, 2010:
+/* $LICENSE 2009, 2010, 2011:
  *
  * Copyright (C) 2009, 2010 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
  *
@@ -724,7 +724,13 @@ class RateCalls extends FixedJobProcessor {
         }
         $descr .= ' for category "' . $categoryName . '"';
       }
-      $descr .= ' for external telephone number "' . $cdr->getCachedExternalTelephoneNumber() . '" (with number portability applied it is "' . $cdr->getCachedExternalTelephoneNumberWithAppliedPortability() . '"), and for dstchannel "' . $cdr->getDstchannel() . '"';
+
+      if (!is_null($cdr->getCachedExternalTelephoneNumber())) {
+        // in case of system-rates these fields are not already computed...
+        //
+        $descr .= ' for external telephone number "' . $cdr->getCachedExternalTelephoneNumber() . '" (with number portability applied it is "' . $cdr->getCachedExternalTelephoneNumberWithAppliedPortability() . '"), ';
+      }
+      $descr .= 'and for dstchannel "' . $cdr->getDstchannel() . '"';
 
       $p->setDescription($descr);
       $p->setDuplicationKey($startOfDescr . " - " . $dateStr . " - " . $categoryName . " - " . $cdr->getDstchannel());

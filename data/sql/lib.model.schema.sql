@@ -71,7 +71,7 @@ CREATE TABLE `cdr`
 	CONSTRAINT `cdr_to_cost_rate_key`
 		FOREIGN KEY (`cost_ar_rate_id`)
 		REFERENCES `ar_rate` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_number_portability
@@ -90,7 +90,7 @@ CREATE TABLE `ar_number_portability`
 	KEY `ar_number_portability_telephone_number_index`(`telephone_number`),
 	KEY `ar_number_portability_ported_telephone_number_index`(`ported_telephone_number`),
 	KEY `ar_number_portability_from_date_index`(`from_date`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_asterisk_account
@@ -112,7 +112,7 @@ CREATE TABLE `ar_asterisk_account`
 	CONSTRAINT `ar_asterisk_account_FK_1`
 		FOREIGN KEY (`ar_office_id`)
 		REFERENCES `ar_office` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_office
@@ -132,7 +132,7 @@ CREATE TABLE `ar_office`
 	CONSTRAINT `ar_office_FK_1`
 		FOREIGN KEY (`ar_party_id`)
 		REFERENCES `ar_party` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_party
@@ -174,7 +174,7 @@ CREATE TABLE `ar_party`
 	CONSTRAINT `ar_party_FK_2`
 		FOREIGN KEY (`ar_params_id`)
 		REFERENCES `ar_params` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_params
@@ -234,7 +234,7 @@ CREATE TABLE `ar_params`
 	`direct_debit_payment_email` VARCHAR(512),
 	`direct_debit_payment_telephone_number` VARCHAR(512),
 	PRIMARY KEY (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_web_account
@@ -267,7 +267,7 @@ CREATE TABLE `ar_web_account`
 	CONSTRAINT `ar_web_account_FK_3`
 		FOREIGN KEY (`ar_params_id`)
 		REFERENCES `ar_params` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_invoice
@@ -318,7 +318,7 @@ CREATE TABLE `ar_invoice`
 	CONSTRAINT `ar_invoice_FK_2`
 		FOREIGN KEY (`ar_params_id`)
 		REFERENCES `ar_params` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_invoice_creation
@@ -347,7 +347,7 @@ CREATE TABLE `ar_invoice_creation`
 	CONSTRAINT `ar_invoice_creation_FK_1`
 		FOREIGN KEY (`ar_params_id`)
 		REFERENCES `ar_params` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_payment
@@ -374,7 +374,7 @@ CREATE TABLE `ar_payment`
 	CONSTRAINT `ar_payment_FK_1`
 		FOREIGN KEY (`ar_party_id`)
 		REFERENCES `ar_party` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_rate_category
@@ -388,7 +388,7 @@ CREATE TABLE `ar_rate_category`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(128),
 	PRIMARY KEY (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_rate
@@ -420,7 +420,7 @@ CREATE TABLE `ar_rate`
 	CONSTRAINT `ar_rate_FK_2`
 		FOREIGN KEY (`ar_party_id`)
 		REFERENCES `ar_party` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_rate_incremental_info
@@ -448,7 +448,7 @@ CREATE TABLE `ar_rate_incremental_info`
 	CONSTRAINT `ar_rate_incremental_info_FK_2`
 		FOREIGN KEY (`ar_rate_id`)
 		REFERENCES `ar_rate` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_telephone_prefix
@@ -467,7 +467,7 @@ CREATE TABLE `ar_telephone_prefix`
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `ar_telephone_prefix_prefix_unique` (`prefix`),
 	KEY `ar_telephone_prefix_operator_type_index`(`operator_type`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_problem
@@ -489,7 +489,7 @@ CREATE TABLE `ar_problem`
 	`signaled_to_admin` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `ar_problem_duplication_key_index`(`duplication_key`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_job_queue
@@ -511,7 +511,7 @@ CREATE TABLE `ar_job_queue`
 	PRIMARY KEY (`id`),
 	KEY `ar_job_queue_is_part_of_index`(`is_part_of`),
 	KEY `ar_job_queue_state_index`(`state`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_custom_rate_form
@@ -529,7 +529,7 @@ CREATE TABLE `ar_custom_rate_form`
 		FOREIGN KEY (`id`)
 		REFERENCES `ar_rate` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_lock
@@ -546,7 +546,7 @@ CREATE TABLE `ar_lock`
 	`info` VARCHAR(1024),
 	PRIMARY KEY (`id`),
 	KEY `ar_lock_name_index`(`name`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
