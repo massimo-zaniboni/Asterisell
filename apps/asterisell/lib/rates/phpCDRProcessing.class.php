@@ -54,7 +54,7 @@ class PhpCDRProcessing extends PhpRate {
   
   public function isApplicable($cdr, $rateInfo = null) {
     if (($this->disposition === $cdr->getDisposition()) &&
-        ($this->amaflags === $cdr->getAmaflags())) {
+        ($this->amaflags == $cdr->getAmaflags())) {
         return PhpRateWithDstChannel::isPrefixOf($this->dstChannel, $cdr->getDstchannel(), true);
     } else {    
       return 0;
