@@ -109,6 +109,7 @@ class JobQueueProcessor {
     // current jobs will be executed in any case so it is not a problem.
     //
     $mutex = new Mutex(JobQueueProcessor::MUTEX_FILE_NAME);
+    $mutex->setIsCronProcess($isCronProcess);
     $isLocked = $mutex->maybeLock();
 
     // exit if there is no acquired lock

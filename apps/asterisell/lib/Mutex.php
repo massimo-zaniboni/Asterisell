@@ -40,6 +40,12 @@ class Mutex {
   protected $name = NULL;
 
   /**
+   * TRUE is it is a cron-process lock
+   * FALSE if it is a web/online lock
+   */
+  protected $isCronProcess = FALSE;
+
+  /**
    * Init a mutex with a given name.
    *
    * @param $name the name of the lock
@@ -53,6 +59,14 @@ class Mutex {
    */
   public function __destruct() {
     $this->unlock();
+  }
+
+  public function setIsCronProcess($v) {
+      $this->isCronProcess = $v;
+  }
+
+  public function getIsCronProcess() {
+      return $this->isCronProcess;
   }
 
   /**
@@ -74,27 +88,63 @@ class Mutex {
         //
         $lock = new ArLock();
         $lock->setName($this->name);
-        $lock->setInfo(getmypid());
+        $lock->setTime(time());
+        if ($this->getIsCronProcess()) {
+          $lock->setInfo(getmypid());
+        } else {
+          $lock->setInfo("webprocess");
+        }
         $lock->save();
 
         $this->removeLock = TRUE;
 
         return TRUE;
     } else {
-        // check if the LOCK is associated to a killed process
-        //
         $pid = $lock->getInfo();
-        $pids = explode(PHP_EOL, `ps -e | awk '{print $1}'`);  
-        if(in_array($pid, $pids)) { 
-          // the process is still running, lock can not be acquired
-          //
-          $this->removeLock = FALSE;
-          return FALSE;
+        $removeLock = FALSE;
+        
+        if ($pid == "webprocess") {
+           // check if the LOCK is older than 15 minutes
+           // NOTE: it is a rare event that a web lock is broken, so 15 minutes is reasonable.
+           // 
+           $lockTime = strtotime($lock->getTime());
+           $maxTime = strtotime("+15 minutes", $lockTime);
+           if ($maxTime < time()) {
+            $removeLock = TRUE;
+
+            // Inform the administrator of the problem
+            //
+            $p = new ArProblem();
+            $p->setDuplicationKey("webprocess unlock " + $lockTime);
+            $p->setDescription('For some reason there were an error during execution of a administrator web job request. This locked for 15 minutes the lock-table.');
+            $p->setEffect("For 15 minutes new jobs were not executed: in particular new CDRs were not processed. Customers were able to access the website, and they were able to see old calls, but new calls were not visible.");
+            $p->setProposedSolution("Nothing to do: now the system is running normally.");
+            ArProblemException::addProblemIntoDBOnlyIfNew($p);
+
+           } else {
+            $removeLock = FALSE;   
+           }
         } else {
-          // the process is killed, and the lock can be acquired
-          //
-          ArLockPeer::doDelete($lock);
-          return $this->maybeLock();
+            // check if the LOCK is associated to a running process
+            //
+            $pids = explode(PHP_EOL, `ps -e | awk '{print $1}'`);
+            if(in_array($pid, $pids)) {
+                $removeLock = FALSE;
+            } else {
+                $removeLock = TRUE;
+            }
+        }
+
+        if ($removeLock) {
+            // the process is killed, and the lock can be acquired
+            //
+            ArLockPeer::doDelete($lock);
+            return $this->maybeLock();
+        } else {
+            // the process is still running, lock can not be acquired
+            //
+            $this->removeLock = FALSE;
+            return FALSE;
         }
     }
   }
