@@ -204,6 +204,12 @@ class customer_ft_call_reportActions extends autoCustomer_ft_call_reportActions 
 	  $officeId = null;
 	}
       }
+    } else {
+      if (!is_null($partyId)) {
+        $party = ArPartyPeer::retrieveByPK($partyId);
+        $officeId = $party->getUniqueOfficeId();
+        $filterOnOfficeApplied = true;
+      }
     }
 
     // apply the filter

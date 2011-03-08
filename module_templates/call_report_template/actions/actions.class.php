@@ -239,6 +239,12 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
 	  $officeId = null;
 	}
       }
+    } else {
+      if (!is_null($partyId)) {
+        $party = ArPartyPeer::retrieveByPK($partyId);
+        $officeId = $party->getUniqueOfficeId();
+        $filterOnOfficeApplied = true;
+      }
     }
 <?php } else { ?>
 

@@ -45,21 +45,8 @@ if ($sf_user->hasCredential('office')) {
 // A party with only one office, has an implicit office
 //
 if (is_null($officeId) && $sf_user->hasCredential('party')) {
-      $partyId = $sf_user->getPartyId();
-
-       $c = new Criteria();
-       $c->add(ArOfficePeer::AR_PARTY_ID, $partyId);
-       $results = ArOfficePeer::doSelect($c);
-
-       $countOffices = 0;
-       foreach($results as $office) {
-         $countOffices++;
-         $officeId = $office->getId();
-       }
-
-       if ($countOffices > 1) {
-           $officeId = null;
-       }
+    $party = ArPartyPeer::retrieveByPK($sf_user->getPartyId());
+    $officeId = $party->getUniqueOfficeId();
   }
 
   if (!is_null($officeId)) {

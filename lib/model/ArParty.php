@@ -21,6 +21,30 @@ class ArParty extends BaseArParty
   const ONE_OFFICE_MANY_VOIP = 2;
   const ONE_OFFICE_ONE_VOIP = 3;
 
+  /**
+   * @return NULL if the party has two or more associated offices,
+   *         the OfficeId if the party has only one single associated office.
+   */
+  public function getUniqueOfficeId() {
+       $officeId = null;
+
+       $c = new Criteria();
+       $c->add(ArOfficePeer::AR_PARTY_ID, $this->getId());
+       $results = ArOfficePeer::doSelect($c);
+
+       $countOffices = 0;
+       foreach($results as $office) {
+         $countOffices++;
+         $officeId = $office->getId();
+       }
+
+       if ($countOffices == 1) {
+           return $officeId;
+       } else {
+           return null;
+       }
+  }
+
   public function getSuggestedCallReportType() {
     return self::getSuggestedCallReportTypeForParty($this->getId());
   }

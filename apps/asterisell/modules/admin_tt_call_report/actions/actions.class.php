@@ -217,6 +217,12 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 	  $officeId = null;
 	}
       }
+    } else {
+      if (!is_null($partyId)) {
+        $party = ArPartyPeer::retrieveByPK($partyId);
+        $officeId = $party->getUniqueOfficeId();
+        $filterOnOfficeApplied = true;
+      }
     }
 
     // apply the filter
