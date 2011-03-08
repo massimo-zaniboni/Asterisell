@@ -23,6 +23,8 @@
 
 /**
  * A Asterisell user with proper data access policies.
+ *
+ * See also `lib/model/ArParty.php` for other info on users.
  */
 class myUser extends sfBasicSecurityUser {
   /**

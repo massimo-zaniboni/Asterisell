@@ -21,10 +21,9 @@ $defaultChoice = NULL;
 // Accounts can be selected only after an officeId and partyId is selected.
 //
 $officeId = null;
+$partyIsSelected = false;
 
 if (isset($filters['filter_on_office']) && (!is_null($filters['filter_on_office'])) && (strlen(trim($filters['filter_on_office'])) != 0) && ($filters['filter_on_office'] != -1)) {
-
-  $partyIsSelected = false;
 
   if ($sf_user->hasCredential('admin')) {
     $partyIsSelected =  (isset($filters['filter_on_party']) && (!is_null($filters['filter_on_party'])) && (strlen(trim($filters['filter_on_party'])) != 0) && ($filters['filter_on_party'] != -1));
@@ -43,7 +42,27 @@ if ($sf_user->hasCredential('office')) {
   $officeId = $sf_user->getOfficeId();
 }
 
-if (!is_null($officeId)) {
+// A party with only one office, has an implicit office
+//
+if (is_null($officeId) && $sf_user->hasCredential('party')) {
+      $partyId = $sf_user->getPartyId();
+
+       $c = new Criteria();
+       $c->add(ArOfficePeer::AR_PARTY_ID, $partyId);
+       $results = ArOfficePeer::doSelect($c);
+
+       $countOffices = 0;
+       foreach($results as $office) {
+         $countOffices++;
+         $officeId = $office->getId();
+       }
+
+       if ($countOffices > 1) {
+           $officeId = null;
+       }
+  }
+
+  if (!is_null($officeId)) {
     $c = new Criteria();
     $c->addAscendingOrderByColumn(ArAsteriskAccountPeer::NAME);
     $c->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $officeId);
