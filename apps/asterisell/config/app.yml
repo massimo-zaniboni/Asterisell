@@ -311,6 +311,8 @@ all:
   #        - `cdr.ar_telephone_prefix.id` can be null (it is completed from the framework),
   #           or with an explicit value, in this case number portability is not automatically transferred to the telephone prefix,
   #           and it must be explicitely managed from the CDR processor;
+  #      See `apps/asterisell/lib/rates/CustomCDRProcessing.php` for a template of associated processing rate.
+  #      A rate like the proposed example must be added to the rate table.
   #
   # IMPORTANT: Changes to this parameter make effect only on new rated calls,
   # so you must force a rerate if you want apply the new mask only to already
