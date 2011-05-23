@@ -437,6 +437,10 @@ propel:
 
     direct_debit_payment_telephone_number: varchar(512)
 
+    login_urn: varchar(512)
+    #
+    # the login path/urn used for starting directly with the logo 
+
   ar_web_account:
   
     id:

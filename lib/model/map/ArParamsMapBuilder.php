@@ -128,5 +128,7 @@ class ArParamsMapBuilder {
 
 		$tMap->addColumn('DIRECT_DEBIT_PAYMENT_TELEPHONE_NUMBER', 'DirectDebitPaymentTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 512);
 
+		$tMap->addColumn('LOGIN_URN', 'LoginUrn', 'string', CreoleTypes::VARCHAR, false, 512);
+
 	} 
 } 

@@ -233,6 +233,7 @@ CREATE TABLE `ar_params`
 	`account_department` VARCHAR(512),
 	`direct_debit_payment_email` VARCHAR(512),
 	`direct_debit_payment_telephone_number` VARCHAR(512),
+	`login_urn` VARCHAR(512),
 	PRIMARY KEY (`id`)
 )Engine=InnoDB;
 

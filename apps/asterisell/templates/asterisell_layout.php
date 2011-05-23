@@ -1,9 +1,9 @@
 <?php
 use_helper('Number', 'I18N', 'Date');
 
-// Manage params
+// Manage params, and ask for a reseller-specific login form if it is specified
 //
-$params = $sf_user->getParams();
+$params = $sf_user->getParams($sf_params->get('name'));
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -199,6 +199,10 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	
 	protected $direct_debit_payment_telephone_number;
 
+
+	
+	protected $login_urn;
+
 	
 	protected $collArPartys;
 
@@ -563,6 +567,13 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 	{
 
 		return $this->direct_debit_payment_telephone_number;
+	}
+
+	
+	public function getLoginUrn()
+	{
+
+		return $this->login_urn;
 	}
 
 	
@@ -1234,6 +1245,20 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setLoginUrn($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->login_urn !== $v) {
+			$this->login_urn = $v;
+			$this->modifiedColumns[] = ArParamsPeer::LOGIN_URN;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -1334,11 +1359,13 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 
 			$this->direct_debit_payment_telephone_number = $rs->getString($startcol + 47);
 
+			$this->login_urn = $rs->getString($startcol + 48);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 48; 
+						return $startcol + 49; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArParams object", $e);
 		}
@@ -1673,6 +1700,9 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			case 47:
 				return $this->getDirectDebitPaymentTelephoneNumber();
 				break;
+			case 48:
+				return $this->getLoginUrn();
+				break;
 			default:
 				return null;
 				break;
@@ -1731,6 +1761,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			$keys[45] => $this->getAccountDepartment(),
 			$keys[46] => $this->getDirectDebitPaymentEmail(),
 			$keys[47] => $this->getDirectDebitPaymentTelephoneNumber(),
+			$keys[48] => $this->getLoginUrn(),
 		);
 		return $result;
 	}
@@ -1890,6 +1921,9 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 			case 47:
 				$this->setDirectDebitPaymentTelephoneNumber($value);
 				break;
+			case 48:
+				$this->setLoginUrn($value);
+				break;
 		} 	}
 
 	
@@ -1945,6 +1979,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[45], $arr)) $this->setAccountDepartment($arr[$keys[45]]);
 		if (array_key_exists($keys[46], $arr)) $this->setDirectDebitPaymentEmail($arr[$keys[46]]);
 		if (array_key_exists($keys[47], $arr)) $this->setDirectDebitPaymentTelephoneNumber($arr[$keys[47]]);
+		if (array_key_exists($keys[48], $arr)) $this->setLoginUrn($arr[$keys[48]]);
 	}
 
 	
@@ -2000,6 +2035,7 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArParamsPeer::ACCOUNT_DEPARTMENT)) $criteria->add(ArParamsPeer::ACCOUNT_DEPARTMENT, $this->account_department);
 		if ($this->isColumnModified(ArParamsPeer::DIRECT_DEBIT_PAYMENT_EMAIL)) $criteria->add(ArParamsPeer::DIRECT_DEBIT_PAYMENT_EMAIL, $this->direct_debit_payment_email);
 		if ($this->isColumnModified(ArParamsPeer::DIRECT_DEBIT_PAYMENT_TELEPHONE_NUMBER)) $criteria->add(ArParamsPeer::DIRECT_DEBIT_PAYMENT_TELEPHONE_NUMBER, $this->direct_debit_payment_telephone_number);
+		if ($this->isColumnModified(ArParamsPeer::LOGIN_URN)) $criteria->add(ArParamsPeer::LOGIN_URN, $this->login_urn);
 
 		return $criteria;
 	}
@@ -2123,6 +2159,8 @@ abstract class BaseArParams extends BaseObject  implements Persistent {
 		$copyObj->setDirectDebitPaymentEmail($this->direct_debit_payment_email);
 
 		$copyObj->setDirectDebitPaymentTelephoneNumber($this->direct_debit_payment_telephone_number);
+
+		$copyObj->setLoginUrn($this->login_urn);
 
 
 		if ($deepCopy) {

@@ -41,7 +41,7 @@ class myUser extends sfBasicSecurityUser {
     $this->setAttribute('uniquePrefixToRateId', array());
 
     $this->setAttribute('webAccountId', $webAccount->getId());
-    $this->setAttribute('paramsId', $webAccount->getArParamsId());
+    $this->setAttribute('paramsId', $webAccount->getInheritedArParamsId());
 
     $this->setCulture(sfConfig::get('app_culture'));
     $this->clearCredentials();
@@ -84,19 +84,28 @@ class myUser extends sfBasicSecurityUser {
   /**
    * Return params (or create if they do not exist)
    * for the current account/customer. 
-   * This methods works also for the initial form.
+   * This methods works also for the initial login form.
    *
+   * @param $loginId NULL if it is not specified, the reseller short-name in case of a request like '/login/acme-inc'
    * @return an ArParams object
    */
-  function getParams() {
+  function getParams($resellerName) {
 
     $params = NULL;
 
     $id = $this->getParamsId();
-    if (!is_null($id)) { 
+    if (!is_null($id)) {
+      // ok it is a logged user, then use its params.
       $params = ArParamsPeer::retrieveByPk($id);
-    } 
-  
+    } else {
+      // it is a not logged user, is it specified a default reseller login template?
+      if (!is_null($resellerName) && strlen(trim($resellerName)) > 0) {
+        $c = new Criteria();
+        $c->add(ArParamsPeer::LOGIN_URN, trim($resellerName));
+        $params = ArParamsPeer::doSelectOne($c);
+      }
+    }
+
     if (is_null($params)) {
       $c = new Criteria();
       $c->add(ArParamsPeer::IS_DEFAULT, TRUE);

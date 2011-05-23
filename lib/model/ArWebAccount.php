@@ -21,4 +21,17 @@ class ArWebAccount extends BaseArWebAccount
   public function isOffice() {
     return (!is_null($this->getArPartyId()) && !is_null($this->getArOfficeId()));
   }
+
+  public function getInheritedArParamsId() {
+      $id = NULL;
+      $id = $this->getArParamsId();
+      if (is_null($id)) {
+          $partyId = $this->getArPartyId();
+          if (!is_null($partyId)) {
+              $party = $this->getArParty();
+              $id = $party->getArParamsId();
+          }
+      }
+      return $id;
+  }
 }

@@ -130,8 +130,16 @@ class loginActions extends sfActions {
   }
 
   public function executeLogout() {
+    $params = $this->getUser()->getParams(NULL);
+    $urn = $params->getLoginUrn();
+
     $this->getUser()->logout();
-    return $this->redirect('login/index');
+    
+    if (!is_null($urn) && strlen(trim($urn)) > 0) {
+      return $this->redirect('access/' . $urn);
+    } else {
+      return $this->redirect('login/index');
+    }
   }
 
 }

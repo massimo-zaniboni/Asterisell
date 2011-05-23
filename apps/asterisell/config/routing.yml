@@ -1,3 +1,8 @@
+# used for starting with a custom login for a reseller
+custom_login:
+  url: /access/:name
+  param: { module: login, action: index }
+
 export_csv:
   url:   /export.csv
   param: {module: report, action: exportToCsv}

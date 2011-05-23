@@ -43,7 +43,7 @@ class problemActions extends autoproblemActions {
   }
 
   public function executeSeeWebsite() {
-    $params = $this->getUser()->getParams();
+    $params = $this->getUser()->getParams(NULL);
     $params->setLastViewedFeedsMd5($params->getCurrentFeedsMd5());
     $params->save();
 
