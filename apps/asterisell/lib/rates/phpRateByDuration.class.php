@@ -59,12 +59,23 @@ class PhpRateByDuration extends PhpRateWithDstChannel {
    * The external telephone prefix where the rate is applicable.
    */
   public $externalTelephonePrefix = "";
+
+  /**
+   * Discrete seconds increments to apply to the duration of the call.
+   * For example, if the number is 10 seconds,
+   * then it considers initially 10 seconds also for a call of 1 second,
+   * after 10 seconds it considers 20 seconds and so on.
+   * Then the resulting call duration is processed according other parameters of the rate method.
+   * 0 for disabling this behaviour, and considering exactly the duration of the call.
+   */
+  public $discreteIncrements = 0;
+
   /**
    * The internal telephone number prefix of the call. 
    */
   public $internalTelephonePrefix = "";
   public function getShortDescription() {
-    $r = PhpRateOnlyCalc::calcShortDescription($this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
+    $r = PhpRateOnlyCalc::calcShortDescription($this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59, $this->discreteIncrements);
     $r.= ', ' . $this->getDstChannelShortDescription();
     if (strlen(trim($this->internalTelephonePrefix)) > 0) {
       $r.= ' and only if caller telephone number starts with "' . trim($this->internalTelephonePrefix) . '"';
@@ -104,7 +115,7 @@ class PhpRateByDuration extends PhpRateWithDstChannel {
   }
 
   protected function rateCDR($cdr, $rateInfo = null) {
-    return PhpRateOnlyCalc::calcCostByDuration($cdr, $this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
+    return PhpRateOnlyCalc::calcCostByDuration($cdr, $this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59, $this->discreteIncrements);
   }
 
   public function getModuleName() {

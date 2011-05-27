@@ -1,6 +1,6 @@
 <?php
 
-/* $LICENSE 2009, 2010:
+/* $LICENSE 2009, 2010, 2011:
  *
  * Copyright (C) 2009, 2010 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
  *
@@ -61,12 +61,19 @@ abstract class PhpRateOnlyCalc extends PhpRate {
   public function getShortDescription() {
     return self::calcShortDescription($this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
   }
-  static public function calcShortDescription($costForMinute, $costOnCall, $rateByMinute, $atLeastXSeconds, $whenRound_0_59) {
+  static public function calcShortDescription($costForMinute, $costOnCall, $rateByMinute, $atLeastXSeconds, $whenRound_0_59, $discreteIncrements) {
     $r = "";
     if ($costOnCall > 0 || $costOnCall < 0) {
       $r = $r . formatCostAccordingCurrency($costOnCall) . ' + ';
     }
     $r.= formatCostAccordingCurrency($costForMinute) . " * " . __("minute");
+
+    if ($discreteIncrements > 0) {
+      $r = $r . ", considering " . $discreteIncrements . " second increments "
+           . "(e.g. from 0 to " . ($discreteIncrements - 1) . " became " . $discreteIncrements
+           . ", from " . $discreteIncrements . " to " . ($discreteIncrements * 2 - 1) . " became " . ($discreteIncrements * 2) . ", and so on) ";
+    }
+
     if ($rateByMinute) {
       $r = $r . ", " . __("rated by minute");
       $r = $r . "<br/>";
@@ -99,8 +106,17 @@ abstract class PhpRateOnlyCalc extends PhpRate {
    * This method is used from other classes and not only
    * from this class. This allows code reuse (Dont Repeat Yourself).
    */
-  static public function calcCostByDuration($cdr, $costForMinute, $costOnCall, $isRateByMinute, $atLeastXSeconds, $whenRound_0_59) {
+  static public function calcCostByDuration($cdr, $costForMinute, $costOnCall, $isRateByMinute, $atLeastXSeconds, $whenRound_0_59, $discreteIncrements = 0) {
     $totSec = $cdr->getBillsec();
+
+    if ($discreteIncrements > 0)  {
+      $t = (int) (floor($totSec / $discreteIncrements));
+      $t++;
+      // NOTE: i prefer this to `ceil` because I'm sure of the final result.
+
+      $totSec = (int) ($t * $discreteIncrements);
+    }
+
     if ($totSec < $atLeastXSeconds) {
       $totSec = $atLeastXSeconds;
     }

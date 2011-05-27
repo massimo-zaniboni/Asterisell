@@ -27,6 +27,8 @@ generator:
  
       cost_for_minute: { name: Cost for minute, help: "The cost of a telephone call during one minute. Note that a call can be rated using its duration in seconds, but in any case the rate cost is expressed in minutes and not in seconds in order to avoid very small numbers."  }
 
+      discrete_increments: { name: "Second Increments", help: "The duration of the call is calculated only considering fixed second increments.  For example supposing 10 second increments: from 0 to 9 became 10 seconds, from 10 to 19 became 20, and so on. Then other rate parameters are applied." }
+
       minimum_call: { name: Minimum call duration in seconds, help: "A call is billed at least for this amount of seconds, also if its duration was inferior." }
 
       rate_method: { name: Rate method, help: "A call duration can be rated according its duration in minutes, or in seconds."  }
@@ -40,4 +42,4 @@ generator:
       display:
         "Limit applicability to telephone calls of specified type": [_destination_channel, _internal_telephone_prefix, _external_telephone_prefix]
 
-        "Rate method - (prices/numbers are written using "." as decimal separator)": [_cost_on_call, _cost_for_minute, _minimum_call, _rate_method, _when_round ]
+        "Rate method - (prices/numbers are written using '.' character as decimal separator)": [_cost_on_call, _cost_for_minute, _discrete_increments,  _minimum_call, _rate_method, _when_round ]

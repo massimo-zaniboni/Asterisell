@@ -54,6 +54,7 @@ class rate_by_durationActions extends autoRate_by_durationActions
     $costForMinute = $this->getRequest()->getParameter('cost_for_minute');
     $whenRound = $this->getRequest()->getParameter('when_round');
     $atLeastXSeconds = $this->getRequest()->getParameter('minimum_call');
+    $discreteIncrements = $this->getRequest()->getParameter('discrete_increments');
 
     if (is_null($costOnCall)) {
       $costOnCall = 0;
@@ -71,6 +72,10 @@ class rate_by_durationActions extends autoRate_by_durationActions
       $atLeastXSeconds = 0;
     }
 
+    if (is_null($discreteIncrements)) {
+        $discreteIncrements = 0;
+    }
+
     $phpRate->dstChannelPattern = $dstChannel;
     $phpRate->costOnCall = $costOnCall;
     $phpRate->costForMinute = $costForMinute;
@@ -78,6 +83,8 @@ class rate_by_durationActions extends autoRate_by_durationActions
     $phpRate->atLeastXSeconds = $atLeastXSeconds;
     $phpRate->internalTelephonePrefix = $internalTelephonePrefix;
     $phpRate->externalTelephonePrefix = $externalTelephonePrefix;
+    $phpRate->discreteIncrements = $discreteIncrements;
+
     if ($rateMethod == "m") {
       $phpRate->rateByMinute = true;
     } else {
