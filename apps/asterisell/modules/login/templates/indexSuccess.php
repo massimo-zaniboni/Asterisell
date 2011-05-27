@@ -22,6 +22,7 @@ if ($sf_request->hasErrors()) {
 echo '<div id="asterisellLogin">';
 echo form_tag('login/login');
 echo '<table cellpadding="15" cellspacing="15">' . '<tr>' . '<td>' . __('Login:') . '</td>' . '<td>' . input_tag('login', $sf_params->get('login'), array('class' => 'text')) . '</td>' . '</tr>' . '<td>' . __('Password:') . '</td>' . '<td>' . input_password_tag('password', null, array('class' => 'text')) . '</td>' . '</tr>' . '<tr>' . '<td> </td>' . '<td>' . submit_tag(__('Login'), 'class="login"') . '</td>' . '</tr>' . '</table>';
+echo input_hidden_tag('access_name', $sf_params->get('name'));
 echo '</form>';
 echo '</div>';
 ?>

@@ -23,11 +23,30 @@
 
 sfLoader::loadHelpers(array('I18N', 'Debug', 'Asterisell'));
 class loginActions extends sfActions {
+
   /**
    * Executes index action
    *
    */
   public function executeIndex() {
+  }
+
+  public function executeIndexWithError() {
+      $this->getRequest()->setError('login', __('Password is not correct.'));
+      $this->forward('login', 'index');
+  }
+
+  protected function forceReloginWithError() {
+    $urn = $this->getRequest()->getParameter('access_name');
+    // NOTE: this parameter is read from the hidden field of the FORM
+    // and not from the URL, because this action is executed after the SUBMIT
+    // of the FORM.
+
+    if (!is_null($urn) && strlen(trim($urn)) > 0) {
+      $this->redirect('access-error/' . $urn);
+    } else {
+      $this->executeIndexWithError();
+    }
   }
 
   public function executeLogin() {
@@ -37,19 +56,17 @@ class loginActions extends sfActions {
     $c->add(ArWebAccountPeer::LOGIN, $login);
     $webAccounts = ArWebAccountPeer::doSelect($c);
 
-    if (count($webAccounts) == 0) {
-    }
-
     if (count($webAccounts) > 1) {
+      // Account configured not correctly.
+      //
       $this->getUser()->setAuthenticated(false);
-      $this->getRequest()->setError('login', __('Account configured not correctly. Contact the administrator in order to resolve the problem.'));
-      return $this->forward('login', 'index');
+
+      $this->forceReloginWithError();
     } else if (count($webAccounts) == 0) {
       // There is no account with the given name
       //
       $this->getUser()->setAuthenticated(false);
-      $this->getRequest()->setError('login', __('There is no Account with the given name.'));
-      return $this->forward('login', 'index');
+      $this->forceReloginWithError();
     } 
 
     // implicit case $webAccounts == 1
@@ -62,17 +79,18 @@ class loginActions extends sfActions {
     }
 
     if ($webAccount->getPassword() != $password) {
+      // Password is not correct.
+      //
       $this->getUser()->logout();
-      $this->getRequest()->setError('login', __('Password is not correct.'));
-      return $this->forward('login', 'index');
+      $this->forceReloginWithError();
     }
 
     if (is_null($webAccount->getActivateAt()) 
 	|| strtotime($webAccount->getActivateAt()) > time()
         || ((! is_null($webAccount->getDeactivateAt())) && strtotime($webAccount->getDeactivateAt()) >= time())) {
+      // Account is expired.
       $this->getUser()->logout();
-      $this->getRequest()->setError('login', __('Account is expired.'));
-      return $this->forward('login', 'index');
+      $this->forceReloginWithError();
     }
 
     $this->getUser()->login($webAccount);
@@ -124,9 +142,10 @@ class loginActions extends sfActions {
       $this->redirect('office_' . $showOffice . $showAccount . '_call_report/list');
     }
 
+    // Account of unknwon type
+    //
     $this->getUser()->logout();
-    $this->getRequest()->setError('login', __('Account of unknown type.'));
-    return $this->forward('login', 'index');
+    $this->forceReloginWithError();
   }
 
   public function executeLogout() {
