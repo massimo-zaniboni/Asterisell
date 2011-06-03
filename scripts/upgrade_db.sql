@@ -29,3 +29,5 @@ ALTER TABLE ar_params ADD `direct_debit_payment_email` varchar(512) DEFAULT NULL
 ALTER TABLE ar_params ADD `direct_debit_payment_telephone_number` varchar(512) DEFAULT NULL;
 CREATE TABLE `ar_lock`(`id` INTEGER  NOT NULL AUTO_INCREMENT, `name` CHAR(255)  NOT NULL, `time` DATETIME, `info` VARCHAR(1024), PRIMARY KEY (`id`), KEY `ar_lock_name_index`(`name`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ALTER TABLE ar_params ADD `login_urn` VARCHAR(512) DEFAULT NULL;
+ALTER TABLE `ar_asterisk_account` ADD `ar_rate_category_id` INTEGER;
+ALTER TABLE `ar_office` ADD `ar_rate_category_id` INTEGER;

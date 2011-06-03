@@ -23,8 +23,15 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 	
 	protected $ar_party_id;
 
+
+	
+	protected $ar_rate_category_id;
+
 	
 	protected $aArParty;
+
+	
+	protected $aArRateCategory;
 
 	
 	protected $collArAsteriskAccounts;
@@ -70,6 +77,13 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 	{
 
 		return $this->ar_party_id;
+	}
+
+	
+	public function getArRateCategoryId()
+	{
+
+		return $this->ar_rate_category_id;
 	}
 
 	
@@ -133,6 +147,24 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setArRateCategoryId($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->ar_rate_category_id !== $v) {
+			$this->ar_rate_category_id = $v;
+			$this->modifiedColumns[] = ArOfficePeer::AR_RATE_CATEGORY_ID;
+		}
+
+		if ($this->aArRateCategory !== null && $this->aArRateCategory->getId() !== $v) {
+			$this->aArRateCategory = null;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -145,11 +177,13 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 
 			$this->ar_party_id = $rs->getInt($startcol + 3);
 
+			$this->ar_rate_category_id = $rs->getInt($startcol + 4);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 4; 
+						return $startcol + 5; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArOffice object", $e);
 		}
@@ -212,6 +246,13 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 					$affectedRows += $this->aArParty->save($con);
 				}
 				$this->setArParty($this->aArParty);
+			}
+
+			if ($this->aArRateCategory !== null) {
+				if ($this->aArRateCategory->isModified()) {
+					$affectedRows += $this->aArRateCategory->save($con);
+				}
+				$this->setArRateCategory($this->aArRateCategory);
 			}
 
 
@@ -285,6 +326,12 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aArRateCategory !== null) {
+				if (!$this->aArRateCategory->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArRateCategory->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = ArOfficePeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -337,6 +384,9 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 			case 3:
 				return $this->getArPartyId();
 				break;
+			case 4:
+				return $this->getArRateCategoryId();
+				break;
 			default:
 				return null;
 				break;
@@ -351,6 +401,7 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getDescription(),
 			$keys[3] => $this->getArPartyId(),
+			$keys[4] => $this->getArRateCategoryId(),
 		);
 		return $result;
 	}
@@ -378,6 +429,9 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 			case 3:
 				$this->setArPartyId($value);
 				break;
+			case 4:
+				$this->setArRateCategoryId($value);
+				break;
 		} 	}
 
 	
@@ -389,6 +443,7 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setArPartyId($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setArRateCategoryId($arr[$keys[4]]);
 	}
 
 	
@@ -400,6 +455,7 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArOfficePeer::NAME)) $criteria->add(ArOfficePeer::NAME, $this->name);
 		if ($this->isColumnModified(ArOfficePeer::DESCRIPTION)) $criteria->add(ArOfficePeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(ArOfficePeer::AR_PARTY_ID)) $criteria->add(ArOfficePeer::AR_PARTY_ID, $this->ar_party_id);
+		if ($this->isColumnModified(ArOfficePeer::AR_RATE_CATEGORY_ID)) $criteria->add(ArOfficePeer::AR_RATE_CATEGORY_ID, $this->ar_rate_category_id);
 
 		return $criteria;
 	}
@@ -435,6 +491,8 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 		$copyObj->setDescription($this->description);
 
 		$copyObj->setArPartyId($this->ar_party_id);
+
+		$copyObj->setArRateCategoryId($this->ar_rate_category_id);
 
 
 		if ($deepCopy) {
@@ -500,6 +558,35 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 			
 		}
 		return $this->aArParty;
+	}
+
+	
+	public function setArRateCategory($v)
+	{
+
+
+		if ($v === null) {
+			$this->setArRateCategoryId(NULL);
+		} else {
+			$this->setArRateCategoryId($v->getId());
+		}
+
+
+		$this->aArRateCategory = $v;
+	}
+
+
+	
+	public function getArRateCategory($con = null)
+	{
+		if ($this->aArRateCategory === null && ($this->ar_rate_category_id !== null)) {
+						include_once 'lib/model/om/BaseArRateCategoryPeer.php';
+
+			$this->aArRateCategory = ArRateCategoryPeer::retrieveByPK($this->ar_rate_category_id, $con);
+
+			
+		}
+		return $this->aArRateCategory;
 	}
 
 	
@@ -570,6 +657,41 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 	{
 		$this->collArAsteriskAccounts[] = $l;
 		$l->setArOffice($this);
+	}
+
+
+	
+	public function getArAsteriskAccountsJoinArRateCategory($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArAsteriskAccountPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArAsteriskAccounts === null) {
+			if ($this->isNew()) {
+				$this->collArAsteriskAccounts = array();
+			} else {
+
+				$criteria->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $this->getId());
+
+				$this->collArAsteriskAccounts = ArAsteriskAccountPeer::doSelectJoinArRateCategory($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $this->getId());
+
+			if (!isset($this->lastArAsteriskAccountCriteria) || !$this->lastArAsteriskAccountCriteria->equals($criteria)) {
+				$this->collArAsteriskAccounts = ArAsteriskAccountPeer::doSelectJoinArRateCategory($criteria, $con);
+			}
+		}
+		$this->lastArAsteriskAccountCriteria = $criteria;
+
+		return $this->collArAsteriskAccounts;
 	}
 
 	

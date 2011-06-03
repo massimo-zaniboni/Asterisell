@@ -27,8 +27,15 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 	
 	protected $is_active = true;
 
+
+	
+	protected $ar_rate_category_id;
+
 	
 	protected $aArOffice;
+
+	
+	protected $aArRateCategory;
 
 	
 	protected $collCdrs;
@@ -75,6 +82,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 	{
 
 		return $this->is_active;
+	}
+
+	
+	public function getArRateCategoryId()
+	{
+
+		return $this->ar_rate_category_id;
 	}
 
 	
@@ -148,6 +162,24 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setArRateCategoryId($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->ar_rate_category_id !== $v) {
+			$this->ar_rate_category_id = $v;
+			$this->modifiedColumns[] = ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID;
+		}
+
+		if ($this->aArRateCategory !== null && $this->aArRateCategory->getId() !== $v) {
+			$this->aArRateCategory = null;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -162,11 +194,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 
 			$this->is_active = $rs->getBoolean($startcol + 4);
 
+			$this->ar_rate_category_id = $rs->getInt($startcol + 5);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 5; 
+						return $startcol + 6; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArAsteriskAccount object", $e);
 		}
@@ -229,6 +263,13 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 					$affectedRows += $this->aArOffice->save($con);
 				}
 				$this->setArOffice($this->aArOffice);
+			}
+
+			if ($this->aArRateCategory !== null) {
+				if ($this->aArRateCategory->isModified()) {
+					$affectedRows += $this->aArRateCategory->save($con);
+				}
+				$this->setArRateCategory($this->aArRateCategory);
 			}
 
 
@@ -294,6 +335,12 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aArRateCategory !== null) {
+				if (!$this->aArRateCategory->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArRateCategory->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = ArAsteriskAccountPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -341,6 +388,9 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			case 4:
 				return $this->getIsActive();
 				break;
+			case 5:
+				return $this->getArRateCategoryId();
+				break;
 			default:
 				return null;
 				break;
@@ -356,6 +406,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			$keys[2] => $this->getAccountCode(),
 			$keys[3] => $this->getArOfficeId(),
 			$keys[4] => $this->getIsActive(),
+			$keys[5] => $this->getArRateCategoryId(),
 		);
 		return $result;
 	}
@@ -386,6 +437,9 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			case 4:
 				$this->setIsActive($value);
 				break;
+			case 5:
+				$this->setArRateCategoryId($value);
+				break;
 		} 	}
 
 	
@@ -398,6 +452,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[2], $arr)) $this->setAccountCode($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setArOfficeId($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setIsActive($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setArRateCategoryId($arr[$keys[5]]);
 	}
 
 	
@@ -410,6 +465,7 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArAsteriskAccountPeer::ACCOUNT_CODE)) $criteria->add(ArAsteriskAccountPeer::ACCOUNT_CODE, $this->account_code);
 		if ($this->isColumnModified(ArAsteriskAccountPeer::AR_OFFICE_ID)) $criteria->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $this->ar_office_id);
 		if ($this->isColumnModified(ArAsteriskAccountPeer::IS_ACTIVE)) $criteria->add(ArAsteriskAccountPeer::IS_ACTIVE, $this->is_active);
+		if ($this->isColumnModified(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID)) $criteria->add(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, $this->ar_rate_category_id);
 
 		return $criteria;
 	}
@@ -447,6 +503,8 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 		$copyObj->setArOfficeId($this->ar_office_id);
 
 		$copyObj->setIsActive($this->is_active);
+
+		$copyObj->setArRateCategoryId($this->ar_rate_category_id);
 
 
 		if ($deepCopy) {
@@ -508,6 +566,35 @@ abstract class BaseArAsteriskAccount extends BaseObject  implements Persistent {
 			
 		}
 		return $this->aArOffice;
+	}
+
+	
+	public function setArRateCategory($v)
+	{
+
+
+		if ($v === null) {
+			$this->setArRateCategoryId(NULL);
+		} else {
+			$this->setArRateCategoryId($v->getId());
+		}
+
+
+		$this->aArRateCategory = $v;
+	}
+
+
+	
+	public function getArRateCategory($con = null)
+	{
+		if ($this->aArRateCategory === null && ($this->ar_rate_category_id !== null)) {
+						include_once 'lib/model/om/BaseArRateCategoryPeer.php';
+
+			$this->aArRateCategory = ArRateCategoryPeer::retrieveByPK($this->ar_rate_category_id, $con);
+
+			
+		}
+		return $this->aArRateCategory;
 	}
 
 	

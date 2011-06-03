@@ -106,12 +106,17 @@ CREATE TABLE `ar_asterisk_account`
 	`account_code` VARCHAR(30)  NOT NULL,
 	`ar_office_id` INTEGER,
 	`is_active` INTEGER default 1 NOT NULL,
+	`ar_rate_category_id` INTEGER,
 	PRIMARY KEY (`id`),
 	KEY `ar_asterisk_account_account_code_index`(`account_code`),
 	INDEX `ar_asterisk_account_FI_1` (`ar_office_id`),
 	CONSTRAINT `ar_asterisk_account_FK_1`
 		FOREIGN KEY (`ar_office_id`)
-		REFERENCES `ar_office` (`id`)
+		REFERENCES `ar_office` (`id`),
+	INDEX `ar_asterisk_account_FI_2` (`ar_rate_category_id`),
+	CONSTRAINT `ar_asterisk_account_FK_2`
+		FOREIGN KEY (`ar_rate_category_id`)
+		REFERENCES `ar_rate_category` (`id`)
 )Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -127,11 +132,16 @@ CREATE TABLE `ar_office`
 	`name` VARCHAR(128),
 	`description` VARCHAR(1024),
 	`ar_party_id` INTEGER,
+	`ar_rate_category_id` INTEGER,
 	PRIMARY KEY (`id`),
 	INDEX `ar_office_FI_1` (`ar_party_id`),
 	CONSTRAINT `ar_office_FK_1`
 		FOREIGN KEY (`ar_party_id`)
-		REFERENCES `ar_party` (`id`)
+		REFERENCES `ar_party` (`id`),
+	INDEX `ar_office_FI_2` (`ar_rate_category_id`),
+	CONSTRAINT `ar_office_FK_2`
+		FOREIGN KEY (`ar_rate_category_id`)
+		REFERENCES `ar_rate_category` (`id`)
 )Engine=InnoDB;
 
 #-----------------------------------------------------------------------------

@@ -1309,6 +1309,41 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		$l->setArParty($this);
 	}
 
+
+	
+	public function getArOfficesJoinArRateCategory($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArOfficePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArOffices === null) {
+			if ($this->isNew()) {
+				$this->collArOffices = array();
+			} else {
+
+				$criteria->add(ArOfficePeer::AR_PARTY_ID, $this->getId());
+
+				$this->collArOffices = ArOfficePeer::doSelectJoinArRateCategory($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArOfficePeer::AR_PARTY_ID, $this->getId());
+
+			if (!isset($this->lastArOfficeCriteria) || !$this->lastArOfficeCriteria->equals($criteria)) {
+				$this->collArOffices = ArOfficePeer::doSelectJoinArRateCategory($criteria, $con);
+			}
+		}
+		$this->lastArOfficeCriteria = $criteria;
+
+		return $this->collArOffices;
+	}
+
 	
 	public function initArWebAccounts()
 	{

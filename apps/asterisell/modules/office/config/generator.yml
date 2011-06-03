@@ -9,6 +9,7 @@ generator:
       ar_party:         { name: Owner Customer      }
       name:             { name: Name        }
       description:      { name: Description }
+      ar_rate_category_id: { name: Rate Category, help: "Leave empty if it is the same rate category of the owner customer. " }
 
     list:
       title: Customer Offices
@@ -19,5 +20,5 @@ generator:
     edit:
       title: Customer Offices
 
-      display: [=ar_party_id, name, description]
+      display: [=ar_party_id, name, description, ar_rate_category_id]
 

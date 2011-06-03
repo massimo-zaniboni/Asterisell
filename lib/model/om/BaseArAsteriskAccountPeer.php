@@ -13,7 +13,7 @@ abstract class BaseArAsteriskAccountPeer {
 	const CLASS_DEFAULT = 'lib.model.ArAsteriskAccount';
 
 	
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 6;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -35,23 +35,26 @@ abstract class BaseArAsteriskAccountPeer {
 	const IS_ACTIVE = 'ar_asterisk_account.IS_ACTIVE';
 
 	
+	const AR_RATE_CATEGORY_ID = 'ar_asterisk_account.AR_RATE_CATEGORY_ID';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AccountCode', 'ArOfficeId', 'IsActive', ),
-		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID, ArAsteriskAccountPeer::NAME, ArAsteriskAccountPeer::ACCOUNT_CODE, ArAsteriskAccountPeer::AR_OFFICE_ID, ArAsteriskAccountPeer::IS_ACTIVE, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'account_code', 'ar_office_id', 'is_active', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'AccountCode', 'ArOfficeId', 'IsActive', 'ArRateCategoryId', ),
+		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID, ArAsteriskAccountPeer::NAME, ArAsteriskAccountPeer::ACCOUNT_CODE, ArAsteriskAccountPeer::AR_OFFICE_ID, ArAsteriskAccountPeer::IS_ACTIVE, ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'account_code', 'ar_office_id', 'is_active', 'ar_rate_category_id', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AccountCode' => 2, 'ArOfficeId' => 3, 'IsActive' => 4, ),
-		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID => 0, ArAsteriskAccountPeer::NAME => 1, ArAsteriskAccountPeer::ACCOUNT_CODE => 2, ArAsteriskAccountPeer::AR_OFFICE_ID => 3, ArAsteriskAccountPeer::IS_ACTIVE => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'account_code' => 2, 'ar_office_id' => 3, 'is_active' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'AccountCode' => 2, 'ArOfficeId' => 3, 'IsActive' => 4, 'ArRateCategoryId' => 5, ),
+		BasePeer::TYPE_COLNAME => array (ArAsteriskAccountPeer::ID => 0, ArAsteriskAccountPeer::NAME => 1, ArAsteriskAccountPeer::ACCOUNT_CODE => 2, ArAsteriskAccountPeer::AR_OFFICE_ID => 3, ArAsteriskAccountPeer::IS_ACTIVE => 4, ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'account_code' => 2, 'ar_office_id' => 3, 'is_active' => 4, 'ar_rate_category_id' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
@@ -114,6 +117,8 @@ abstract class BaseArAsteriskAccountPeer {
 		$criteria->addSelectColumn(ArAsteriskAccountPeer::AR_OFFICE_ID);
 
 		$criteria->addSelectColumn(ArAsteriskAccountPeer::IS_ACTIVE);
+
+		$criteria->addSelectColumn(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID);
 
 	}
 
@@ -222,6 +227,34 @@ abstract class BaseArAsteriskAccountPeer {
 
 
 	
+	public static function doCountJoinArRateCategory(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArAsteriskAccountPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArAsteriskAccountPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
+
+		$rs = ArAsteriskAccountPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
 	public static function doSelectJoinArOffice(Criteria $c, $con = null)
 	{
 		$c = clone $c;
@@ -269,6 +302,53 @@ abstract class BaseArAsteriskAccountPeer {
 
 
 	
+	public static function doSelectJoinArRateCategory(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+				if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArAsteriskAccountPeer::addSelectColumns($c);
+		$startcol = (ArAsteriskAccountPeer::NUM_COLUMNS - ArAsteriskAccountPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		ArRateCategoryPeer::addSelectColumns($c);
+
+		$c->addJoin(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArAsteriskAccountPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArRateCategoryPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getArRateCategory(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+										$temp_obj2->addArAsteriskAccount($obj1); 					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initArAsteriskAccounts();
+				$obj2->addArAsteriskAccount($obj1); 			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
 	public static function doCountJoinAll(Criteria $criteria, $distinct = false, $con = null)
 	{
 		$criteria = clone $criteria;
@@ -286,6 +366,8 @@ abstract class BaseArAsteriskAccountPeer {
 		}
 
 		$criteria->addJoin(ArAsteriskAccountPeer::AR_OFFICE_ID, ArOfficePeer::ID);
+
+		$criteria->addJoin(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
 
 		$rs = ArAsteriskAccountPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -311,7 +393,12 @@ abstract class BaseArAsteriskAccountPeer {
 		ArOfficePeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + ArOfficePeer::NUM_COLUMNS;
 
+		ArRateCategoryPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + ArRateCategoryPeer::NUM_COLUMNS;
+
 		$c->addJoin(ArAsteriskAccountPeer::AR_OFFICE_ID, ArOfficePeer::ID);
+
+		$c->addJoin(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -340,6 +427,199 @@ abstract class BaseArAsteriskAccountPeer {
 				$temp_obj2 = $temp_obj1->getArOffice(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addArAsteriskAccount($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initArAsteriskAccounts();
+				$obj2->addArAsteriskAccount($obj1);
+			}
+
+
+					
+			$omClass = ArRateCategoryPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getArRateCategory(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addArAsteriskAccount($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initArAsteriskAccounts();
+				$obj3->addArAsteriskAccount($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doCountJoinAllExceptArOffice(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArAsteriskAccountPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArAsteriskAccountPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
+
+		$rs = ArAsteriskAccountPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doCountJoinAllExceptArRateCategory(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArAsteriskAccountPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArAsteriskAccountPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArAsteriskAccountPeer::AR_OFFICE_ID, ArOfficePeer::ID);
+
+		$rs = ArAsteriskAccountPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doSelectJoinAllExceptArOffice(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArAsteriskAccountPeer::addSelectColumns($c);
+		$startcol2 = (ArAsteriskAccountPeer::NUM_COLUMNS - ArAsteriskAccountPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ArRateCategoryPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ArRateCategoryPeer::NUM_COLUMNS;
+
+		$c->addJoin(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArAsteriskAccountPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArRateCategoryPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getArRateCategory(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addArAsteriskAccount($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initArAsteriskAccounts();
+				$obj2->addArAsteriskAccount($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doSelectJoinAllExceptArRateCategory(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArAsteriskAccountPeer::addSelectColumns($c);
+		$startcol2 = (ArAsteriskAccountPeer::NUM_COLUMNS - ArAsteriskAccountPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ArOfficePeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ArOfficePeer::NUM_COLUMNS;
+
+		$c->addJoin(ArAsteriskAccountPeer::AR_OFFICE_ID, ArOfficePeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArAsteriskAccountPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArOfficePeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getArOffice(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addArAsteriskAccount($obj1);
+					break;
 				}
 			}
 

@@ -17,28 +17,32 @@ class ArRate extends BaseArRate
    *         "X" if the rate has bad format.
    *
    */
-  public function getCustomerOrVendor() {
-    if (is_null($this->getArRateCategoryId())) {
-      if (is_null($this->getArPartyId())) {
-        if ($this->getDestinationType() == DestinationType::unprocessed) {
+  public function getRateType() {
+    if ($this->getDestinationType() == DestinationType::unprocessed) {
+      if (is_null($this->getArRateCategoryId()) && is_null($this->getArPartyId())) {
           return "S";
-        } else {
-          return "X";
-        }
-      } else {
-	return "V";
       }
     } else {
       if (is_null($this->getArPartyId())) {
-	return "C";
+          return "C";
       } else {
-          return "X";
+          return "V";
       }
     }
+
+    return "X";
+  }
+
+  /**
+   * A synonimous of getRateType(), used for compatibility with old code.
+   * 
+   */
+  public function getCustomerOrVendor() {
+      return $this->getRateType();
   }
 
   public function getCVName() {
-    $c = $this->getCustomerOrVendor();
+    $c = $this->getRateType();
 
     if ($c == 'C') {
       return __("Customer");

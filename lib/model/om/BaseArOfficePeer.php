@@ -13,7 +13,7 @@ abstract class BaseArOfficePeer {
 	const CLASS_DEFAULT = 'lib.model.ArOffice';
 
 	
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 5;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -32,23 +32,26 @@ abstract class BaseArOfficePeer {
 	const AR_PARTY_ID = 'ar_office.AR_PARTY_ID';
 
 	
+	const AR_RATE_CATEGORY_ID = 'ar_office.AR_RATE_CATEGORY_ID';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Description', 'ArPartyId', ),
-		BasePeer::TYPE_COLNAME => array (ArOfficePeer::ID, ArOfficePeer::NAME, ArOfficePeer::DESCRIPTION, ArOfficePeer::AR_PARTY_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'description', 'ar_party_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Description', 'ArPartyId', 'ArRateCategoryId', ),
+		BasePeer::TYPE_COLNAME => array (ArOfficePeer::ID, ArOfficePeer::NAME, ArOfficePeer::DESCRIPTION, ArOfficePeer::AR_PARTY_ID, ArOfficePeer::AR_RATE_CATEGORY_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'description', 'ar_party_id', 'ar_rate_category_id', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Description' => 2, 'ArPartyId' => 3, ),
-		BasePeer::TYPE_COLNAME => array (ArOfficePeer::ID => 0, ArOfficePeer::NAME => 1, ArOfficePeer::DESCRIPTION => 2, ArOfficePeer::AR_PARTY_ID => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'description' => 2, 'ar_party_id' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Description' => 2, 'ArPartyId' => 3, 'ArRateCategoryId' => 4, ),
+		BasePeer::TYPE_COLNAME => array (ArOfficePeer::ID => 0, ArOfficePeer::NAME => 1, ArOfficePeer::DESCRIPTION => 2, ArOfficePeer::AR_PARTY_ID => 3, ArOfficePeer::AR_RATE_CATEGORY_ID => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'description' => 2, 'ar_party_id' => 3, 'ar_rate_category_id' => 4, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	
@@ -109,6 +112,8 @@ abstract class BaseArOfficePeer {
 		$criteria->addSelectColumn(ArOfficePeer::DESCRIPTION);
 
 		$criteria->addSelectColumn(ArOfficePeer::AR_PARTY_ID);
+
+		$criteria->addSelectColumn(ArOfficePeer::AR_RATE_CATEGORY_ID);
 
 	}
 
@@ -217,6 +222,34 @@ abstract class BaseArOfficePeer {
 
 
 	
+	public static function doCountJoinArRateCategory(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArOfficePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArOfficePeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArOfficePeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
+
+		$rs = ArOfficePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
 	public static function doSelectJoinArParty(Criteria $c, $con = null)
 	{
 		$c = clone $c;
@@ -264,6 +297,53 @@ abstract class BaseArOfficePeer {
 
 
 	
+	public static function doSelectJoinArRateCategory(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+				if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArOfficePeer::addSelectColumns($c);
+		$startcol = (ArOfficePeer::NUM_COLUMNS - ArOfficePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		ArRateCategoryPeer::addSelectColumns($c);
+
+		$c->addJoin(ArOfficePeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArOfficePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArRateCategoryPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getArRateCategory(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+										$temp_obj2->addArOffice($obj1); 					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initArOffices();
+				$obj2->addArOffice($obj1); 			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
 	public static function doCountJoinAll(Criteria $criteria, $distinct = false, $con = null)
 	{
 		$criteria = clone $criteria;
@@ -281,6 +361,8 @@ abstract class BaseArOfficePeer {
 		}
 
 		$criteria->addJoin(ArOfficePeer::AR_PARTY_ID, ArPartyPeer::ID);
+
+		$criteria->addJoin(ArOfficePeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
 
 		$rs = ArOfficePeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -306,7 +388,12 @@ abstract class BaseArOfficePeer {
 		ArPartyPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + ArPartyPeer::NUM_COLUMNS;
 
+		ArRateCategoryPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + ArRateCategoryPeer::NUM_COLUMNS;
+
 		$c->addJoin(ArOfficePeer::AR_PARTY_ID, ArPartyPeer::ID);
+
+		$c->addJoin(ArOfficePeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -335,6 +422,199 @@ abstract class BaseArOfficePeer {
 				$temp_obj2 = $temp_obj1->getArParty(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addArOffice($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initArOffices();
+				$obj2->addArOffice($obj1);
+			}
+
+
+					
+			$omClass = ArRateCategoryPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getArRateCategory(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addArOffice($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initArOffices();
+				$obj3->addArOffice($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doCountJoinAllExceptArParty(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArOfficePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArOfficePeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArOfficePeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
+
+		$rs = ArOfficePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doCountJoinAllExceptArRateCategory(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(ArOfficePeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(ArOfficePeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(ArOfficePeer::AR_PARTY_ID, ArPartyPeer::ID);
+
+		$rs = ArOfficePeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doSelectJoinAllExceptArParty(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArOfficePeer::addSelectColumns($c);
+		$startcol2 = (ArOfficePeer::NUM_COLUMNS - ArOfficePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ArRateCategoryPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ArRateCategoryPeer::NUM_COLUMNS;
+
+		$c->addJoin(ArOfficePeer::AR_RATE_CATEGORY_ID, ArRateCategoryPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArOfficePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArRateCategoryPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getArRateCategory(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addArOffice($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initArOffices();
+				$obj2->addArOffice($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doSelectJoinAllExceptArRateCategory(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		ArOfficePeer::addSelectColumns($c);
+		$startcol2 = (ArOfficePeer::NUM_COLUMNS - ArOfficePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		ArPartyPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + ArPartyPeer::NUM_COLUMNS;
+
+		$c->addJoin(ArOfficePeer::AR_PARTY_ID, ArPartyPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = ArOfficePeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = ArPartyPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getArParty(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addArOffice($obj1);
+					break;
 				}
 			}
 

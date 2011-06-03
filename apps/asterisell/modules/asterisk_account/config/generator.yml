@@ -12,6 +12,7 @@ generator:
       mycustomeroffice:      { name: Customer Office   }
       displaycustomeroffice: { name: Office/Building   }
       is_active:             { name: Is Active, help: "The VoIP account is still in use. " }
+      ar_rate_category_id: { name: Rate Category, help: "Leave empty if it is the same rate category of the customer office. " }
 
     list:
       title: Asterisk VoIP Accounts
@@ -25,4 +26,4 @@ generator:
     edit:
       title: Asterisk VoIP Account
 
-      display: [_mycustomeroffice, name, account_code, is_active]
+      display: [_mycustomeroffice, name, account_code, ar_rate_category_id, is_active]

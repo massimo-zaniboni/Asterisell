@@ -16,6 +16,18 @@ abstract class BaseArRateCategory extends BaseObject  implements Persistent {
 	protected $name;
 
 	
+	protected $collArAsteriskAccounts;
+
+	
+	protected $lastArAsteriskAccountCriteria = null;
+
+	
+	protected $collArOffices;
+
+	
+	protected $lastArOfficeCriteria = null;
+
+	
 	protected $collArPartys;
 
 	
@@ -156,6 +168,22 @@ abstract class BaseArRateCategory extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
+			if ($this->collArAsteriskAccounts !== null) {
+				foreach($this->collArAsteriskAccounts as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collArOffices !== null) {
+				foreach($this->collArOffices as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collArPartys !== null) {
 				foreach($this->collArPartys as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -212,6 +240,22 @@ abstract class BaseArRateCategory extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collArAsteriskAccounts !== null) {
+					foreach($this->collArAsteriskAccounts as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collArOffices !== null) {
+					foreach($this->collArOffices as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 				if ($this->collArPartys !== null) {
 					foreach($this->collArPartys as $referrerFK) {
@@ -340,6 +384,14 @@ abstract class BaseArRateCategory extends BaseObject  implements Persistent {
 		if ($deepCopy) {
 									$copyObj->setNew(false);
 
+			foreach($this->getArAsteriskAccounts() as $relObj) {
+				$copyObj->addArAsteriskAccount($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getArOffices() as $relObj) {
+				$copyObj->addArOffice($relObj->copy($deepCopy));
+			}
+
 			foreach($this->getArPartys() as $relObj) {
 				$copyObj->addArParty($relObj->copy($deepCopy));
 			}
@@ -371,6 +423,216 @@ abstract class BaseArRateCategory extends BaseObject  implements Persistent {
 			self::$peer = new ArRateCategoryPeer();
 		}
 		return self::$peer;
+	}
+
+	
+	public function initArAsteriskAccounts()
+	{
+		if ($this->collArAsteriskAccounts === null) {
+			$this->collArAsteriskAccounts = array();
+		}
+	}
+
+	
+	public function getArAsteriskAccounts($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArAsteriskAccountPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArAsteriskAccounts === null) {
+			if ($this->isNew()) {
+			   $this->collArAsteriskAccounts = array();
+			} else {
+
+				$criteria->add(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+				ArAsteriskAccountPeer::addSelectColumns($criteria);
+				$this->collArAsteriskAccounts = ArAsteriskAccountPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+				ArAsteriskAccountPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArAsteriskAccountCriteria) || !$this->lastArAsteriskAccountCriteria->equals($criteria)) {
+					$this->collArAsteriskAccounts = ArAsteriskAccountPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArAsteriskAccountCriteria = $criteria;
+		return $this->collArAsteriskAccounts;
+	}
+
+	
+	public function countArAsteriskAccounts($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArAsteriskAccountPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+		return ArAsteriskAccountPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArAsteriskAccount(ArAsteriskAccount $l)
+	{
+		$this->collArAsteriskAccounts[] = $l;
+		$l->setArRateCategory($this);
+	}
+
+
+	
+	public function getArAsteriskAccountsJoinArOffice($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArAsteriskAccountPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArAsteriskAccounts === null) {
+			if ($this->isNew()) {
+				$this->collArAsteriskAccounts = array();
+			} else {
+
+				$criteria->add(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+				$this->collArAsteriskAccounts = ArAsteriskAccountPeer::doSelectJoinArOffice($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArAsteriskAccountPeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+			if (!isset($this->lastArAsteriskAccountCriteria) || !$this->lastArAsteriskAccountCriteria->equals($criteria)) {
+				$this->collArAsteriskAccounts = ArAsteriskAccountPeer::doSelectJoinArOffice($criteria, $con);
+			}
+		}
+		$this->lastArAsteriskAccountCriteria = $criteria;
+
+		return $this->collArAsteriskAccounts;
+	}
+
+	
+	public function initArOffices()
+	{
+		if ($this->collArOffices === null) {
+			$this->collArOffices = array();
+		}
+	}
+
+	
+	public function getArOffices($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArOfficePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArOffices === null) {
+			if ($this->isNew()) {
+			   $this->collArOffices = array();
+			} else {
+
+				$criteria->add(ArOfficePeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+				ArOfficePeer::addSelectColumns($criteria);
+				$this->collArOffices = ArOfficePeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArOfficePeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+				ArOfficePeer::addSelectColumns($criteria);
+				if (!isset($this->lastArOfficeCriteria) || !$this->lastArOfficeCriteria->equals($criteria)) {
+					$this->collArOffices = ArOfficePeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArOfficeCriteria = $criteria;
+		return $this->collArOffices;
+	}
+
+	
+	public function countArOffices($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArOfficePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArOfficePeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+		return ArOfficePeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArOffice(ArOffice $l)
+	{
+		$this->collArOffices[] = $l;
+		$l->setArRateCategory($this);
+	}
+
+
+	
+	public function getArOfficesJoinArParty($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArOfficePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArOffices === null) {
+			if ($this->isNew()) {
+				$this->collArOffices = array();
+			} else {
+
+				$criteria->add(ArOfficePeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+				$this->collArOffices = ArOfficePeer::doSelectJoinArParty($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(ArOfficePeer::AR_RATE_CATEGORY_ID, $this->getId());
+
+			if (!isset($this->lastArOfficeCriteria) || !$this->lastArOfficeCriteria->equals($criteria)) {
+				$this->collArOffices = ArOfficePeer::doSelectJoinArParty($criteria, $con);
+			}
+		}
+		$this->lastArOfficeCriteria = $criteria;
+
+		return $this->collArOffices;
 	}
 
 	

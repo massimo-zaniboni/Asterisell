@@ -229,6 +229,10 @@ propel:
 
     is_active: { type: boolean, required: true, default: 1 }
 
+    ar_rate_category_id:
+    #
+    # NULL if it inherits the `ar_rate_category_id` if his `ar_office_id`
+
   ar_office:
   #
   # every customer can have one or more offices/seat/centers
@@ -241,6 +245,10 @@ propel:
     description: varchar(1024)
 
     ar_party_id:
+
+    ar_rate_category_id:
+    #
+    # NULL if it inherits the `ar_rate_category_id` if his `ar_party_id`
 
   ar_party:
   #

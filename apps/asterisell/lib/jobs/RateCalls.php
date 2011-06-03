@@ -50,9 +50,10 @@ class RateCalls extends FixedJobProcessor {
    *
    * It contains values of the type:
    *
-   * > (DestinationType) => (ArRateCategory.id) => (ArRate.Id) => (ArRate, PhpRate)
+   * > (DestinationType) => (ArRate.getRateType()) => (ArRateCategory.id) => (ArRate.Id) => (ArRate, PhpRate)
    *
-   * with ArRateCategoryId equals to null in case of Vendor Rates or System Rates.
+   * with ArRateCategoryId equals to -1 in case of System Rates, or rates without a specific category
+   * (they match all categories).
    */
   protected $rateCache = array();
 
@@ -316,7 +317,7 @@ class RateCalls extends FixedJobProcessor {
 
         // First apply a rate of type "isForUnprocessedCDR"
         //
-        list($rate, $phpRate, $bundleRateInfo, $skip) = $this->getPhpRate($cdr, null, null);
+        list($rate, $phpRate, $bundleRateInfo, $skip) = $this->getPhpRate($cdr, null, null, true, false);
         if ($skip) {
           // This CDR can not be rated because the bundle rate has not valid incremental info.
           // It will be processed at the next step.
@@ -374,6 +375,24 @@ class RateCalls extends FixedJobProcessor {
         // Given an account, office and party can be derived easily
         $office = VariableFrame::getOfficeCache()->getArOffice($account->getArOfficeId());
         $party = VariableFrame::getVendorCache()->getArParty($office->getArPartyId());
+
+        // The more specific costumer category ID.
+        //
+        $customerCategoryId = NULL;
+        $t = $account->getArRateCategoryId();
+        if (!is_null($t)) {
+            $customerCategoryId = $t;
+        } else {
+            $t = $office->getArRateCategoryId();
+            if (!is_null($t)) {
+              $customerCategoryId = $t;
+            } else {
+              $t = $party->getArRateCategoryId();
+              if (!is_null($t)) {
+                $customerCategoryId = $t;
+              }
+            }
+        }
 
         // Assign internal and external telephone numbers
         //
@@ -446,7 +465,7 @@ class RateCalls extends FixedJobProcessor {
 
         // calc cost
         //
-        list($rate, $phpRate, $bundleRateInfo, $skip) = $this->getPhpRate($cdr, null, null);
+        list($rate, $phpRate, $bundleRateInfo, $skip) = $this->getPhpRate($cdr, $customerCategoryId, $party->getId(), false, true);
         if ($skip) {
           // This CDR can not be rated because the bundle rate has not valid incremental info.
           // It will be processed at the next step.
@@ -459,7 +478,7 @@ class RateCalls extends FixedJobProcessor {
 
         // calc income
         //
-        list($rate, $phpRate, $bundleRateInfo, $skip) = $this->getPhpRate($cdr, $party->getArRateCategoryId(), $party->getId());
+        list($rate, $phpRate, $bundleRateInfo, $skip) = $this->getPhpRate($cdr, $customerCategoryId, $party->getId(), false, false);
         if ($skip) {
           // This CDR can not be rated because the bundle rate has not valid incremental info.
           // It will be processed at the next step.
@@ -527,12 +546,16 @@ class RateCalls extends FixedJobProcessor {
     foreach ($rates as $rate) {
       $destinationType = $rate->getDestinationType();
       $categoryIndex = $rate->getArRateCategoryId();
+      if (is_null($categoryIndex)) {
+          $categoryIndex = -1;
+      }
       $this->checkRateConstraints($rate);
       $phpRate = $rate->unserializePhpRateMethod();
+      $rateType = $rate->getRateType();
 
-      // (DestinationType) => (ArRateCategory.id) => (ArRate.Id) => (ArRate, PhpRate)
+      // (DestinationType) => (RateType) => (ArRateCategory.id) => (ArRate.Id) => (ArRate, PhpRate)
       //
-      $this->rateCache[$destinationType][$categoryIndex][$rate->getId()] = array($rate, $phpRate);
+      $this->rateCache[$destinationType][$rateType][$categoryIndex][$rate->getId()] = array($rate, $phpRate);
     }
   }
 
@@ -546,10 +569,10 @@ class RateCalls extends FixedJobProcessor {
    * @precondition: $cdr are rated in ascending order respect Calldate
    *
    * @param $cdr the $cdr to wich the rate must be applied
-   * @param categoryIndex null for a Vendor Rate (cost calculation) or unprocessed CDR,
-   * the ArRateCategory id of customers for a Customer rate (income calculation).
-   * @param $arPartyId the ar_party.id of the customer to wich is associated the $cdr,
-   * null if it is a vendor rate, or unprocessed CDR
+   * @param categoryIndex null for a system rate, the ArRateCategory.id of the party associated to the CDR otherwise
+   * @param $arPartyId the ar_party.id of the customer to wich is associated the $cdr, null if it is a system rate
+   * @param $isSystemRate true if it is required a system rate for unprocessed CDRs
+   * @param $isVendorRate true if it is required a vendor rate, false for a customer rate
    *
    * @return an array (ArRate, PhpRate, BundleRateIncrementalInfo, $skip) with the applicable rate.
    * $skip to True if the CDR can not be rated because it is a Bundle with a broken incremental info cache.
@@ -559,7 +582,7 @@ class RateCalls extends FixedJobProcessor {
    * @throw ArProblemException in case of missing or not unique rates to apply.
    *
    */
-  protected function getPhpRate($cdr, $categoryIndex, $arPartyId) {
+  protected function getPhpRate($cdr, $categoryIndex, $arPartyId, $isSystemRate, $isVendorRate) {
     $destinationType = $cdr->getDestinationType();
 
     // At the end of the process these will be setted to the best found values,
@@ -573,25 +596,42 @@ class RateCalls extends FixedJobProcessor {
     $bestFitness = 0;
     $bestRateFitnessMethod = null;
     $bestRatePriority = 0;
-
-    // TRUE for a customer rate, FALSE for a vendor rate.
-    //
-    $isCustomer = true;
-    if (is_null($categoryIndex)) {
-      $isCustomer = false;
-    }
+    $isCustomerRate = !$isVendorRate;
 
     $cdrDate = $cdr->getCalldate();
 
+    $rateType = "X";
+    if ($isSystemRate) {
+        $rateType = "S";
+    } else if ($isCustomerRate) {
+        $rateType = "C";
+    } else {
+        $rateType = "V";
+    }
+
     // Search the rate in the cache with format
     //
-    // > (DestinationType) => (ArRateCategory.id) => (ArRate.Id) => (ArRate, PhpRate)
+    // > (DestinationType) => (ArRate.getRateType()) => (ArRateCategory.id) => (ArRate.Id) => (ArRate, PhpRate)
     //
     $arrRates = null;
     if (array_key_exists($destinationType, $this->rateCache)) {
-      $arrRates1 = &$this->rateCache[$destinationType];
-      if (array_key_exists($categoryIndex, $arrRates1)) {
-        $arrRates = &$arrRates1[$categoryIndex];
+
+      $arrRates0 = &$this->rateCache[$destinationType];
+
+      if (array_key_exists($rateType, $arrRates0)) {
+        $arrRates1 = &$arrRates0[$rateType];
+
+        $categoryIndexKey = $categoryIndex;
+        if (is_null($categoryIndexKey)) {
+            $categoryIndexKey = -1;
+        }
+
+        if (array_key_exists($categoryIndexKey, $arrRates1)) {
+          $arrRates = &$arrRates1[$categoryIndexKey];
+        } else if (array_key_exists(-1, $arrRates1)) {
+          // if there is no specific category, search for a rate without any specific category
+          $arrRates = &$arrRates1[-1];
+        }
       }
     }
 
@@ -604,8 +644,12 @@ class RateCalls extends FixedJobProcessor {
         $isBundleRate = false;
         $rateInfoId = null;
         $rateInfo = null;
+        $rateType = $rate->getRateType();
 
-        if ($cdrDate >= $rate->getStartTime() && (is_null($rate->getEndTime()) || $cdrDate < $rate->getEndTime())) {
+        if ($cdrDate >= $rate->getStartTime() && (is_null($rate->getEndTime()) || $cdrDate < $rate->getEndTime())
+            && (($isSystemRate && $rateType === "S") 
+                || ($isCustomerRate && $rateType === "C")
+                || ($isVendorRate && $rateType == "V"))) {
 
           $rateInfo = null;
           if ($phpRate instanceof BundleRate) {
@@ -613,7 +657,7 @@ class RateCalls extends FixedJobProcessor {
 
             $period = $phpRate->getPeriod(strtotime($cdrDate));
             $subjectId = 0;
-            if ($isCustomer) {
+            if ($isCustomerRate) {
               $subjectId = $arPartyId;
             } else {
               $subjectId = $rate->getArPartyId();
@@ -627,7 +671,7 @@ class RateCalls extends FixedJobProcessor {
               // NOTE: and invalid rate is not good also for determining fitness of a bundle rate,
               // and so it must stop immediately.
               //
-              $this->addPeriodToRecalculate($isCustomer, $subjectId, $phpRate->getPeriodStartDate($period), $phpRate->getPeriodEndDate($period), $rateInfoId);
+              $this->addPeriodToRecalculate($isCustomerRate, $subjectId, $phpRate->getPeriodStartDate($period), $phpRate->getPeriodEndDate($period), $rateInfoId);
               return array(null, null, null, true);
             }
           }
@@ -721,24 +765,31 @@ class RateCalls extends FixedJobProcessor {
       // Create the error descritpion and initialize duplication-key
       // variables.
       //
+
       if ($thereIsConflict) {
-        $startOfDescr = "Too many Rate to apply";
+        $descr = "Too many Rate to apply";
       } else {
-        $startOfDescr = "No Rate to apply";
+        $descr = "No Rate to apply";
+      }
+      $descr .= " at date " . $dateStr;
+      $descr .= " of type ";
+      if ($isSystemRate) {
+        $descr .= " system (initial classification) ";
+      } else if ($isVendorRate) {
+        $descr .= " vendor (calculating a cost) ";
+      } else {
+        $descr .= " customer (calculating an income) ";
       }
 
-      $descr = $startOfDescr;
-      $descr .= " at date " . $dateStr;
-
       $descr .= ' on CDR with id "' . $cdr->getId() . '", and destination_type "' . DestinationType::getUntraslatedName($cdr->getDestinationType()) . '" ';
-      if ($cdr->getDestinationType() != DestinationType::unprocessed) {
-        if (is_null($categoryIndex)) {
-          $categoryName = 'vendor';
-        } else {
-          $categoryR = ArRateCategoryPeer::retrieveByPK($categoryIndex);
-          $categoryName = $categoryR->getName();
-        }
-        $descr .= ' for category "' . $categoryName . '"';
+      if (! $isSystemRate) {
+          if (is_null($categoryIndex)) {
+            $descr .= " for customer of any category ";
+          } else {
+            $categoryR = ArRateCategoryPeer::retrieveByPK($categoryIndex);
+            $categoryName = $categoryR->getName();
+            $descr .= ' for customer of category "' . $categoryName . '"';
+          }
       }
 
       if (!is_null($cdr->getCachedExternalTelephoneNumber())) {
@@ -803,16 +854,6 @@ class RateCalls extends FixedJobProcessor {
       $p = new ArProblem();
       $p->setDuplicationKey("Rate - " . $rate->getId());
       $p->setDescription("Rate with id " . $rate->getId() . " can not be associated to a customer category or to a vendor because it works on unprocessed CDRs.");
-      $p->setCreatedAt(date("c"));
-      $p->setEffect("Rating process will not start until the problem is fixed.");
-      $p->setProposedSolution("Fix the rate and wait the next rate process or force a rerate of calls.");
-      throw (new ArProblemException($p));
-    }
-
-    if ($rate->getDestinationType() != DestinationType::unprocessed && $c != 1) {
-      $p = new ArProblem();
-      $p->setDuplicationKey("Rate - " . $rate->getId());
-      $p->setDescription("Rate with id " . $rate->getId() . " must be associated to a Customer Category OR to a Vendor, not both.");
       $p->setCreatedAt(date("c"));
       $p->setEffect("Rating process will not start until the problem is fixed.");
       $p->setProposedSolution("Fix the rate and wait the next rate process or force a rerate of calls.");

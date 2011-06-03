@@ -65,7 +65,11 @@ Execute
 
   > cd scripts
   > sh makedb.sh
-  
+
+In some cases you must substite `Type=InnoDB;`  with `Engine=InnoDB;`,
+inside file `data/sql/lib.model.schema.sql`.
+In case of problems during database creation (initial installation of Asterisell), you must update manually this file.
+
 == Freeze Symfony Framework ==
 
 How to create a new Symfony FREEZE from scratch.
