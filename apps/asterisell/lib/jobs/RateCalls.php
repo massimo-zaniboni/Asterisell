@@ -784,11 +784,11 @@ class RateCalls extends FixedJobProcessor {
       $descr .= ' on CDR with id "' . $cdr->getId() . '", and destination_type "' . DestinationType::getUntraslatedName($cdr->getDestinationType()) . '" ';
       if (! $isSystemRate) {
           if (is_null($categoryIndex)) {
-            $descr .= " for customer of any category ";
+            $descr .= " for customer of any price category ";
           } else {
             $categoryR = ArRateCategoryPeer::retrieveByPK($categoryIndex);
             $categoryName = $categoryR->getName();
-            $descr .= ' for customer of category "' . $categoryName . '"';
+            $descr .= ' for customer of price category "' . $categoryName . '"';
           }
       }
 
