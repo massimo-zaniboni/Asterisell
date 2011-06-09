@@ -355,12 +355,15 @@ class RateCalls extends FixedJobProcessor {
         if ($telephoneNumbersConfig == 3) {
           // When  $telephoneNumbersConfig == 3, then CDR derived fields are set directly
           // from processing method.
-          $account = VariableFrame::getArAsteriskAccountByIdCache()->getArAsteriskAccountById($cdr->getArAsteriskAccountId());
+          $accountId = $cdr->getArAsteriskAccountId();
+          $account = VariableFrame::getArAsteriskAccountByIdCache()->getArAsteriskAccountById($accountId);
+          // NOTE: in this case $account can not be null, the error is signaled from system-rate-processing
         } else {
           // Link CDR to its ArAsteriskAccount
           $accountcode = $cdr->getAccountcode();
           $account = VariableFrame::getArAsteriskAccountByCodeCache()->getArAsteriskAccountByCode($accountcode);
           if (is_null($account)) {
+            // exit with an error
             $p = new ArProblem();
             $p->setDuplicationKey("unknown ArAsteriskAccount $accountcode");
             $p->setCreatedAt(date("c"));
