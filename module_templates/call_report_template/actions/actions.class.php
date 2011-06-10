@@ -168,7 +168,8 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     <?php if ($generateForCustomer || $generateForOffice) { ?>
       $partyId = $this->getUser()->getPartyId();
       $c->add(ArOfficePeer::AR_PARTY_ID, $partyId);
-    <?php } else if ($generateForOffice) { ?>
+    <?php } ?>
+    <?php if ($generateForOffice) { ?>
       $officeId = $this->getUser()->getOfficeId();
       $c->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $officeId);
     <?php } ?>
@@ -231,19 +232,13 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
 
     if (isset($this->filters['filter_on_office']) && $filterOnPartyApplied == true) {
       $officeId = $this->filters['filter_on_office'];
-      if ($officeId != "" && $officeId != -1) {
+      if ($officeId != "" && $officeId != -1 && ! is_null($officeId)) {
         if ($this->getUser()->hasCredentialOnOffice($officeId)) {
           $filterOnOfficeApplied = true;
 	} else {
           unset($this->filters['filter_on_account']);
 	  $officeId = null;
 	}
-      }
-    } else {
-      if (!is_null($partyId)) {
-        $party = ArPartyPeer::retrieveByPK($partyId);
-        $officeId = $party->getUniqueOfficeId();
-        $filterOnOfficeApplied = true;
       }
     }
 <?php } else { ?>
@@ -265,7 +260,7 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     $filterOnAccountApplied = false;
     if (isset($this->filters['filter_on_account']) && $filterOnOfficeApplied == true) {
       $accountId = $this->filters['filter_on_account'];
-      if ($accountId != "" && $accountId != -1) {
+      if ($accountId != "" && $accountId != -1 && ! is_null($accountId)) {
         $c->add(ArAsteriskAccountPeer::ID, $accountId);
         $filterOnAccountApplied = true;
       }
@@ -348,7 +343,7 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     // Show only proper calls for administrator/party/account
     // in the case no relevant filter on it is applied
     //
-    if (!($filterOnAccountApplied || $filterOnPartyApplied)) {
+    if (!($filterOnAccountApplied || $filterOnPartyApplied || $filterOnOfficeApplied)) {
       $this->addCurrentAccountViewableCdrsCriteria($c);
     }
     parent::addFiltersCriteria($c);

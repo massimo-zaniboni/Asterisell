@@ -160,6 +160,8 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     //
           $partyId = $this->getUser()->getPartyId();
       $c->add(ArOfficePeer::AR_PARTY_ID, $partyId);
+              $officeId = $this->getUser()->getOfficeId();
+      $c->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $officeId);
       }
 
   /**
@@ -210,7 +212,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     $filterOnAccountApplied = false;
     if (isset($this->filters['filter_on_account']) && $filterOnOfficeApplied == true) {
       $accountId = $this->filters['filter_on_account'];
-      if ($accountId != "" && $accountId != -1) {
+      if ($accountId != "" && $accountId != -1 && ! is_null($accountId)) {
         $c->add(ArAsteriskAccountPeer::ID, $accountId);
         $filterOnAccountApplied = true;
       }
@@ -262,7 +264,7 @@ class office_ft_call_reportActions extends autoOffice_ft_call_reportActions {
     // Show only proper calls for administrator/party/account
     // in the case no relevant filter on it is applied
     //
-    if (!($filterOnAccountApplied || $filterOnPartyApplied)) {
+    if (!($filterOnAccountApplied || $filterOnPartyApplied || $filterOnOfficeApplied)) {
       $this->addCurrentAccountViewableCdrsCriteria($c);
     }
     parent::addFiltersCriteria($c);

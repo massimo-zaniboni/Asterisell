@@ -158,7 +158,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     // NOTE: the joins are already added/processed from
     // "lib/model/CdrPeer::doSelectJoinAllExceptVendor()"
     //
-      }
+          }
 
   /**
    * Override addSortCriteris in order to add a more strict filter.
@@ -209,19 +209,13 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 
     if (isset($this->filters['filter_on_office']) && $filterOnPartyApplied == true) {
       $officeId = $this->filters['filter_on_office'];
-      if ($officeId != "" && $officeId != -1) {
+      if ($officeId != "" && $officeId != -1 && ! is_null($officeId)) {
         if ($this->getUser()->hasCredentialOnOffice($officeId)) {
           $filterOnOfficeApplied = true;
 	} else {
           unset($this->filters['filter_on_account']);
 	  $officeId = null;
 	}
-      }
-    } else {
-      if (!is_null($partyId)) {
-        $party = ArPartyPeer::retrieveByPK($partyId);
-        $officeId = $party->getUniqueOfficeId();
-        $filterOnOfficeApplied = true;
       }
     }
 
@@ -236,7 +230,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     $filterOnAccountApplied = false;
     if (isset($this->filters['filter_on_account']) && $filterOnOfficeApplied == true) {
       $accountId = $this->filters['filter_on_account'];
-      if ($accountId != "" && $accountId != -1) {
+      if ($accountId != "" && $accountId != -1 && ! is_null($accountId)) {
         $c->add(ArAsteriskAccountPeer::ID, $accountId);
         $filterOnAccountApplied = true;
       }
@@ -305,7 +299,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     // Show only proper calls for administrator/party/account
     // in the case no relevant filter on it is applied
     //
-    if (!($filterOnAccountApplied || $filterOnPartyApplied)) {
+    if (!($filterOnAccountApplied || $filterOnPartyApplied || $filterOnOfficeApplied)) {
       $this->addCurrentAccountViewableCdrsCriteria($c);
     }
     parent::addFiltersCriteria($c);
