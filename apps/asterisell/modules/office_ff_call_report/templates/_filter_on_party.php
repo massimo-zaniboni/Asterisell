@@ -12,35 +12,44 @@
    !!!    sh generate_modules.sh                              !!!     
    !!!                                                        !!!
    **************************************************************/
+
+use_helper('Asterisell');
+
+list($partyId, $officeId, $accountId) = getFiltersOnCallReport($filters);
+
 if ($sf_user->hasCredential('admin')) {
+    
+  // an admin can select different parties
+    
   $c = new Criteria();
   $c->addAscendingOrderByColumn(ArPartyPeer::NAME);
   $c->add(ArPartyPeer::CUSTOMER_OR_VENDOR, 'C');
+  
+  $paramsId = filterValue($filters, 'filter_on_params');
+  if (!is_null($paramsId)) {
+    $c->add(ArPartyPeer::AR_PARAMS_ID, $paramsId);
+  }
+  
   $parties = ArPartyPeer::doSelect($c);
+  
   // add a blank option
   $options = array("" => "");
+  
   // add other options
   foreach($parties as $party) {
     $options[$party->getId()] = $party->getFullName();
   }
   $defaultChoice = "";
-  if (isset($filters['filter_on_party'])) {
-    $defaultChoice = $filters['filter_on_party'];
+  if (!is_null($partyId)) {
+    $defaultChoice = $partyId;
   }
+  
   echo select_tag('filters[filter_on_party]', options_for_select($options, $defaultChoice));
+  
 } else {
-  // Show a select with only the party
-  // associated to the user because
-  // only admin can choose a different party.
-  //
-  $partyId = null;
-  if ($sf_user->hasCredential('party')) {
-    $partyId = $sf_user->getPartyId();
-  } else if ($sf_user->hasCredential('office')) {
-    $officeId = $sf_user->getOfficeId();
-    $office = ArOfficePeer::retrieveByPK($officeId);
-    $partyId = $office->getArPartyId();
-  }
+    
+  // a logged customer, have only one party to select
+  
   $party = ArPartyPeer::retrieveByPK($partyId);
   echo select_tag('filters[filter_on_party]', options_for_select(array($partyId => $party->getFullName()), $partyId));
  }

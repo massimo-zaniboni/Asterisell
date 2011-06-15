@@ -28,15 +28,15 @@ sfLoader::loadHelpers(array('Form', 'Number', 'Date'));
  * FALSE if it is equal to "m".
  */
 function isCostLimitTimeFrame30Days() {
-  if (trim(sfConfig::get('app_max_cost_limit_timeframe')) === 'm') {
-    return FALSE;
-  } else {
-    return TRUE;
-  }
+    if (trim(sfConfig::get('app_max_cost_limit_timeframe')) === 'm') {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
 }
 
 function getConcurrentCallsSafeLimit() {
-  return sfConfig::get('app_safe_limit_for_concurrent_calls');
+    return sfConfig::get('app_safe_limit_for_concurrent_calls');
 }
 
 /**
@@ -45,23 +45,23 @@ function getConcurrentCallsSafeLimit() {
  */
 function fromSymfonyDateToUnixTimestamp($dateStr) {
 
-  $context = sfContext::getInstance();
+    $context = sfContext::getInstance();
 
-  $culture = $context->getUser()->getCulture();
+    $culture = $context->getUser()->getCulture();
 
-  $dmy = $context->getI18N()->getDateForCulture($dateStr, $culture);
+    $dmy = $context->getI18N()->getDateForCulture($dateStr, $culture);
 
-  if (is_null($dmy)) {
-    return NULL;
-  }
+    if (is_null($dmy)) {
+        return NULL;
+    }
 
-  list($d, $m, $y) = $dmy;
+    list($d, $m, $y) = $dmy;
 
-  if (!checkdate($m, $d, $y)) {
-    return NULL;
-  }
+    if (!checkdate($m, $d, $y)) {
+        return NULL;
+    }
 
-  return strtotime("$y-$m-$d 00:00");
+    return strtotime("$y-$m-$d 00:00");
 }
 
 /**
@@ -70,11 +70,11 @@ function fromSymfonyDateToUnixTimestamp($dateStr) {
  */
 function fromSymfonyTimestampToUnixTimestamp($dateStr) {
 
-  $context = sfContext::getInstance();
+    $context = sfContext::getInstance();
 
-  $culture = $context->getUser()->getCulture();
+    $culture = $context->getUser()->getCulture();
 
-  return $context->getI18N()->getTimestampForCulture($dateStr, $culture);
+    return $context->getI18N()->getTimestampForCulture($dateStr, $culture);
 }
 
 /**
@@ -82,7 +82,7 @@ function fromSymfonyTimestampToUnixTimestamp($dateStr) {
  * @return a date string formatted according current Symfony locale/culture setting
  */
 function fromUnixTimestampToSymfonyStrDate($d) {
-  return format_date($d, 's');
+    return format_date($d, 's');
 }
 
 /**
@@ -90,7 +90,7 @@ function fromUnixTimestampToSymfonyStrDate($d) {
  * @return a date string formatted according current Symfony locale/culture setting
  */
 function fromUnixTimestampToSymfonyStrTimestamp($d) {
-  return format_date($d, 's');
+    return format_date($d, 's');
 }
 
 /**
@@ -102,7 +102,7 @@ function fromUnixTimestampToSymfonyStrTimestamp($d) {
  *
  */
 function fromUnixTimestampToMySQLDate($d) {
-  return date('Y-m-d', $d);
+    return date('Y-m-d', $d);
 }
 
 /**
@@ -114,62 +114,62 @@ function fromUnixTimestampToMySQLDate($d) {
  *
  */
 function fromUnixTimestampToMySQLTimestamp($d) {
-  return date('Y-m-d H:i:s', $d);
+    return date('Y-m-d H:i:s', $d);
 }
 
 /**
  * @return Number of days between two date in timestamp format.
  */
 function getDaysBetween($timestamp1, $timestamp2) {
-  $delta = $timestamp2 - $timestamp1;
-  return round(($delta / 86400), 0);
+    $delta = $timestamp2 - $timestamp1;
+    return round(($delta / 86400), 0);
 }
 
 /**
  * @return "$a . $b . $c" if $b is not null and it is not empty
  */
 function maybeAdd($a, $b, $c) {
-  if (!is_null($b)) {
-    if (strlen(trim($b)) > 0) {
-      return $a . $b . $c;
+    if (!is_null($b)) {
+        if (strlen(trim($b)) > 0) {
+            return $a . $b . $c;
+        }
     }
-  }
-  return "";
+    return "";
 }
 
 /**
  * @return the number of lines inside the string.
  */
 function number_of_lines($s) {
-  $lines = explode("\n", $s);
-  $c = count($lines);
+    $lines = explode("\n", $s);
+    $c = count($lines);
 
-  if ($c > 0) {
-    // if the last line is an empty line, then remove it from the count of lines...
-    //
+    if ($c > 0) {
+        // if the last line is an empty line, then remove it from the count of lines...
+        //
     $l = $lines[$c - 1];
-    if (strlen(trim($l)) == 0) {
-      $c = $c - 1;
+        if (strlen(trim($l)) == 0) {
+            $c = $c - 1;
+        }
     }
-  }
-  return $c + 1;
+    return $c + 1;
 }
 
 function format_zip_city_address($zipCode, $city, $stateProvince, $country) {
-  $culture = sfConfig::get('app_culture');
-  if ($culture === "it_IT") {
-    return $zipCode . " " . $city . maybeAdd(" (", $stateProvince, ")") . maybeAdd(" - ", $country, "");
-  } else {
-    return $city . "\n" . maybeAdd("", $stateProvince, "\n") . $zipCode . maybeAdd("\n", $country, "");
-  }
+    $culture = sfConfig::get('app_culture');
+    if ($culture === "it_IT") {
+        return $zipCode . " " . $city . maybeAdd(" (", $stateProvince, ")") . maybeAdd(" - ", $country, "");
+    } else {
+        return $city . "\n" . maybeAdd("", $stateProvince, "\n") . $zipCode . maybeAdd("\n", $country, "");
+    }
 }
 
 /**
  * @return seconds with microsecond resolution
  */
 function microtime_float() {
-  list($usec, $sec) = explode(" ", microtime());
-  return ((float) $usec + (float) $sec);
+    list($usec, $sec) = explode(" ", microtime());
+    return ((float) $usec + (float) $sec);
 }
 
 /**
@@ -177,13 +177,13 @@ function microtime_float() {
  * This is the format to use in debug message for the administrator.
  */
 function format_date_for_debug_msg($dateToFormat) {
-  if (is_null($dateToFormat)) {
-    $d = time();
-  } else {
-    $d = $dateToFormat;
-  }
-  $dateStr = strftime("%Y/%m/%d", $d);
-  return $dateStr;
+    if (is_null($dateToFormat)) {
+        $d = time();
+    } else {
+        $d = $dateToFormat;
+    }
+    $dateStr = strftime("%Y/%m/%d", $d);
+    return $dateStr;
 }
 
 /**
@@ -191,8 +191,8 @@ function format_date_for_debug_msg($dateToFormat) {
  * according the parameters of the configuration file.
  */
 function format_date_according_config($dateToFormat) {
-  $format = sfConfig::get('app_date_format');
-  return date($format, strtotime($dateToFormat));
+    $format = sfConfig::get('app_date_format');
+    return date($format, strtotime($dateToFormat));
 }
 
 /**
@@ -202,8 +202,8 @@ function format_date_according_config($dateToFormat) {
  * @param $dateFormat a date in DB format
  */
 function format_invoice_date_according_config($dateToFormat) {
-  $format = sfConfig::get('app_invoice_date_format');
-  return date($format, strtotime($dateToFormat));
+    $format = sfConfig::get('app_invoice_date_format');
+    return date($format, strtotime($dateToFormat));
 }
 
 /**
@@ -213,8 +213,8 @@ function format_invoice_date_according_config($dateToFormat) {
  * @param $dateFormat a date in UNIX timestamp format
  */
 function format_invoice_timestamp_according_config($dateToFormat) {
-  $format = sfConfig::get('app_invoice_date_format');
-  return date($format, $dateToFormat);
+    $format = sfConfig::get('app_invoice_date_format');
+    return date($format, $dateToFormat);
 }
 
 /**
@@ -222,26 +222,26 @@ function format_invoice_timestamp_according_config($dateToFormat) {
  * config/app.yml.
  */
 function select_available_culture_tag($name, $culture) {
-  $cultures = sfConfig::get('app_available_cultures');
-  $pos = array_search($culture, $cultures);
-  if ($pos == FALSE) {
-    echo select_tag($name, options_for_select(array_values($cultures)));
-  } else {
-    echo select_tag($name, options_for_select(array_values($cultures), $pos));
-  }
+    $cultures = sfConfig::get('app_available_cultures');
+    $pos = array_search($culture, $cultures);
+    if ($pos == FALSE) {
+        echo select_tag($name, options_for_select(array_values($cultures)));
+    } else {
+        echo select_tag($name, options_for_select(array_values($cultures), $pos));
+    }
 }
 
 function select_customer_or_vendor_tag($name, $cv, $enableEmpty = false) {
-  if ($enableEmpty) {
-    $arr = array("" => "", "C" => __("Customer"), "V" => __("Vendor"));
-  } else {
-    $arr = array("C" => __("Customer"), "V" => __("Vendor"));
-  }
-  if (is_null($cv)) {
-    echo select_tag($name, options_for_select($arr));
-  } else {
-    echo select_tag($name, options_for_select($arr, $cv));
-  }
+    if ($enableEmpty) {
+        $arr = array("" => "", "C" => __("Customer"), "V" => __("Vendor"));
+    } else {
+        $arr = array("C" => __("Customer"), "V" => __("Vendor"));
+    }
+    if (is_null($cv)) {
+        echo select_tag($name, options_for_select($arr));
+    } else {
+        echo select_tag($name, options_for_select($arr, $cv));
+    }
 }
 
 /**
@@ -249,29 +249,28 @@ function select_customer_or_vendor_tag($name, $cv, $enableEmpty = false) {
  * @return a string with elapsed minutes and seconds
  */
 function format_minute($seconds) {
-  $min = floor($seconds / 60);
-  $sec = $seconds - ($min * 60);
-  $hour = floor($min / 60);
-  $min = $min - ($hour * 60);
-  if ($hour > 0) {
-    return ($hour . 'h:' . $min . 'm:' . $sec . 's');
-  } else if ($min > 0) {
-    return ($min . 'm:' . $sec . 's');
-  } else {
-    return ($sec . 's');
-  }
+    $min = floor($seconds / 60);
+    $sec = $seconds - ($min * 60);
+    $hour = floor($min / 60);
+    $min = $min - ($hour * 60);
+    if ($hour > 0) {
+        return ($hour . 'h:' . $min . 'm:' . $sec . 's');
+    } else if ($min > 0) {
+        return ($min . 'm:' . $sec . 's');
+    } else {
+        return ($sec . 's');
+    }
 }
 
 function csv_field($val, $isFirst) {
-  if ($isFirst) {
-    $r = "";
-  } else {
-    $r = ",";
-  }
-  $r = $r . '"' . $val . '"';
-  return $r;
+    if ($isFirst) {
+        $r = "";
+    } else {
+        $r = ",";
+    }
+    $r = $r . '"' . $val . '"';
+    return $r;
 }
-
 
 /**
  * The max precision (decimal places) of a currency.
@@ -279,7 +278,7 @@ function csv_field($val, $isFirst) {
  * and during computations.
  */
 function get_decimal_places_for_currency() {
-  return sfConfig::get('app_currency_decimal_places');
+    return sfConfig::get('app_currency_decimal_places');
 }
 
 /**
@@ -288,7 +287,7 @@ function get_decimal_places_for_currency() {
  * The format string is in HTML format.
  */
 function format_from_db_decimal_to_currency_locale($value) {
-  return format_from_db_decimal_to_call_report_currency($value);
+    return format_from_db_decimal_to_call_report_currency($value);
 }
 
 /**
@@ -298,11 +297,11 @@ function format_from_db_decimal_to_currency_locale($value) {
  * The value round/truncation is done according the needs of CALL REPORT.
  */
 function format_from_db_decimal_to_call_report_currency($value) {
-  $decimalValue = from_db_decimal_to_invoice_decimal($value);
+    $decimalValue = from_db_decimal_to_invoice_decimal($value);
 
-  $currency = sfConfig::get('app_currency');
-  $culture = sfConfig::get('app_culture');
-  return format_currency($decimalValue, $currency, $culture);
+    $currency = sfConfig::get('app_currency');
+    $culture = sfConfig::get('app_culture');
+    return format_currency($decimalValue, $currency, $culture);
 }
 
 /**
@@ -310,13 +309,13 @@ function format_from_db_decimal_to_call_report_currency($value) {
  * @return a number like "12.3456" in case there 4 precision/decimal digits.
  */
 function from_db_decimal_to_php_decimal($value) {
-  if (is_null($value)) {
-    return "0";
-  }
+    if (is_null($value)) {
+        return "0";
+    }
 
-  $decimalPlaces = get_decimal_places_for_currency();
-  $scaleFactor = bcpow(10, $decimalPlaces);
-  return bcdiv($value, $scaleFactor, $decimalPlaces);
+    $decimalPlaces = get_decimal_places_for_currency();
+    $scaleFactor = bcpow(10, $decimalPlaces);
+    return bcdiv($value, $scaleFactor, $decimalPlaces);
 }
 
 /**
@@ -324,9 +323,9 @@ function from_db_decimal_to_php_decimal($value) {
  * non necessary decimal digits. For example "19.5" instead of "19.5000"
  */
 function from_db_decimal_to_smart_php_decimal($value) {
-  $d = from_db_decimal_to_php_decimal($value);
-  $d = $d + "0";
-  return sprintf($d);
+    $d = from_db_decimal_to_php_decimal($value);
+    $d = $d + "0";
+    return sprintf($d);
 }
 
 /**
@@ -335,13 +334,13 @@ function from_db_decimal_to_smart_php_decimal($value) {
  * number of precision digits.
  */
 function from_php_decimal_to_invoice_decimal($value) {
-  $l = sfConfig::get('app_currency_decimal_places_in_invoices');
-  $decimalValue = round($value, $l);
-  return sprintf("%." . $l . "F", $decimalValue);
+    $l = sfConfig::get('app_currency_decimal_places_in_invoices');
+    $decimalValue = round($value, $l);
+    return sprintf("%." . $l . "F", $decimalValue);
 }
 
 function from_php_decimal_to_pdf_txt_decimal($value) {
-  return get_currency_ascii_char() . from_php_decimal_to_invoice_decimal($value);
+    return get_currency_ascii_char() . from_php_decimal_to_invoice_decimal($value);
 }
 
 /**
@@ -349,8 +348,8 @@ function from_php_decimal_to_pdf_txt_decimal($value) {
  * @return a php decimal value, rounded to the invoice precision digits.
  */
 function from_db_decimal_to_invoice_decimal($value) {
-  $value2 = from_db_decimal_to_php_decimal($value);
-  return from_php_decimal_to_invoice_decimal($value2);
+    $value2 = from_db_decimal_to_php_decimal($value);
+    return from_php_decimal_to_invoice_decimal($value2);
 }
 
 /**
@@ -359,8 +358,8 @@ function from_db_decimal_to_invoice_decimal($value) {
  * required decimals.
  */
 function round_db_decimal_according_invoice_decimal($value) {
-  $value2 = from_db_decimal_to_invoice_decimal($value);
-  return convertToDbMoney($value2);
+    $value2 = from_db_decimal_to_invoice_decimal($value);
+    return convertToDbMoney($value2);
 }
 
 /**
@@ -370,8 +369,8 @@ function round_db_decimal_according_invoice_decimal($value) {
  * with the correct number of decimal places. The number is formatted according locale/culture.
  */
 function from_db_decimal_to_locale_decimal($value) {
-  $culture = sfConfig::get('app_culture');
-  return format_number(from_db_decimal_to_invoice_decimal($value), $culture);
+    $culture = sfConfig::get('app_culture');
+    return format_number(from_db_decimal_to_invoice_decimal($value), $culture);
 }
 
 /**
@@ -381,8 +380,8 @@ function from_db_decimal_to_locale_decimal($value) {
  * with all the decimal digits and formatted according locale/culture.
  */
 function from_db_decimal_to_locale_decimal_with_full_precision($value) {
-  $culture = sfConfig::get('app_culture');
-  return format_number(from_db_decimal_to_php_decimal($value), $culture);
+    $culture = sfConfig::get('app_culture');
+    return format_number(from_db_decimal_to_php_decimal($value), $culture);
 }
 
 /**
@@ -390,12 +389,12 @@ function from_db_decimal_to_locale_decimal_with_full_precision($value) {
  * to produce unanbigous numbers.
  */
 function from_db_decimal_to_scientific_notation($value) {
-  if (is_null($value)) {
-    return NULL;
-  } else {
-    $decimalPlaces = get_decimal_places_for_currency();
-    return $value . 'E-' . $decimalPlaces;
-  }
+    if (is_null($value)) {
+        return NULL;
+    } else {
+        $decimalPlaces = get_decimal_places_for_currency();
+        return $value . 'E-' . $decimalPlaces;
+    }
 }
 
 /**
@@ -404,10 +403,10 @@ function from_db_decimal_to_scientific_notation($value) {
  * @return a number with the proper decimals, in the default culture format.
  */
 function from_db_decimal_to_vat_perc_according_culture($value) {
-  $culture = sfConfig::get('app_culture');
+    $culture = sfConfig::get('app_culture');
 
-  $value = from_db_decimal_to_smart_php_decimal($value);
-  return format_number($value, $culture);
+    $value = from_db_decimal_to_smart_php_decimal($value);
+    return format_number($value, $culture);
 }
 
 /**
@@ -420,15 +419,15 @@ function from_db_decimal_to_vat_perc_according_culture($value) {
  * and the monetary value in the culture format.
  */
 function from_db_decimal_to_monetary_txt_according_locale($value) {
-  $currency = sfConfig::get('app_currency');
-  return sfConfig::get('app_currency') . ' ' . from_db_decimal_to_locale_decimal($value);
+    $currency = sfConfig::get('app_currency');
+    return sfConfig::get('app_currency') . ' ' . from_db_decimal_to_locale_decimal($value);
 }
 
 /**
  * Return the ASCII char for the currency symbol.
  */
 function get_currency_ascii_char() {
-  return chr(sfConfig::get('app_currency_ascii_char'));
+    return chr(sfConfig::get('app_currency_ascii_char'));
 }
 
 /**
@@ -440,7 +439,7 @@ function get_currency_ascii_char() {
  * @return a string like "$123,56" where "$" is the currency symbol.
  */
 function from_db_decimal_to_pdf_txt_decimal($value) {
-  return get_currency_ascii_char() . from_db_decimal_to_locale_decimal($value);
+    return get_currency_ascii_char() . from_db_decimal_to_locale_decimal($value);
 }
 
 /**
@@ -449,15 +448,15 @@ function from_db_decimal_to_pdf_txt_decimal($value) {
  * according the number of decimal places specified in config/app.yml for the currency.
  */
 function convertToDbMoney($moneyStr) {
-  $sourcePrecision = get_decimal_places_for_currency();
-  return number_format($moneyStr, $sourcePrecision, '', '');
+    $sourcePrecision = get_decimal_places_for_currency();
+    return number_format($moneyStr, $sourcePrecision, '', '');
 }
 
 /**
  * Synonimous for `convertToDbMoney`
  */
 function from_php_decimal_to_db_decimal($v) {
-  return convertToDbMoney($v);
+    return convertToDbMoney($v);
 }
 
 /**
@@ -468,10 +467,10 @@ function from_php_decimal_to_db_decimal($v) {
  * used in computations.
  */
 function formatCostAccordingCurrency($cost) {
-  $currencySymbol = sfConfig::get('app_currency');
-  $culture = sfConfig::get('app_culture');
-  $n = format_number($cost, $culture);
-  return $currencySymbol . " " . $n;
+    $currencySymbol = sfConfig::get('app_currency');
+    $culture = sfConfig::get('app_culture');
+    $n = format_number($cost, $culture);
+    return $currencySymbol . " " . $n;
 }
 
 /**
@@ -481,17 +480,17 @@ function formatCostAccordingCurrency($cost) {
  *         null if $numberAsString is not a number.
  */
 function convertToArbitraryPrecisionFloat($numberAsString, $decimalSeparator) {
-  $s1 = trim($numberAsString);
-  if ($decimalSeparator != '.') {
-    $s2 = str_replace($decimalSeparator, '.', $s1);
-  } else {
-    $s2 = $s1;
-  }
-  if (is_numeric($s2)) {
-    return $s2;
-  } else {
-    return null;
-  }
+    $s1 = trim($numberAsString);
+    if ($decimalSeparator != '.') {
+        $s2 = str_replace($decimalSeparator, '.', $s1);
+    } else {
+        $s2 = $s1;
+    }
+    if (is_numeric($s2)) {
+        return $s2;
+    } else {
+        return null;
+    }
 }
 
 /**
@@ -500,12 +499,12 @@ function convertToArbitraryPrecisionFloat($numberAsString, $decimalSeparator) {
  * @return list($totalVat, $totalWithVat) in db_decimal format, with the precision needed for invoices
  */
 function invoice_amount_with_vat($totIncome, $vatPerc) {
-  $totIncome = round_db_decimal_according_invoice_decimal($totIncome);
-  $totalVat1 = bcmul($totIncome, $vatPerc, 0);
-  $totalVat = round_db_decimal_according_invoice_decimal(bcdiv($totalVat1, 100, 0));
-  $totalWithVat = round_db_decimal_according_invoice_decimal(bcadd($totIncome, $totalVat, 0));
+    $totIncome = round_db_decimal_according_invoice_decimal($totIncome);
+    $totalVat1 = bcmul($totIncome, $vatPerc, 0);
+    $totalVat = round_db_decimal_according_invoice_decimal(bcdiv($totalVat1, 100, 0));
+    $totalWithVat = round_db_decimal_according_invoice_decimal(bcadd($totIncome, $totalVat, 0));
 
-  return array($totalVat, $totalWithVat);
+    return array($totalVat, $totalWithVat);
 }
 
 /**
@@ -515,12 +514,12 @@ function invoice_amount_with_vat($totIncome, $vatPerc) {
  * to MySQL database.
  */
 function filterStrForSQLQuery($str) {
-  $n = strlen($str);
-  $w = '';
-  for ($i = 0; $i < $n; $i++) {
-    $w .= filterCharForSQLQuery(substr($str, $i, 1));
-  }
-  return $w;
+    $n = strlen($str);
+    $w = '';
+    for ($i = 0; $i < $n; $i++) {
+        $w .= filterCharForSQLQuery(substr($str, $i, 1));
+    }
+    return $w;
 }
 
 /**
@@ -528,19 +527,19 @@ function filterStrForSQLQuery($str) {
  * "" otherwise
  */
 function filterCharForSQLQuery($ch1) {
-  $pos = strpos('0123456789 abcdefghijklmnopqrstuvzwxyABCDEFGHILMNOPQSTUVZKJWXY-+/:@', $ch1);
-  if ($pos === false) {
-    return '';
-  } else {
-    return $ch1;
-  }
+    $pos = strpos('0123456789 abcdefghijklmnopqrstuvzwxyABCDEFGHILMNOPQSTUVZKJWXY-+/:@', $ch1);
+    if ($pos === false) {
+        return '';
+    } else {
+        return $ch1;
+    }
 }
 
 /**
  * A string with '\n' and other special characters, substituted with new lines.
  */
 function from_user_string_to_php_string($str) {
-  return str_replace("\\n", "\n", $str);
+    return str_replace("\\n", "\n", $str);
 }
 
 /**
@@ -550,25 +549,25 @@ function from_user_string_to_php_string($str) {
  * @return a path to the same file inside the file system, or null if it is not specified, or the files does not exists
  */
 function uploadedImageFilePath($urlPath) {
-  if (is_null($urlPath)) {
-    return null;
-  }
+    if (is_null($urlPath)) {
+        return null;
+    }
 
-  if (strlen(trim($urlPath)) == 0) {
-    return null;
-  }
+    if (strlen(trim($urlPath)) == 0) {
+        return null;
+    }
 
-  $base = sfConfig::get('app_sfMediaLibrary_upload_dir');
+    $base = sfConfig::get('app_sfMediaLibrary_upload_dir');
 
-  $path = strstr(trim($urlPath), $base);
+    $path = strstr(trim($urlPath), $base);
 
-  $file = sfConfig::get('sf_web_dir') . '/' . $path;
+    $file = sfConfig::get('sf_web_dir') . '/' . $path;
 
-  if (file_exists($file)) {
-    return $file;
-  } else {
-    return null;
-  }
+    if (file_exists($file)) {
+        return $file;
+    } else {
+        return null;
+    }
 }
 
 /**
@@ -579,33 +578,33 @@ function uploadedImageFilePath($urlPath) {
 function html2rgb($color) {
 
 
-  if (is_null($color)) {
-    return null;
-  }
+    if (is_null($color)) {
+        return null;
+    }
 
-  $color = trim($color);
+    $color = trim($color);
 
-  if (strlen($color) == 0) {
-    return null;
-  }
+    if (strlen($color) == 0) {
+        return null;
+    }
 
-  if ($color[0] === '#')
-    $color = substr($color, 1);
+    if ($color[0] === '#')
+        $color = substr($color, 1);
 
-  if (strlen($color) == 6)
-    list($r, $g, $b) = array($color[0] . $color[1],
-      $color[2] . $color[3],
-      $color[4] . $color[5]);
-  elseif (strlen($color) == 3)
-    list($r, $g, $b) = array($color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2]);
-  else
-    return null;
+    if (strlen($color) == 6)
+        list($r, $g, $b) = array($color[0] . $color[1],
+            $color[2] . $color[3],
+            $color[4] . $color[5]);
+    elseif (strlen($color) == 3)
+        list($r, $g, $b) = array($color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2]);
+    else
+        return null;
 
-  $r = hexdec($r);
-  $g = hexdec($g);
-  $b = hexdec($b);
+    $r = hexdec($r);
+    $g = hexdec($g);
+    $b = hexdec($b);
 
-  return array($r, $g, $b);
+    return array($r, $g, $b);
 }
 
 /**
@@ -614,18 +613,105 @@ function html2rgb($color) {
  * @return true if $prefix is a prefix of $number, false otherwise.
  */
 function isPrefixOf($prefix, $number) {
-  $prefix = trim($prefix);
-  $prefixLen = strlen($prefix);
+    $prefix = trim($prefix);
+    $prefixLen = strlen($prefix);
 
-  if ($prefixLen == 0) {
-    return true;
-  }
+    if ($prefixLen == 0) {
+        return true;
+    }
 
-  if (substr_compare($prefix, $number, 0, $prefixLen, TRUE) == 0) {
-    return true;
-  } else {
-    return false;
-  }
+    if (substr_compare($prefix, $number, 0, $prefixLen, TRUE) == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Compute the filter conditions of CALL-REPORT.
+ * 
+ * @param $filters an array containing all filter parameters of CALL-REPORT.
+ * 
+ * @return list($partyId, $officeId, $voipAccountId), 
+ * with is_null($partyId) if there is no filter specified on the field,
+ * and so on for other vars of the result.
+ *  
+ */
+function getFiltersOnCallReport($filters) {
+
+    $partyId = NULL;
+    $officeId = NULL;
+    $accountId = NULL;
+
+    $sf_user = sfContext::getInstance()->getUser();
+
+    if ($sf_user->hasCredential('admin')) {
+        $partyId = filterValue($filters, 'filter_on_party');
+    } else {
+        // a logged customer has always a specific party associated  
+        $partyId = $sf_user->getPartyId();
+    }
+
+    if (!is_null($partyId)) {
+
+        if ($sf_user->hasCredential('office')) {
+            // a logged office customer, has always a specific office associated 
+            $officeId = $sf_user->getOfficeId();
+        } else {
+            $officeId = filterValue($filters, 'filter_on_office');
+
+            // Test if the office was an old filter associated to a different party
+            if (!is_null($officeId)) {
+              $office = ArOfficePeer::retrieveByPK($officeId);
+              if ($office->getArPartyId() != $partyId) {
+                  $officeId = NULL;
+              }
+            }
+            
+            if (is_null($officeId)) {
+                // test if the party has only one office.          
+                $party = ArPartyPeer::retrieveByPK($partyId);
+                $officeId = $party->getUniqueOfficeId();
+            }
+        }
+
+        if (!is_null($officeId)) {
+            $accountId = filterValue($filters, 'filter_on_account');
+
+            // Test if the account was an old filter associated to a different office
+            if (!is_null($accountId)) {
+              $account = ArAsteriskAccountPeer::retrieveByPK($accountId);
+              if ($account->getArOfficeId() != $officeId) {
+                  $accountId = NULL;
+              }
+            }
+            
+            if (is_null($accountId)) {
+                // test if the office has only one VoIP account
+                $accountId = ArOffice::getUniqueArAsteriskAccountIdForOfficeId($officeId);
+            }
+        }
+    }
+
+    return array($partyId, $officeId, $accountId);
+}
+
+/**
+ *
+ * @param type $filters
+ * @param type $index 
+ * @return null if the filter is not selected. Its value otherwise.
+ */
+function filterValue($filters, $index) {
+    $r = NULL;
+    if (isset($filters[$index])
+            && (!is_null($filters[$index]))
+            && (strlen(trim($filters[$index])) != 0)
+            && ($filters[$index] != -1)) {
+        $r = $filters[$index];
+    }
+
+    return $r;
 }
 
 ?>
