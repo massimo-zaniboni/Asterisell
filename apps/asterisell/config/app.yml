@@ -50,9 +50,10 @@ all:
       - RateCalls
       - CleanCacheFromOldItems
       - CheckWebsiteUpdates                 # Check if there are news on Asterisell web-site
-      - AdviseAdminOfNewProblems
+      - CheckPartiesWithoutParams
       # - CheckCallCostLimit                # Check if customers have reached theirs call cost limit.
       # - CheckSafeLimitForConcurrentCalls  # Check if the server has reached his limit about the maximum (safe) number of concurrent calls. In case advise the administrator via mail
+      - AdviseAdminOfNewProblems            # Send emails with found problems to administrator
 
 
     # The jobs that are activate when there is a compatible event
