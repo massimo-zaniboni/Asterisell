@@ -84,7 +84,7 @@ class Cdr extends BaseCdr {
     $commonPrefix = sfConfig::get('app_not_displayed_telephone_prefix');
     if ($commonPrefix != "-") {
       if (strlen($unmasked) > strlen($commonPrefix)) {
-        if (substr($unmasked, 0, strlen($commonPrefix)) == $commonPrefix) {
+        if (substr($unmasked, 0, strlen($commonPrefix)) === $commonPrefix) {
           $unmasked = substr($unmasked, strlen($commonPrefix));
         }
       }
