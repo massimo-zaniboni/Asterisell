@@ -86,6 +86,8 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     $filterWithJoins = $this->calcConditionWithoutJoins();
     $this->addJoinsToCondition($filterWithJoins);
     $this->updateVariableFrameWithHeaderInfo($filterWithJoins);
+    
+    list(VariableFrame::$filterOnPartyId, VariableFrame::$filterOnOfficeId, VariableFrame::$filterOnAccountId) = $this->getFiltersOnCallReport($this->filters);
   }
 
   /**
@@ -148,17 +150,6 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     VariableFrame::$totEarn = $totEarn;
   }
 
-  /**
-   * Add to $c a filter on curret web accounts CDR
-   * in order to display only CDRs viewable from
-   * proper accounts.
-   */
-  protected function addCurrentAccountViewableCdrsCriteria($c) {
-    // add filter criteria.
-    // NOTE: the joins are already added/processed from
-    // "lib/model/CdrPeer::doSelectJoinAllExceptVendor()"
-    //
-          }
 
   /**
    * Override addSortCriteris in order to add a more strict filter.
@@ -168,83 +159,48 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
    *
    * NOTE: the enabled/disabled filters must the same configured in
    * generator.yml, filters section.
+   *
    */
   protected function addFiltersCriteria($c) {
-    // Process filter_on_party
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // IMPORTANT: if you change this code, make sure that logged users
+    // can view only their CDR records, and not use only filter parameters,
+    // because they can be faked. So use always also logged user criteria.
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  
+    list($partyId, $officeId, $accountId) = $this->getFiltersOnCallReport($this->filters);
+  
+    // NOTE: the joins are already added/processed from
+    // "lib/model/CdrPeer::doSelectJoinAllExceptVendor()"
     //
-    $filterOnPartyApplied = false;
-    $partyId = null;
-   if (isset($this->filters['filter_on_params'])) {
-     $paramId = $this->filters['filter_on_params'];
-     if ($paramId == "" || $paramId == -1) {
-       $paramId = null;
-       unset($this->filters['filter_on_params']);
-     } else {
-       $c->add(ArPartyPeer::AR_PARAMS_ID, $paramId);
-     }
-   }
-
-   if (isset($this->filters['filter_on_party'])) {
-     $partyId = $this->filters['filter_on_party'];
-     $filterOnPartyApplied = true;
-     if ($partyId == "" || $partyId == -1) {
-       $filterOnPartyApplied = false;
-       $partyId = null;
-       unset($this->filters['filter_on_party']);
-     }
-   }
-
-      // apply the filter
-      //
-      if ($filterOnPartyApplied) {
-        $c->add(ArPartyPeer::ID, $partyId);
-	$filterOnPartyApplied = true;
-      }
-
-    // Process filter_on_office
-    //
-    $filterOnOfficeApplied = false;
-    $accountId = null;
-
-
-    if (isset($this->filters['filter_on_office']) && $filterOnPartyApplied == true) {
-      $officeId = $this->filters['filter_on_office'];
-      if ($officeId != "" && $officeId != -1 && ! is_null($officeId)) {
-        if ($this->getUser()->hasCredentialOnOffice($officeId)) {
-          $filterOnOfficeApplied = true;
-	} else {
-          unset($this->filters['filter_on_account']);
-	  $officeId = null;
-	}
-      }
-    }
-
-    // apply the filter
-    //
-    if ($filterOnOfficeApplied) {
+    if (!is_null($accountId)) {
+      $c->add(ArAsteriskAccountPeer::ID, $accountId);    
+    } 
+    if (!is_null($officeId)) {
+      $c->add(ArAsteriskAccountPeer::AR_OFFICE_ID, $officeId);    
       $c->add(ArOfficePeer::ID, $officeId);
     }
-
-    // Process filter_on_account
-    //
-    $filterOnAccountApplied = false;
-    if (isset($this->filters['filter_on_account']) && $filterOnOfficeApplied == true) {
-      $accountId = $this->filters['filter_on_account'];
-      if ($accountId != "" && $accountId != -1 && ! is_null($accountId)) {
-        $c->add(ArAsteriskAccountPeer::ID, $accountId);
-        $filterOnAccountApplied = true;
-      }
+    if (!is_null($partyId)) {
+      $c->add(ArOfficePeer::AR_PARTY_ID, $partyId);    
+      $c->add(ArPartyPeer::ID, $partyId);
     }
+    
+    $filterOnPartyApplied = !is_null($partyId);
+    $filterOnOfficeApplied = !is_null($officeId);
+    $filterOnAccountApplied = !is_null($accountId);
+
+   $paramsId = filterValue($this->filters, 'filter_on_params');
+   if (!is_null($paramsId)) {
+       $c->add(ArPartyPeer::AR_PARAMS_ID, $paramsId);
+   }
 
     // Process filter_on_destination_type
     //
+    $destinationType = filterValue($this->filters, 'filter_on_destination_type');
     $filterOnDestinationTypeApplied = false;
-    if (isset($this->filters['filter_on_destination_type'])) {
-      $destinationType = $this->filters['filter_on_destination_type'];
-      if ($destinationType != "") {
-        $c->add(CdrPeer::DESTINATION_TYPE, $destinationType);
-	$filterOnDestinationTypeApplied = true;
-      }
+    if (!is_null($destinationType)) {
+      $c->add(CdrPeer::DESTINATION_TYPE, $destinationType);
+      $filterOnDestinationTypeApplied = true;
     }
 
           // Admin can view all types of destination types except
@@ -260,13 +216,9 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 
     // Process filter_on_vendor
     //
-    if (isset($this->filters['filter_on_vendor'])) {
-      $vendorId = $this->filters['filter_on_vendor'];
-      if ($vendorId != "") {
+    $vendorId = filterValue($this->filters, 'filter_on_vendor');
+    if (!is_null($vendorId)) {
         $c->add(CdrPeer::VENDOR_ID, $vendorId);
-      } else {
-        unset($this->filters['filter_on_vendor']);
-      }
     }
 
     // Manage time frame
@@ -275,38 +227,100 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 
     // Filter on type of destination number according prefix table
     //
-    if (isset($this->filters['filter_on_dst_operator_type'])) {
-      $loc = $this->filters['filter_on_dst_operator_type'];
-      if (strlen(trim($loc)) != 0) {
+    $loc = filterValue($this->filters, 'filter_on_dst_operator_type');
+    if (!is_null($loc)) {
         $c->add(ArTelephonePrefixPeer::OPERATOR_TYPE, $loc);
-      }
     }
 
-    if (isset($this->filters['filter_on_dst_geographic_location'])) {
-      $loc = $this->filters['filter_on_dst_geographic_location'];
-      if (strlen(trim($loc)) != 0) {
-        $c->add(ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION, $loc);
-      }
+    $loc = filterValue($this->filters, 'filter_on_dst_geographic_location');
+    if (!is_null($loc)) {
+      $c->add(ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION, $loc);
     }
 
-    if (isset($this->filters['filter_on_external_telephone_number'])) {
-      $loc = $this->filters['filter_on_external_telephone_number'];
-      if (strlen(trim($loc)) != 0) {
+    $loc = filterValue($this->filters, 'filter_on_external_telephone_number');
+    if (!is_null($loc)) {
         $c->add(CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER, $loc .'%', Criteria::LIKE);
-      }
     }
 
-    // Show only proper calls for administrator/party/account
-    // in the case no relevant filter on it is applied
-    //
-    if (!($filterOnAccountApplied || $filterOnPartyApplied || $filterOnOfficeApplied)) {
-      $this->addCurrentAccountViewableCdrsCriteria($c);
-    }
     parent::addFiltersCriteria($c);
   }
 
+/**
+ * Compute the filter conditions of CALL-REPORT related to party, office and account.
+ * Enforce the respect of security access.
+ * Only logged users can access this method, due to security.yml. 
+ * So this method must check only the correct type of logged user.
+ * 
+ * @param $filters an array containing all filter parameters of CALL-REPORT.
+ * 
+ * @return list($partyId, $officeId, $voipAccountId), 
+ * with is_null($partyId) if there is no filter specified on the field,
+ * and so on for other vars of the result.
+ *  
+ */
+function getFiltersOnCallReport($filters) {
+
+    $partyId = NULL;
+    $officeId = NULL;
+    $accountId = NULL;
+
+    $sf_user = sfContext::getInstance()->getUser();
+
+    if ($sf_user->hasCredential('admin')) {
+        $partyId = filterValue($filters, 'filter_on_party');
+    } else {
+        // a logged customer has always a specific party associated  
+        $partyId = $sf_user->getPartyId();
+    }
+
+    if (!is_null($partyId)) {
+
+        if ($sf_user->hasCredential('office')) {
+            // a logged office customer, has always a specific office associated 
+            $officeId = $sf_user->getOfficeId();
+        } else {
+            $officeId = filterValue($filters, 'filter_on_office');
+
+            // Test if the office was an old filter associated to a different party
+            if (!is_null($officeId)) {
+              $office = ArOfficePeer::retrieveByPK($officeId);
+              if ($office->getArPartyId() != $partyId) {
+                  $officeId = NULL;
+              }
+            }
+            
+            if (is_null($officeId)) {
+                // test if the party has only one office.          
+                $party = ArPartyPeer::retrieveByPK($partyId);
+                $officeId = $party->getUniqueOfficeId();
+            }
+        }
+
+        if (!is_null($officeId)) {
+            $accountId = filterValue($filters, 'filter_on_account');
+
+            // Test if the account was an old filter associated to a different office
+            if (!is_null($accountId)) {
+              $account = ArAsteriskAccountPeer::retrieveByPK($accountId);
+              if ($account->getArOfficeId() != $officeId) {
+                  $accountId = NULL;
+              }
+            }
+            
+            if (is_null($accountId)) {
+                // test if the office has only one VoIP account
+                $accountId = ArOffice::getUniqueArAsteriskAccountIdForOfficeId($officeId);
+            }
+        }
+    }
+
+    return array($partyId, $officeId, $accountId);
+}
+
+  
 
     // CODE SPECIFIC FOR ADMIN //
+    // SECURITY FILTER IS MADE ON CORRESPONDING GENERATED security.yml FILE
 
   /**
    * Set to null all the income fields of selected cdrs.
@@ -364,17 +378,18 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     $fromDate = null;
     $toDate = null;
 
-    if (isset($this->filters['filter_on_calldate_from']) && trim($this->filters['filter_on_calldate_from']) != '') {
-      $fromDate = fromSymfonyTimestampToUnixTimestamp($this->filters['filter_on_calldate_from']);
+    $fromDate1 = filterValue($this->filters, 'filter_on_calldate_from');
+    if (!is_null($fromDate1)) {
+      $fromDate = fromSymfonyTimestampToUnixTimestamp($fromDate1);
     }
 
-    if (isset($this->filters['filter_on_calldate_to']) && trim($this->filters['filter_on_calldate_to'] != '')) {
-      $toDate = fromSymfonyTimestampToUnixTimestamp($this->filters['filter_on_calldate_to']);
+    $toDate1 = filterValue($this->filters, 'filter_on_calldate_to');
+    if (!is_null($toDate1)) {
+      $toDate = fromSymfonyTimestampToUnixTimestamp($toDate1);
     }
 
-    if (isset($this->filters['filter_on_timeframe'])) {
-      $frame = $this->filters['filter_on_timeframe'];
-    } else {
+    $frame = filterValue($this->filters, 'filter_on_timeframe');
+    if (is_null($frame)) {
       $frame = 0;
     }
 
@@ -503,6 +518,7 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     $this->filters['filter_on_calldate_to'] =  fromUnixTimestampToSymfonyStrDate($toDate);
     $this->filters['filter_on_calldate_from'] = fromUnixTimestampToSymfonyStrDate($fromDate);
   }
+
 }
 
 ?>

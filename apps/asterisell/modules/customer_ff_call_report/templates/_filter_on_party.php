@@ -15,7 +15,9 @@
 
 use_helper('Asterisell');
 
-list($partyId, $officeId, $accountId) = getFiltersOnCallReport($filters);
+$partyId = VariableFrame::$filterOnPartyId;
+$officeId = VariableFrame::$filterOnOfficeId;
+$accountId = VariableFrame::$filterOnAccountId;
 
 if ($sf_user->hasCredential('admin')) {
     

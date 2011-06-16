@@ -47,6 +47,9 @@ class VariableFrame {
   public static $totIncomes;
   public static $totCosts;
   public static $totEarn;
+  public static $filterOnPartyId;
+  public static $filterOnOfficeId;
+  public static $filterOnAccountId;
 
 
   protected static $vendorCache = null;
