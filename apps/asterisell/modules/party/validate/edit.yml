@@ -20,3 +20,6 @@ fields:
     required:
       msg: Required
 
+  ar_party{ar_params_id}:
+    required:
+      msg: Required
