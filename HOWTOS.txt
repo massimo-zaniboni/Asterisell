@@ -217,4 +217,11 @@ Access user data at run-time using:
   * mismatched PHP variable names, not detected because in code-path that are not executed often, especially error signal;
     * PhpStorm signals many of these problems. Check always the source code with it.
     
+= Sorting On Complex Columns =
+
+See module office like an example:
+  * ArOfficePeer
+  * customized generator query
+
+
 

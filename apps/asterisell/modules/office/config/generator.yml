@@ -5,14 +5,15 @@ generator:
     theme:            default
 
     fields:
-      ar_party_id:      { name: Owner Customer      }
-      ar_party:         { name: Owner Customer      }
+      ar_party_id:      { name: Owner Customer  }
+      ar_party:         { name: Owner Customer, sort_on_column: party_name }
       name:             { name: Name        }
       description:      { name: Description }
       ar_rate_category_id: { name: Price Category, help: "Leave empty if it is the same price category of the owner customer. " }
 
     list:
       title: Customer Offices
+      peer_method: doSelectJoinArParty
 
       display: [=ar_party, name, description]
       filters: [ar_party_id, name]
