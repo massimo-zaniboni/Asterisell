@@ -19,6 +19,7 @@ processAllCallReportTemplate("templates/_list_header.php");
 processAllCallReportTemplate("templates/_list.php");
 processAllCallReportTemplate("templates/listSuccess.php");
 processAllCallReportTemplate("templates/_filter_on_destination_type.php");
+processAllCallReportTemplate("templates/_filter_on_show.php");
 processAllCallReportTemplate("actions/actions.class.php");
 
 

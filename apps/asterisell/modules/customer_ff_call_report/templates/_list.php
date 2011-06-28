@@ -1,4 +1,11 @@
 <?php
+$generateForAdmin = false;
+$generateForCustomer = true;
+$generateForOffice = false;
+$showOffice = false;
+$showAccount = false;
+$displayCallDirection = false;
+
   /**************************************************************
    !!!                                                        !!!
    !!! WARNING: This file is automatic generated.             !!!
@@ -13,6 +20,71 @@
    !!!                                                        !!!
    **************************************************************/
 
+use_helper('Markdown');
+   
+$showType = VariableFrame::$filterOnShow;
+
+// Calculate the number of columns in the table
+//
+if ($showType === '10-calls') {
+  if ($generateForAdmin) {
+    $nrOfCols = 13;
+  } else {
+    $nrOfCols = 6;
+    if ($displayCallDirection) {
+      $nrOfCols++;
+    }
+    if ($showOffice) {
+      $nrOfCols++;
+    }
+    if ($showAccount) {
+      $nrOfCols++;
+    }
+  }
+} else {
+
+  // Calculate wich fields to display
+  //
+  $showCustomerField = TRUE;
+  $showOfficeField = FALSE;
+  $showAccountField = FALSE;
+  if ($showType === '30-offices') {
+    $showOfficeField = TRUE;
+  } else if ($showType === '40-accounts'){
+    $showOfficeField = TRUE;
+    $showAccountField = TRUE;
+  }
+  
+  if ($generateForCustomer) {
+    // when a specific customer is logged, there is no need to display his name
+    $showCustomerField = FALSE;
+  }
+  
+  if ($generateForOffice) {
+    // when a specific office is logged, there is no need to display his name
+    $showCustomerField = FALSE;    
+    $showOfficeField = FALSE;
+  }
+
+  // Display headers
+  //
+  $nrOfCols = 0;  
+  if ($showCustomerField) {
+    $nrOfCols++;
+  }
+  
+  if ($showOfficeField) {
+    $nrOfCols++;
+  }
+  
+  if ($showAccountField) {
+    $nrOfCols++;
+  }  
+  
+  $nrOfCols += 3;
+  
+  } 
+   
 //////////////////
 // Table header //
 //////////////////
@@ -22,27 +94,73 @@ $moduleName = 'customer_ff_call_report';
 echo '<table cellspacing="0" class="sf_admin_list">';
 echo '<thead>';
 echo '<tr>';
+    
+if ($showType === '10-calls') {    
+  include_partial('list_th_tabular');
+} else {
+  
+  if ($showCustomerField) {
+    echo '<th>' . __('Customer') . '</th>';
+  }
+  
+  if ($showOfficeField) {
+    echo '<th>' . __('Office') . '</th>';
+  }
+  
+  if ($showAccountField) {
+    echo '<th>' . __('VoIP Account') . '</th>';
+  }  
+  
+  echo '<th>' . __('Calls') . '</th>';
+  echo '<th>' . __('Duration') . '</th>';
 
-include_partial('list_th_tabular');
+  
+    echo '<th>' . __('Cost') . '</th>';
+  }
 
 echo '</tr>';
 echo '</thead>';
 echo '<tfoot>';
-echo '<tr><th colspan="6" >';
+echo '<tr><th colspan="' . $nrOfCols . '"/>';
 echo '<div class="float-right">';
 
 ////////////////
 // Pagination //
 ////////////////
+    
+if ($showType === '10-calls') {
+  $currPage = $sf_request->getParameter('page', 1);
+  displayCalls($moduleName, $currPage);
+  echo '</tbody>';
+  echo '</table>';
+} else {
+  echo '</tbody>';
+  echo '</table>';
 
-$currPage = $sf_request->getParameter('page', 1);
+  $str = <<<VERYLONGSTRING
+
+This feature is part of the Asterisell Commercial Release.
+
+See <http://asterisell.profitoss.com> for more details.
+
+NOTE: this is an informative message, only for Asterisell administrators.
+Users without administrator privileges, will not see this message, and the
+corresponding filter options.
+
+VERYLONGSTRING;
+
+  echo insertHelp($str);
+}  
+
+function displayCalls($moduleName, $currPage) {
+
 
 $nrOfRecords = VariableFrame::$countOfRecords;
+
 $recordsPerPage = sfConfig::get('app_how_many_calls_in_call_report');
 $nrOfPages = ceil($nrOfRecords / $recordsPerPage);
 $lastPage = $nrOfPages;
-
-$haveToPaginate = ($nrOfPages > 1);
+$haveToPaginate = ($nrOfPages > 1);  
 
 // How many indexed pages in the navigation bar.
 //
@@ -88,10 +206,6 @@ echo '</div>';
 echo format_number_choice('[0] no result|[1] 1 result|(1,+Inf] %1% results', array('%1%' => $nrOfRecords), $nrOfRecords);
 
 echo '</th></tr></tfoot><tbody>';
-
-///////////
-// Calls //
-///////////
 
 $c = clone VariableFrame::$filterConditionWithOrder;
 
@@ -191,9 +305,7 @@ foreach($rs as $r) {
       }
 
   echo '</tr>';
-
+}
 }
 
-echo '</tbody>';
-echo '</table>';
 

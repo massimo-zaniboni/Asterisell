@@ -50,8 +50,8 @@ generator:
 
       fields:
         internal_telephone_number: { name: Account, help: "The internal VoIP account that is target or source of the incoming / outgoing call." }
-        external_location:       { name: Location, help: "Where resides the called / calling external telephone number." }
-        external_connection_type:{ name: Connection, help: "The technology used for telephone connection: fixed line, mobile line and so on." }
+        external_location:        { name: Location, help: "Where resides the called / calling external telephone number." }
+        external_connection_type: { name: Connection, help: "The technology used for telephone connection: fixed line, mobile line and so on." }
         owner:                   { name: Customer, help: "The owner of called / calling internal VoIP account." }
         office:                  { name: Office, help: "The office where resides the called / calling internal VoIP account." }
         calldate:                { name: Date, sort_on_column: calldate }
@@ -63,6 +63,7 @@ generator:
         my_vendor_cost:          { name: Cost, sort_on_column: cost, help: "The amount requested from the telephone vendor in order to route the call." }
         my_vendor:               { name: Vendor, help: "The telephone vendor that routed / managed the call." }
         earn:                    { name: Earn, help: "The difference between the income and the cost of the call." }
+        filter_on_show:          { name: "Show", filter_criteria_disabled: true }
         filter_on_params:        { name: Customer Type, filter_criteria_disabled: true }
         filter_on_party:         { name: Customer, filter_criteria_disabled: true }
         filter_on_office:        { name: Office, filter_criteria_disabled: true }
@@ -111,5 +112,5 @@ if ($generateForAdmin) {
       # NOTE: if you change the type of filters to enable/disable according the type of user
       # remember to update in the same wasy also actions.php, addFiltersCriteria function.
       #
-      filters: [<?php if ($displayFilterOnCallDirection) { echo "_filter_on_destination_type, "; } ?> <?php if ($generateForAdmin) { echo '_filter_on_params, _filter_on_party, '; } ?> <?php if ($showOffice) { echo '_filter_on_office, '; } ?> <?php if ($showAccount) { echo '_filter_on_account, '; } ?> _filter_on_timeframe, _filter_on_calldate_from, _filter_on_calldate_to, _filter_on_dst_operator_type, _filter_on_dst_geographic_location, _filter_on_external_telephone_number <?php if ($generateForAdmin) { echo  ', _filter_on_vendor'; } ?>]
+      filters: [<?php if ($generateForAdmin) echo '_filter_on_show,';  ?> <?php if ($displayFilterOnCallDirection) { echo "_filter_on_destination_type, "; } ?> <?php if ($generateForAdmin) { echo '_filter_on_params, _filter_on_party, '; } ?> <?php if ($showOffice) { echo '_filter_on_office, '; } ?> <?php if ($showAccount) { echo '_filter_on_account, '; } ?> _filter_on_timeframe, _filter_on_calldate_from, _filter_on_calldate_to, _filter_on_dst_operator_type, _filter_on_dst_geographic_location, _filter_on_external_telephone_number <?php if ($generateForAdmin) { echo  ', _filter_on_vendor'; } ?>]
 

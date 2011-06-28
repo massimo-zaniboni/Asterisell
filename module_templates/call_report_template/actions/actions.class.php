@@ -94,6 +94,19 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     $this->addJoinsToCondition($filterWithJoins);
     $this->updateVariableFrameWithHeaderInfo($filterWithJoins);
     
+    // NOTE: I don't need sanitize `filter_on_show` because:
+    //   * CDRs with proper party/office are already filtered from other part of the framework, 
+    //   according security concerns;
+    //   * a logged user can see only the proper `filter_on_show` parameters;
+    //   * if a malicious user insert wrong `filter_on_show` parameters, 
+    //   then he see only one group of his CDRs, and he doesn't see the CDRs 
+    //   of other users;
+    //
+    VariableFrame::$filterOnShow = filterValue($this->filters, 'filter_on_show');
+    if (is_null(VariableFrame::$filterOnShow)) {
+      VariableFrame::$filterOnShow = '10-calls';
+    }  
+    
     list(VariableFrame::$filterOnPartyId, VariableFrame::$filterOnOfficeId, VariableFrame::$filterOnAccountId) = $this->getFiltersOnCallReport($this->filters);
   }
 
@@ -164,6 +177,10 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
    * POSTCONDITION: the resulting $c does not contain any select field
    * (required from the pager that adds its fields)
    *
+   *
+   * POSTCONDITION: filters are checked for sanity/security constraints according
+   * the privileges of the logged user.
+   * 
    * NOTE: the enabled/disabled filters must the same configured in
    * generator.yml, filters section.
    *
