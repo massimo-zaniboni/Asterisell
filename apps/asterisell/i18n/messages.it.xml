@@ -1749,6 +1749,30 @@
       <target>escluso</target>
     </trans-unit>
 
+    <trans-unit id="200">
+      <source>Show</source>
+      <target>Visualizza</target>
+    </trans-unit>
+    
+    <trans-unit id="201">
+      <source>Calls details</source>
+      <target>Elenco chiamate</target>
+    </trans-unit>
+
+    <trans-unit id="202">
+      <source>Group by customers</source>
+      <target>Totali per cliente</target>
+    </trans-unit>
+
+    <trans-unit id="203">
+      <source>Group by offices</source>
+      <target>Totali per sede</target>
+    </trans-unit>
+
+    <trans-unit id="204">
+      <source>Group by VoIP accounts</source>
+      <target>Totali per account VoIP</target>
+    </trans-unit>
 
   </body>
   </file>

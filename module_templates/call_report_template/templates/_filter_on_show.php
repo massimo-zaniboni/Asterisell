@@ -22,18 +22,18 @@ echo '<?php';
 $index = 'filter_on_show';
 
 $options = array("" => "");
-$options['10-calls'] = "Calls details";
+$options['10-calls'] = __("Calls details");
 
 <?php if ($generateForAdmin == TRUE) { ?>
-$options['20-customers'] = "Group by customers";
+$options['20-customers'] = __("Group by customers");
 <?php } ?>
   
 <?php if ($generateForAdmin == TRUE || $generateForCustomer == TRUE) { ?>
-$options['30-offices'] = "Group by offices";
+$options['30-offices'] = __("Group by offices");
 <?php } ?>
 
 <?php if ($generateForAdmin == TRUE || $generateForCustomer == TRUE || $generateForOffice == TRUE) { ?>
-$options['40-accounts'] = "Group by accounts";
+$options['40-accounts'] = __("Group by VoIP accounts");
 <?php } ?>
 
 $defaultChoice = filterValue($filters, $index);
@@ -44,5 +44,5 @@ if (is_null($defaultChoice)) {
 echo select_tag('filters[filter_on_show]', options_for_select($options, $defaultChoice));
 
 <?php 
-echo '?>' . "\n";
+echo '?>' . "\n";f
 ?>

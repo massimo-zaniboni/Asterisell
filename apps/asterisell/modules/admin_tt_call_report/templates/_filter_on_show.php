@@ -15,13 +15,13 @@
 $index = 'filter_on_show';
 
 $options = array("" => "");
-$options['10-calls'] = "Calls details";
+$options['10-calls'] = __("Calls details");
 
-$options['20-customers'] = "Group by customers";
+$options['20-customers'] = __("Group by customers");
   
-$options['30-offices'] = "Group by offices";
+$options['30-offices'] = __("Group by offices");
 
-$options['40-accounts'] = "Group by accounts";
+$options['40-accounts'] = __("Group by VoIP accounts");
 
 $defaultChoice = filterValue($filters, $index);
 if (is_null($defaultChoice)) {
