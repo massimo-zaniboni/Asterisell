@@ -1750,8 +1750,8 @@
     </trans-unit>
 
     <trans-unit id="200">
-      <source>Show</source>
-      <target>Visualizza</target>
+      <source>Show:</source>
+      <target>Visualizza:</target>
     </trans-unit>
     
     <trans-unit id="201">
