@@ -41,6 +41,8 @@ CREATE TABLE `cdr`
 	`external_telephone_number_with_applied_portability` VARCHAR(256),
 	`cached_masked_external_telephone_number` VARCHAR(256),
 	`source_id` INTEGER(11) default null,
+	`source_cost` INTEGER(20) default null,
+	`is_exported` INTEGER default 0 NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
 	KEY `cdr_calldate_index`(`calldate`),
@@ -57,6 +59,8 @@ CREATE TABLE `cdr`
 	KEY `cdr_external_telephone_number_with_applied_portability_index`(`external_telephone_number_with_applied_portability`),
 	KEY `cdr_cached_masked_external_telephone_number_index`(`cached_masked_external_telephone_number`),
 	KEY `cdr_source_id_index`(`source_id`),
+	KEY `cdr_source_cost_index`(`source_cost`),
+	KEY `cdr_is_exported_index`(`is_exported`),
 	INDEX `cdr_FI_1` (`ar_asterisk_account_id`),
 	CONSTRAINT `cdr_FK_1`
 		FOREIGN KEY (`ar_asterisk_account_id`)

@@ -171,6 +171,15 @@ propel:
     # This field is used only if the application/installation 
     # import CDR records from other table. Normally it is not used.
 
+    source_cost: { type: integer, size: 20, index: false, required: false, default: null }
+    #
+    # if the CDR was imported, this is its cost as specified from the external generator
+
+    is_exported: { type: boolean, required: true, default: 0, index: true }
+    #
+    # 1 if the CDR was already exported to a client reseller
+    # 0 if the CDR must be exported
+    
     id:
     #
     # NOTE: not in first position in order to not conflict with Asterisk Server

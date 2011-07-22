@@ -645,4 +645,50 @@ function filterValue($filters, $index) {
     return $r;
 }
 
+/**
+ * Reset the cost of the calls in the timeframe, 
+ * and recalc costs.
+ * The resetted CDR will be signaled as to re-export again.
+ * CDR exported again will replace old exported CDR.
+ * 
+ * @param $fromDate a from date (inclusive) in unix-time-stamp format
+ * @param $toDate a to date (exclusive) in unix-timestamp format,
+ *        or NULL for resetting all calls after $fromDate
+ * 
+ * Signal the operation (or the errors) on the problem-table.
+ * 
+ */
+function resetCallsCostInTimeFrameAndRecalc($fromDate, $toDate) {
+    try {
+      $sql = "UPDATE cdr SET destination_type = " . DestinationType::unprocessed . ", is_exported = 0 WHERE calldate >= \"" . fromUnixTimestampToMySQLTimestamp($fromDate) . "\"";
+
+      if (is_null($toDate)) {
+      } else {
+        $sql .= " AND calldate < \"" . fromUnixTimestampToMySQLTimestamp($toDate) . "\"";
+      }
+
+      $conn = Propel::getConnection();
+      $nr = $conn->executeUpdate($sql);
+
+      $p = new ArProblem();
+      $p->setDuplicationKey("Reset of calls at " . date('c'));
+      $p->setDescription("The administrator reset (and forced recalculations) of " . $nr . " calls, using query " . $sql);
+      $p->setEffect("This in not an error, only an informative message. The calls were rerated under this PHP process. If there is a timeout, then the rest of calls will be rated at next execution of cron process. User will not see unrated calls, in the meantime. ");
+      $p->setProposedSolution("");
+      ArProblemException::addProblemIntoDBOnlyIfNew($p);
+
+    } catch(Exception $e) {
+      $p = new ArProblem();
+      $p->setDuplicationKey($e->getCode());
+      $p->setDescription('Error during reset of Calls Cost ' . $e->getCode() . ': ' . $e->getMessage());
+      ArProblemException::addProblemIntoDBOnlyIfNew($p);
+    }
+
+    // Rerate calls.
+    //
+    $re = new JobQueueProcessor();
+    $re->processOnline();
+  }
+
+
 ?>

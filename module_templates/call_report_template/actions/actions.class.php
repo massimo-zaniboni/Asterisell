@@ -367,44 +367,18 @@ function getFiltersOnCallReport($filters) {
    * Set to null all the income fields of selected cdrs.
    */
   public function executeResetCallsCost() {
-    try {
-      ArProblemException::disableNotificationsToAdmin();
-
-      $this->initBeforeCalcCondition();
-      list($fromDate, $toDate) = $this->getAndUpdateTimeFrame();
-
-      $sql = "UPDATE cdr SET destination_type = " . DestinationType::unprocessed . " WHERE calldate >= \"" . fromUnixTimestampToMySQLTimestamp($fromDate) . "\"";
-
-      if (is_null($toDate)) {
-      } else {
-        $sql .= " AND calldate < \"" . fromUnixTimestampToMySQLTimestamp($toDate) . "\"";
-      }
-
-      $conn = Propel::getConnection();
-      $nr = $conn->executeUpdate($sql);
-
-      $p = new ArProblem();
-      $p->setDuplicationKey("Reset of calls at " . date('c'));
-      $p->setDescription("The administrator reset (and forced recalculations) of " . $nr . " calls, using query " . $sql);
-      $p->setEffect("This in not an error, only an informative message. The calls were rerated under this PHP process. If there is a timeout, then the rest of calls will be rated at next execution of cron process. User will not see unrated calls, in the meantime. ");
-      $p->setProposedSolution("");
-      ArProblemException::addProblemIntoDBOnlyIfNew($p);
-
-    } catch(Exception $e) {
-      $p = new ArProblem();
-      $p->setDuplicationKey($e->getCode());
-      $p->setDescription('Error during reset of Calls Cost ' . $e->getCode() . ': ' . $e->getMessage());
-      ArProblemException::addProblemIntoDBOnlyIfNew($p);
-    }
-
-    // Rerate calls.
+    // disable notifications because it does not make sense annoying with emails
+    // the administrator when he is working on-line.
     //
-    $re = new JobQueueProcessor();
-    $re->processOnline();
+    ArProblemException::disableNotificationsToAdmin();
+
+    $this->initBeforeCalcCondition();
+    list($fromDate, $toDate) = $this->getAndUpdateTimeFrame();
+
+    resetCallsCostInTimeFrameAndRecalc($fromDate, $toDate);
 
     return $this->redirect('admin_tt_call_report/list');
   }
-
   <?php } ?>
 
 
