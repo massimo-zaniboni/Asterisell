@@ -312,6 +312,17 @@ propel:
     #
     # TRUE if it is an active customer/vendor.
 
+    is_reseller: { type: boolean, index: true, required: true, default: 0 }
+    #
+    # TRUE if the customer is a reseller of VoIP calls.
+    # Calls made from the account-code of this reseller, 
+    # are reselled to other costumers, not known to this Asterisell installation.
+
+    reseller_code: varchar(80)
+    #
+    # a short code of the customer used for specifying export 
+    # directory and file names.
+
   ar_params:
   #
   # Params/resellers associated to customer/account

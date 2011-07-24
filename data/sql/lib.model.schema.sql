@@ -176,10 +176,13 @@ CREATE TABLE `ar_party`
 	`max_limit_30` INTEGER(20) default null,
 	`last_email_advise_for_max_limit_30` DATETIME,
 	`is_active` INTEGER default 1 NOT NULL,
+	`is_reseller` INTEGER default 0 NOT NULL,
+	`reseller_code` VARCHAR(80),
 	PRIMARY KEY (`id`),
 	KEY `ar_party_customer_or_vendor_index`(`customer_or_vendor`),
 	KEY `ar_party_max_limit_30_index`(`max_limit_30`),
 	KEY `ar_party_is_active_index`(`is_active`),
+	KEY `ar_party_is_reseller_index`(`is_reseller`),
 	INDEX `ar_party_FI_1` (`ar_rate_category_id`),
 	CONSTRAINT `ar_party_FK_1`
 		FOREIGN KEY (`ar_rate_category_id`)

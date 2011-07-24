@@ -83,6 +83,14 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	
 	protected $is_active = true;
 
+
+	
+	protected $is_reseller = false;
+
+
+	
+	protected $reseller_code;
+
 	
 	protected $aArRateCategory;
 
@@ -277,6 +285,20 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	{
 
 		return $this->is_active;
+	}
+
+	
+	public function getIsReseller()
+	{
+
+		return $this->is_reseller;
+	}
+
+	
+	public function getResellerCode()
+	{
+
+		return $this->reseller_code;
 	}
 
 	
@@ -553,6 +575,30 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setIsReseller($v)
+	{
+
+		if ($this->is_reseller !== $v || $v === false) {
+			$this->is_reseller = $v;
+			$this->modifiedColumns[] = ArPartyPeer::IS_RESELLER;
+		}
+
+	} 
+	
+	public function setResellerCode($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->reseller_code !== $v) {
+			$this->reseller_code = $v;
+			$this->modifiedColumns[] = ArPartyPeer::RESELLER_CODE;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -595,11 +641,15 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 			$this->is_active = $rs->getBoolean($startcol + 18);
 
+			$this->is_reseller = $rs->getBoolean($startcol + 19);
+
+			$this->reseller_code = $rs->getString($startcol + 20);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 19; 
+						return $startcol + 21; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArParty object", $e);
 		}
@@ -909,6 +959,12 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 			case 18:
 				return $this->getIsActive();
 				break;
+			case 19:
+				return $this->getIsReseller();
+				break;
+			case 20:
+				return $this->getResellerCode();
+				break;
 			default:
 				return null;
 				break;
@@ -938,6 +994,8 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 			$keys[16] => $this->getMaxLimit30(),
 			$keys[17] => $this->getLastEmailAdviseForMaxLimit30(),
 			$keys[18] => $this->getIsActive(),
+			$keys[19] => $this->getIsReseller(),
+			$keys[20] => $this->getResellerCode(),
 		);
 		return $result;
 	}
@@ -1010,6 +1068,12 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 			case 18:
 				$this->setIsActive($value);
 				break;
+			case 19:
+				$this->setIsReseller($value);
+				break;
+			case 20:
+				$this->setResellerCode($value);
+				break;
 		} 	}
 
 	
@@ -1036,6 +1100,8 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[16], $arr)) $this->setMaxLimit30($arr[$keys[16]]);
 		if (array_key_exists($keys[17], $arr)) $this->setLastEmailAdviseForMaxLimit30($arr[$keys[17]]);
 		if (array_key_exists($keys[18], $arr)) $this->setIsActive($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setIsReseller($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setResellerCode($arr[$keys[20]]);
 	}
 
 	
@@ -1062,6 +1128,8 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArPartyPeer::MAX_LIMIT_30)) $criteria->add(ArPartyPeer::MAX_LIMIT_30, $this->max_limit_30);
 		if ($this->isColumnModified(ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30)) $criteria->add(ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30, $this->last_email_advise_for_max_limit_30);
 		if ($this->isColumnModified(ArPartyPeer::IS_ACTIVE)) $criteria->add(ArPartyPeer::IS_ACTIVE, $this->is_active);
+		if ($this->isColumnModified(ArPartyPeer::IS_RESELLER)) $criteria->add(ArPartyPeer::IS_RESELLER, $this->is_reseller);
+		if ($this->isColumnModified(ArPartyPeer::RESELLER_CODE)) $criteria->add(ArPartyPeer::RESELLER_CODE, $this->reseller_code);
 
 		return $criteria;
 	}
@@ -1127,6 +1195,10 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		$copyObj->setLastEmailAdviseForMaxLimit30($this->last_email_advise_for_max_limit_30);
 
 		$copyObj->setIsActive($this->is_active);
+
+		$copyObj->setIsReseller($this->is_reseller);
+
+		$copyObj->setResellerCode($this->reseller_code);
 
 
 		if ($deepCopy) {

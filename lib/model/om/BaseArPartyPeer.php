@@ -13,7 +13,7 @@ abstract class BaseArPartyPeer {
 	const CLASS_DEFAULT = 'lib.model.ArParty';
 
 	
-	const NUM_COLUMNS = 19;
+	const NUM_COLUMNS = 21;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -77,23 +77,29 @@ abstract class BaseArPartyPeer {
 	const IS_ACTIVE = 'ar_party.IS_ACTIVE';
 
 	
+	const IS_RESELLER = 'ar_party.IS_RESELLER';
+
+	
+	const RESELLER_CODE = 'ar_party.RESELLER_CODE';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'CustomerOrVendor', 'Name', 'ExternalCrmCode', 'Vat', 'LegalAddress', 'LegalCity', 'LegalZipcode', 'LegalStateProvince', 'LegalCountry', 'Email', 'Phone', 'Phone2', 'Fax', 'ArRateCategoryId', 'ArParamsId', 'MaxLimit30', 'LastEmailAdviseForMaxLimit30', 'IsActive', ),
-		BasePeer::TYPE_COLNAME => array (ArPartyPeer::ID, ArPartyPeer::CUSTOMER_OR_VENDOR, ArPartyPeer::NAME, ArPartyPeer::EXTERNAL_CRM_CODE, ArPartyPeer::VAT, ArPartyPeer::LEGAL_ADDRESS, ArPartyPeer::LEGAL_CITY, ArPartyPeer::LEGAL_ZIPCODE, ArPartyPeer::LEGAL_STATE_PROVINCE, ArPartyPeer::LEGAL_COUNTRY, ArPartyPeer::EMAIL, ArPartyPeer::PHONE, ArPartyPeer::PHONE2, ArPartyPeer::FAX, ArPartyPeer::AR_RATE_CATEGORY_ID, ArPartyPeer::AR_PARAMS_ID, ArPartyPeer::MAX_LIMIT_30, ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30, ArPartyPeer::IS_ACTIVE, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'customer_or_vendor', 'name', 'external_crm_code', 'vat', 'legal_address', 'legal_city', 'legal_zipcode', 'legal_state_province', 'legal_country', 'email', 'phone', 'phone2', 'fax', 'ar_rate_category_id', 'ar_params_id', 'max_limit_30', 'last_email_advise_for_max_limit_30', 'is_active', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'CustomerOrVendor', 'Name', 'ExternalCrmCode', 'Vat', 'LegalAddress', 'LegalCity', 'LegalZipcode', 'LegalStateProvince', 'LegalCountry', 'Email', 'Phone', 'Phone2', 'Fax', 'ArRateCategoryId', 'ArParamsId', 'MaxLimit30', 'LastEmailAdviseForMaxLimit30', 'IsActive', 'IsReseller', 'ResellerCode', ),
+		BasePeer::TYPE_COLNAME => array (ArPartyPeer::ID, ArPartyPeer::CUSTOMER_OR_VENDOR, ArPartyPeer::NAME, ArPartyPeer::EXTERNAL_CRM_CODE, ArPartyPeer::VAT, ArPartyPeer::LEGAL_ADDRESS, ArPartyPeer::LEGAL_CITY, ArPartyPeer::LEGAL_ZIPCODE, ArPartyPeer::LEGAL_STATE_PROVINCE, ArPartyPeer::LEGAL_COUNTRY, ArPartyPeer::EMAIL, ArPartyPeer::PHONE, ArPartyPeer::PHONE2, ArPartyPeer::FAX, ArPartyPeer::AR_RATE_CATEGORY_ID, ArPartyPeer::AR_PARAMS_ID, ArPartyPeer::MAX_LIMIT_30, ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30, ArPartyPeer::IS_ACTIVE, ArPartyPeer::IS_RESELLER, ArPartyPeer::RESELLER_CODE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'customer_or_vendor', 'name', 'external_crm_code', 'vat', 'legal_address', 'legal_city', 'legal_zipcode', 'legal_state_province', 'legal_country', 'email', 'phone', 'phone2', 'fax', 'ar_rate_category_id', 'ar_params_id', 'max_limit_30', 'last_email_advise_for_max_limit_30', 'is_active', 'is_reseller', 'reseller_code', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CustomerOrVendor' => 1, 'Name' => 2, 'ExternalCrmCode' => 3, 'Vat' => 4, 'LegalAddress' => 5, 'LegalCity' => 6, 'LegalZipcode' => 7, 'LegalStateProvince' => 8, 'LegalCountry' => 9, 'Email' => 10, 'Phone' => 11, 'Phone2' => 12, 'Fax' => 13, 'ArRateCategoryId' => 14, 'ArParamsId' => 15, 'MaxLimit30' => 16, 'LastEmailAdviseForMaxLimit30' => 17, 'IsActive' => 18, ),
-		BasePeer::TYPE_COLNAME => array (ArPartyPeer::ID => 0, ArPartyPeer::CUSTOMER_OR_VENDOR => 1, ArPartyPeer::NAME => 2, ArPartyPeer::EXTERNAL_CRM_CODE => 3, ArPartyPeer::VAT => 4, ArPartyPeer::LEGAL_ADDRESS => 5, ArPartyPeer::LEGAL_CITY => 6, ArPartyPeer::LEGAL_ZIPCODE => 7, ArPartyPeer::LEGAL_STATE_PROVINCE => 8, ArPartyPeer::LEGAL_COUNTRY => 9, ArPartyPeer::EMAIL => 10, ArPartyPeer::PHONE => 11, ArPartyPeer::PHONE2 => 12, ArPartyPeer::FAX => 13, ArPartyPeer::AR_RATE_CATEGORY_ID => 14, ArPartyPeer::AR_PARAMS_ID => 15, ArPartyPeer::MAX_LIMIT_30 => 16, ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30 => 17, ArPartyPeer::IS_ACTIVE => 18, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'customer_or_vendor' => 1, 'name' => 2, 'external_crm_code' => 3, 'vat' => 4, 'legal_address' => 5, 'legal_city' => 6, 'legal_zipcode' => 7, 'legal_state_province' => 8, 'legal_country' => 9, 'email' => 10, 'phone' => 11, 'phone2' => 12, 'fax' => 13, 'ar_rate_category_id' => 14, 'ar_params_id' => 15, 'max_limit_30' => 16, 'last_email_advise_for_max_limit_30' => 17, 'is_active' => 18, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CustomerOrVendor' => 1, 'Name' => 2, 'ExternalCrmCode' => 3, 'Vat' => 4, 'LegalAddress' => 5, 'LegalCity' => 6, 'LegalZipcode' => 7, 'LegalStateProvince' => 8, 'LegalCountry' => 9, 'Email' => 10, 'Phone' => 11, 'Phone2' => 12, 'Fax' => 13, 'ArRateCategoryId' => 14, 'ArParamsId' => 15, 'MaxLimit30' => 16, 'LastEmailAdviseForMaxLimit30' => 17, 'IsActive' => 18, 'IsReseller' => 19, 'ResellerCode' => 20, ),
+		BasePeer::TYPE_COLNAME => array (ArPartyPeer::ID => 0, ArPartyPeer::CUSTOMER_OR_VENDOR => 1, ArPartyPeer::NAME => 2, ArPartyPeer::EXTERNAL_CRM_CODE => 3, ArPartyPeer::VAT => 4, ArPartyPeer::LEGAL_ADDRESS => 5, ArPartyPeer::LEGAL_CITY => 6, ArPartyPeer::LEGAL_ZIPCODE => 7, ArPartyPeer::LEGAL_STATE_PROVINCE => 8, ArPartyPeer::LEGAL_COUNTRY => 9, ArPartyPeer::EMAIL => 10, ArPartyPeer::PHONE => 11, ArPartyPeer::PHONE2 => 12, ArPartyPeer::FAX => 13, ArPartyPeer::AR_RATE_CATEGORY_ID => 14, ArPartyPeer::AR_PARAMS_ID => 15, ArPartyPeer::MAX_LIMIT_30 => 16, ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30 => 17, ArPartyPeer::IS_ACTIVE => 18, ArPartyPeer::IS_RESELLER => 19, ArPartyPeer::RESELLER_CODE => 20, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'customer_or_vendor' => 1, 'name' => 2, 'external_crm_code' => 3, 'vat' => 4, 'legal_address' => 5, 'legal_city' => 6, 'legal_zipcode' => 7, 'legal_state_province' => 8, 'legal_country' => 9, 'email' => 10, 'phone' => 11, 'phone2' => 12, 'fax' => 13, 'ar_rate_category_id' => 14, 'ar_params_id' => 15, 'max_limit_30' => 16, 'last_email_advise_for_max_limit_30' => 17, 'is_active' => 18, 'is_reseller' => 19, 'reseller_code' => 20, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
 	);
 
 	
@@ -184,6 +190,10 @@ abstract class BaseArPartyPeer {
 		$criteria->addSelectColumn(ArPartyPeer::LAST_EMAIL_ADVISE_FOR_MAX_LIMIT_30);
 
 		$criteria->addSelectColumn(ArPartyPeer::IS_ACTIVE);
+
+		$criteria->addSelectColumn(ArPartyPeer::IS_RESELLER);
+
+		$criteria->addSelectColumn(ArPartyPeer::RESELLER_CODE);
 
 	}
 

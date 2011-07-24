@@ -70,5 +70,9 @@ class ArPartyMapBuilder {
 
 		$tMap->addColumn('IS_ACTIVE', 'IsActive', 'boolean', CreoleTypes::BOOLEAN, true, null);
 
+		$tMap->addColumn('IS_RESELLER', 'IsReseller', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
+		$tMap->addColumn('RESELLER_CODE', 'ResellerCode', 'string', CreoleTypes::VARCHAR, false, 80);
+
 	} 
 } 
