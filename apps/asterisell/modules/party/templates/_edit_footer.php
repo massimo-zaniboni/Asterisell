@@ -13,6 +13,7 @@ Then the reseller can use another private instance of Asterisell for importing C
 
 Each reseller has a short and unique code. This code is used for naming files and directories used for exporting the CDR data. 
 Given a reseller with a name like "YZ", then CSV files are "cdr-exported-to-resellers/YZ/cdr-x", where "x" is a unix-timestamp number.
+Directories will be created from Asterisell, if they are missing.
 
 This Asterisell installation, act like the VoIP provider of the reseller Asterisell installation.
 
