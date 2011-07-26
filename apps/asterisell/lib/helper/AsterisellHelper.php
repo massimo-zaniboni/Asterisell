@@ -24,6 +24,13 @@
 sfLoader::loadHelpers(array('Form', 'Number', 'Date'));
 
 /**
+ * @return the root directory where Asterisell is installed.
+ */
+function getAsterisellRootDirectory() {
+    return sfConfig::get('sf_root_dir');
+}  
+
+/**
  * @return TRUE if configuratiohn "safe_limit_for_concurrent_calls" is equal to "30",
  * FALSE if it is equal to "m".
  */
