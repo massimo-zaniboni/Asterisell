@@ -48,12 +48,12 @@ all:
     #
     always_scheduled_jobs:
       - RateCalls
-      - CleanCacheFromOldItems
-      - CheckWebsiteUpdates                 # Check if there are news on Asterisell web-site
-      - CheckPartiesWithoutParams
+      - CleanCacheFromOldItems              # maintanance work
+      - CheckWebsiteUpdates                 # check if there are news on Asterisell web-site
+      - CheckPartiesWithoutParams           # maintanance work
       # - CheckCallCostLimit                # Check if customers have reached theirs call cost limit.
       # - CheckSafeLimitForConcurrentCalls  # Check if the server has reached his limit about the maximum (safe) number of concurrent calls. In case advise the administrator via mail
-      - AdviseAdminOfNewProblems            # Send emails with found problems to administrator
+      - AdviseAdminOfNewProblems            # send emails with found problems to administrator
 
 
     # The jobs that are activate when there is a compatible event
@@ -71,6 +71,21 @@ all:
     #
     jobs:
       - WarnCustomerForHighCallCost  # This job is executed only if it active also the `CheckCallCostLimit` corresponding job. It sends the emails to customers.
+
+  # Empty if there is no Asterisell provider for VoIP calls (this is the normal situation).
+  # Otherwise the directory where retrieve new CSV files produced 
+  # from another Asterisell server acting like a VoIP provider.
+  #
+  # The directory must be readable to the http user.
+  # 
+  # NOTE: this option has effect only for commercial version of Asterisell.
+  #
+  cdr_from_asterisell_provider_directory: ""
+
+  # Where move the already processed CSV files, in case there
+  # is another configured Asterisell VoIP provider (see previous option).
+  #
+  processed_cdr_from_asterisell_provider_directory: ""
 
   # Enable/disable displaying of incoming/incoming/internal 
   # calls in the customer call report.
