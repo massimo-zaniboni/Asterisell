@@ -1,3 +1,8 @@
+<?php
+
+require 'generator_header.php';
+
+?>
 
   /**************************************************************
    !!!                                                        !!!
@@ -15,5 +20,15 @@
 
 all:
   is_secure: on
-  credentials: admin
+<?php 
+if ($generateForAdmin) { 
+  echo "  credentials: admin\n"; 
+} else if ($generateForOffice) {
+  echo "  credentials: office\n"; 
+} else if ($generateForCustomer) {
+  echo "  credentials: party\n"; 
+} else {
+  echo "  credentials: admin\n"; 
+}
+?>
 

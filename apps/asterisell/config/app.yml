@@ -51,8 +51,8 @@ all:
       - CleanCacheFromOldItems              # maintanance work
       - CheckWebsiteUpdates                 # check if there are news on Asterisell web-site
       - CheckPartiesWithoutParams           # maintanance work
-      # - CheckCallCostLimit                # Check if customers have reached theirs call cost limit.
-      # - CheckSafeLimitForConcurrentCalls  # Check if the server has reached his limit about the maximum (safe) number of concurrent calls. In case advise the administrator via mail
+      # - CheckCallCostLimit                # check if customers have reached theirs call cost limit.
+      # - CheckSafeLimitForConcurrentCalls  # check if the server has reached his limit about the maximum (safe) number of concurrent calls. In case advise the administrator via mail
       - AdviseAdminOfNewProblems            # send emails with found problems to administrator
 
 
@@ -75,12 +75,16 @@ all:
   # Complete only if this Asterisell instance is a reseller of another
   # Asterisell server acting like a VoIP provider.
   # 
+  # NOTE: if this is the Asterisell acting like a main VoIP provider, these
+  # settings must be left empty. They must be completed on the reseller side.
+  #
   # NOTE: these options can be used only for commercial version of Asterisell.
   #
   external_asterisell_voip_provider:
     - csv_files_source_directory: ""
+    - temp_processing_csv_files_directory: ""
     - processed_csv_files_directory: ""
-    - insert_cdr_with_dstchannel: ""
+    - insert_cdr_using_dstchannel: ""
 
   # Enable/disable displaying of incoming/incoming/internal 
   # calls in the customer call report.

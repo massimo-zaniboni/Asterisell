@@ -31,3 +31,6 @@ CREATE TABLE `ar_lock`(`id` INTEGER  NOT NULL AUTO_INCREMENT, `name` CHAR(255)  
 ALTER TABLE ar_params ADD `login_urn` VARCHAR(512) DEFAULT NULL;
 ALTER TABLE `ar_asterisk_account` ADD `ar_rate_category_id` INTEGER;
 ALTER TABLE `ar_office` ADD `ar_rate_category_id` INTEGER;
+ALTER TABLE `ar_party` ADD `is_reseller` INTEGER default 0 NOT NULL;
+ALTER TABLE `ar_party` ADD `reseller_code` VARCHAR(80);
+ALTER TABLE `cdr` ADD `source_cost` INTEGER(20) default null, ADD `is_exported` INTEGER default 0 NOT NULL, ADD KEY `cdr_source_cost_index`(`source_cost`), ADD KEY `cdr_is_exported_index`(`is_exported`);
