@@ -72,20 +72,15 @@ all:
     jobs:
       - WarnCustomerForHighCallCost  # This job is executed only if it active also the `CheckCallCostLimit` corresponding job. It sends the emails to customers.
 
-  # Empty if there is no Asterisell provider for VoIP calls (this is the normal situation).
-  # Otherwise the directory where retrieve new CSV files produced 
-  # from another Asterisell server acting like a VoIP provider.
-  #
-  # The directory must be readable to the http user.
+  # Complete only if this Asterisell instance is a reseller of another
+  # Asterisell server acting like a VoIP provider.
   # 
-  # NOTE: this option has effect only for commercial version of Asterisell.
+  # NOTE: these options can be used only for commercial version of Asterisell.
   #
-  cdr_from_asterisell_provider_directory: ""
-
-  # Where move the already processed CSV files, in case there
-  # is another configured Asterisell VoIP provider (see previous option).
-  #
-  processed_cdr_from_asterisell_provider_directory: ""
+  external_asterisell_voip_provider:
+    - csv_files_source_directory: ""
+    - processed_csv_files_directory: ""
+    - insert_cdr_with_dstchannel: ""
 
   # Enable/disable displaying of incoming/incoming/internal 
   # calls in the customer call report.
