@@ -10,6 +10,10 @@ if [ "$BASE" = "scripts" ]; then
 
 echo "This script convert a 3.x Asterisell database to its last version."
 echo "Data will be not lost."
+echo "!!WARNING!!: During upgrading the involved MySQL tables will be locked, and they can not be written."
+echo "             This is a fast operation in case of all tables, except CDR table containing all made calls."
+echo "             So if you upgrade the same database where Asterisell is running, some calls will be not inserted inside CDR table during this operation."
+echo "             In case of CDR tables with 1 milion of records, this operation can require also 60 minutes."
 echo " "
 echo "Press Ctrl-C to exit."
 echo "Enter the name of MySQL database containing Asterisell data."
