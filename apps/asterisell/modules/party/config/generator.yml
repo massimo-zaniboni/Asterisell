@@ -28,7 +28,8 @@ generator:
       ar_params:            { name: Use params }
       is_reseller:          { name: Is Reseller, help: "A reseller is a customer who resells VoIP calls to his own customers. See help at the bottom of the page for more details. " }
       reseller_code:        { name: Reseller short code, help: "A short code without spaces and special characters. CSV files sent to a reseller with a short code like `XYZ`, will be put inside a nested directory like `cdr-exported-to-resellers/XYZ`." }
-
+      my_max_limit:         { name: Monthly Limit }
+        
     list:
       title: Customers and Vendors
       display: [is_active, _mycv, ar_rate_category, =name, ar_params, external_crm_code, legal_city, legal_state_province, legal_country, _my_max_limit]
