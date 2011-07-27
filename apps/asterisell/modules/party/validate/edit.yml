@@ -23,3 +23,10 @@ fields:
   ar_party{ar_params_id}:
     required:
       msg: Required
+
+  ar_party{reseller_code}:
+    sfRegexValidator:
+      match:        true
+      match_error:  it can not contains special characters, or spaces
+      pattern:      /^[a-zA-Z0-9_\-]+$/
+      
