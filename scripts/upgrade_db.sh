@@ -14,6 +14,8 @@ echo "!!WARNING!!: During upgrading the involved MySQL tables will be locked, an
 echo "             This is a fast operation in case of all tables, except CDR table containing all made calls."
 echo "             So if you upgrade the same database where Asterisell is running, some calls will be not inserted inside CDR table during this operation."
 echo "             In case of CDR tables with 1 milion of records, this operation can require also 60 minutes."
+echo "             Usually in the AsteriSell website there are information about the upgrade, and you will informed if it involves the CDR table."
+echo "             When it does not involve the CDR table, you can apply it freely because it is a very fast process."
 echo " "
 echo "Press Ctrl-C to exit."
 echo "Enter the name of MySQL database containing Asterisell data."

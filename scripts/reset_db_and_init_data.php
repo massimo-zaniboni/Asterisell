@@ -121,7 +121,39 @@ function createPrefix($pType, $pPlace, $pPrefix) {
   $r->save();
 }
 
-function loadPrefixes($filename) {
+function mergeCompletePrefix($prefix, $nation, $type, $operator) {
+
+  $c = new Criteria();
+  $c->add(ArTelephonePrefixPeer::PREFIX, $prefix);
+  $r = ArTelephonePrefixPeer::doSelectOne($c);
+
+  $msg = "";
+  if (is_null($r)) {
+    $msg .= "Create new entry ";
+    createCompletePrefix($prefix, $nation, $type, $operator);
+  } else {
+    $msg .= "Update entry ";
+    $r->setPrefix($prefix);
+    $r->setName($operator);
+    $r->setGeographicLocation($nation);
+    $r->setOperatorType($type);
+    $r->save();
+  }
+ 
+  $msg .= "\"$prefix\", \"$nation\", \"$type\", \"$operator\"";
+  echo $msg . "\n";
+}
+
+function createCompletePrefix($prefix, $nation, $type, $operator) {
+  $r = new ArTelephonePrefix();
+  $r->setPrefix($prefix);
+  $r->setName($operator);
+  $r->setGeographicLocation($nation);
+  $r->setOperatorType($type);
+  $r->save();
+}
+
+function loadPrefixes($filename, $merge) {
   $nrOfColInLine = 5;
   $handle = fopen($filename, 'r');
   if ($handle == false) {
@@ -137,9 +169,23 @@ function loadPrefixes($filename) {
     if ($ln % 250 == 0) {
       echo "#";
     }
-    createPrefix($data[1], $data[2], trim((string)$data[3]));
+    $prefix = trim($data[0]);
+    $nation = trim($data[1]);
+    $type = trim($data[2]);
+    $operator = trim($data[3]);
+
+    if ($merge) {
+      mergeCompletePrefix($prefix, $nation, $type, $operator);
+    } else {
+      createCompletePrefix($prefix, $nation, $type, $operator);
+    }
   }
 }
+
+function addNewTelephonePrefixes() {
+  loadPrefixes("world_prefix_table.csv", TRUE);
+}
+
 
 /**
  * @return $defaultParamsId created
@@ -399,7 +445,7 @@ try {
 
   // Add prefix table
   //
-  loadPrefixes("world_prefix_table.csv");
+  loadPrefixes("world_prefix_table.csv", FALSE);
 
   return array($defaultParamsId, $normalCategoryId, $discountedCategoryId, $defaultVendorId);
 
@@ -1505,7 +1551,7 @@ try {
   // Add prefixes table //
   ////////////////////////
 
-  loadPrefixes("world_prefix_table.csv");
+  loadPrefixes("world_prefix_table.csv", FALSE);
 
   // Special numbers
   //
@@ -1838,6 +1884,10 @@ function displayUsage() {
     echo "\n  php reset_db_and_init_data.php reset <some-password>";
     echo "\n      reset all the content of current db without loading any data.\n";
     echo "\n";
+    echo "\n  php reset_db_and_init_data.php merge telephone-prefixes ";
+    echo "\n      add new telephone prefixes to the telephone prefix table.\n";
+    echo "\n";
+
 }
 
 /**
@@ -1874,6 +1924,8 @@ function main($argc, $argv) {
     addRootUser($password, $paramsId);
   } else if ($command == "reset") {
     deleteAllData();
+  } else if ($command == "merge" && $password == "telephone-prefixes") {
+    addNewTelephonePrefixes();
   } else {
     displayUsage();
     exit(1);
