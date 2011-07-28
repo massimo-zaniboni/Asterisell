@@ -1,17 +1,3 @@
-<?php 
-/**
- * This module generate a "config.yml" file 
- * for call_report module according:
- *   - application settings;
- *   - input parameters;
- *
- * This allows to factor in a unique module common
- * parameters of the report module.
- */
-
-require 'generator_header.php';
-
-?>
 
 ################################################################
 #!!!                                                        !!!#
@@ -59,7 +45,7 @@ generator:
         external_telephone_number: { name: Tel. Nr., sort_on_column: dst, help: "Called / calling external telephone number." }
         billmin:                 { name: Duration, sort_on_column: billsec, help: "Call duration." }
         direction:               { name: Dir., help: "The direction of the call: incoming, outcomig or internal." }
-        my_income_from_customer: { name: <?php if ($generateForAdmin) { echo "Income"; } else { echo "Cost"; } ?>, sort_on_column: income, help: "<?php if ($generateForAdmin) { echo "The amount payed from the customer in order to make / receive the call."; } else { echo "The cost of the call."; } ?>"  }
+        my_income_from_customer: { name: Cost, sort_on_column: income, help: "The cost of the call."  }
         my_vendor_cost:          { name: Cost, sort_on_column: cost, help: "The amount requested from the telephone vendor in order to route the call." }
         my_vendor:               { name: Vendor, help: "The telephone vendor that routed / managed the call." }
         earn:                    { name: Earn, help: "The difference between the income and the cost of the call." }
@@ -81,36 +67,10 @@ generator:
 
       sort: [calldate, desc]
 
-<?php
-$display = "";
-if ($generateForAdmin) {
-  $display .= '_owner, ';
-}
-
-if ($showOffice) {
-  $display .= '_office, ';
-}
-
-if ($showAccount) {
-  $display .= '_internal_telephone_number, ';
-}
-
-if ($displayCallDirection) { 
-  $display .= '_direction, ';
-}
-
-$display .= '_external_telephone_number, _external_location, _external_connection_type, _mycalldate, _billmin, ';
-
-if ($generateForAdmin) {
-   $display .= "_my_income_from_customer, _my_vendor_cost, _earn, _my_vendor";
-} else {
-  $display .= "_my_income_from_customer";
-}
-?>
-      display: [<?php echo $display ?>]
+      display: [_external_telephone_number, _external_location, _external_connection_type, _mycalldate, _billmin, _my_income_from_customer]
 
       # NOTE: if you change the type of filters to enable/disable according the type of user
       # remember to update in the same wasy also actions.php, addFiltersCriteria function.
       #
-      filters: [<?php if ($generateForAdmin) echo '_filter_on_show,';  ?> <?php if ($displayFilterOnCallDirection) { echo "_filter_on_destination_type, "; } ?> <?php if ($generateForAdmin) { echo '_filter_on_params, _filter_on_party, '; } ?> <?php if ($showOffice) { echo '_filter_on_office, '; } ?> <?php if ($showAccount) { echo '_filter_on_account, '; } ?> _filter_on_timeframe, _filter_on_calldate_from, _filter_on_calldate_to, _filter_on_dst_operator_type, _filter_on_dst_geographic_location, _filter_on_external_telephone_number <?php if ($generateForAdmin) { echo  ', _filter_on_vendor'; } ?>]
+      filters: [     _filter_on_timeframe, _filter_on_calldate_from, _filter_on_calldate_to, _filter_on_dst_operator_type, _filter_on_dst_geographic_location, _filter_on_external_telephone_number ]
 

@@ -52,9 +52,24 @@ class VariableFrame {
   public static $filterOnOfficeId;
   public static $filterOnAccountId;
 
-
   protected static $vendorCache = null;
 
+  public static function thereIsFilterOnParty() {
+      if (!is_null(self::$filterOnPartyId)) {
+          return TRUE;
+      }
+      
+      if (!is_null(self::$filterOnOfficeId)) {
+          return TRUE;
+      }
+      
+      if (!is_null(self::$filterOnAccountId)) {
+          return TRUE;
+      }
+      
+      return FALSE;
+  }
+  
   static public function getVendorCache() {
     if (is_null(VariableFrame::$vendorCache)) {
       VariableFrame::$vendorCache = new ArPartyCache();

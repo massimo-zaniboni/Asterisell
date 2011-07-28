@@ -22,6 +22,7 @@
  */
 
 sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
+
 /**
  * Apply a MySQL specific optimization.
  *
@@ -29,96 +30,128 @@ sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
  * then performs like a proxy for all other requests.
  */
 class MyProxyConnection implements Connection {
-  protected $wrappedConn = null;
-  public function setWrappedConnection(Connection $c) {
-    $this->wrappedConn = $c;
-  }
-  // Wrap Method
-  protected function wrapSql($sql) {
-    // Source query is something like:
-    //
-    // > SELECT cdr.CALLDATE, cdr.CLID, cdr.SRC, ...
-    // > FROM cdr, ar_asterisk_account, ...
-    // > WHERE cdr.INCOME IS NULL AND cdr.CALLDATE>='2009-01-20' ...
-    //
-    // and tranform to
-    //
-    // > ... cdr FORCE INDEX (cdr_calldate_index) 
-    //
-    // in order to give MySQL an hint on the index to use
-    // for query processing.
-    //
-    $wrappedSql = str_ireplace(" cdr,", " cdr FORCE INDEX (cdr_calldate_index),", $sql);
-    return $wrappedSql;
-  }
-  // Overwritten methods
-  
-  /**
-   * If $sql is a query containing a condition on cdr.calldate
-   * then force the usage of the the cdr_calldate_index.
-   */
-  function executeQuery($sql, $fetchmode = null) {
-    $wrappedSql = $this->wrapSql($sql);
-    return $this->wrappedConn->executeQuery($wrappedSql, $fetchmode);
-  }
-  function applyLimit(&$sql, $offset, $limit) {
-    return $this->wrappedConn->applyLimit($sql, $offset, $limit);
-  }
-  function close() {
-    return $this->wrappedConn->close();
-  }
-  function commit() {
-    return $this->wrappedConn->commit();
-  }
-  function connect($dsn, $flags = 0) {
-    return $this->wrappedConn->connect($dsn, $flags);
-  }
-  public function isConnected() {
-    return $this->wrappedConn->isConnected();
-  }
-  public function createStatement() {
-    return $this->wrappedConn->createStatement();
-  }
-  public function executeUpdate($sql) {
-    return $this->wrappedConn->executeUpdate($sql);
-  }
-  public function getAutoCommit() {
-    return $this->wrappedConn->getAutoCommit();
-  }
-  public function begin() {
-    return $this->wrappedConn->begin();
-  }
-  public function getDatabaseInfo() {
-    return $this->wrappedConn->getDatabaseInfo();
-  }
-  public function getDSN() {
-    return $this->wrappedConn->getDSN();
-  }
-  public function getFlags() {
-    return $this->wrappedConn->getFlags();
-  }
-  public function getIdGenerator() {
-    return $this->wrappedConn->getIdGenerator();
-  }
-  public function getResource() {
-    return $this->wrappedConn->getResource();
-  }
-  public function getUpdateCount() {
-    return $this->wrappedConn->getUpdateCount();
-  }
-  public function prepareCall($sql) {
-    $wrappedSql = $this->wrapSql($sql);
-    return $this->wrappedConn->prepareCall($wrappedSql);
-  }
-  public function prepareStatement($sql) {
-    $wrappedSql = $this->wrapSql($sql);
-    return $this->wrappedConn->prepareStatement($wrappedSql);
-  }
-  public function rollback() {
-    return $this->wrappedConn->rollback();
-  }
-  public function setAutoCommit($bit) {
-    return $this->wrappedConn->setAutoCommit($bit);
-  }
+
+    protected $wrappedConn = null;
+
+    public function setWrappedConnection(Connection $c) {
+        $this->wrappedConn = $c;
+    }
+
+    protected function wrapSql($sql) {
+        if (VariableFrame::thereIsFilterOnParty()) {
+            // does not modify nothing, because MySQL can use good enough indexes
+            return $sql;
+            
+        } else {
+            // Force the usage of a filter on date range for speeding-up considerably the query.
+            //     
+            // Source query is something like:
+            //
+            // > SELECT cdr.CALLDATE, cdr.CLID, cdr.SRC, ...
+            // > FROM cdr, ar_asterisk_account, ...
+            // > WHERE cdr.INCOME IS NULL AND cdr.CALLDATE>='2009-01-20' ...
+            //
+            // and tranform to
+            //
+            // > ... cdr FORCE INDEX (cdr_calldate_index) 
+            //
+            // in order to give MySQL an hint on the index to use
+            // for query processing.
+            //
+            $wrappedSql = str_ireplace(" cdr,", " cdr FORCE INDEX (cdr_calldate_index),", $sql);
+            return $wrappedSql;
+        }
+    }
+
+    // Overwritten methods
+
+    /**
+     * If $sql is a query containing a condition on cdr.calldate
+     * then force the usage of the the cdr_calldate_index.
+     */
+    function executeQuery($sql, $fetchmode = null) {
+        $wrappedSql = $this->wrapSql($sql);
+        return $this->wrappedConn->executeQuery($wrappedSql, $fetchmode);
+    }
+
+    function applyLimit(&$sql, $offset, $limit) {
+        return $this->wrappedConn->applyLimit($sql, $offset, $limit);
+    }
+
+    function close() {
+        return $this->wrappedConn->close();
+    }
+
+    function commit() {
+        return $this->wrappedConn->commit();
+    }
+
+    function connect($dsn, $flags = 0) {
+        return $this->wrappedConn->connect($dsn, $flags);
+    }
+
+    public function isConnected() {
+        return $this->wrappedConn->isConnected();
+    }
+
+    public function createStatement() {
+        return $this->wrappedConn->createStatement();
+    }
+
+    public function executeUpdate($sql) {
+        return $this->wrappedConn->executeUpdate($sql);
+    }
+
+    public function getAutoCommit() {
+        return $this->wrappedConn->getAutoCommit();
+    }
+
+    public function begin() {
+        return $this->wrappedConn->begin();
+    }
+
+    public function getDatabaseInfo() {
+        return $this->wrappedConn->getDatabaseInfo();
+    }
+
+    public function getDSN() {
+        return $this->wrappedConn->getDSN();
+    }
+
+    public function getFlags() {
+        return $this->wrappedConn->getFlags();
+    }
+
+    public function getIdGenerator() {
+        return $this->wrappedConn->getIdGenerator();
+    }
+
+    public function getResource() {
+        return $this->wrappedConn->getResource();
+    }
+
+    public function getUpdateCount() {
+        return $this->wrappedConn->getUpdateCount();
+    }
+
+    public function prepareCall($sql) {
+        $wrappedSql = $this->wrapSql($sql);
+        return $this->wrappedConn->prepareCall($wrappedSql);
+    }
+
+    public function prepareStatement($sql) {
+        $wrappedSql = $this->wrapSql($sql);
+        return $this->wrappedConn->prepareStatement($wrappedSql);
+    }
+
+    public function rollback() {
+        return $this->wrappedConn->rollback();
+    }
+
+    public function setAutoCommit($bit) {
+        return $this->wrappedConn->setAutoCommit($bit);
+    }
+
 }
+
 ?>

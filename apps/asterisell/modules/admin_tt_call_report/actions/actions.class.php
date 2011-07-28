@@ -1,11 +1,4 @@
 <?php
-
-require 'generator_header.php';
-
-echo '<?php';
-
-?>
-
   /**************************************************************
    !!!                                                        !!!
    !!! WARNING: This file is automatic generated.             !!!
@@ -21,7 +14,7 @@ echo '<?php';
    **************************************************************/
 
 sfLoader::loadHelpers(array('I18N', 'Debug', 'Asterisell'));
-class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
+class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
 
   protected $cachedStartDate = NULL;
   protected $cachedEndDate = NULL;
@@ -89,9 +82,11 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
   }
 
   public function executeList() {
+  
     $this->initBeforeCalcCondition();
     $filterWithJoins = $this->calcConditionWithoutJoins();
     $this->addJoinsToCondition($filterWithJoins);
+    list(VariableFrame::$filterOnPartyId, VariableFrame::$filterOnOfficeId, VariableFrame::$filterOnAccountId) = $this->getFiltersOnCallReport($this->filters);
     $this->updateVariableFrameWithHeaderInfo($filterWithJoins);
     
     // NOTE: I don't need sanitize `filter_on_show` because:
@@ -107,9 +102,9 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
       VariableFrame::$filterOnShow = '10-calls';
     }  
     
-    list(VariableFrame::$filterOnPartyId, VariableFrame::$filterOnOfficeId, VariableFrame::$filterOnAccountId) = $this->getFiltersOnCallReport($this->filters);
   }
 
+  
   /**
    * Put in VariableFrame information that will be used both
    * from _list_header and _list module.
@@ -213,53 +208,37 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     $filterOnOfficeApplied = !is_null($officeId);
     $filterOnAccountApplied = !is_null($accountId);
 
-<?php if ($generateForAdmin) { ?>
    $paramsId = filterValue($this->filters, 'filter_on_params');
    if (!is_null($paramsId)) {
        $c->add(ArPartyPeer::AR_PARAMS_ID, $paramsId);
    }
-<?php } ?>
 
     // Process filter_on_destination_type
     //
-<?php if ($displayFilterOnCallDirection) { ?>
     $destinationType = filterValue($this->filters, 'filter_on_destination_type');
     $filterOnDestinationTypeApplied = false;
     if (!is_null($destinationType)) {
       $c->add(CdrPeer::DESTINATION_TYPE, $destinationType);
       $filterOnDestinationTypeApplied = true;
     }
-<?php } else { ?>
-    $filterOnDestinationTypeApplied = false;
-<?php } ?>
 
-    <?php if ($generateForAdmin) { ?>
-      // Admin can view all types of destination types except
+          // Admin can view all types of destination types except
       // unprocessed and ignored calls, that are displayed on
       // separate reports.
       //
       if (!$filterOnDestinationTypeApplied) {
 	DestinationType::addAdminFiltersAccordingConfiguration($c);
       }
-    <?php } else { ?>
-      // Normal users do not see unprocessed/ignored calls
-      //
-      if (!$filterOnDestinationTypeApplied) {
-	DestinationType::addCustomerFiltersAccordingConfiguration($c);
-      }
-    <?php }?>
-
+    
     // NOTE: filter_on_account and filter_on_office are enabled
     // only if it is enabled also filter_on_party
 
     // Process filter_on_vendor
     //
-<?php if ($generateForAdmin) { ?>
     $vendorId = filterValue($this->filters, 'filter_on_vendor');
     if (!is_null($vendorId)) {
         $c->add(CdrPeer::VENDOR_ID, $vendorId);
     }
-<?php } ?>
 
     // Manage time frame
     //
@@ -358,7 +337,6 @@ function getFiltersOnCallReport($filters) {
 }
 
   
-<?php if ($generateForAdmin) { ?>
 
     // CODE SPECIFIC FOR ADMIN //
     // SECURITY FILTER IS MADE ON CORRESPONDING GENERATED security.yml FILE
@@ -379,8 +357,7 @@ function getFiltersOnCallReport($filters) {
 
     return $this->redirect('admin_tt_call_report/list');
   }
-  <?php } ?>
-
+  
 
   /**
    * @return list($startDate, $endDate) in unix timestamp format.
@@ -537,6 +514,4 @@ function getFiltersOnCallReport($filters) {
 
 }
 
-<?php 
-echo '?>' . "\n";
 ?>

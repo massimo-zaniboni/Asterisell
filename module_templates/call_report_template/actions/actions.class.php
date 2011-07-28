@@ -89,9 +89,11 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
   }
 
   public function executeList() {
+  
     $this->initBeforeCalcCondition();
     $filterWithJoins = $this->calcConditionWithoutJoins();
     $this->addJoinsToCondition($filterWithJoins);
+    list(VariableFrame::$filterOnPartyId, VariableFrame::$filterOnOfficeId, VariableFrame::$filterOnAccountId) = $this->getFiltersOnCallReport($this->filters);
     $this->updateVariableFrameWithHeaderInfo($filterWithJoins);
     
     // NOTE: I don't need sanitize `filter_on_show` because:
@@ -107,9 +109,9 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
       VariableFrame::$filterOnShow = '10-calls';
     }  
     
-    list(VariableFrame::$filterOnPartyId, VariableFrame::$filterOnOfficeId, VariableFrame::$filterOnAccountId) = $this->getFiltersOnCallReport($this->filters);
   }
 
+  
   /**
    * Put in VariableFrame information that will be used both
    * from _list_header and _list module.
