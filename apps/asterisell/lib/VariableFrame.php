@@ -51,6 +51,7 @@ class VariableFrame {
   public static $filterOnPartyId;
   public static $filterOnOfficeId;
   public static $filterOnAccountId;
+  public static $geographicLocationsInTimeRange;
 
   protected static $vendorCache = null;
 

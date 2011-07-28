@@ -130,39 +130,49 @@ class customer_ft_call_reportActions extends autoCustomer_ft_call_reportActions 
       VariableFrame::$showChannelUsage = FALSE;
     }
 
-    // Compute values
-
+    // Compute values.
+    // NOTE: in order to reduce to 1/2 the heavy queries,
+    // perform a group on available geographic locations in time range
+    // in this query. It allows performing a unique table scan on the database.
+    //
     $c2 = clone($c);
     $c2->clearSelectColumns();
     $c2->addSelectColumn('COUNT(' . CdrPeer::ID . ')');     // field 0
     $c2->addSelectColumn('SUM(' . CdrPeer::BILLSEC . ')');  // field 1
     $c2->addSelectColumn('SUM(' . CdrPeer::INCOME . ')');   // field 2
     $c2->addSelectColumn('SUM(' . CdrPeer::COST . ')');     // field 3
+    $c2->addSelectColumn(ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION); // field 4
+    $c2->addGroupByColumn(CdrPeer::AR_TELEPHONE_PREFIX_ID); 
+    $rs = CdrPeer::useCalldateIndex($c2);
+
     $rs = CdrPeer::useCalldateIndex($c2);
     //
     // NOTE: use a personalized "useCalldateIndex" of "lib/model/CdrPeer.php"
     // in order to create an optimized version of MySQL query associated
     // to the current filter.
 
+    // XXX la metto nella KEY in modo che poi sia gia` ordinata di default
+    
     $totCalls = 0;
     $totSeconds = 0;
     $totIncomes = 0;
     $totCosts = 0;
-    $totEarn = 0;
-
+    $geoLoc = array();
+    
     foreach($rs as $rec) {
       $totCalls += $rec[0];
       $totSeconds += $rec[1];
       $totIncomes += $rec[2];
       $totCosts += $rec[3];
-      $totEarn += $totIncomes - $totCosts;
+      $geoLoc[$rec[4]] = 0;
     }
 
+    VariableFrame::$geographicLocationsInTimeRange = $geoLoc;
     VariableFrame::$countOfRecords = $totCalls;
     VariableFrame::$totSeconds = $totSeconds;
     VariableFrame::$totIncomes = $totIncomes;
     VariableFrame::$totCosts = $totCosts;
-    VariableFrame::$totEarn = $totEarn;
+    VariableFrame::$totEarn = $totIncomes - $totCosts;
   }
 
 
