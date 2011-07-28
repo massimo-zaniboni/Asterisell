@@ -72,10 +72,11 @@ function extractNationAndType1($nationAndType, $sureNations) {
 
           $mobileStr = "Mobile";
           if (substr($type1,0, strlen($mobileStr)) === $mobileStr) {
-            $type = "Mobile";
+            $type = "Mobile Line";
             $operator = trim(substr($type1, strlen($mobileStr)));
           } else {
-            $type = $type1;
+            $type = "Fixed Line";
+            $operator = $type1;
           } 
 
           $bestLen = $len;

@@ -1811,7 +1811,7 @@ try {
 
   for($i = 1; $i <= $recordsToAdd; $i++) {
     if ($i % 1000 == 0) {
-      echo "\nAdded $i CDR records\n";
+      echo "\nAdded $i CDR demo records\n";
     }
     addRandomCDR(
       $ar_asterisk_accounts,
@@ -1822,7 +1822,7 @@ try {
       $telephone_numbers);
   }
 
-  echo "\nAdded $recordsToAdd CDR records.\n";
+  echo "\nAdded $recordsToAdd CDR demo records.\n";
 
   
 } catch (Exception $e) {
