@@ -142,17 +142,14 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     $c2->addSelectColumn('SUM(' . CdrPeer::INCOME . ')');   // field 2
     $c2->addSelectColumn('SUM(' . CdrPeer::COST . ')');     // field 3
     $c2->addSelectColumn(ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION); // field 4
-    $c2->addGroupByColumn(CdrPeer::AR_TELEPHONE_PREFIX_ID); 
+    $c2->addGroupByColumn(CdrPeer::AR_TELEPHONE_PREFIX_ID);   // field 5
     $rs = CdrPeer::useCalldateIndex($c2);
-
     $rs = CdrPeer::useCalldateIndex($c2);
     //
     // NOTE: use a personalized "useCalldateIndex" of "lib/model/CdrPeer.php"
     // in order to create an optimized version of MySQL query associated
     // to the current filter.
 
-    // XXX la metto nella KEY in modo che poi sia gia` ordinata di default
-    
     $totCalls = 0;
     $totSeconds = 0;
     $totIncomes = 0;
