@@ -203,6 +203,9 @@ propel:
         foreignTable: ar_rate
         references:
           - { local: cost_ar_rate_id, foreign: id }
+          
+    _indexes:
+      account_and_calldate_index: [ar_asterisk_account_id, calldate]
 
   ar_number_portability:
   #

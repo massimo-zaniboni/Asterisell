@@ -61,7 +61,7 @@ CREATE TABLE `cdr`
 	KEY `cdr_source_id_index`(`source_id`),
 	KEY `cdr_source_cost_index`(`source_cost`),
 	KEY `cdr_is_exported_index`(`is_exported`),
-	INDEX `cdr_FI_1` (`ar_asterisk_account_id`),
+	KEY `account_and_calldate_index`(`ar_asterisk_account_id`, `calldate`),
 	CONSTRAINT `cdr_FK_1`
 		FOREIGN KEY (`ar_asterisk_account_id`)
 		REFERENCES `ar_asterisk_account` (`id`),

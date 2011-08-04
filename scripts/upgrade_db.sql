@@ -34,3 +34,4 @@ ALTER TABLE `ar_office` ADD `ar_rate_category_id` INTEGER;
 ALTER TABLE `ar_party` ADD `is_reseller` INTEGER default 0 NOT NULL;
 ALTER TABLE `ar_party` ADD `reseller_code` VARCHAR(80);
 ALTER TABLE `cdr` ADD `source_cost` INTEGER(20) default null, ADD `is_exported` INTEGER default 0 NOT NULL, ADD KEY `cdr_is_exported_index`(`is_exported`);
+ALTER TABLE cdr ADD INDEX account_and_calldate_index(ar_asterisk_account_id, calldate);

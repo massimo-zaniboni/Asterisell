@@ -302,7 +302,11 @@ function getFiltersOnCallReport($filters) {
             if (is_null($officeId)) {
                 // test if the party has only one office.          
                 $party = ArPartyPeer::retrieveByPK($partyId);
-                $officeId = $party->getUniqueOfficeId();
+                if (!is_null($party)) {
+                  $officeId = $party->getUniqueOfficeId();
+                } else {
+                  $partyId = NULL;
+                }
             }
         }
 
@@ -312,7 +316,9 @@ function getFiltersOnCallReport($filters) {
             // Test if the account was an old filter associated to a different office
             if (!is_null($accountId)) {
               $account = ArAsteriskAccountPeer::retrieveByPK($accountId);
-              if ($account->getArOfficeId() != $officeId) {
+              if (is_null($account)) {
+                $accountId = NULL;
+              } else if ($account->getArOfficeId() != $officeId) {
                   $accountId = NULL;
               }
             }

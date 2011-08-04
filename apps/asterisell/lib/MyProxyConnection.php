@@ -39,8 +39,8 @@ class MyProxyConnection implements Connection {
 
     protected function wrapSql($sql) {
         if (VariableFrame::thereIsFilterOnParty()) {
-            // does not modify nothing, because MySQL can use good enough indexes
-            return $sql;
+            $wrappedSql = str_ireplace(" cdr,", " cdr FORCE INDEX (account_and_calldate_index),", $sql);
+            return $wrappedSql;
             
         } else {
             // Force the usage of a filter on date range for speeding-up considerably the query.

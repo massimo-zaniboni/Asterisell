@@ -1,6 +1,6 @@
 <?php
 
-/* $LICENSE 2009, 2010:
+/* $LICENSE 2009, 2010, 2011:
  *
  * Copyright (C) 2009, 2010 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
  *
@@ -1878,13 +1878,16 @@ function displayUsage() {
     echo "\n  php reset_db_and_init_data.php demo <some-password>";
     echo "\n      create an empty DB with demo data, and a root user with some-password\n";
     echo "\n";
+    echo "\n  php reset_db_and_init_data.php stress-demo-data <some-password> <nr-of-cdr-records>";
+    echo "\n      create a demo database with (many) random CDR records. NOTE that database speed depends not from total number of CDRs, but from the CDRs in the last 2-30 days, because all other CDRs are rarely accessed from queries.\n";
+    echo "\n";
     echo "\n  php reset_db_and_init_data.php regression <some-password>";
     echo "\n      create an empty DB with regression data, and a root user with some-password\n";
     echo "\n";
     echo "\n  php reset_db_and_init_data.php reset <some-password>";
     echo "\n      reset all the content of current db without loading any data.\n";
     echo "\n";
-    echo "\n  php reset_db_and_init_data.php merge telephone-prefixes ";
+    echo "\n  php reset_db_and_init_data.php merge-telephone-prefixes ";
     echo "\n      add new telephone prefixes to the telephone prefix table.\n";
     echo "\n";
 
@@ -1895,36 +1898,34 @@ function displayUsage() {
  */
 function main($argc, $argv) {
 
-  if ($argc != 3) {
-    displayUsage();
-    exit(1);
-  }
-
   $command = $argv[1];
   $password = $argv[2];
+  $options = $argv[3];
 
-  if ($command == "root") {
+  if ($command === "root") {
     $paramsId = createDefaultParams();
     addRootUser($password, $paramsId);
-  } else if ($command == "init") {
+  } else if ($command === "init") {
     list($paramsId, $normalCategoryId, $discountedCategoryId, $defaultVendorId) = initWithDefaultData();
     addRootUser($password, $paramsId);
-  } else if ($command == "demo") {
+  } else if ($command === "demo") {
     $paramsId = initWithDemoData(3000);
     addRootUser($password, $paramsId);
-  } else if ($command == "regression") {
-    if (trim(sfConfig::get('app_internal_external_telephone_numbers')) == "3") {
+  } else if ($command === "stress-demo-data") {
+    $paramsId = initWithDemoData(intval($options));
+    addRootUser($password, $paramsId);
+  } else if ($command === "regression") {
+    if (trim(sfConfig::get('app_internal_external_telephone_numbers')) === "3") {
       echo "\napp_internal_external_telephone_numbers must be 0 for regression tests\n";
       echo "\nTests are not performed!\n";
       exit(0);
     }
     $paramsId = initWithRegressionData();
     checkRegressionData();
-
     addRootUser($password, $paramsId);
-  } else if ($command == "reset") {
+  } else if ($command === "reset") {
     deleteAllData();
-  } else if ($command == "merge" && $password == "telephone-prefixes") {
+  } else if ($command === "merge-telephone-prefixes") {
     addNewTelephonePrefixes();
   } else {
     displayUsage();
