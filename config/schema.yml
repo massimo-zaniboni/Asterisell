@@ -755,7 +755,7 @@ propel:
   # A telephone prefix identifing a certain area or telephone operator.
     id:
   
-    prefix: { type: varchar(40), required: true, unique: true, index: unique }
+    prefix: { type: varchar(80), required: true, unique: true, index: unique }
     
     name: varchar(80)
     

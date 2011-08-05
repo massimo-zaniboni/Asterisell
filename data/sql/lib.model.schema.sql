@@ -478,7 +478,7 @@ DROP TABLE IF EXISTS `ar_telephone_prefix`;
 CREATE TABLE `ar_telephone_prefix`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`prefix` VARCHAR(40)  NOT NULL,
+	`prefix` VARCHAR(80)  NOT NULL,
 	`name` VARCHAR(80),
 	`geographic_location` VARCHAR(80),
 	`operator_type` VARCHAR(80),
