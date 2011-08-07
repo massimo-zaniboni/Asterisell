@@ -251,6 +251,14 @@ class RateCalls extends FixedJobProcessor {
             // Reset some fields of the CDR that can be contain incosistent values from previous rating stage
             $cdr->resetAll();
 
+            // Initialize the cache of rates
+            // NOTE: cache is initialized now because only now we know the starting date
+            // and because in this way we can init it only when it is really necessary.
+            // NOTE: outside of `try` because errors on load-cache must suspend completely the rating process
+            if (is_null($this->rateCache)) {
+              $this->rateCache_loadAll($cdr->getCallDate());
+            }
+            
             // Try to process the $cdr.
             // NOTE: the implicit contracts is that any problem of called methods
             // is thrown by an exception and signaled to the user in this catch part.
@@ -498,7 +506,7 @@ class RateCalls extends FixedJobProcessor {
             $this->rateCache[$destinationType][$rateType][$rate->getId()] = array($rate, $phpRate);
         }
     }
-
+    
     /**
      * Search in RateCache the correct rate that can be applied to $cdr.
      *
@@ -526,13 +534,6 @@ class RateCalls extends FixedJobProcessor {
     protected function getPhpRate($cdr, $categoryIndex, $arPartyId, $requestedRateType) {
         $destinationType = $cdr->getDestinationType();
         $cdrDate = $cdr->getCalldate();
-
-        // Initialize the cache of rates
-        // NOTE: cache is initialized now because only now we know the starting date
-        // and because in this way we can init it only when it is really necessary.
-        if (is_null($this->rateCache)) {
-            $this->rateCache_loadAll($cdr->getCallDate());
-        }
 
         // At the end of the process these will be setted to the best found values,
         // if $thereIsConflict == false.
@@ -752,7 +753,11 @@ class RateCalls extends FixedJobProcessor {
             $p->setCreatedAt(date("c"));
             $p->setEffect("Rating process will not start until the problem is fixed.");
             $p->setProposedSolution("Fix the rate and wait the next rate process or force a rerate of calls.");
+            ArProblemException::addProblemIntoDBOnlyIfNew($p);
+            // signal the problem in the usual way...
+            
             throw (new ArProblemException($p));
+            // ... and stop immediately
         }
 
         if ($rate->getRateType() === "X") {
@@ -762,7 +767,11 @@ class RateCalls extends FixedJobProcessor {
             $p->setCreatedAt(date("c"));
             $p->setEffect("Rating process will not start until the problem is fixed.");
             $p->setProposedSolution("Fix the rate and wait the next rate process or force a rerate of calls. Typical source of problems are: system rates with a price-category or vendor specified, customer rates without a price-category specified, vendor rates with a price-category specified, or a system-rate that is a bundle.");
+            ArProblemException::addProblemIntoDBOnlyIfNew($p);
+            // signal the problem in the usual way...
+
             throw (new ArProblemException($p));
+            // ... and stop immediately
         }
     }
 
