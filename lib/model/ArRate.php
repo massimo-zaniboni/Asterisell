@@ -18,19 +18,28 @@ class ArRate extends BaseArRate
    *
    */
   public function getRateType() {
+      
     if ($this->getDestinationType() == DestinationType::unprocessed) {
       if (is_null($this->getArRateCategoryId()) && is_null($this->getArPartyId())) {
           return "S";
-      }
-    } else {
-      if (is_null($this->getArPartyId())) {
-          return "C";
       } else {
-          return "V";
+          return "X";
       }
     }
-
-    return "X";
+    
+    if (is_null($this->getArRateCategoryId()) && is_null($this->getArPartyId())) {
+        return "X";
+    }
+    
+    if ((! is_null($this->getArRateCategoryId())) && (! is_null($this->getArPartyId()))) {
+        return "X";
+    }
+    
+    if (is_null($this->getArPartyId())) {
+          return "C";
+    } else {
+          return "V";
+    }
   }
 
   /**
@@ -80,7 +89,6 @@ class ArRate extends BaseArRate
 
       // note: php_class_serialization is a LONGTEXT and it is managed
       // from Symfony in a different way respect strings.
-      //
       $phpRateString = $r->getContents();
       if (! is_null($phpRateString)) {
         $phpRate = unserialize($phpRateString);
