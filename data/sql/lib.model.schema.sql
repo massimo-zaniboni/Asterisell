@@ -40,7 +40,7 @@ CREATE TABLE `cdr`
 	`cached_external_telephone_number` VARCHAR(256),
 	`external_telephone_number_with_applied_portability` VARCHAR(256),
 	`cached_masked_external_telephone_number` VARCHAR(256),
-	`source_id` INTEGER(11) default null,
+	`source_id` VARCHAR(255),
 	`source_cost` INTEGER(20) default null,
 	`is_exported` INTEGER default 0 NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,

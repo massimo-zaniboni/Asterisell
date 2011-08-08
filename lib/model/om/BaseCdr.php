@@ -121,7 +121,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 
 	
-	protected $source_id = 0;
+	protected $source_id;
 
 
 	
@@ -807,11 +807,11 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	public function setSourceId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
 		}
 
-		if ($this->source_id !== $v || $v === 0) {
+		if ($this->source_id !== $v) {
 			$this->source_id = $v;
 			$this->modifiedColumns[] = CdrPeer::SOURCE_ID;
 		}
@@ -916,7 +916,7 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 			$this->cached_masked_external_telephone_number = $rs->getString($startcol + 27);
 
-			$this->source_id = $rs->getInt($startcol + 28);
+			$this->source_id = $rs->getString($startcol + 28);
 
 			$this->source_cost = $rs->getInt($startcol + 29);
 

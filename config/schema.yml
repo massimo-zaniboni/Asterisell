@@ -164,7 +164,7 @@ propel:
     # as "cached_external_telephone_number" but with a mask on its last part
     # if it is specified in the application configuration file.
 
-    source_id: { type: integer, size: 11, required: false, default: null, unique: false, index: true }
+    source_id: { type: varchar, size: 255, required: false, unique: false, index: true }
     #
     # if the CDR was generated from a record of another table, 
     # this field contains a reference to it.

@@ -38,8 +38,11 @@ CREATE TABLE `cdr`
 	`ar_telephone_prefix_id` INTEGER,
 	`cached_internal_telephone_number` VARCHAR(256),
 	`cached_external_telephone_number` VARCHAR(256),
+	`external_telephone_number_with_applied_portability` VARCHAR(256),
 	`cached_masked_external_telephone_number` VARCHAR(256),
-	`source_id` INTEGER(11) default null,
+	`source_id` VARCHAR(255) default 'null',
+	`source_cost` INTEGER(20) default null,
+	`is_exported` INTEGER default 0 NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
 	KEY `cdr_calldate_index`(`calldate`),
@@ -53,12 +56,15 @@ CREATE TABLE `cdr`
 	KEY `cdr_cost_index`(`cost`),
 	KEY `cdr_cached_internal_telephone_number_index`(`cached_internal_telephone_number`),
 	KEY `cdr_cached_external_telephone_number_index`(`cached_external_telephone_number`),
+	KEY `cdr_external_telephone_number_with_applied_portability_index`(`external_telephone_number_with_applied_portability`),
 	KEY `cdr_cached_masked_external_telephone_number_index`(`cached_masked_external_telephone_number`),
 	KEY `cdr_source_id_index`(`source_id`),
-	INDEX `cdr_FI_1` (`ar_asterisk_account_id`),
+	KEY `cdr_source_cost_index`(`source_cost`),
+	KEY `cdr_is_exported_index`(`is_exported`),
+	KEY `account_and_calldate_index`(`ar_asterisk_account_id`, `calldate`),
 	CONSTRAINT `cdr_FK_1`
 		FOREIGN KEY (`ar_asterisk_account_id`)
-		REFERENCES `ar_asterisk_account` (`id`),
+				REFERENCES `ar_asterisk_account` (`id`),
 	INDEX `cdr_FI_2` (`ar_telephone_prefix_id`),
 	CONSTRAINT `cdr_FK_2`
 		FOREIGN KEY (`ar_telephone_prefix_id`)
@@ -69,7 +75,26 @@ CREATE TABLE `cdr`
 	CONSTRAINT `cdr_to_cost_rate_key`
 		FOREIGN KEY (`cost_ar_rate_id`)
 		REFERENCES `ar_rate` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- ar_number_portability
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ar_number_portability`;
+
+
+CREATE TABLE `ar_number_portability`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`telephone_number` VARCHAR(256)  NOT NULL,
+	`ported_telephone_number` VARCHAR(256)  NOT NULL,
+	`from_date` DATETIME,
+	PRIMARY KEY (`id`),
+	KEY `ar_number_portability_telephone_number_index`(`telephone_number`),
+	KEY `ar_number_portability_ported_telephone_number_index`(`ported_telephone_number`),
+	KEY `ar_number_portability_from_date_index`(`from_date`)
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_asterisk_account
@@ -84,13 +109,19 @@ CREATE TABLE `ar_asterisk_account`
 	`name` VARCHAR(160),
 	`account_code` VARCHAR(30)  NOT NULL,
 	`ar_office_id` INTEGER,
+	`is_active` INTEGER default 1 NOT NULL,
+	`ar_rate_category_id` INTEGER,
 	PRIMARY KEY (`id`),
 	KEY `ar_asterisk_account_account_code_index`(`account_code`),
 	INDEX `ar_asterisk_account_FI_1` (`ar_office_id`),
 	CONSTRAINT `ar_asterisk_account_FK_1`
 		FOREIGN KEY (`ar_office_id`)
-		REFERENCES `ar_office` (`id`)
-)Type=InnoDB;
+		REFERENCES `ar_office` (`id`),
+	INDEX `ar_asterisk_account_FI_2` (`ar_rate_category_id`),
+	CONSTRAINT `ar_asterisk_account_FK_2`
+		FOREIGN KEY (`ar_rate_category_id`)
+		REFERENCES `ar_rate_category` (`id`)
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_office
@@ -105,12 +136,17 @@ CREATE TABLE `ar_office`
 	`name` VARCHAR(128),
 	`description` VARCHAR(1024),
 	`ar_party_id` INTEGER,
+	`ar_rate_category_id` INTEGER,
 	PRIMARY KEY (`id`),
 	INDEX `ar_office_FI_1` (`ar_party_id`),
 	CONSTRAINT `ar_office_FK_1`
 		FOREIGN KEY (`ar_party_id`)
-		REFERENCES `ar_party` (`id`)
-)Type=InnoDB;
+		REFERENCES `ar_party` (`id`),
+	INDEX `ar_office_FI_2` (`ar_rate_category_id`),
+	CONSTRAINT `ar_office_FK_2`
+		FOREIGN KEY (`ar_rate_category_id`)
+		REFERENCES `ar_rate_category` (`id`)
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_party
@@ -140,10 +176,13 @@ CREATE TABLE `ar_party`
 	`max_limit_30` INTEGER(20) default null,
 	`last_email_advise_for_max_limit_30` DATETIME,
 	`is_active` INTEGER default 1 NOT NULL,
+	`is_reseller` INTEGER default 0 NOT NULL,
+	`reseller_code` VARCHAR(80),
 	PRIMARY KEY (`id`),
 	KEY `ar_party_customer_or_vendor_index`(`customer_or_vendor`),
 	KEY `ar_party_max_limit_30_index`(`max_limit_30`),
 	KEY `ar_party_is_active_index`(`is_active`),
+	KEY `ar_party_is_reseller_index`(`is_reseller`),
 	INDEX `ar_party_FI_1` (`ar_rate_category_id`),
 	CONSTRAINT `ar_party_FK_1`
 		FOREIGN KEY (`ar_rate_category_id`)
@@ -152,7 +191,7 @@ CREATE TABLE `ar_party`
 	CONSTRAINT `ar_party_FK_2`
 		FOREIGN KEY (`ar_params_id`)
 		REFERENCES `ar_params` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_params
@@ -169,13 +208,12 @@ CREATE TABLE `ar_params`
 	`service_name` VARCHAR(120),
 	`service_provider_website` VARCHAR(120),
 	`service_provider_email` VARCHAR(120),
-	`vat_tax_perc` INTEGER(3) default 0 NOT NULL,
+	`vat_tax_perc` INTEGER(20) default 0 NOT NULL,
 	`logo_image` VARCHAR(120),
 	`slogan` VARCHAR(255),
+	`logo_image_in_invoices` VARCHAR(120),
 	`footer` VARCHAR(255),
 	`user_message` VARCHAR(2048),
-	`last_viewed_feeds_md5` VARCHAR(1024),
-	`current_feeds_md5` VARCHAR(1024),
 	`legal_name` VARCHAR(255),
 	`external_crm_code` VARCHAR(40),
 	`vat` VARCHAR(40),
@@ -189,8 +227,11 @@ CREATE TABLE `ar_params`
 	`legal_phone` VARCHAR(60),
 	`phone2` VARCHAR(60),
 	`legal_fax` VARCHAR(60),
+	`invoice_notes` VARCHAR(2048),
+	`invoice_payment_terms` VARCHAR(2048),
 	`sender_name_on_invoicing_emails` VARCHAR(120),
 	`invoicing_email_address` VARCHAR(120),
+	`accountant_email_address` VARCHAR(120),
 	`smtp_host` VARCHAR(250),
 	`smtp_port` INTEGER(4),
 	`smtp_username` VARCHAR(60),
@@ -198,8 +239,20 @@ CREATE TABLE `ar_params`
 	`smtp_encryption` VARCHAR(60),
 	`smtp_reconnect_after_nr_of_messages` INTEGER(4),
 	`smtp_seconds_of_pause_after_reconnection` INTEGER(2),
+	`current_invoice_nr` INTEGER(11) default 1 NOT NULL,
+	`logo_html_color` VARCHAR(12),
+	`payment_days` INTEGER(20) default null,
+	`reconnection_fee` VARCHAR(40),
+	`info_telephone_number` VARCHAR(512),
+	`late_payment_fee` VARCHAR(40),
+	`etf_bbs` VARCHAR(512),
+	`etf_acc_no` VARCHAR(512),
+	`account_department` VARCHAR(512),
+	`direct_debit_payment_email` VARCHAR(512),
+	`direct_debit_payment_telephone_number` VARCHAR(512),
+	`login_urn` VARCHAR(512),
 	PRIMARY KEY (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_web_account
@@ -232,7 +285,7 @@ CREATE TABLE `ar_web_account`
 	CONSTRAINT `ar_web_account_FK_3`
 		FOREIGN KEY (`ar_params_id`)
 		REFERENCES `ar_params` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_invoice
@@ -251,15 +304,21 @@ CREATE TABLE `ar_invoice`
 	`invoice_date` DATE,
 	`ar_cdr_from` DATE,
 	`ar_cdr_to` DATE,
+	`total_bundle_without_tax` INTEGER(20) default 0,
+	`total_calls_without_tax` INTEGER(20) default 0,
 	`total_without_tax` INTEGER(20) default null,
 	`vat_perc` INTEGER(20) default null,
 	`total_vat` INTEGER(20) default null,
 	`total` INTEGER(20) default null,
 	`html_details` TEXT,
 	`pdf_invoice` LONGBLOB,
+	`pdf_call_report` LONGBLOB,
 	`email_subject` VARCHAR(1024),
 	`email_message` TEXT,
 	`already_sent` INTEGER,
+	`info_or_ads_image1` VARCHAR(1024),
+	`info_or_ads_image2` VARCHAR(1024),
+	`ar_params_id` INTEGER,
 	PRIMARY KEY (`id`),
 	KEY `ar_invoice_type_index`(`type`),
 	KEY `ar_invoice_is_revenue_sharing_index`(`is_revenue_sharing`),
@@ -272,8 +331,12 @@ CREATE TABLE `ar_invoice`
 	INDEX `ar_invoice_FI_1` (`ar_party_id`),
 	CONSTRAINT `ar_invoice_FK_1`
 		FOREIGN KEY (`ar_party_id`)
-		REFERENCES `ar_party` (`id`)
-)Type=InnoDB;
+		REFERENCES `ar_party` (`id`),
+	INDEX `ar_invoice_FI_2` (`ar_params_id`),
+	CONSTRAINT `ar_invoice_FK_2`
+		FOREIGN KEY (`ar_params_id`)
+		REFERENCES `ar_params` (`id`)
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_invoice_creation
@@ -285,17 +348,51 @@ DROP TABLE IF EXISTS `ar_invoice_creation`;
 CREATE TABLE `ar_invoice_creation`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`ar_params_id` INTEGER,
 	`type` CHAR(1) default 'C' NOT NULL,
 	`is_revenue_sharing` INTEGER default 0 NOT NULL,
 	`first_nr` VARCHAR(20),
 	`invoice_date` DATE,
 	`ar_cdr_from` DATE,
 	`ar_cdr_to` DATE,
+	`info_or_ads_image1` VARCHAR(1024),
+	`info_or_ads_image2` VARCHAR(1024),
 	PRIMARY KEY (`id`),
 	KEY `ar_invoice_creation_type_index`(`type`),
 	KEY `ar_invoice_creation_is_revenue_sharing_index`(`is_revenue_sharing`),
-	KEY `ar_invoice_creation_invoice_date_index`(`invoice_date`)
-)Type=InnoDB;
+	KEY `ar_invoice_creation_invoice_date_index`(`invoice_date`),
+	INDEX `ar_invoice_creation_FI_1` (`ar_params_id`),
+	CONSTRAINT `ar_invoice_creation_FK_1`
+		FOREIGN KEY (`ar_params_id`)
+		REFERENCES `ar_params` (`id`)
+)Engine=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- ar_payment
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ar_payment`;
+
+
+CREATE TABLE `ar_payment`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`ar_party_id` INTEGER,
+	`date` DATE,
+	`invoice_nr` VARCHAR(20),
+	`payment_method` VARCHAR(1024),
+	`payment_references` VARCHAR(1024),
+	`amount` INTEGER(20) default 0 NOT NULL,
+	`note` TEXT,
+	PRIMARY KEY (`id`),
+	KEY `ar_payment_date_index`(`date`),
+	KEY `ar_payment_invoice_nr_index`(`invoice_nr`),
+	KEY `ar_payment_amount_index`(`amount`),
+	INDEX `ar_payment_FI_1` (`ar_party_id`),
+	CONSTRAINT `ar_payment_FK_1`
+		FOREIGN KEY (`ar_party_id`)
+		REFERENCES `ar_party` (`id`)
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_rate_category
@@ -309,7 +406,7 @@ CREATE TABLE `ar_rate_category`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(128),
 	PRIMARY KEY (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_rate
@@ -341,7 +438,35 @@ CREATE TABLE `ar_rate`
 	CONSTRAINT `ar_rate_FK_2`
 		FOREIGN KEY (`ar_party_id`)
 		REFERENCES `ar_party` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- ar_rate_incremental_info
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ar_rate_incremental_info`;
+
+
+CREATE TABLE `ar_rate_incremental_info`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`ar_party_id` INTEGER,
+	`ar_rate_id` INTEGER,
+	`period` VARCHAR(1024),
+	`last_processed_cdr_date` DATETIME,
+	`last_processed_cdr_id` INTEGER(20),
+	`bundle_rate` LONGTEXT,
+	PRIMARY KEY (`id`),
+	KEY `ar_rate_incremental_info_period_index`(`period`),
+	INDEX `ar_rate_incremental_info_FI_1` (`ar_party_id`),
+	CONSTRAINT `ar_rate_incremental_info_FK_1`
+		FOREIGN KEY (`ar_party_id`)
+		REFERENCES `ar_party` (`id`),
+	INDEX `ar_rate_incremental_info_FI_2` (`ar_rate_id`),
+	CONSTRAINT `ar_rate_incremental_info_FK_2`
+		FOREIGN KEY (`ar_rate_id`)
+		REFERENCES `ar_rate` (`id`)
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_telephone_prefix
@@ -353,14 +478,14 @@ DROP TABLE IF EXISTS `ar_telephone_prefix`;
 CREATE TABLE `ar_telephone_prefix`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`prefix` VARCHAR(40)  NOT NULL,
+	`prefix` VARCHAR(80)  NOT NULL,
 	`name` VARCHAR(80),
 	`geographic_location` VARCHAR(80),
 	`operator_type` VARCHAR(80),
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `ar_telephone_prefix_prefix_unique` (`prefix`),
 	KEY `ar_telephone_prefix_operator_type_index`(`operator_type`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_problem
@@ -382,7 +507,7 @@ CREATE TABLE `ar_problem`
 	`signaled_to_admin` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
 	KEY `ar_problem_duplication_key_index`(`duplication_key`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_job_queue
@@ -404,7 +529,7 @@ CREATE TABLE `ar_job_queue`
 	PRIMARY KEY (`id`),
 	KEY `ar_job_queue_is_part_of_index`(`is_part_of`),
 	KEY `ar_job_queue_state_index`(`state`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- ar_custom_rate_form
@@ -422,7 +547,24 @@ CREATE TABLE `ar_custom_rate_form`
 		FOREIGN KEY (`id`)
 		REFERENCES `ar_rate` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- ar_lock
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ar_lock`;
+
+
+CREATE TABLE `ar_lock`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`name` CHAR(255)  NOT NULL,
+	`time` DATETIME,
+	`info` VARCHAR(1024),
+	PRIMARY KEY (`id`),
+	KEY `ar_lock_name_index`(`name`)
+)Engine=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
