@@ -217,6 +217,20 @@ all:
   invoice_date_format: "Y-m-d"
   # invoice_date_format: "d/m/Y"  for italian format
 
+  # true for having invoices with details like:
+  # > Italy - Fixed Line        200 calls  ....
+  # > Italy - Mobile Line       100 calls  ...
+  # (grouped by geographi location and type of operator)
+  #
+  # false for having invoices with details like:
+  # > Fixed Line                 200 calls
+  # > Mobile Lines               100 calls
+  # (grouped by type of operator. 
+  #  Maybe you can further create operators like "National Fixed Line", 
+  # "International Fixed Line" and os on...)
+  #
+  long_details_in_invoice: true
+
   # the default currency used for rates, cost and incomes.
   #
   currency: EUR
