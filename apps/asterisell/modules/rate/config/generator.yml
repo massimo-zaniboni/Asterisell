@@ -10,7 +10,7 @@ generator:
       my_customer_or_vendor:   { name: On call performed by, help: "Rate is applicable on calls performed by customers of the specified category or routed from the specified vendor." }
       my_customer:             { name: On Customer, help: "Rate is applicable on customers of the specified price category." }
       my_vendor:               { name: For Vendor, help: "Rate is applicated from the specified vendor." }
-      ar_rate_category_id:     { name: Customer Category }
+      ar_rate_category_id:     { name: Price Category }
       ar_party:                { name: Vendor }
       ar_party_id:             { name: Vendor }
       start_time:              { name: Applicable from (inclusive)  } 
@@ -18,7 +18,7 @@ generator:
       is_exception:            { name: Exception, help: "Set only if the Rate is an exception with higher priority respect normal rates." }
       php_class_serialization: { name: Rate }	  
       note:                    { name: Note }
-      rate_category_link:      { name: Customer Category }
+      rate_category_link:      { name: Price Category }
       display_short_description: { name: Rate Description }
       display_cv_type:           { name: Type  }
       my_classification_state:   { name: For Calls of type, help: "Rate is applicable only to calls of the given type." }
@@ -45,12 +45,13 @@ generator:
       title: Rate
 
       fields:
-        select_customer_category: { name: Customer Category, help: "The customer category for wich this rate is applicable. Leave empty if the rate can be applied to customers of each category. Rates with this field specified have higher priority, respect generic rates with and empty field, because they are considered more specific." }
+        select_customer_category: { name: Price Category, help: "The price/customer category for wich this rate is applicable. " }
         select_vendor:            { name: Vendor, help: "The VoIP vendor who is routing the call to his destination, and who is applying this rate for calculating the call cost. Leave empty if this is a customer rate, calculating call earns." }
         select_destination_type:  { name: Call type, help: "Rate method is applicable only on calls of this type.. Note: this field depends also from the selected rate method." }
 
       display:
-        "Applicability": [_select_destination_type, start_time, end_time, _select_customer_category, is_exception, _my_priority_method]
+        "Applicability": [_select_destination_type, start_time, end_time, is_exception, _my_priority_method]
+        "Compile only if this is a Customer Rate": [_select_customer_category]
         "Compile only if this is a Vendor Rate (a rate applied from the specified VoIP vendor, for routing VoIP calls to destination telephone numbers)": [_select_vendor]
         "Method": [_edit_of_php_class_serialization]
         "Administration notes abount rate usage / scope / behaviour":  [note]

@@ -771,7 +771,7 @@ class RateCalls extends FixedJobProcessor {
             $p->setDescription("Rate with id " . $rate->getId() . " has a bad/error-prone format.");
             $p->setCreatedAt(date("c"));
             $p->setEffect("Rating process will not start until the problem is fixed.");
-            $p->setProposedSolution("Fix the rate and wait the next rate process or force a rerate of calls. Typical source of problems are: system rates with a price-category or vendor specified, customer rates without a price-category specified, vendor rates with a price-category specified, or a system-rate that is a bundle.");
+            $p->setProposedSolution("Fix the rate and wait the next rate process or force a rerate of calls. Customer Rates must have only price-category field. Vendor Rates must have only vendor field. System rates can not have price-category and vendor field. Bundle rates can be Customer Rates, or Vendor Rates, but not System Rates.");
             ArProblemException::addProblemIntoDBOnlyIfNew($p);
             // signal the problem in the usual way...
 

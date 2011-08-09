@@ -136,4 +136,5 @@ class rateActions extends autorateActions {
 
     parent::addFiltersCriteria($c);
   }
+  
 }
