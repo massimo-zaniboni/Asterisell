@@ -231,6 +231,14 @@ all:
   #
   long_details_in_invoice: true
 
+  # true for using the last day of the month, in invoices of the month,
+  # like "from 2011-06-01 to 2011-06-30".
+  #
+  # false for using the first day of the next month, in invoices of the month, 
+  # like "from 2011-06-01 to 2011-07-01".
+  # 
+  use_inclusive_end_date_in_invoice: false
+
   # the default currency used for rates, cost and incomes.
   #
   currency: EUR
@@ -247,6 +255,21 @@ all:
   # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
   #
   currency_ascii_char: 128
+
+  # The decimal separator symbol to use in CSV exporting.
+  #
+  decimal_separator_symbol_in_csv: "."
+
+  # true for exporting numbers like "1.234" in CSV exporting,
+  # false for exporting numbers like 1.234 (without \") in CSV exporting.
+  #
+  # true is a more safe option of your customers have different locale 
+  # with different types of decimal separator.
+  #
+  # false allows recognizing more easily numbers, during importing of CSV files
+  # inside a spreadsheet.
+  #
+  numbers_as_strings_in_csv: true
 
   # The default culture to use for formatting numbers, dates and so on.
   # Something like en_US, it_IT, ...
