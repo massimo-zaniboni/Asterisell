@@ -256,12 +256,12 @@ all:
   #
   currency_ascii_char: 128
 
-  # The decimal separator symbol to use in CSV exporting.
+  # The decimal separator symbol to use in CSV files exported to customers.
   #
   decimal_separator_symbol_in_csv: "."
 
-  # true for exporting numbers like "1.234" in CSV exporting,
-  # false for exporting numbers like 1.234 (without \") in CSV exporting.
+  # true for exporting numbers like "1.234" in CSV files exported to customers.
+  # false for exporting numbers like 1.234 (without \").
   #
   # true is a more safe option of your customers have different locale 
   # with different types of decimal separator.
@@ -270,6 +270,14 @@ all:
   # inside a spreadsheet.
   #
   numbers_as_strings_in_csv: true
+
+  # The field separator used in CSV files exported to customers.
+  # Normally it is ",".
+  #
+  # If you are using "," also as decimal separator, 
+  # and numbers are not surrounded between \", then use something like ";".
+  #
+  csv_field_separator: ","
 
   # The default culture to use for formatting numbers, dates and so on.
   # Something like en_US, it_IT, ...
