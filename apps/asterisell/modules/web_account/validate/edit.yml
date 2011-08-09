@@ -9,8 +9,9 @@ fields:
       class: ArWebAccount
       column: login
       unique_error: There is another login with the same name
+    PasswordValidator:
 
   ar_web_account{password}:
     required:
       msg: Required
-    
+    PasswordValidator:

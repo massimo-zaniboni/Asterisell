@@ -542,6 +542,15 @@ function filterCharForSQLQuery($ch1) {
     }
 }
 
+function areAllValidCharacters($str) {
+  for ($i = 0, $j = strlen($str); $i < $j; $i++) {
+    if (filterCharForSQLQuery($str[$i]) === "") {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
+
 /**
  * A string with '\n' and other special characters, substituted with new lines.
  */
