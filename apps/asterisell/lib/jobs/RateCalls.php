@@ -254,13 +254,14 @@ class RateCalls extends FixedJobProcessor {
             // Initialize the cache of rates
             // NOTE: cache is initialized now because only now we know the starting date
             // and because in this way we can init it only when it is really necessary.
-            // NOTE: outside of `try` because errors on load-cache must suspend completely the rating process
+            // NOTE: it is initializated outside of `try`,
+            //  because errors on load-cache must suspend completely the rating process
             if (is_null($this->rateCache)) {
               $this->rateCache_loadAll($cdr->getCallDate());
             }
             
             // Try to process the $cdr.
-            // NOTE: the implicit contracts is that any problem of called methods
+            // NOTE: the contracts is that any problem of called methods
             // is thrown by an exception and signaled to the user in this catch part.
             // Then the processing continue with another $cdr.
             // In this way an error does not block all CDR ratings, but only one CDR record.
@@ -557,6 +558,10 @@ class RateCalls extends FixedJobProcessor {
         }
 
         if ($ratesToTest) {
+            // compare each rate. In case of permanent conflict, 
+            // try other rates because there can be a high-priority rate
+            // overriding all other conflicts.
+            //
             foreach ($this->rateCache[$destinationType][$requestedRateType] as $index => $rateAndPhpRate) {
                 $rate = $rateAndPhpRate[0];
                 $phpRate = $rateAndPhpRate[1];

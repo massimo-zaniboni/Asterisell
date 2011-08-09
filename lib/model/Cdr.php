@@ -176,7 +176,8 @@ class Cdr extends BaseCdr {
     $this->setExternalTelephoneNumberWithAppliedPortability(NULL);
     $this->setArTelephonePrefixId(NULL);
     $this->setIsExported(FALSE);
-    // note: cdr.source_id maintain its value, because it can depend from an external job processor...
+    // note: cdr.source_id field maintains its value, 
+    // because it can depend from an external job processor...
   }
 
   /**
