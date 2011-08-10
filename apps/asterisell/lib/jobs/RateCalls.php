@@ -210,19 +210,66 @@ class RateCalls extends FixedJobProcessor {
         return ($msg1 . $msg2);
     }
 
-    /**
-     * Rate all pending CDRs.
-     *
-     * @return always TRUE. Errors are reported on the error table.
-     */
     public function process1() {
-
+        
         // Profiling
         $time1 = microtime_float();
         $nrOfRates = 0;
 
         // start with an empty cache
         $this->bundleRateInfoCache = new RateIncrementalInfoCache();
+
+        $chunk = 0;
+        if (JobQueueProcessor::$IS_WEB_PROCESS) {
+            $chunk = 500;
+            // in web-processing there are few resources, 
+            // so reduce the usage of RAM using smaller chunks
+        } else {
+            $chunk = 10000;
+        }
+
+        // Execute the work in chucks because there is a memory leak
+        // in Propel, and record-set and other resources are not released.
+        $maxDate = NULL;
+        do {
+            list($newMaxRate, $nr) = $this->process2($maxDate, $chunk);
+            $nrOfRates += $nr;
+            $maxDate = $newMaxRate;
+        } while ($nr >= $chunk);
+
+        // Store incremental data on the database
+        // NOTE: also if this operation fails, after CDR rating,
+        // it is not a consistency problem, because incremental-info
+        // will be calculated the next-time, again. So it is only
+        // a performance problem.
+        if (!is_null($this->bundleRateInfoCache)) {
+            $this->bundleRateInfoCache->closeAndUpdateDatabase();
+        }
+
+        // Profiling
+        $time2 = microtime_float();
+        $totTime = $time2 - $time1;
+        $meanTime = "n.c.";
+        $rateForSecond = "n.c.";
+        if ($nrOfRates > 0) {
+            $meanTime = $totTime / $nrOfRates;
+            if ($meanTime > 0) {
+                $rateForSecond = 1 / $meanTime;
+            }
+        }
+
+        return "$nrOfRates calls rated, $rateForSecond calls rated for second, $totTime seconds as total execution time";
+    }
+    
+    /**
+     * Rate a chunk of pending CDRs.
+     * Errors are reported on the error table.
+     * 
+     * @param $minCallDate NULL for lower date, a value in MySQL format otherwise
+     * @param $limit the max number of CDR to process
+     * @return array(the last processed callDate in MySQL format, the number of processed records)
+     */
+    public function process2($minCallDate, $limit) {
 
         $telephoneNumbersConfig = sfConfig::get('app_internal_external_telephone_numbers');
 
@@ -238,16 +285,26 @@ class RateCalls extends FixedJobProcessor {
         // and because bundle rate requires an incremental update of their state
 
         $cdrCondition->add(CdrPeer::DESTINATION_TYPE, DestinationType::unprocessed, Criteria::EQUAL);
+        
+        if (!is_null($minCallDate)) {
+          $cdrCondition->add(CdrPeer::CALLDATE, $minCallDate, Criteria::GREATER_EQUAL);
+        }
 
+        $cdrCondition->setLimit($limit);
+
+        $rs = CdrPeer::doSelectRS($cdrCondition);
+        
         // Process every $cdr using doSelectRS that fetch only one object at once from DB,
         // this is a *must* because there can be many CDRs records to process.
-        $rs = CdrPeer::doSelectRS($cdrCondition);
+        $count = 0;
+        $maxCallDate = NULL;
         while ($rs->next()) {
-            
-            $nrOfRates++;
+            $count++;
             $cdr = new Cdr();
             $cdr->hydrate($rs);
 
+            $maxCallDate = $cdr->getCalldate();
+            
             // Reset some fields of the CDR that can be contain incosistent values from previous rating stage
             $cdr->resetAll();
 
@@ -442,6 +499,7 @@ class RateCalls extends FixedJobProcessor {
                 // Save the CDR if is completely processed.
                 // Otherwise it is not saved and it remains in unprocessed state.
                 $cdr->save();
+                unset($cdr);
             } catch (ArProblemException $e) {
                 $e->addThisProblemIntoDBOnlyIfNew();
             } catch (Exception $e) {
@@ -452,28 +510,7 @@ class RateCalls extends FixedJobProcessor {
             }
         }
 
-        // Store incremental data on the database
-        // NOTE: also if this operation fails, after CDR rating,
-        // it is not a consistency proble, because incremental-info
-        // will be calculated the next-time, again. So it is only
-        // a performance problem.
-        if (!is_null($this->bundleRateInfoCache)) {
-            $this->bundleRateInfoCache->closeAndUpdateDatabase();
-        }
-
-        // Profiling
-        $time2 = microtime_float();
-        $totTime = $time2 - $time1;
-        $meanTime = "n.c.";
-        $rateForSecond = "n.c.";
-        if ($nrOfRates > 0) {
-            $meanTime = $totTime / $nrOfRates;
-            if ($meanTime > 0) {
-                $rateForSecond = 1 / $meanTime;
-            }
-        }
-
-        return "$nrOfRates calls rated, $rateForSecond calls rated for second, $totTime seconds as total execution time";
+        return array($maxCallDate, $count);
     }
 
     /**

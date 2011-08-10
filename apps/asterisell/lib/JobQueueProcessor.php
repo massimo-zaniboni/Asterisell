@@ -58,6 +58,8 @@ class JobQueueProcessor {
 
   const MUTEX_FILE_NAME = "jobqueueprocessor";
 
+  public static $IS_WEB_PROCESS = FALSE;
+  
   /**
    * Execute all pending jobs, from an administrator connected online.
    * In this working mode, new errors are sent to the error table, but they are not notified
@@ -77,6 +79,7 @@ class JobQueueProcessor {
    */
   public function processOnline($lockFileDirectory = NULL) {
     ArProblemException::disableNotificationsToAdmin();
+    self::$IS_WEB_PROCESS = TRUE;
     return $this->process($lockFileDirectory);
   }
 
