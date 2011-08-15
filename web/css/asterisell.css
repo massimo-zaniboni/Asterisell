@@ -71,6 +71,8 @@ p.asterisellSlogan {
   padding-top: 4em;
   font-family: Arial, Verdana, sans-serif;
   float: none;
+  font-size: 12pt;
+  line-height: 1.5em;
 }
 
 #asterisellHelp h1, h2, h3 {
@@ -84,8 +86,16 @@ p.asterisellSlogan {
 }
 
 #asterisellHelp p {
-   font-size: 12pt;
-   line-height: 1.5em;
+}
+
+#asterisellHelp li {
+  margin-left: 2em;  
+}
+
+
+#asterisellHelp code {
+   font-family: monospace;
+   margin-left: 2em;  
 }
 
 #asterisellFooter {

@@ -10,4 +10,11 @@
 class instructionsActions extends sfActions {
   public function executeIndex() {
   }
+  
+  public function executePartners() {
+      
+  }
+  
+  public function executeResellers() {
+  }
 }

@@ -53,7 +53,9 @@ if ($sf_user->hasCredential('admin')) {
 
   echo '<li><a href="" target="_self" >' . __('Params') . '</a>'. "\n";
   echo '<ul>'. "\n";
-  echo '<li>' . link_to(__('Main Params/Resellers'), 'params/list') . '</li>'. "\n";
+  echo '<li>' . link_to(__('Params'), 'params/list') . '</li>'. "\n";
+  echo '<li>' . link_to(__('Partners'), 'instructions/partners') . '</li>'. "\n";
+  echo '<li>' . link_to(__('Resellers'), 'instructions/resellers') . '</li>'. "\n";
   echo '<li>' . link_to(__('Upload Files'), 'sfMediaLibrary/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('Price Categories'), 'rate_category/list') . '</li>'. "\n";
   echo '<li>' . link_to(__('Telephone Prefixes'), 'telephone_prefix/list') . '</li>'. "\n";

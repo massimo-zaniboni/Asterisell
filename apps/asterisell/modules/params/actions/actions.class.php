@@ -25,4 +25,13 @@ class paramsActions extends autoparamsActions
   {
     $this->forward('default', 'module');
   }
+  
+  /**
+   * Redirect to main param editor
+   */
+  public function executeEditOfMainParams() {
+      // XXX recupera l'id dei main-param
+      // XXX fa un redirect usando la sintassi standard di Asterisell
+  }
+  
 }

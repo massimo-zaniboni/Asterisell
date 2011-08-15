@@ -26,7 +26,7 @@ generator:
       filter_on_cv:         { name: Type, filter_criteria_disabled: true }
       ar_params_id:         { name: Use params, help: "The params to use after the login of the customer, and during the generation of customer related invoices."  }
       ar_params:            { name: Use params }
-      is_reseller:          { name: Is Reseller, help: "A reseller is a customer who resells VoIP calls to his own customers. See help at the bottom of the page for more details. " }
+      is_reseller:          { name: Is Reseller, help: "A reseller is a customer who resells VoIP calls to his own customers. See Params->Resellers menu item for more details. " }
       reseller_code:        { name: Reseller short code, help: "A short code without spaces and special characters. CSV files sent to a reseller with a short code like `XYZ`, will be put inside a nested directory like `cdr-exported-to-resellers/XYZ`." }
       my_max_limit:         { name: Monthly Limit }
         
