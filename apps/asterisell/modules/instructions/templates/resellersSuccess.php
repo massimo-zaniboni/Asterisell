@@ -57,6 +57,12 @@ For a Reseller-Instance, you are the VoIP provider/vendor.
 
 He creates vendor rates equals to the "reseller" rates on Main-Instance side. 
 
+Reseller-Instance must activate the system rate 
+
+  ProcessImportedCDR
+  
+recognizing imported CDRs.
+
 CDRs imported on the Reseller-Instance will be checked and the Reseller will be
 informed if there is some difference between the cost of VoIP calls calculated
 from Main-Instance, and the cost calculated from Reseller-Instance, applying the
