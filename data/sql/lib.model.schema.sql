@@ -43,23 +43,19 @@ CREATE TABLE `cdr`
 	`source_id` VARCHAR(255),
 	`source_cost` INTEGER(20) default null,
 	`is_exported` INTEGER default 0 NOT NULL,
+	`source_data_type` VARCHAR(1024),
+	`source_data` VARCHAR(10000),
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
 	KEY `cdr_calldate_index`(`calldate`),
-	KEY `cdr_channel_index`(`channel`),
-	KEY `cdr_uniqueid_index`(`uniqueid`),
 	KEY `cdr_destination_type_index`(`destination_type`),
-	KEY `cdr_income_ar_rate_id_index`(`income_ar_rate_id`),
-	KEY `cdr_income_index`(`income`),
 	KEY `cdr_cost_ar_rate_id_index`(`cost_ar_rate_id`),
 	KEY `cdr_vendor_id_index`(`vendor_id`),
-	KEY `cdr_cost_index`(`cost`),
 	KEY `cdr_cached_internal_telephone_number_index`(`cached_internal_telephone_number`),
 	KEY `cdr_cached_external_telephone_number_index`(`cached_external_telephone_number`),
 	KEY `cdr_external_telephone_number_with_applied_portability_index`(`external_telephone_number_with_applied_portability`),
 	KEY `cdr_cached_masked_external_telephone_number_index`(`cached_masked_external_telephone_number`),
 	KEY `cdr_source_id_index`(`source_id`),
-	KEY `cdr_source_cost_index`(`source_cost`),
 	KEY `cdr_is_exported_index`(`is_exported`),
 	KEY `account_and_calldate_index`(`ar_asterisk_account_id`, `calldate`),
 	CONSTRAINT `cdr_FK_1`
@@ -69,6 +65,7 @@ CREATE TABLE `cdr`
 	CONSTRAINT `cdr_FK_2`
 		FOREIGN KEY (`ar_telephone_prefix_id`)
 		REFERENCES `ar_telephone_prefix` (`id`),
+	INDEX `FI__to_income_rate_key` (`income_ar_rate_id`),
 	CONSTRAINT `cdr_to_income_rate_key`
 		FOREIGN KEY (`income_ar_rate_id`)
 		REFERENCES `ar_rate` (`id`),
@@ -92,7 +89,6 @@ CREATE TABLE `ar_number_portability`
 	`from_date` DATETIME,
 	PRIMARY KEY (`id`),
 	KEY `ar_number_portability_telephone_number_index`(`telephone_number`),
-	KEY `ar_number_portability_ported_telephone_number_index`(`ported_telephone_number`),
 	KEY `ar_number_portability_from_date_index`(`from_date`)
 )Engine=InnoDB;
 
@@ -180,7 +176,6 @@ CREATE TABLE `ar_party`
 	`reseller_code` VARCHAR(80),
 	PRIMARY KEY (`id`),
 	KEY `ar_party_customer_or_vendor_index`(`customer_or_vendor`),
-	KEY `ar_party_max_limit_30_index`(`max_limit_30`),
 	KEY `ar_party_is_active_index`(`is_active`),
 	KEY `ar_party_is_reseller_index`(`is_reseller`),
 	INDEX `ar_party_FI_1` (`ar_rate_category_id`),
@@ -324,10 +319,6 @@ CREATE TABLE `ar_invoice`
 	KEY `ar_invoice_is_revenue_sharing_index`(`is_revenue_sharing`),
 	KEY `ar_invoice_nr_index`(`nr`),
 	KEY `ar_invoice_invoice_date_index`(`invoice_date`),
-	KEY `ar_invoice_total_without_tax_index`(`total_without_tax`),
-	KEY `ar_invoice_vat_perc_index`(`vat_perc`),
-	KEY `ar_invoice_total_vat_index`(`total_vat`),
-	KEY `ar_invoice_total_index`(`total`),
 	INDEX `ar_invoice_FI_1` (`ar_party_id`),
 	CONSTRAINT `ar_invoice_FK_1`
 		FOREIGN KEY (`ar_party_id`)
@@ -387,7 +378,6 @@ CREATE TABLE `ar_payment`
 	PRIMARY KEY (`id`),
 	KEY `ar_payment_date_index`(`date`),
 	KEY `ar_payment_invoice_nr_index`(`invoice_nr`),
-	KEY `ar_payment_amount_index`(`amount`),
 	INDEX `ar_payment_FI_1` (`ar_party_id`),
 	CONSTRAINT `ar_payment_FK_1`
 		FOREIGN KEY (`ar_party_id`)

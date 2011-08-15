@@ -94,6 +94,10 @@ class CdrMapBuilder {
 
 		$tMap->addColumn('IS_EXPORTED', 'IsExported', 'boolean', CreoleTypes::BOOLEAN, true, null);
 
+		$tMap->addColumn('SOURCE_DATA_TYPE', 'SourceDataType', 'string', CreoleTypes::VARCHAR, false, 1024);
+
+		$tMap->addColumn('SOURCE_DATA', 'SourceData', 'string', CreoleTypes::VARCHAR, false, 10000);
+
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
 	} 

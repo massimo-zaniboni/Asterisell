@@ -133,6 +133,14 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 
 	
+	protected $source_data_type;
+
+
+	
+	protected $source_data;
+
+
+	
 	protected $id;
 
 	
@@ -383,6 +391,20 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 	{
 
 		return $this->is_exported;
+	}
+
+	
+	public function getSourceDataType()
+	{
+
+		return $this->source_data_type;
+	}
+
+	
+	public function getSourceData()
+	{
+
+		return $this->source_data;
 	}
 
 	
@@ -842,6 +864,34 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setSourceDataType($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->source_data_type !== $v) {
+			$this->source_data_type = $v;
+			$this->modifiedColumns[] = CdrPeer::SOURCE_DATA_TYPE;
+		}
+
+	} 
+	
+	public function setSourceData($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->source_data !== $v) {
+			$this->source_data = $v;
+			$this->modifiedColumns[] = CdrPeer::SOURCE_DATA;
+		}
+
+	} 
+	
 	public function setId($v)
 	{
 
@@ -922,13 +972,17 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 
 			$this->is_exported = $rs->getBoolean($startcol + 30);
 
-			$this->id = $rs->getInt($startcol + 31);
+			$this->source_data_type = $rs->getString($startcol + 31);
+
+			$this->source_data = $rs->getString($startcol + 32);
+
+			$this->id = $rs->getInt($startcol + 33);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 32; 
+						return $startcol + 34; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Cdr object", $e);
 		}
@@ -1205,6 +1259,12 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 				return $this->getIsExported();
 				break;
 			case 31:
+				return $this->getSourceDataType();
+				break;
+			case 32:
+				return $this->getSourceData();
+				break;
+			case 33:
 				return $this->getId();
 				break;
 			default:
@@ -1248,7 +1308,9 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 			$keys[28] => $this->getSourceId(),
 			$keys[29] => $this->getSourceCost(),
 			$keys[30] => $this->getIsExported(),
-			$keys[31] => $this->getId(),
+			$keys[31] => $this->getSourceDataType(),
+			$keys[32] => $this->getSourceData(),
+			$keys[33] => $this->getId(),
 		);
 		return $result;
 	}
@@ -1358,6 +1420,12 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 				$this->setIsExported($value);
 				break;
 			case 31:
+				$this->setSourceDataType($value);
+				break;
+			case 32:
+				$this->setSourceData($value);
+				break;
+			case 33:
 				$this->setId($value);
 				break;
 		} 	}
@@ -1398,7 +1466,9 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[28], $arr)) $this->setSourceId($arr[$keys[28]]);
 		if (array_key_exists($keys[29], $arr)) $this->setSourceCost($arr[$keys[29]]);
 		if (array_key_exists($keys[30], $arr)) $this->setIsExported($arr[$keys[30]]);
-		if (array_key_exists($keys[31], $arr)) $this->setId($arr[$keys[31]]);
+		if (array_key_exists($keys[31], $arr)) $this->setSourceDataType($arr[$keys[31]]);
+		if (array_key_exists($keys[32], $arr)) $this->setSourceData($arr[$keys[32]]);
+		if (array_key_exists($keys[33], $arr)) $this->setId($arr[$keys[33]]);
 	}
 
 	
@@ -1437,6 +1507,8 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(CdrPeer::SOURCE_ID)) $criteria->add(CdrPeer::SOURCE_ID, $this->source_id);
 		if ($this->isColumnModified(CdrPeer::SOURCE_COST)) $criteria->add(CdrPeer::SOURCE_COST, $this->source_cost);
 		if ($this->isColumnModified(CdrPeer::IS_EXPORTED)) $criteria->add(CdrPeer::IS_EXPORTED, $this->is_exported);
+		if ($this->isColumnModified(CdrPeer::SOURCE_DATA_TYPE)) $criteria->add(CdrPeer::SOURCE_DATA_TYPE, $this->source_data_type);
+		if ($this->isColumnModified(CdrPeer::SOURCE_DATA)) $criteria->add(CdrPeer::SOURCE_DATA, $this->source_data);
 		if ($this->isColumnModified(CdrPeer::ID)) $criteria->add(CdrPeer::ID, $this->id);
 
 		return $criteria;
@@ -1529,6 +1601,10 @@ abstract class BaseCdr extends BaseObject  implements Persistent {
 		$copyObj->setSourceCost($this->source_cost);
 
 		$copyObj->setIsExported($this->is_exported);
+
+		$copyObj->setSourceDataType($this->source_data_type);
+
+		$copyObj->setSourceData($this->source_data);
 
 
 		$copyObj->setNew(true);
