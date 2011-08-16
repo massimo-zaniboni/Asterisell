@@ -305,7 +305,8 @@ class RateCalls extends FixedJobProcessor {
 
             $maxCallDate = $cdr->getCalldate();
             
-            // Reset some fields of the CDR that can be contain incosistent values from previous rating stage
+            // Reset some fields of the CDR that can be contain incosistent values from previous rating stage.
+            // Now all fields that are not setted from system-rates, will be setted from this method.
             $cdr->resetAll();
 
             // Initialize the cache of rates
@@ -368,17 +369,11 @@ class RateCalls extends FixedJobProcessor {
 
                 // Calculate the account, that is the VoIP number associated to the CDR
                 $account = null;
-                if ($telephoneNumbersConfig == 3) {
-                    // When  $telephoneNumbersConfig == 3, then CDR derived fields are set directly
-                    // from processing method.
-                    $accountId = $cdr->getArAsteriskAccountId();
-                    $account = VariableFrame::getArAsteriskAccountByIdCache()->getArAsteriskAccountById($accountId);
-                    // NOTE: in this case $account can not be null, the error is signaled from system-rate-processing
-                } else {
-                    // Link CDR to its ArAsteriskAccount
-                    $accountcode = $cdr->getAccountcode();
-                    $account = VariableFrame::getArAsteriskAccountByCodeCache()->getArAsteriskAccountByCode($accountcode);
-                    if (is_null($account)) {
+                $accountId = $cdr->getArAsteriskAccountId();
+                if (is_null($accountId)) {
+                      $accountcode = $cdr->getAccountcode();
+                      $account = VariableFrame::getArAsteriskAccountByCodeCache()->getArAsteriskAccountByCode($accountcode);
+                      if (is_null($account)) {
                         // exit with an error
                         $p = new ArProblem();
                         $p->setDuplicationKey("unknown ArAsteriskAccount $accountcode");
@@ -387,9 +382,23 @@ class RateCalls extends FixedJobProcessor {
                         $p->setEffect("All CDRs with this account will not rated.");
                         $p->setProposedSolution("Complete the Asterisk Account table (VoIP accounts). The CDRs will be rated automatically at the next execution pass of Jobs.");
                         throw (new ArProblemException($p));
-                    }
-                    $cdr->setArAsteriskAccountId($account->getId());
+                     }
+                     $accountId = $account->getId();
+                } else {
+                    $account = VariableFrame::getArAsteriskAccountByIdCache()->getArAsteriskAccountById($accountId);
+                    if (is_null($account)) {
+                        // exit with an error
+                        $p = new ArProblem();
+                        $p->setDuplicationKey("unknown ArAsteriskAccountId $accountId");
+                        $p->setCreatedAt(date("c"));
+                        $p->setDescription("\"$accountId\" Asterisk AccountId is used in CDR with id \"" . $cdr->getId() . "\", but it is not defined in ArAsteriskAccount table (VoIP Accounts).");
+                        $p->setEffect("All CDRs with this account will not rated.");
+                        $p->setProposedSolution("It is an error inside some system processing rate, because if an AccountId it is setted, then it must exist for sure. Contact the assistance.");
+                        throw (new ArProblemException($p));
+                     }
                 }
+                
+                $cdr->setArAsteriskAccountId($accountId);
 
                 // Given an account, office and party can be derived easily
                 $office = VariableFrame::getOfficeCache()->getArOffice($account->getArOfficeId());
@@ -420,9 +429,13 @@ class RateCalls extends FixedJobProcessor {
                     // nothing to do, already configured from CDR processing
                     $dstNumber = $cdr->getExternalTelephoneNumberWithAppliedPortability();
                 } else {
-                    // Cdr performs the calcs. See its methods for details.
-                    $cdr->setCachedInternalTelephoneNumber($cdr->calcInternalTelephoneNumber());
-                    $cdr->setCachedExternalTelephoneNumber($cdr->calcExternalTelephoneNumber());
+                    if (is_null($cdr->getCachedInternalTelephoneNumber())) {
+                      $cdr->setCachedInternalTelephoneNumber($cdr->calcInternalTelephoneNumber());
+                    }
+                    
+                    if (is_null($cdr->getCachedExternalTelephoneNumber())) {
+                      $cdr->setCachedExternalTelephoneNumber($cdr->calcExternalTelephoneNumber());
+                    }
 
                     if (is_null($cdr->getCachedExternalTelephoneNumber())) {
                         $p = new ArProblem();
@@ -436,12 +449,14 @@ class RateCalls extends FixedJobProcessor {
 
                     // Apply number portability.
                     // Number portability is used for rating the call, but not for displaying it.
-                    // $dstNumber after these instructions, will contain the number with applied portability.
-                    $dstNumber = $cdr->getCachedExternalTelephoneNumber();
-                    if (VariableFrame::getNumberPortabilityCache()->isUnderNumberPortability($dstNumber)) {
-                        $dstNumber = ArNumberPortability::checkPortability($dstNumber, $cdr->getCalldate());
+                    $dstNumber = $cdr->getExternalTelephoneNumberWithAppliedPortability();
+                    if (is_null($dstNumber)) {
+                      $dstNumber = $cdr->getCachedExternalTelephoneNumber();
+                      if (VariableFrame::getNumberPortabilityCache()->isUnderNumberPortability($dstNumber)) {
+                          $dstNumber = ArNumberPortability::checkPortability($dstNumber, $cdr->getCalldate());
+                      }
+                      $cdr->setExternalTelephoneNumberWithAppliedPortability($dstNumber);
                     }
-                    $cdr->setExternalTelephoneNumberWithAppliedPortability($dstNumber);
                 }
 
                 // Associate telephone operator prefix, using the ported telephone number.

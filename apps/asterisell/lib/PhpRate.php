@@ -110,6 +110,17 @@ abstract class PhpRate {
    * from "processCDR" according this method result
    * (in order to factor-out income/cost differences).
    *
+   * For sure in case of system-rates, it must update the
+   * `cdr.destination_type` field, according the type of the CDR.
+   * 
+   * Not updated fields will be completed (if it is possible)
+   * from the `RateCalls` job. These fields are:
+   *  - `cdr.ar_asterisk_account_id`
+   *  - `cdr.cached_internal_telephone_number`;
+   *  - `cdr.cached_external_telephone_number`;
+   *  - `cdr.cached_masked_external_telephone_number`, can be null (it is completed from the framework), or with an explicit value
+   *  - `cdr.ar_telephone_prefix.id` 
+   * 
    * @require when possible CDR are rated according the $cdr->getCallDate()
    *
    * @ensure calculations are done using PHP bcmath library,
