@@ -123,6 +123,11 @@ Reseller-Instance can not recognize the cange from "outgoing/incoming/internal" 
 and vice-versa. This because "ignored" CDRs are not sent to resellers. Usually rules about classification
 of CDRs to ignore are not changed often, so it is not a big problem.
 
+## Reseller License
+
+Reseller-Instance is another instance of Asterisell, so it requires another commercial license. 
+Ask for discounts.
+
 VERYLONGSTRING;
 
 echo insertHelp($str);
