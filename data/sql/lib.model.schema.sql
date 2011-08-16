@@ -48,13 +48,8 @@ CREATE TABLE `cdr`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
 	KEY `cdr_calldate_index`(`calldate`),
+	KEY `cdr_uniqueid_index`(`uniqueid`),
 	KEY `cdr_destination_type_index`(`destination_type`),
-	KEY `cdr_cost_ar_rate_id_index`(`cost_ar_rate_id`),
-	KEY `cdr_vendor_id_index`(`vendor_id`),
-	KEY `cdr_cached_internal_telephone_number_index`(`cached_internal_telephone_number`),
-	KEY `cdr_cached_external_telephone_number_index`(`cached_external_telephone_number`),
-	KEY `cdr_external_telephone_number_with_applied_portability_index`(`external_telephone_number_with_applied_portability`),
-	KEY `cdr_cached_masked_external_telephone_number_index`(`cached_masked_external_telephone_number`),
 	KEY `cdr_source_id_index`(`source_id`),
 	KEY `cdr_is_exported_index`(`is_exported`),
 	KEY `account_and_calldate_index`(`ar_asterisk_account_id`, `calldate`),
@@ -69,6 +64,7 @@ CREATE TABLE `cdr`
 	CONSTRAINT `cdr_to_income_rate_key`
 		FOREIGN KEY (`income_ar_rate_id`)
 		REFERENCES `ar_rate` (`id`),
+	INDEX `FI__to_cost_rate_key` (`cost_ar_rate_id`),
 	CONSTRAINT `cdr_to_cost_rate_key`
 		FOREIGN KEY (`cost_ar_rate_id`)
 		REFERENCES `ar_rate` (`id`)

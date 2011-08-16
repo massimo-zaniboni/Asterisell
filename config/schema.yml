@@ -72,7 +72,7 @@ propel:
     #
     # ar_asterisk_account that must pay the outbound call
 
-    uniqueid: { type: varchar, size: 32, required: true, default: "" }
+    uniqueid: { type: varchar, size: 32, required: true, index: true, default: "" }
 
     userfield:   { type: varchar, size: 255, required: true }
     #
@@ -109,11 +109,11 @@ propel:
     # NULL if the call is not already rated,
     # 0 if the call has no income associated.
 
-    cost_ar_rate_id: { type: integer, size: 20, index: true, required: false, default: null }
+    cost_ar_rate_id: { type: integer, size: 20, required: false, default: null }
     #
     # how the cost is rated, NULL if the call is not already rated.
 
-    vendor_id: { type: integer, size: 20, index: true, required: false, default: null }
+    vendor_id: { type: integer, size: 20, required: false, default: null }
     #
     # NULL before the rating process,
     # the vendor party-id wich must be paid for call routing service
@@ -134,7 +134,7 @@ propel:
     #   * breaking normalization rules became out of synchro 
     #     if after CDR rating the ar_telephone_prefix table is changed;
 
-    cached_internal_telephone_number: { type: varchar, size: 256, required: false, index: true }
+    cached_internal_telephone_number: { type: varchar, size: 256, required: false }
     #
     # NULL for unrated/unprocessed calls.
     # The proper internal telephone number of the call, as displayed in the CALL REPORT
@@ -144,7 +144,7 @@ propel:
     # See "apps/asterisell/config/app.yml" comments for a detailed description 
     # of the meaning of internal and external telephone numbers.
 
-    cached_external_telephone_number: { type: varchar, size: 256, required: false, index: true }
+    cached_external_telephone_number: { type: varchar, size: 256, required: false }
     #
     # NULL for unrated/unprocessed calls.
     # The proper external telephone number of the call, as displayed in the CALL REPORT
@@ -154,12 +154,12 @@ propel:
     # See "apps/asterisell/config/app.yml" comments for a detailed description 
     # of the meaning of internal and external telephone numbers.
 
-    external_telephone_number_with_applied_portability: { type: varchar, size: 256, required: false, index: true }
+    external_telephone_number_with_applied_portability: { type: varchar, size: 256, required: false }
     #
     # The external telephone number with applied number portability.
     # This is the telephone number on wich must work rates.
 
-    cached_masked_external_telephone_number: { type: varchar, size: 256, required: false, index: true }
+    cached_masked_external_telephone_number: { type: varchar, size: 256, required: false }
     #
     # as "cached_external_telephone_number" but with a mask on its last part
     # if it is specified in the application configuration file.
