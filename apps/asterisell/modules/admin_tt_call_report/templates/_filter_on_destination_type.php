@@ -1,4 +1,11 @@
-<?php  /**************************************************************
+<?php
+
+require 'generator_header.php';
+
+echo '<?php';
+
+?>
+  /**************************************************************
    !!!                                                        !!!
    !!! WARNING: This file is automatic generated.             !!!
    !!!                                                        !!!
@@ -15,6 +22,26 @@
 
 $options = array("" => "");
 
+<?php if ($generateForAdmin == FALSE) { ?>
+
+    // CUSTOMER / OFFICE
+
+  if (sfConfig::get('app_show_outgoing_calls')) {
+    $d = DestinationType::outgoing;
+    $options[$d] = DestinationType::getName($d);
+  }
+
+  if (sfConfig::get('app_show_incoming_calls')) {
+    $d = DestinationType::incoming;
+    $options[$d] = DestinationType::getName($d);
+  }
+
+  if (sfConfig::get('app_show_internal_calls')) {
+    $d = DestinationType::internal;
+    $options[$d] = DestinationType::getName($d);
+  }
+
+  <?php } else { ?>
 
     // ADMINISTRATOR
 
@@ -28,6 +55,7 @@ $options = array("" => "");
     $options[$d] = DestinationType::getName($d);
     
 
+<?php } ?>
 
 
 $defaultChoice = "";
@@ -36,4 +64,6 @@ if (isset($filters['filter_on_destination_type'])) {
 }
 echo select_tag('filters[filter_on_destination_type]', options_for_select($options, $defaultChoice));
 
+<?php 
+echo '?>' . "\n";
 ?>

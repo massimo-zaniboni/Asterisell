@@ -1,10 +1,20 @@
 <?php
-$generateForAdmin = false;
-$generateForCustomer = true;
-$generateForOffice = false;
-$showOffice = false;
-$showAccount = true;
-$displayCallDirection = false;
+
+require 'generator_header.php';
+
+echo '<?php';
+
+// Transfer setting variables to PHP code
+//
+echo "\n" . '$generateForAdmin = ' . var_export($generateForAdmin, TRUE) . ";";
+echo "\n" . '$generateForCustomer = ' . var_export($generateForCustomer, TRUE) . ";";
+echo "\n" . '$generateForOffice = ' . var_export($generateForOffice, TRUE) . ";";
+echo "\n" . '$showOffice = ' . var_export($showOffice, TRUE) . ";";
+echo "\n" . '$showAccount = ' . var_export($showAccount, TRUE) . ";";
+echo "\n" . '$displayCallDirection = ' . var_export($displayCallDirection, TRUE) . ";";
+echo "\n";
+
+?>
 
   /**************************************************************
    !!!                                                        !!!
@@ -83,13 +93,16 @@ if ($showType === '10-calls') {
   
   $nrOfCols += 3;
   
-  } 
+  <?php if ($generateForAdmin): ?>
+  $nrOfCols += 2;
+  <?php endif; ?>
+} 
    
 //////////////////
 // Table header //
 //////////////////
 
-$moduleName = 'customer_ft_call_report';
+$moduleName = <?php echo "'$moduleName'" ?>;
 
 echo '<table cellspacing="0" class="sf_admin_list">';
 echo '<thead>';
@@ -114,9 +127,16 @@ if ($showType === '10-calls') {
   echo '<th>' . __('Calls') . '</th>';
   echo '<th>' . __('Duration') . '</th>';
 
-  
-    echo '<th>' . __('Cost') . '</th>';
-  }
+  <?php if ($generateForAdmin): ?>
+  echo '<th>' . __('Income') . '</th>';
+  echo '<th>' . __('Cost') . '</th>';
+  echo '<th>' . __('Earn') . '</th>';
+  <?php endif; ?>
+
+  <?php if (!$generateForAdmin): ?>
+  echo '<th>' . __('Cost') . '</th>';
+  <?php endif; ?>
+}
 
 echo '</tr>';
 echo '</thead>';
@@ -279,11 +299,22 @@ foreach($rs as $r) {
 
   echo '<tr class="sf_admin_row_' . $odd . '">';
 
-  
-  
-    echo '<td>' . $r[$internalNumberIndex] . '</td>';
-  
-  
+  <?php if ($generateForAdmin): ?>
+  echo '<td>' . $r[$partyNameIndex] . '</td>';
+  <?php endif; ?>
+
+  <?php if ($showOffice): ?>
+  echo '<td>' . $r[$officeNameIndex] . '</td>';
+  <?php endif; ?>
+
+  <?php if ($showAccount): ?>
+  echo '<td>' . $r[$internalNumberIndex] . '</td>';
+  <?php endif; ?>
+
+  <?php if ($displayCallDirection): ?>
+  echo '<td>' . DestinationType::getSymbol($r[$typeIndex]) . '</td>';
+  <?php endif; ?>
+
   echo '<td>' . $r[$externalNumberIndex] . '</td>';
 
   echo '<td>' . $r[$geographicLocationIndex] . '</td>';
@@ -299,11 +330,28 @@ foreach($rs as $r) {
   if (!is_null($r[$incomeIndex] && !is_null($r[$costIndex]))) {
     echo '<td>' . format_from_db_decimal_to_call_report_currency($r[$incomeIndex]) . '</td>';
 
+    <?php if ($generateForAdmin): ?>
+    echo '<td>' . format_from_db_decimal_to_call_report_currency($r[$costIndex]) . '</td>';
+    $earn = $r[$incomeIndex] - $r[$costIndex];
+    echo '<td>' . format_from_db_decimal_to_call_report_currency($earn) . '</td>';
     
+    $vendor = VariableFrame::getVendorCache()->getArParty($r[$vendorIdIndex]);
+    if (!is_null($vendor)) {
+      echo '<td>' . $vendor->getFullName() . '</td>';
+    } else {
+      echo '<td></td>';
+    }
+    <?php endif; ?>
+
   } else {
     echo '<td>?</td>';
 
-      }
+    <?php if ($generateForAdmin): ?>
+    echo '<td>?</td>';
+    echo '<td>?</td>';
+    echo '<td>?</td>';
+    <?php endif; ?>
+  }
 
   echo '</tr>';
 }
