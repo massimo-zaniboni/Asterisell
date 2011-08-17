@@ -280,6 +280,24 @@ function csv_field($val, $isFirst) {
 }
 
 /**
+ * Similar to standard PHP function `str_getcsv`.
+ * I'm not using it, because it is shipped only with PHP >= 5.3.0
+ * 
+ * @param type $input
+ * @param type $delimiter
+ * @param type $enclosure
+ * @param type $escape
+ * @return type 
+ */
+function csv2array($input,$delimiter=',',$enclosure='"',$escape='\\'){ 
+    $fields=explode($enclosure.$delimiter.$enclosure,substr($input,1,-1)); 
+    foreach ($fields as $key=>$value) {
+        $fields[$key]=str_replace($escape.$enclosure,$enclosure,$value); 
+    }
+    return($fields); 
+} 
+
+/**
  * The max precision (decimal places) of a currency.
  * This precision is used to store data inside CDR table
  * and during computations.
