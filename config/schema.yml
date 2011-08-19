@@ -11,40 +11,40 @@ propel:
     # 
     # start of call (date/time)
 
-    clid:        { type: varchar, size: 80, required: true }
+    clid:        { type: varchar, size: 255, required: true }
     #
     # caller id as text / short description 
 
-    src:         { type: varchar, size: 80, required: true }
+    src:         { type: varchar, size: 255, required: true }
     #
     # received caller identifier as unique number
     # see "apps/asterisell/config/app.yml" for a description
     # of the real meaning of this field.
 
-    dst:         { type: varchar, size: 80, required: true }
+    dst:         { type: varchar, size: 255, required: true }
     #
     # destination extension
     # see "apps/asterisell/config/app.yml" for a description
     # of the real meaning of this field.
 
-    dcontext:    { type: varchar, size: 80, required: true }
+    dcontext:    { type: varchar, size: 255, required: true }
     #
     # destination context
 
-    channel:     { type: varchar, size: 80, required: false }
+    channel:     { type: varchar, size: 255, required: false }
     #
     # channel used
 
-    dstchannel:  { type: varchar, size: 80, required: true }
+    dstchannel:  { type: varchar, size: 255, required: true }
     # 
     # destination channel, if appropiate.
     # Filters on rates are applied to this channel.
  
-    lastapp:     { type: varchar, size: 80, required: true }
+    lastapp:     { type: varchar, size: 255, required: true }
     #
     # last application ,if appropiate
 
-    lastdata:    { type: varchar, size: 80, required: true }
+    lastdata:    { type: varchar, size: 255, required: true }
     #
     # last application data (arguments)
     # see "apps/asterisell/config/app.yml" for a description
@@ -58,7 +58,7 @@ propel:
     #
     # total time call is up, in seconds, from answer to hangup
 
-    disposition: { type: varchar, size: 45, required: true }
+    disposition: { type: varchar, size: 255, required: true }
     #
     # what happened to the call (ANSWERED, NO ANSWER, BUSY)
 
@@ -68,11 +68,11 @@ propel:
     # AMA flags stand for Automated Message Accounting flags,
     # wich are somewhat standard in the industry
 
-    accountcode: { type: varchar, size: 30 }
+    accountcode: { type: varchar, size: 255 }
     #
     # ar_asterisk_account that must pay the outbound call
 
-    uniqueid: { type: varchar, size: 32, required: true, index: true, default: "" }
+    uniqueid: { type: varchar, size: 255, required: true, index: true, default: "" }
 
     userfield:   { type: varchar, size: 255, required: true }
     #
@@ -134,7 +134,7 @@ propel:
     #   * breaking normalization rules became out of synchro 
     #     if after CDR rating the ar_telephone_prefix table is changed;
 
-    cached_internal_telephone_number: { type: varchar, size: 256, required: false }
+    cached_internal_telephone_number: { type: varchar, size: 255, required: false }
     #
     # NULL for unrated/unprocessed calls.
     # The proper internal telephone number of the call, as displayed in the CALL REPORT
@@ -144,7 +144,7 @@ propel:
     # See "apps/asterisell/config/app.yml" comments for a detailed description 
     # of the meaning of internal and external telephone numbers.
 
-    cached_external_telephone_number: { type: varchar, size: 256, required: false }
+    cached_external_telephone_number: { type: varchar, size: 255, required: false }
     #
     # NULL for unrated/unprocessed calls.
     # The proper external telephone number of the call, as displayed in the CALL REPORT
@@ -154,12 +154,12 @@ propel:
     # See "apps/asterisell/config/app.yml" comments for a detailed description 
     # of the meaning of internal and external telephone numbers.
 
-    external_telephone_number_with_applied_portability: { type: varchar, size: 256, required: false }
+    external_telephone_number_with_applied_portability: { type: varchar, size: 255, required: false }
     #
     # The external telephone number with applied number portability.
     # This is the telephone number on wich must work rates.
 
-    cached_masked_external_telephone_number: { type: varchar, size: 256, required: false }
+    cached_masked_external_telephone_number: { type: varchar, size: 255, required: false }
     #
     # as "cached_external_telephone_number" but with a mask on its last part
     # if it is specified in the application configuration file.
@@ -180,11 +180,11 @@ propel:
     # 1 if the CDR was already exported to a client reseller
     # 0 if the CDR must be exported
 
-    source_data_type: { type: varchar, size: 1024 }
+    source_data_type: { type: varchar, size: 255 }
     #
     # identifies the type of source_data
     
-    source_data: { type: varchar, size: 10000 }
+    source_data: { type: varchar, size: 8000 }
     #
     # in case of imported CDR, the source data describing the CDR.
     # For example in case of CDR imported from a CSV file,
@@ -224,11 +224,11 @@ propel:
 
     id:
 
-    telephone_number: { type: varchar, size: 256, required: true, index: true }
+    telephone_number: { type: varchar, size: 255, required: true, index: true }
     #
     # the source telephone number
 
-    ported_telephone_number: { type: varchar, size: 256, required: true }
+    ported_telephone_number: { type: varchar, size: 255, required: true }
     #
     # the destination telephone number
 
@@ -237,9 +237,9 @@ propel:
   ar_asterisk_account:
     id: 
 
-    name: varchar(160)
+    name: varchar(255)
 
-    account_code: { type: varchar, size: 30, required: true, unique: true, index: true }
+    account_code: { type: varchar, size: 255, required: true, unique: true, index: true }
     #
     # the internal account code configured on the Asterisk Server
     # and used as reference in the cdr table 
@@ -262,9 +262,9 @@ propel:
 
     id:
 
-    name: varchar(128)
+    name: varchar(255)
 
-    description: varchar(1024)
+    description: varchar(255)
 
     ar_party_id:
 
@@ -285,29 +285,29 @@ propel:
 
     name: varchar(255)
 
-    external_crm_code: varchar(40)
+    external_crm_code: varchar(255)
 
-    vat: varchar(40)
+    vat: varchar(255)
     #
     # VAT registration number
 
-    legal_address: varchar(60) 
+    legal_address: varchar(255) 
 
-    legal_city: varchar(60)
+    legal_city: varchar(255)
 
-    legal_zipcode: varchar(20)
+    legal_zipcode: varchar(255)
 
-    legal_state_province: varchar(60)
+    legal_state_province: varchar(255)
 
-    legal_country: varchar(60)
+    legal_country: varchar(255)
 
-    email: varchar(60)
+    email: varchar(255)
 
-    phone: varchar(60)
+    phone: varchar(255)
 
-    phone2: varchar(60)
+    phone2: varchar(255)
 
-    fax: varchar(60)
+    fax: varchar(255)
 
     ar_rate_category_id:
 
@@ -331,7 +331,7 @@ propel:
     # Calls made from the account-code of this reseller, 
     # are reselled to other costumers, not known to this Asterisell installation.
 
-    reseller_code: varchar(80)
+    reseller_code: varchar(255)
     #
     # a short code of the customer used for specifying export 
     # directory and file names.
@@ -342,7 +342,7 @@ propel:
 
     id:
 
-    name: varchar(80)
+    name: varchar(255)
     #
     # identifies the params 
 
@@ -351,16 +351,16 @@ propel:
     # if TRUE use these parameters are applied also to login form
     # and when there are no other available params
 
-    service_name: varchar(120)
+    service_name: varchar(255)
     #
     # the name of the VoIP service offered from the Company
 
-    service_provider_website: varchar(120)
+    service_provider_website: varchar(255)
     #
     # the web site address where the user can retrieve info about its telephone traffics. 
     # In other word, it is where Asterisell is installed.
 
-    service_provider_email: varchar(120)
+    service_provider_email: varchar(255)
     #
     # the mail associated to the VoIP service
 
@@ -369,15 +369,15 @@ propel:
     # VAT tax to apply to invoice amount, using the decimal format 
     # used also for incomes/costs.
 
-    logo_image: varchar(120)
+    logo_image: varchar(255)
     #
     # the logo to display
 
-    slogan: varchar(255)
+    slogan: varchar(1024)
     #
     # the slogan to display near the logo
 
-    logo_image_in_invoices: varchar(120)
+    logo_image_in_invoices: varchar(255)
     #
     # the logo to use in invoices
 
@@ -385,53 +385,53 @@ propel:
     #
     # the text to display in the footer
  
-    user_message: varchar(2048)
+    user_message: varchar(255)
     #
     # an optional informative message to show after login of the account
 
     legal_name: varchar(255)
 
-    external_crm_code: varchar(40)
+    external_crm_code: varchar(255)
 
-    vat: varchar(40)
+    vat: varchar(255)
     #
     # VAT registration number
 
-    legal_address: varchar(120) 
+    legal_address: varchar(255) 
 
-    legal_website: varchar(120)
+    legal_website: varchar(255)
     #
     # Note: this is the company web site, not where Asterisell is installed.
 
-    legal_city: varchar(60)
+    legal_city: varchar(255)
 
-    legal_zipcode: varchar(20)
+    legal_zipcode: varchar(255)
 
-    legal_state_province: varchar(60)
+    legal_state_province: varchar(255)
 
-    legal_country: varchar(60)
+    legal_country: varchar(255)
 
-    legal_email: varchar(60)
+    legal_email: varchar(255)
 
-    legal_phone: varchar(60)
+    legal_phone: varchar(255)
 
-    phone2: varchar(60)
+    phone2: varchar(255)
 
-    legal_fax: varchar(60)
+    legal_fax: varchar(255)
 
-    invoice_notes: varchar(2048)
+    invoice_notes: varchar(255)
  
     invoice_payment_terms: varchar(2048)
 
-    sender_name_on_invoicing_emails: varchar(120)
+    sender_name_on_invoicing_emails: varchar(255)
     #
     # the name used in invoices / reports
 
-    invoicing_email_address: varchar(120)
+    invoicing_email_address: varchar(255)
     #
     # the sender mail address used for invoicing
 
-    accountant_email_address: varchar(120)
+    accountant_email_address: varchar(255)
     #
     # who receives a copy of sent invoices
     # for book-keeping.
@@ -442,11 +442,11 @@ propel:
     
     smtp_port: { type: integer, size: 4 }
 
-    smtp_username: varchar(60)
+    smtp_username: varchar(255)
 
-    smtp_password: varchar(60)
+    smtp_password: varchar(255)
 
-    smtp_encryption: varchar(60)
+    smtp_encryption: varchar(255)
 
     smtp_reconnect_after_nr_of_messages: { type: integer, size: 4 }
 
@@ -668,7 +668,7 @@ propel:
   # every customer can be assigned to a certain rate_category
     id:
 
-    name: varchar(128)
+    name: varchar(255)
 
   ar_rate:
     id:
@@ -765,16 +765,16 @@ propel:
   # A telephone prefix identifing a certain area or telephone operator.
     id:
   
-    prefix: { type: varchar(80), required: true, unique: true, index: unique }
+    prefix: { type: varchar(255), required: true, unique: true, index: unique }
     
-    name: varchar(80)
+    name: varchar(255)
     
-    geographic_location: varchar(80)
+    geographic_location: varchar(255)
     #
     # where (mainly) user of the prefix 
     # are geographically located
     
-    operator_type: { type: varchar(80), index: true }
+    operator_type: { type: varchar(255), index: true }
     #
     # something like "mobile" or "fixed" or "VoIP"
     # that describes the type of transmission technology
@@ -792,7 +792,7 @@ propel:
     #
     # when the problem was found
 
-    duplication_key: { type: varchar(160), required: true, unique: true, index: true }
+    duplication_key: { type: varchar(255), required: true, unique: true, index: true }
     # 
     # a unique-key representing the problem type, used in order to avoid many problems
     # of the same type in the table
@@ -883,5 +883,13 @@ propel:
 
     time: timestamp
 
-    info: varchar(1024)
+    info: varchar(255)
 
+  ar_database_version:
+    id:
+      
+    version: varchar(255)
+    
+    installation_date: timestamp
+    
+    

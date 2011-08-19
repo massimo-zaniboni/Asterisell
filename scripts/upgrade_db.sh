@@ -33,14 +33,15 @@ do
     echo $line | mysql -u $ADMIN --password=$PASSWORD $DBNAME
 done <upgrade_db.sql
 
+echo ""
+echo "Database updated. Error messages on already upgraded fields are normal/expected."
+echo "Press ENTER for continuing with configure."
+read
+
 cd ..
 ./configure.sh
 
 cd scripts
-
-echo "  "
-echo "!!! NOTE: error messages on already upgraded fields are normal/expected. !!!"
-echo "  "
 
 else
   echo "Execute inside scripts directory."

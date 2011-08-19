@@ -36,7 +36,7 @@ class ArProblemMapBuilder {
 
 		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
 
-		$tMap->addColumn('DUPLICATION_KEY', 'DuplicationKey', 'string', CreoleTypes::VARCHAR, true, 160);
+		$tMap->addColumn('DUPLICATION_KEY', 'DuplicationKey', 'string', CreoleTypes::VARCHAR, true, 255);
 
 		$tMap->addColumn('DESCRIPTION', 'Description', 'string', CreoleTypes::LONGVARCHAR, false, null);
 

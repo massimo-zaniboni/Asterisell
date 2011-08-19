@@ -34,13 +34,13 @@ class ArTelephonePrefixMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('PREFIX', 'Prefix', 'string', CreoleTypes::VARCHAR, true, 80);
+		$tMap->addColumn('PREFIX', 'Prefix', 'string', CreoleTypes::VARCHAR, true, 255);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 80);
+		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('GEOGRAPHIC_LOCATION', 'GeographicLocation', 'string', CreoleTypes::VARCHAR, false, 80);
+		$tMap->addColumn('GEOGRAPHIC_LOCATION', 'GeographicLocation', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('OPERATOR_TYPE', 'OperatorType', 'string', CreoleTypes::VARCHAR, false, 80);
+		$tMap->addColumn('OPERATOR_TYPE', 'OperatorType', 'string', CreoleTypes::VARCHAR, false, 255);
 
 	} 
 } 

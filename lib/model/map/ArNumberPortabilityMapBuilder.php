@@ -34,9 +34,9 @@ class ArNumberPortabilityMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('TELEPHONE_NUMBER', 'TelephoneNumber', 'string', CreoleTypes::VARCHAR, true, 256);
+		$tMap->addColumn('TELEPHONE_NUMBER', 'TelephoneNumber', 'string', CreoleTypes::VARCHAR, true, 255);
 
-		$tMap->addColumn('PORTED_TELEPHONE_NUMBER', 'PortedTelephoneNumber', 'string', CreoleTypes::VARCHAR, true, 256);
+		$tMap->addColumn('PORTED_TELEPHONE_NUMBER', 'PortedTelephoneNumber', 'string', CreoleTypes::VARCHAR, true, 255);
 
 		$tMap->addColumn('FROM_DATE', 'FromDate', 'int', CreoleTypes::TIMESTAMP, false, null);
 

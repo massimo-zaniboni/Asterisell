@@ -34,33 +34,33 @@ class CdrMapBuilder {
 
 		$tMap->addColumn('CALLDATE', 'Calldate', 'int', CreoleTypes::TIMESTAMP, true, null);
 
-		$tMap->addColumn('CLID', 'Clid', 'string', CreoleTypes::VARCHAR, true, 80);
+		$tMap->addColumn('CLID', 'Clid', 'string', CreoleTypes::VARCHAR, true, 255);
 
-		$tMap->addColumn('SRC', 'Src', 'string', CreoleTypes::VARCHAR, true, 80);
+		$tMap->addColumn('SRC', 'Src', 'string', CreoleTypes::VARCHAR, true, 255);
 
-		$tMap->addColumn('DST', 'Dst', 'string', CreoleTypes::VARCHAR, true, 80);
+		$tMap->addColumn('DST', 'Dst', 'string', CreoleTypes::VARCHAR, true, 255);
 
-		$tMap->addColumn('DCONTEXT', 'Dcontext', 'string', CreoleTypes::VARCHAR, true, 80);
+		$tMap->addColumn('DCONTEXT', 'Dcontext', 'string', CreoleTypes::VARCHAR, true, 255);
 
-		$tMap->addColumn('CHANNEL', 'Channel', 'string', CreoleTypes::VARCHAR, false, 80);
+		$tMap->addColumn('CHANNEL', 'Channel', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('DSTCHANNEL', 'Dstchannel', 'string', CreoleTypes::VARCHAR, true, 80);
+		$tMap->addColumn('DSTCHANNEL', 'Dstchannel', 'string', CreoleTypes::VARCHAR, true, 255);
 
-		$tMap->addColumn('LASTAPP', 'Lastapp', 'string', CreoleTypes::VARCHAR, true, 80);
+		$tMap->addColumn('LASTAPP', 'Lastapp', 'string', CreoleTypes::VARCHAR, true, 255);
 
-		$tMap->addColumn('LASTDATA', 'Lastdata', 'string', CreoleTypes::VARCHAR, true, 80);
+		$tMap->addColumn('LASTDATA', 'Lastdata', 'string', CreoleTypes::VARCHAR, true, 255);
 
 		$tMap->addColumn('DURATION', 'Duration', 'int', CreoleTypes::INTEGER, true, 11);
 
 		$tMap->addColumn('BILLSEC', 'Billsec', 'int', CreoleTypes::INTEGER, true, 11);
 
-		$tMap->addColumn('DISPOSITION', 'Disposition', 'string', CreoleTypes::VARCHAR, true, 45);
+		$tMap->addColumn('DISPOSITION', 'Disposition', 'string', CreoleTypes::VARCHAR, true, 255);
 
 		$tMap->addColumn('AMAFLAGS', 'Amaflags', 'int', CreoleTypes::INTEGER, true, 11);
 
-		$tMap->addColumn('ACCOUNTCODE', 'Accountcode', 'string', CreoleTypes::VARCHAR, false, 30);
+		$tMap->addColumn('ACCOUNTCODE', 'Accountcode', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('UNIQUEID', 'Uniqueid', 'string', CreoleTypes::VARCHAR, true, 32);
+		$tMap->addColumn('UNIQUEID', 'Uniqueid', 'string', CreoleTypes::VARCHAR, true, 255);
 
 		$tMap->addColumn('USERFIELD', 'Userfield', 'string', CreoleTypes::VARCHAR, true, 255);
 
@@ -80,13 +80,13 @@ class CdrMapBuilder {
 
 		$tMap->addForeignKey('AR_TELEPHONE_PREFIX_ID', 'ArTelephonePrefixId', 'int', CreoleTypes::INTEGER, 'ar_telephone_prefix', 'ID', false, null);
 
-		$tMap->addColumn('CACHED_INTERNAL_TELEPHONE_NUMBER', 'CachedInternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 256);
+		$tMap->addColumn('CACHED_INTERNAL_TELEPHONE_NUMBER', 'CachedInternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('CACHED_EXTERNAL_TELEPHONE_NUMBER', 'CachedExternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 256);
+		$tMap->addColumn('CACHED_EXTERNAL_TELEPHONE_NUMBER', 'CachedExternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY', 'ExternalTelephoneNumberWithAppliedPortability', 'string', CreoleTypes::VARCHAR, false, 256);
+		$tMap->addColumn('EXTERNAL_TELEPHONE_NUMBER_WITH_APPLIED_PORTABILITY', 'ExternalTelephoneNumberWithAppliedPortability', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER', 'CachedMaskedExternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 256);
+		$tMap->addColumn('CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER', 'CachedMaskedExternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 255);
 
 		$tMap->addColumn('SOURCE_ID', 'SourceId', 'string', CreoleTypes::VARCHAR, false, 255);
 
@@ -94,9 +94,9 @@ class CdrMapBuilder {
 
 		$tMap->addColumn('IS_EXPORTED', 'IsExported', 'boolean', CreoleTypes::BOOLEAN, true, null);
 
-		$tMap->addColumn('SOURCE_DATA_TYPE', 'SourceDataType', 'string', CreoleTypes::VARCHAR, false, 1024);
+		$tMap->addColumn('SOURCE_DATA_TYPE', 'SourceDataType', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('SOURCE_DATA', 'SourceData', 'string', CreoleTypes::VARCHAR, false, 10000);
+		$tMap->addColumn('SOURCE_DATA', 'SourceData', 'string', CreoleTypes::VARCHAR, false, 8000);
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 

@@ -38,7 +38,7 @@ class ArLockMapBuilder {
 
 		$tMap->addColumn('TIME', 'Time', 'int', CreoleTypes::TIMESTAMP, false, null);
 
-		$tMap->addColumn('INFO', 'Info', 'string', CreoleTypes::VARCHAR, false, 1024);
+		$tMap->addColumn('INFO', 'Info', 'string', CreoleTypes::VARCHAR, false, 255);
 
 	} 
 } 

@@ -34,9 +34,9 @@ class ArAsteriskAccountMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 160);
+		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('ACCOUNT_CODE', 'AccountCode', 'string', CreoleTypes::VARCHAR, true, 30);
+		$tMap->addColumn('ACCOUNT_CODE', 'AccountCode', 'string', CreoleTypes::VARCHAR, true, 255);
 
 		$tMap->addForeignKey('AR_OFFICE_ID', 'ArOfficeId', 'int', CreoleTypes::INTEGER, 'ar_office', 'ID', false, null);
 
