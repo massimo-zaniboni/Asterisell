@@ -518,6 +518,28 @@ function convertToArbitraryPrecisionFloat($numberAsString, $decimalSeparator) {
     }
 }
 
+// taken from http://stackoverflow.com/questions/231057/how-to-round-ceil-floor-a-bcmath-number-in-php/231171#231171
+function bcFloor($x)
+{
+    $result = bcmul($x, '1', 0);
+    if ((bccomp($result, '0', 0) == -1) && bccomp($x, $result, 1))
+        $result = bcsub($result, 1, 0);
+
+    return $result;
+}
+
+function bcCeil($x)
+{
+    $floor = bcFloor($x);
+    return bcadd($floor, ceil(bcsub($x, $floor)), 0);
+}
+
+function bcRound($x)
+{
+    $floor = bcFloor($x);
+    return bcadd($floor, round(bcsub($x, $floor)), 0);
+}
+
 /**
  * @param  $totIncome a number in db_decimal format
  * @param  $vatPerc the vat perc in PHP decimal format

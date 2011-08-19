@@ -129,7 +129,7 @@ abstract class PhpRate {
    * @param Cdr $cdr the CDR to process
    * @param BundleRateIncrementalInfo  $rateInfo the incremental rate info, when the rate is of type BundleRate
    * @return NULL if the Rate does not must change/update the COST (typical of CDR processing rates),
-   * the proper cost otherwise.
+   * the proper cost otherwise. The cost is a number calculated using PHP BC arbitraty-precision math functions.
    */
   protected abstract function rateCDR($cdr, $rateInfo = null);
 
