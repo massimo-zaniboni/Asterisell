@@ -641,6 +641,7 @@ class RateCalls extends FixedJobProcessor {
                             // bundle-rate incremental-info is associated to the vendor
                             $subjectId = $rate->getArPartyId();
                         } else {
+                            $p = new ArProblem();
                             $p->setDuplicationKey("system-rate of type bundle " . $rate->getId());
                             $p->setDescription("Rate with id=" . $rate->getId() . " is a system-rate of type bundle.");
                             $p->setCreatedAt(date("c"));
