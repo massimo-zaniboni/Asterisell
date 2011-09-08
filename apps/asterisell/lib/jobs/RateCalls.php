@@ -355,6 +355,10 @@ class RateCalls extends FixedJobProcessor {
                     $p->setEffect("The CDR will not be rated.");
                     $p->setProposedSolution("Inspect the rates configurations, and solve the problem. Wait for the next rate pass.");
                     throw (new ArProblemException($p));
+                }  else if ($cdr->getDestinationType() == DestinationType::known_error) {
+                    // continue with the next CDR, because the problem was already signaled.
+                    // NOTE: The CDR is not saved so it remains to unprocessed state at the next rating process.
+                    continue;
                 }
 
                 // This CDR is classified from the CDR processing as TO IGNORE.

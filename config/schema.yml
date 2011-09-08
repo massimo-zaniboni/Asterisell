@@ -164,7 +164,7 @@ propel:
     # as "cached_external_telephone_number" but with a mask on its last part
     # if it is specified in the application configuration file.
 
-    source_id: { type: varchar, size: 255, required: false, unique: false, index: true }
+    source_id: { type: varchar, size: 1024, required: false, unique: false, index: true }
     #
     # if the CDR was generated from a record of another table, 
     # this field contains a reference to it.
@@ -184,7 +184,7 @@ propel:
     #
     # identifies the type of source_data
     
-    source_data: { type: varchar, size: 8000 }
+    source_data: longvarchar
     #
     # in case of imported CDR, the source data describing the CDR.
     # For example in case of CDR imported from a CSV file,

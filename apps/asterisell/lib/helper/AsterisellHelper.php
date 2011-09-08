@@ -702,49 +702,78 @@ function filterValue($filters, $index) {
 }
 
 /**
- * Reset the cost of the calls in the timeframe, 
- * and recalc costs.
+ * Reset the cost of the calls in the timeframe.
  * The resetted CDR will be signaled as to re-export again.
  * CDR exported again will replace old exported CDR.
- * 
+ *
  * @param $fromDate a from date (inclusive) in unix-time-stamp format
  * @param $toDate a to date (exclusive) in unix-timestamp format,
  *        or NULL for resetting all calls after $fromDate
- * 
+ *
  * Signal the operation (or the errors) on the problem-table.
- * 
+ *
  */
-function resetCallsCostInTimeFrameAndRecalc($fromDate, $toDate) {
-    try {
-      $sql = "UPDATE cdr SET destination_type = " . DestinationType::unprocessed . ", is_exported = 0 WHERE calldate >= \"" . fromUnixTimestampToMySQLTimestamp($fromDate) . "\"";
+function resetCallsCostInTimeFrame($fromDate, $toDate)
+{
+    $setToUnprocessed = "UPDATE cdr FORCE INDEX (cdr_calldate_index) SET destination_type = " . DestinationType::unprocessed
+                        . ", is_exported = 0 "
+                        . " WHERE calldate >= \"" . fromUnixTimestampToMySQLTimestamp($fromDate) . "\"";
 
-      if (is_null($toDate)) {
-      } else {
-        $sql .= " AND calldate < \"" . fromUnixTimestampToMySQLTimestamp($toDate) . "\"";
-      }
 
-      $conn = Propel::getConnection();
-      $nr = $conn->executeUpdate($sql);
-
-      $p = new ArProblem();
-      $p->setDuplicationKey("Reset of calls at " . date('c'));
-      $p->setDescription("The administrator reset (and forced recalculations) of " . $nr . " calls, using query " . $sql);
-      $p->setEffect("This in not an error, only an informative message. The calls were rerated under this PHP process. If there is a timeout, then the rest of calls will be rated at next execution of cron process. User will not see unrated calls, in the meantime. ");
-      $p->setProposedSolution("");
-      ArProblemException::addProblemIntoDBOnlyIfNew($p);
-
-    } catch(Exception $e) {
-      $p = new ArProblem();
-      $p->setDuplicationKey($e->getCode());
-      $p->setDescription('Error during reset of Calls Cost ' . $e->getCode() . ': ' . $e->getMessage());
-      ArProblemException::addProblemIntoDBOnlyIfNew($p);
+    if (is_null($toDate)) {
+    } else {
+        $setToUnprocessed .= " AND calldate < \"" . fromUnixTimestampToMySQLTimestamp($toDate) . "\"";
     }
+
+    $conn = Propel::getConnection();
+    $nr1 = $conn->executeUpdate($setToUnprocessed);
+
+    $p = new ArProblem();
+    $p->setDuplicationKey("Reset of calls at " . date('c'));
+    $p->setDescription("The administrator reset (and forced recalculations) of " . $nr1 . " calls (physical and merged calls), using query " . $setToUnprocessed . ", and query " . $removeMergedCDRs);
+    $p->setEffect("This in not an error, only an informative message. The calls were rerated under this PHP process. If there is a timeout, then the rest of calls will be rated at next execution of cron process. User will not see unrated calls, in the meantime. ");
+    $p->setProposedSolution("");
+    ArProblemException::addProblemIntoDBOnlyIfNew($p);
+}
+
+/**
+ * Reset the cost of the calls in the timeframe, and recalc costs.
+ * The resetted CDR will be signaled as to re-export again.
+ * CDR exported again will replace old exported CDR.
+ *
+ * @param $fromDate a from date (inclusive) in unix-time-stamp format
+ * @param $toDate a to date (exclusive) in unix-timestamp format,
+ *        or NULL for resetting all calls after $fromDate
+ *
+ * Signal the operation (or the errors) on the problem-table.
+ *
+ */
+function resetCallsCostInTimeFrameAndRecalc($fromDate, $toDate)
+{
+
+    resetCallsCostInTimeFrame($fromDate, $toDate);
 
     // Rerate calls.
     //
     $re = new JobQueueProcessor();
     $re->processOnline();
-  }
+}
+
+
+/**
+ * @return unix-timestamp of the max/last Cdr Call Date
+ * NOTE: for sure this is a fast query that does not scan the table
+ */
+function getMaxCdrCallDate() {
+    $connection = Propel::getConnection();
+    $stm = $connection->createStatement();
+    $rs = $stm->executeQuery('SELECT calldate FROM cdr force index (cdr_calldate_index) order by calldate desc limit 1');
+    while ($rs->next()) {
+        $r = $rs->getTimestamp('calldate');
+    }
+
+    return strtotime($r);
+}
 
 
 ?>

@@ -34,6 +34,10 @@ abstract class DestinationType {
   const outgoing = 2;
   const internal = 3;
   const ignored = 4;
+  const known_error = 5;
+  // used during rating-processing for signaling a known (already signaled)
+  // problem. It will never be stored inside the CDR in the database,
+  // it is only a comunication value.
 
   static public $names = array(0 => "unprocessed",
 			       1 => "incoming",

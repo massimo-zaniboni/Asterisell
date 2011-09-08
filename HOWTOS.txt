@@ -223,5 +223,9 @@ See module office like an example:
   * ArOfficePeer
   * customized generator query
 
+Unfortunate Choices inside Code
+===============================
 
-
+DestinationType is both used for managing the list of CDRs to rate (unprocessed state),
+and the call-direction. This complicates some system rates interaction: everything is put
+inside this field is lost... The best choice is using a distinct field.

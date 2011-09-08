@@ -235,4 +235,39 @@ class Cdr extends BaseCdr {
     $this->setExternalTelephoneNumberWithAppliedPortability($v);
   }
 
+    /**
+     * @return a String describing the important CDR fields, for debug porpouse
+     */
+  public function getDebugDescription() {
+      $r = "\nid: " . $this->getId()
+         . "\ncall_date: " . $this->getCallDate()
+         . "\nclid: " . $this->getClid()
+         . "\nsrc: " . $this->getSrc()
+         . "\ndst: " . $this->getDst()
+         . "\ndcontext: " . $this->getDcontext()
+         . "\nchannel: " . $this->getChannel()
+         . "\ndstchannel: " . $this->getDstchannel()
+         . "\nlastapp: " . $this->getLastapp()
+         . "\nlastdata: " . $this->getLastdata()
+         . "\nbillsec: " . $this->getBillsec()
+         . "\ndisposition: " . $this->getDisposition()
+         . "\namaflags: " . $this->getAmaflags()
+         . "\naccountcode: " . $this->getAccountcode()
+         . "\nuniqueid: " . $this->getUniqueid()
+         . "\ndestination_type: " . $this->getDestinationType()
+         . "\nsource_id: " . $this->getSourceId()
+         . "\nsource_data_type: " . $this->getSourceDataType()
+         . "\nitc_cdr_type: " . $this->getItcCdrType()
+         . "\nitc_maybe_can_be_merged: " . $this->getItcMaybeCanBeMerged()
+         . "\nitc_callid1: " . $this->getItcCallid1()
+         . "\nitc_callid2: " . $this->getItcCallid2()
+         . "\nitc_callid1_cdr_type: " . $this->getItcCallid1CdrType()
+         . "\nitc_callid2_cdr_type: " . $this->getItcCallid2CdrType()
+         . "\nitc_orig_gw: " . $this->getItcOrigGw()
+         . "\nitc_term_gw: " . $this->getItcTermGw()
+         ;
+      return $r;
+  }
+
+
 }
