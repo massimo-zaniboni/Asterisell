@@ -88,7 +88,7 @@ class CdrMapBuilder {
 
 		$tMap->addColumn('CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER', 'CachedMaskedExternalTelephoneNumber', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('SOURCE_ID', 'SourceId', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('SOURCE_ID', 'SourceId', 'string', CreoleTypes::VARCHAR, false, 1024);
 
 		$tMap->addColumn('SOURCE_COST', 'SourceCost', 'int', CreoleTypes::INTEGER, false, 20);
 
@@ -96,7 +96,7 @@ class CdrMapBuilder {
 
 		$tMap->addColumn('SOURCE_DATA_TYPE', 'SourceDataType', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('SOURCE_DATA', 'SourceData', 'string', CreoleTypes::VARCHAR, false, 8000);
+		$tMap->addColumn('SOURCE_DATA', 'SourceData', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
