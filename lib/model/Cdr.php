@@ -18,10 +18,10 @@ class Cdr extends BaseCdr {
         break;
       case 1:
         switch ($destinationType) {
-          case DestinationType::incoming:
+          case DestinationType::outgoing:
             return $this->getActualDestinationNumber();
             break;
-          case DestinationType::outgoing:
+          case DestinationType::incoming:
             return $this->getSrc();
             break;
           default:
@@ -35,6 +35,19 @@ class Cdr extends BaseCdr {
       case 3:
         die("When \"app_internal_external_telephone_numbers\" field is 3, the cached_external_telephone_number must be always setted." . $telephoneNumbersConfig);
         break;
+      case 4:
+          switch ($destinationType) {
+            case DestinationType::outgoing:
+              return $this->getActualDestinationNumber();
+              break;
+            case DestinationType::incoming:
+              return $this->getSrc();
+              break;
+            default:
+              return $this->getActualDestinationNumber();
+              break;
+          }
+          break;
       default:
         die("Unrecognized \"app_internal_external_telephone_numbers\" field value: " . $telephoneNumbersConfig);
         break;
@@ -50,12 +63,16 @@ class Cdr extends BaseCdr {
         $account = VariableFrame::getArAsteriskAccountByCodeCache()->getArAsteriskAccountByCode($this->getAccountcode());
         return $account->getName();
         break;
+      case 4:
+            $account = VariableFrame::getArAsteriskAccountByCodeCache()->getArAsteriskAccountByCode($this->getAccountcode());
+            return $account->getName();
+            break;
       case 1:
         switch ($destinationType) {
-          case DestinationType::incoming:
+          case DestinationType::outgoing:
             return $this->getSrc();
             break;
-          case DestinationType::outgoing:
+          case DestinationType::incoming:
             return $this->getActualDestinationNumber();
             break;
           default:

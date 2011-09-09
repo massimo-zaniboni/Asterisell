@@ -352,7 +352,7 @@ all:
   # use for displaying in the call report the internal and external telephone number?
   #
   # Available options:
-  # * 0: use "accountcode" field as internal telephone number,
+  # * 0: use "accountcode" field as internal telephone number (display in CALL REPORT the account-code name),
   #      use "dst/lastapp_accepted_values" field as external telephone number.
   # * 1: use "src" field as internal telephone number only for outgoing calls, 
   #      use "src" field as external telephone number only for incoming calls,
@@ -373,7 +373,9 @@ all:
   #           and it must be explicitely managed from the CDR processor;
   #      See `apps/asterisell/lib/rates/CustomCDRProcessing.php` for a template of associated processing rate.
   #      A rate like the proposed example must be added to the rate table.
-  #
+  # * 4: use "accountcode" field as internal telephone number (display in CALL REPORT the account-code name),
+  #      use "dst" as external telephone number for outgoing and internal calls,
+  #      use "src" as external telephone number for incoming calls.
   # IMPORTANT: Changes to this parameter make effect only on new rated calls,
   # so you must force a rerate if you want apply the new mask only to already
   # rated calls.
