@@ -730,7 +730,7 @@ function resetCallsCostInTimeFrame($fromDate, $toDate)
 
     $p = new ArProblem();
     $p->setDuplicationKey("Reset of calls at " . date('c'));
-    $p->setDescription("The administrator reset (and forced recalculations) of " . $nr1 . " calls (physical and merged calls), using query " . $setToUnprocessed . ", and query " . $removeMergedCDRs);
+    $p->setDescription("The administrator reset (and forced recalculations) of " . $nr1 . " calls (physical and merged calls), using query " . $setToUnprocessed);
     $p->setEffect("This in not an error, only an informative message. The calls were rerated under this PHP process. If there is a timeout, then the rest of calls will be rated at next execution of cron process. User will not see unrated calls, in the meantime. ");
     $p->setProposedSolution("");
     ArProblemException::addProblemIntoDBOnlyIfNew($p);
