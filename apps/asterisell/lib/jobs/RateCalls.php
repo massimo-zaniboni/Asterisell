@@ -773,7 +773,7 @@ class RateCalls extends FixedJobProcessor {
                 // in case of system-rates these fields are not already computed...
                 $descr .= ' for external telephone number "' . $cdr->getCachedExternalTelephoneNumber() . '" (with number portability applied it is "' . $cdr->getCachedExternalTelephoneNumberWithAppliedPortability() . '"), ';
             }
-            $descr .= 'and for dstchannel "' . $cdr->getDstchannel() . '"';
+            $descr .= 'and for dstchannel "' . $cdr->getDstchannel() . '"' . ' and amaflags "' . $cdr->getAmaflags() . '"';
 
             $p->setDescription($descr);
             $p->setDuplicationKey($startOfDescr . " - " . $dateStr . " - " . $categoryName . " - " . $cdr->getDstchannel());
