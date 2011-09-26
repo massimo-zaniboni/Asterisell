@@ -45,7 +45,7 @@ main();
  * @param $storeCommands TRUE for storing in upgrade table the commands
  * @return void
  */
-function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands, $showErrorMessages)
+function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands, $firstRun)
 {
     $r = array();
     $i = 1;
@@ -141,14 +141,15 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands, $show
             try {
                 $stm = $connection->prepareStatement($cmd);
                 $stm->executeUpdate();
-                if ($showErrorMessages) {
-                    echo "\nSUCCESS\n";
-                }
+                echo "\nSUCCESS\n";
             } catch (Exception $e) {
                 $cmd_store = FALSE;
-                if ($showErrorMessages) {
-                    echo "\nERROR: if you execute upgrade again, this command will be retried again. The error message is: " . $e->getMessage() . "\n";
+                if ($firstRun) {
+                    echo "\nERROR: this is the first upgrade using the new method, and the initial commands can generate some errors because they were already applied to the database. In this case this is not a problem.";
+                } else {
+                    echo "\nERROR: if you execute upgrade again, this command will be retried again. ";
                 }
+                echo "\nThe error message is: " . $e->getMessage() . "\n";
             }
         }
 
@@ -164,7 +165,7 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands, $show
     $time2 = time();
 
     if ($applyCommands) {
-      echo "\n\nUpgrading started at " . date("r", $time1) . " and completed at " . date("r", $time2) . "\nDuring this time the dabase was locked.\n";
+        echo "\n\nUpgrading started at " . date("r", $time1) . " and completed at " . date("r", $time2) . "\nDuring this time the dabase was locked.\n";
     }
 }
 
@@ -200,7 +201,7 @@ function isFirstUpgrade()
 /**
  * @return TRUE if there is a safe connection to the database
  */
-function isSafeConnection()
+function isSafeReadConnection()
 {
     $connection = Propel::getConnection();
     $query = 'SELECT id FROM cdr LIMIT 1';
@@ -209,6 +210,7 @@ function isSafeConnection()
 
     try {
         $rs = $stm->executeQuery($query);
+
         while ($rs->next()) {
         }
         return TRUE;
@@ -217,41 +219,71 @@ function isSafeConnection()
     }
 }
 
-function main()
+/**
+ * @return TRUE if the database user can alter the database
+ */
+function isSafeAlterConnection()
 {
+    $connection = Propel::getConnection();
+    $stm = $connection->createStatement();
 
-    $isSafe = isSafeConnection();
+    $s1 = "CREATE TABLE IF NOT EXISTS ar_check_upgrade_script (id INTEGER(1)) ENGINE=InnoDB;";
+    $s2 = "ALTER TABLE ar_check_upgrade_script MODIFY COLUMN id INTEGER(5);";
+    $s3 = "ALTER TABLE ar_check_upgrade_script MODIFY COLUMN id INTEGER(4);";
 
-    if ($isSafe) {
-        echo "\n!!WARNING!!: During upgrading the involved MySQL tables will be locked, and they can not be written.";
-        echo "\n             This is a fast operation in case of all tables, except CDR table containing all made calls.";
-        echo "\n             So if you upgrade the same database where Asterisell is running, some calls will be not inserted ";
-        echo "\n             inside CDR table during this operation.";
-        echo "\n             In case of CDR tables with 1 milion of records, this operation can require also 1-2 hours.";
-        echo "\n             Usually in the AsteriSell website there are information about the upgrade, and you will informed if it involves the CDR table.";
-        echo "\n             When it does not involve the CDR table, you can apply it freely because it is a very fast process.";
-        echo "\n ";
-        echo "\n The command will display the required time";
-        echo "\nContinue upgrading? [y/n]";
-        $fh = fopen('php://stdin', 'r');
-        $next_line = trim(fgets($fh, 1024));
-        if ($next_line === "y" || $next_line === "Y") {
+    try {
+        $stm = $connection->prepareStatement($s1);
+        $stm->executeUpdate();
 
-            $isFirstUpg = isFirstUpgrade();
+        $stm = $connection->prepareStatement($s2);
+        $stm->executeUpdate();
 
-            if ($isFirstUpg) {
-                // note: it does not store anything, because maybe there is no the safe upgrade table yet
-                upgradeDatabase(FALSE, TRUE, FALSE, FALSE);
-
-                // then store all the commands, without applying them.
-                upgradeDatabase(FALSE, FALSE, TRUE, FALSE);
-
-            } else {
-                upgradeDatabase(TRUE, TRUE, TRUE, TRUE);
-            }
-        }
-    } else {
-        echo "\nConnection to MySQL database can not be established. Check your configurations. ";
+        $stm = $connection->prepareStatement($s3);
+        $stm->executeUpdate();
+        return TRUE;
+    } catch (Exception $e) {
+        return FALSE;
     }
 }
+
+function main()
+{
+    if (!isSafeReadConnection()) {
+        echo "\nConnection to MySQL database can not be established. Check your database configurations. ";
+        exit(1);
+    }
+
+    if (!isSafeAlterConnection()) {
+        echo "\nMySQL database user have no alter table privileges. Check your database configurations. ";
+        exit(1);
+    }
+
+    echo "\n!!WARNING!!: During upgrading the involved MySQL tables will be locked, and they can not be written.";
+    echo "\n             This is a fast operation in case of all tables, except CDR table containing all made calls.";
+    echo "\n             So if you upgrade the same database where Asterisell is running, some calls will be not inserted ";
+    echo "\n             inside CDR table during this operation.";
+    echo "\n             In case of CDR tables with 1 milion of records, this operation can require also 1-2 hours.";
+    echo "\n             Usually in the AsteriSell website there are information about the upgrade, and you will informed if it involves the CDR table.";
+    echo "\n             When it does not involve the CDR table, you can apply it freely because it is a very fast process.";
+    echo "\n ";
+    echo "\n The command will display the required time";
+    echo "\nContinue upgrading? [y/n]";
+    $fh = fopen('php://stdin', 'r');
+    $next_line = trim(fgets($fh, 1024));
+    if ($next_line === "y" || $next_line === "Y") {
+
+        $isFirstUpg = isFirstUpgrade();
+
+        if ($isFirstUpg) {
+            // note: it does not store anything, because maybe there is no the safe upgrade table yet
+            upgradeDatabase(FALSE, TRUE, FALSE, TRUE);
+
+            // then store all the commands, without applying them.
+            upgradeDatabase(FALSE, FALSE, TRUE, TRUE);
+        } else {
+            upgradeDatabase(TRUE, TRUE, TRUE, FALSE);
+        }
+    }
+}
+
 ?>
