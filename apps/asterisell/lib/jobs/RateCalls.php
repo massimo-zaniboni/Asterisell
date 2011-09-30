@@ -330,7 +330,7 @@ class RateCalls extends FixedJobProcessor {
                 if (!is_null($cdrProblem)) {
                     $p = new ArProblem();
                     $p->setDuplicationKey("CDR - " . $cdr->getId());
-                    $p->setDescription("CDR with id " . $cdr->getId() . " has problem: " . $cdrProblem);
+                    $p->setDescription("CDR with id " . $cdr->getId() . " has problem: " . $cdrProblem . $this->showCDRDebugInfo($cdr));
                     $p->setCreatedAt(date("c"));
                     $p->setEffect("The CDR will not be rated.");
                     $p->setProposedSolution("Inspect the CDR and solve the problem. Wait for the next rate pass.");
@@ -350,7 +350,7 @@ class RateCalls extends FixedJobProcessor {
                 if ($cdr->getDestinationType() == DestinationType::unprocessed) {
                     $p = new ArProblem();
                     $p->setDuplicationKey("CDR - " . $cdr->getId());
-                    $p->setDescription("CDR with id " . $cdr->getId() . " was processed from rate with id " . $rate->getId() . " but CDR.destination_type is still \"unprocessed\".");
+                    $p->setDescription("CDR with id " . $cdr->getId() . " was processed from rate with id " . $rate->getId() . " but CDR.destination_type is still \"unprocessed\"." . $this->showCDRDebugInfo($cdr));
                     $p->setCreatedAt(date("c"));
                     $p->setEffect("The CDR will not be rated.");
                     $p->setProposedSolution("Inspect the rates configurations, and solve the problem. Wait for the next rate pass.");
@@ -382,7 +382,7 @@ class RateCalls extends FixedJobProcessor {
                         $p = new ArProblem();
                         $p->setDuplicationKey("unknown ArAsteriskAccount $accountcode");
                         $p->setCreatedAt(date("c"));
-                        $p->setDescription("\"$accountcode\" Asterisk account code is used in CDR with id \"" . $cdr->getId() . "\", but it is not defined in ArAsteriskAccount table (VoIP Accounts).");
+                        $p->setDescription("\"$accountcode\" Asterisk account code is used in CDR with id \"" . $cdr->getId() . "\", but it is not defined in ArAsteriskAccount table (VoIP Accounts)." . $this->showCDRDebugInfo($cdr));
                         $p->setEffect("All CDRs with this account will not rated.");
                         $p->setProposedSolution("Complete the Asterisk Account table (VoIP accounts). The CDRs will be rated automatically at the next execution pass of Jobs.");
                         throw (new ArProblemException($p));
@@ -395,7 +395,7 @@ class RateCalls extends FixedJobProcessor {
                         $p = new ArProblem();
                         $p->setDuplicationKey("unknown ArAsteriskAccountId $accountId");
                         $p->setCreatedAt(date("c"));
-                        $p->setDescription("\"$accountId\" Asterisk AccountId is used in CDR with id \"" . $cdr->getId() . "\", but it is not defined in ArAsteriskAccount table (VoIP Accounts).");
+                        $p->setDescription("\"$accountId\" Asterisk AccountId is used in CDR with id \"" . $cdr->getId() . "\", but it is not defined in ArAsteriskAccount table (VoIP Accounts)." . $this->showCDRDebugInfo($cdr));
                         $p->setEffect("All CDRs with this account will not rated.");
                         $p->setProposedSolution("It is an error inside some system processing rate, because if an AccountId it is setted, then it must exist for sure. Contact the assistance.");
                         throw (new ArProblemException($p));
@@ -445,7 +445,7 @@ class RateCalls extends FixedJobProcessor {
                         $p = new ArProblem();
                         $p->setDuplicationKey("CDR without external telephone number " . $cdr->getId());
                         $p->setCreatedAt(date("c"));
-                        $p->setDescription("The CDR record with id " . $cdr->getId() . " has no external telephone number.");
+                        $p->setDescription("The CDR record with id " . $cdr->getId() . " has no external telephone number." . $this->showCDRDebugInfo($cdr));
                         $p->setEffect("The CDR is not rated.");
                         $p->setProposedSolution("The problem can reside in the CDR record or in the application configuration. If you change a lot the configuration, you must force a reset and rerate of old calls in order to propagate the effects.");
                         throw (new ArProblemException($p));
@@ -480,7 +480,7 @@ class RateCalls extends FixedJobProcessor {
                         $p = new ArProblem();
                         $p->setDuplicationKey("no telephone operator prefix " . $missingPrefix);
                         $p->setCreatedAt(date("c"));
-                        $p->setDescription('There is no a telephone operator prefix entry associated to the destination number ' . $dstNumber);
+                        $p->setDescription('There is no a telephone operator prefix entry associated to the destination number ' . $dstNumber . $this->showCDRDebugInfo($cdr));
                         $p->setEffect("CDRs with destination number of the same type will not be rated.");
                         $p->setProposedSolution("Complete the Telephone Prefixes Table. If you are not interested to classification of calls according their operator, then you can also add an Empty Prefix matching all destination numbers and calling it None.");
                         throw (new ArProblemException($p));
@@ -775,7 +775,7 @@ class RateCalls extends FixedJobProcessor {
             }
             $descr .= 'and for dstchannel "' . $cdr->getDstchannel() . '"' . ' and amaflags "' . $cdr->getAmaflags() . '"';
 
-            $p->setDescription($descr);
+            $p->setDescription($descr . $this->showCDRDebugInfo($cdr));
             $p->setDuplicationKey($startOfDescr . " - " . $dateStr . " - " . $categoryName . " - " . $cdr->getDstchannel());
             $p->setCreatedAt(date("c"));
             $p->setEffect("CDRs in the given rate interval will not be rated.");
@@ -795,7 +795,7 @@ class RateCalls extends FixedJobProcessor {
         if (!is_null($cdrProblem)) {
             $p = new ArProblem();
             $p->setDuplicationKey("CDR - " . $cdr->getId());
-            $p->setDescription("CDR with id " . $cdr->getId() . " has problem: " . $cdrProblem);
+            $p->setDescription("CDR with id " . $cdr->getId() . " has problem: " . $cdrProblem . $this->showCDRDebugInfo($cdr));
             $p->setCreatedAt(date("c"));
             $p->setEffect("The CDR will not be rated.");
             $p->setProposedSolution("Inspect the CDR and solve the problem. Wait for the next rate pass.");
@@ -837,6 +837,9 @@ class RateCalls extends FixedJobProcessor {
         }
     }
 
+    protected function showCDRDebugInfo($cdr) {
+      return "\nCDR content is " . $cdr->getDebugDescription() . "\n";
+    }
 }
 
 ?>
