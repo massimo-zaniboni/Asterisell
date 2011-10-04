@@ -42,17 +42,8 @@ class Mailer {
    */
   public static function isConfigured($params) {
     $host = $params->getSmtpHost();
-    $username = $params->getSmtpUsername();
 
     if (is_null($host)) {
-      return false;
-    }
-
-    if (is_null($username)) {
-      return false;
-    }
-
-    if (strlen(trim($username)) == 0) {
       return false;
     }
 
