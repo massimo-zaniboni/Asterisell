@@ -32,7 +32,7 @@ class CheckPartiesWithoutParams extends FixedJobProcessor {
     /**
      * This file contains the date of last check of call cost limits.
      */
-    const FILE_WITH_LAST_CHECK_DATE = "last_check_call_cost_limit";
+    const FILE_WITH_LAST_CHECK_DATE = "last_CheckPartiesWithoutParams";
 
     public function process() {
         $timeFrameInMinutes = 30;
