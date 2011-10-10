@@ -32,17 +32,18 @@ sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
  *
  * Produce a "CustomerHasHighCallCostEvent" event.
  */
-class CheckCallCostLimit extends FixedJobProcessor {
+class CheckCallCostLimit extends FixedJobProcessor
+{
     /**
      * This file contains the date of last check of call cost limits.
      */
     const FILE_WITH_LAST_CHECK_DATE = "last_check_call_cost_limit";
 
     /**
-     * Check cost limits only if last check was done before the 
+     * Check cost limits only if last check was done before the
      * "check_cost_limits_after_minutes" time frame.
      *
-     * Inform the CUSTOMER via MAIL 
+     * Inform the CUSTOMER via MAIL
      * if there are customers that are not respecting these limits.
      *
      * Add an ERROR also on the ERROR TABLE in order to inform
@@ -50,14 +51,15 @@ class CheckCallCostLimit extends FixedJobProcessor {
      *
      * @return always TRUE. Errors are reported on the error table.
      */
-    public function process() {
+    public function process()
+    {
         // Profiling
         //
-    $time1 = microtime_float();
+        $time1 = microtime_float();
 
         $timeFrameInMinutes = sfConfig::get('app_check_cost_limits_after_minutes');
 
-        $checkFile = CheckCallCostLimit::FILE_WITH_LAST_CHECK_DATE;
+        $checkFile = self::FILE_WITH_LAST_CHECK_DATE;
         $checkLimit = strtotime("-$timeFrameInMinutes minutes");
         $mutex = new Mutex($checkFile);
         if ($mutex->maybeTouch($checkLimit)) {
@@ -66,7 +68,7 @@ class CheckCallCostLimit extends FixedJobProcessor {
 
             // Profiling
             //
-      $time2 = microtime_float();
+            $time2 = microtime_float();
             $totTime = $time2 - $time1;
             return "Call cost limits checked in $totTime seconds.";
         } else {
@@ -77,29 +79,32 @@ class CheckCallCostLimit extends FixedJobProcessor {
     /**
      * Execute the check of all parties
      */
-    public function checkAllLimits() {
+    public function checkAllLimits()
+    {
         return $this->checkLimits(NULL);
     }
 
     /**
      * Execute the check of a Party
-     * 
+     *
      * @param $partyId the party to check
      * @return the sum of cost of the last 300 days
      */
-    public function checkPartyLimits($partyId) {
+    public function checkPartyLimits($partyId)
+    {
         return $this->checkLimits($partyId);
     }
 
     /**
-     * Execute the check. 
-     * 
+     * Execute the check.
+     *
      * @param $partyId NULL if all parties must be checked,
      * the ar_party.id to check otherwise
-     * @return NULL if $partyId == NULL, 
+     * @return NULL if $partyId == NULL,
      * the sum of costs associated to the party otherwise.
      */
-    private function checkLimits($partyId) {
+    private function checkLimits($partyId)
+    {
         $nowDate = date("c");
 
         $method = trim(sfConfig::get('app_max_cost_limit_timeframe'));
@@ -159,7 +164,7 @@ class CheckCallCostLimit extends FixedJobProcessor {
 
                     // Advise the customer via mail only at a certain interval.
                     //
-	  if ($isCustomerAdviseEnabled == TRUE) {
+                    if ($isCustomerAdviseEnabled == TRUE) {
                         if ($party->getLastEmailAdviseForMaxLimit30() < $adviseTimeFrame) {
                             $d = new CustomerHasHighCallCostEvent();
                             $d->arPartyId = $id;

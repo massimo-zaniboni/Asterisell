@@ -28,16 +28,18 @@ sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
  * Last version of Asterisell force this parameter, later version no.
  * So the need for this check.
  */
-class CheckPartiesWithoutParams extends FixedJobProcessor {
+class CheckPartiesWithoutParams extends FixedJobProcessor
+{
     /**
      * This file contains the date of last check of call cost limits.
      */
     const FILE_WITH_LAST_CHECK_DATE = "last_CheckPartiesWithoutParams";
 
-    public function process() {
+    public function process()
+    {
         $timeFrameInMinutes = 30;
 
-        $checkFile = CheckCallCostLimit::FILE_WITH_LAST_CHECK_DATE;
+        $checkFile = self::FILE_WITH_LAST_CHECK_DATE;
         $checkLimit = strtotime("-$timeFrameInMinutes minutes");
         $mutex = new Mutex($checkFile);
         if ($mutex->maybeTouch($checkLimit)) {
@@ -49,7 +51,8 @@ class CheckPartiesWithoutParams extends FixedJobProcessor {
     /**
      * Execute the check of all parties
      */
-    public function checkAll() {
+    public function checkAll()
+    {
         $c = new Criteria();
         $c->add(ArPartyPeer::AR_PARAMS_ID, NULL);
         $parties = ArPartyPeer::doSelect($c);

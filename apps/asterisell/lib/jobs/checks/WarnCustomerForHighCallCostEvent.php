@@ -26,15 +26,18 @@ sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
 /**
  * The Customer has high call costs.
  */
-class WarnCustomerForHighCallCostEvent extends JobData {
+class WarnCustomerForHighCallCostEvent extends JobData
+{
 
-  public $mailToAddress = NULL;
-  public $mailFromAddress = NULL;
-  public $mailSubject = NULL;
-  public $mailContent = NULL;
+    public $mailToAddress = NULL;
+    public $mailFromAddress = NULL;
+    public $mailSubject = NULL;
+    public $mailContent = NULL;
 
-  public function getDescription() {
-    return __("The party with id \"" . $this->arPartyId . "\" will be advised by mail about high call costs.");
-  }
+    public function getDescription()
+    {
+        return __("The party with id \"" . $this->arPartyId . "\" will be advised by mail about high call costs.");
+    }
 }
+
 ?>

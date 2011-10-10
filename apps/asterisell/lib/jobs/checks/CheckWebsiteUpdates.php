@@ -1,4 +1,4 @@
- <?php
+<?php
 
 /* $LICENSE 2009, 2010:
  *
@@ -26,60 +26,63 @@ sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
 /**
  * Check if there are updates on the Asterisell Website.
  */
-class CheckWebsiteUpdates extends FixedJobProcessor {
+class CheckWebsiteUpdates extends FixedJobProcessor
+{
 
-  /**
-   * This file contains the date of last check 
-   */
-  const FILE_WITH_LAST_CHECK_DATE = "last_check_website_updates";
+    /**
+     * This file contains the date of last check
+     */
+    const FILE_WITH_LAST_CHECK_DATE = "last_check_website_updates";
 
-  /**
-   * How often (in days) check updates on the website.
-   */
-  const HOW_OFTEN_CHECK = 1;
+    /**
+     * How often (in days) check updates on the website.
+     */
+    const HOW_OFTEN_CHECK = 1;
 
-  const WEBSITE_FEEDS = 'http://asterisell.profitoss.com/rss-f.xml';
+    const WEBSITE_FEEDS = 'http://asterisell.profitoss.com/rss-f.xml';
 
-  const WEBSITE_HOMEPAGE = 'http://asterisell.profitoss.com';
+    const WEBSITE_HOMEPAGE = 'http://asterisell.profitoss.com';
 
-  public function process() {
-    $checkFile = self::FILE_WITH_LAST_CHECK_DATE;
+    public function process()
+    {
+        $checkFile = self::FILE_WITH_LAST_CHECK_DATE;
 
-    $checkLimit = strtotime("-" . self::HOW_OFTEN_CHECK . " days");
+        $checkLimit = strtotime("-" . self::HOW_OFTEN_CHECK . " days");
 
-    $mutex = new Mutex($checkFile);
+        $mutex = new Mutex($checkFile);
 
-    if ($mutex->maybeTouch($checkLimit)) {
-      $handle = fopen(self::WEBSITE_FEEDS, "r");
+        if ($mutex->maybeTouch($checkLimit)) {
+            $handle = fopen(self::WEBSITE_FEEDS, "r");
 
-      if ($handle != FALSE) {
-	$feeds = fread($handle, 1024*200);
+            if ($handle != FALSE) {
+                $feeds = fread($handle, 1024 * 200);
 
-	if ($feeds != FALSE) {
-	  $md5 = md5($feeds);
-          $oldmd5 = $mutex->getTagInfo();
+                if ($feeds != FALSE) {
+                    $md5 = md5($feeds);
+                    $oldmd5 = $mutex->getTagInfo();
 
-          if ($md5 !== $oldmd5) {
-            $mutex->setTagInfo($md5);
-            $p = new ArProblem();
-            $p->setDuplicationKey("New RSS Feeds " . $md5);
-            $p->setDescription("There are news on Asterisell web-site: " . self::WEBSITE_HOMEPAGE);
-            $p->setEffect("The news can be about discovered and fixed bugs.");
-            $p->setProposedSolution("Read " . self::WEBSITE_HOMEPAGE);
-            ArProblemException::addProblemIntoDBOnlyIfNew($p);
-          }
+                    if ($md5 !== $oldmd5) {
+                        $mutex->setTagInfo($md5);
+                        $p = new ArProblem();
+                        $p->setDuplicationKey("New RSS Feeds " . $md5);
+                        $p->setDescription("There are news on Asterisell web-site: " . self::WEBSITE_HOMEPAGE);
+                        $p->setEffect("The news can be about discovered and fixed bugs.");
+                        $p->setProposedSolution("Read " . self::WEBSITE_HOMEPAGE);
+                        ArProblemException::addProblemIntoDBOnlyIfNew($p);
+                    }
 
-          return "Checked " . self::WEBSITE_FEEDS;
+                    return "Checked " . self::WEBSITE_FEEDS;
 
+                } else {
+                    return "Problems reading " . self::WEBSITE_FEEDS . ". It will be checked later.";
+                }
+            } else {
+                return "Problems reading " . self::WEBSITE_FEEDS . ". It will be checked later.";
+            }
         } else {
-	  return "Problems reading " . self::WEBSITE_FEEDS . ". It will be checked later.";
+            return "Check postponed according settings.";
         }
-     } else {
-       return "Problems reading " . self::WEBSITE_FEEDS . ". It will be checked later.";
-     }
-    } else {
-      return "Check postponed according settings.";
     }
-  }
 }
+
 ?>

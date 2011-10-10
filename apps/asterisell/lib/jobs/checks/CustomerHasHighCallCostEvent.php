@@ -26,17 +26,20 @@ sfLoader::loadHelpers(array('I18N', 'Debug', 'Date', 'Asterisell'));
 /**
  * The Customer has high call costs.
  */
-class CustomerHasHighCallCostEvent extends JobData {
+class CustomerHasHighCallCostEvent extends JobData
+{
 
-  public $arPartyId = NULL;
-  public $effectiveCost = NULL;
-  public $costLimit = NULL;
-  public $fromDate = NULL;
-  public $toDate = NULL;
-  public $method = "";
+    public $arPartyId = NULL;
+    public $effectiveCost = NULL;
+    public $costLimit = NULL;
+    public $fromDate = NULL;
+    public $toDate = NULL;
+    public $method = "";
 
-  public function getDescription() {
-    return __("The party with id \"" . $this->arPartyId . "\" has high call costs.");
-  }
+    public function getDescription()
+    {
+        return __("The party with id \"" . $this->arPartyId . "\" has high call costs.");
+    }
 }
+
 ?>

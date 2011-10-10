@@ -30,35 +30,37 @@ require_once 'Mailer.php';
 /**
  * Send an Email to a customer about high call costs.
  */
-class WarnCustomerForHighCallCost extends JobProcessor {
+class WarnCustomerForHighCallCost extends JobProcessor
+{
 
-  public function process(JobData $jobData, $parentJobId) {
+    public function process(JobData $jobData, $parentJobId)
+    {
 
-    if (! ($jobData instanceof WarnCustomerForHighCallCostEvent)) {
-      return FALSE;
+        if (!($jobData instanceof WarnCustomerForHighCallCostEvent)) {
+            return FALSE;
+        }
+
+        $party = PartyPeer::retrieveByPk($jobData->arPartyId);
+        $params = $party->getArParams();
+
+        $message = Swift_Message::newInstance()
+                ->setSubject($jobData->mailSubject)
+                ->setFrom(array(trim($jobData->$mailFromAddress) => $params->getServiceName()))
+                ->setTo(array($jobData->$mailToAddress => $party->getFullName()))
+                ->setBody($jobData->mailContent);
+
+        $mailer = Mailer::getNewInstance($params);
+        $numSent = $mailer->send($message);
+
+        if ($numSent > 0) {
+            $party->setLastEmailAdviseForMaxLimit30(date("c"));
+            $party->save();
+        } else {
+            throw new Exception('Problems sending mail to customer "' . $party->getFullName() . '" at email address "' . $jobData->mailToAddress . '"');
+        }
+
+        return TRUE;
     }
-  
-    $party = PartyPeer::retrieveByPk($jobData->arPartyId);
-    $params = $party->getArParams();
-
-    $message = Swift_Message::newInstance()
-      ->setSubject($jobData->mailSubject)
-      ->setFrom(array(trim($jobData->$mailFromAddress) => $params->getServiceName()))
-      ->setTo(array($jobData->$mailToAddress => $party->getFullName()))
-      ->setBody($jobData->mailContent)
-      ;
-
-    $mailer = Mailer::getNewInstance($params);
-    $numSent = $mailer->send($message);
-
-    if ($numSent > 0) {
-      $party->setLastEmailAdviseForMaxLimit30(date("c"));
-      $party->save(); 
-    } else {
-      throw new Exception('Problems sending mail to customer "' . $party->getFullName() . '" at email address "' . $jobData->mailToAddress . '"');
-    }
-
-    return TRUE;
-  }
 }
+
 ?>
