@@ -128,7 +128,7 @@ class CheckCallCostLimit extends FixedJobProcessor
         }
 
         $connection = Propel::getConnection();
-        $query = 'SELECT ar_party.id as party_id, ar_party.max_limit_30 as max_limit_30, SUM(cdr.income) as total_cost FROM ar_party, ar_office, ar_asterisk_account, cdr WHERE cdr.ar_asterisk_account_id = ar_asterisk_account.id AND ar_asterisk_account.ar_office_id = ar_office.id AND ar_office.ar_party_id = ar_party.id AND cdr.calldate >= ? ';
+        $query = 'SELECT ar_party.id as party_id, ar_party.max_limit_30 as max_limit_30, SUM(cdr.income) as total_cost FROM ar_party, ar_office, ar_asterisk_account, cdr FORCE INDEX (cdr_calldate_index) WHERE cdr.ar_asterisk_account_id = ar_asterisk_account.id AND ar_asterisk_account.ar_office_id = ar_office.id AND ar_office.ar_party_id = ar_party.id AND cdr.calldate >= ? and income > 0 ';
 
         if (!is_null($partyId)) {
             $query .= ' AND ar_party.id = ' . $partyId;

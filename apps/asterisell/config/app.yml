@@ -189,6 +189,23 @@ all:
   # 
   max_cost_limit_timeframe: m
 
+   # Used from job CheckFrauds (enabled only in commercial version)
+   # The job run according the scheduling of `check_cost_limits_after_minutes`
+   #
+   check_frauds:
+     max_unprocessed_calls: 10
+     # if there are more than these unprocessed calls,
+     # then advise the administrator, because there can be unnoticed high calls costs
+
+     compare_xx_last_days_respect_customer_daily_max_cost: 5
+     # note: customer daily max cost is the customer monthly max cost, specified in the user interface,
+     # divided by 30. Set to 0 for disabling it.
+
+     compare_x_last_months_respect_current_costs: 3
+     # warn if a customer spent a 25% more than the maximum cost of last x months in the
+     # same day of week and a comparable hour of the day (hours grouped by 00-06, 06-12, 12-18, 18-24).
+     # Set to 0 for disabling it.
+
   # How many concurrent calls, the Asterisk server can support in a safely
   # manner. If this number of concurrent calls is reached, 
   # then the administrator is advised.
