@@ -51,10 +51,6 @@ If there is a high number of calls to rate, the PHP process can use all availabl
 
 All the error messages generated during the re-rating are put inside the "Current Problems" table, but they are (intentionally) not emailed to administrators, in order to avoid sending warning emails, during the work of an administrator on the system.
 
-## Update of Receiver Type
-
-If you change the Telephone Prefixes table you must rerate the CDRs in order to recognize the new prefixes and join them with the CDRs. This operation will not affect the rated costs and incomes, but only the documentation information associated to calls.
-
 ## Cost Precision
 
 Costs are displayed using the default currency precision but they are stored (and summed) using full precision, as setted in the configuration file.

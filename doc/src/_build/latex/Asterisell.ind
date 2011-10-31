@@ -1,0 +1,50 @@
+\begin{theindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter A
+  \item Asterisell owner, \hyperpage{25}
+
+  \indexspace
+  \bigletter B
+  \item bundle rate, \hyperpage{25}
+
+  \indexspace
+  \bigletter C
+  \item call report, \hyperpage{25}
+  \item CDR, \hyperpage{25}
+  \item CDR table, \hyperpage{25}
+  \item classification rate, \hyperpage{25}
+  \item cost rate, \hyperpage{25}
+  \item customer, \hyperpage{26}
+  \item customer office, \hyperpage{26}
+
+  \indexspace
+  \bigletter E
+  \item external telephone number, \hyperpage{26}
+
+  \indexspace
+  \bigletter I
+  \item ignored call, \hyperpage{26}
+  \item income rate, \hyperpage{26}
+  \item incoming call, \hyperpage{26}
+  \item internal call, \hyperpage{26}
+  \item internal telephone number, \hyperpage{26}
+
+  \indexspace
+  \bigletter O
+  \item outgoing call, \hyperpage{26}
+
+  \indexspace
+  \bigletter P
+  \item partner, \hyperpage{26}
+
+  \indexspace
+  \bigletter R
+  \item reseller, \hyperpage{26}
+
+  \indexspace
+  \bigletter V
+  \item VoIP account, \hyperpage{26}
+  \item VoIP vendor, \hyperpage{26}
+
+\end{theindex}

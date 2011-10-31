@@ -1,3 +1,10 @@
+= How Upgrading the Help =
+
+   * cd doc/src
+   * edit the files
+   * cd ../../scripts
+   * ./makehelp
+
 = Code Starting Points =
 
 The database schema with annotations is described in
@@ -19,7 +26,6 @@ is the job rating all the calls.
   apps/asterisell/lib/jobs/invoices/GenerateInvoiceDetails.php
 
 is the job calculating the invoices.
-   
 
 == Customizations ==
 

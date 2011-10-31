@@ -31,10 +31,32 @@ define('MARKDOWN_FN_BACKLINK_CLASS', "");
 # Change to false to remove Markdown from posts and/or comments.
 define('MARKDOWN_WP_POSTS', true);
 define('MARKDOWN_WP_COMMENTS', true);
+
 ### Asterisell Interface ###
-function insertHelp($text) {
-  return '<div id="asterisellHelp">' . "\n" . Markdown($text) . "\n" . '</div>';
+
+/**
+ * @param $markDownText the markdown text to display
+ * @param $namesWithLinks an array of section name and description for online manual,
+ *        something like `array(array("resellers-info", "Reseller General Info"))`
+ * @return string
+ */
+function insertHelp($markDownText, $sectionNameAndDescription = NULL) {
+  $r =   '<div id="asterisellHelp">';
+
+  if (!is_null($sectionNameAndDescription)) {
+    $r .= '<h2>' . __('Online Manual Sections') . '</h2>';
+    foreach($sectionNameAndDescription as $sn) {
+        $r .= '<p>' . link_to_online_manual($sn[0], $sn[1]) . '</p>';
+    }
+  }
+
+  $r .= "\n" . Markdown($markDownText);
+
+  $r .=  "\n" . '</div>' . "\n" ;
+
+  return $r;
 }
+
 ### Standard Function Interface ###
 define('MARKDOWN_PARSER_CLASS', 'MarkdownExtra_Parser');
 function Markdown($text) {

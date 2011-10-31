@@ -1,5 +1,5 @@
 <?php
-use_helper('Number', 'I18N', 'Date');
+use_helper('Number', 'I18N', 'Date', 'OnlineManual');
 
 // Manage params, and ask for a reseller-specific login form if it is specified
 //
@@ -54,8 +54,8 @@ if ($sf_user->hasCredential('admin')) {
   echo '<li><a href="" target="_self" >' . __('Params') . '</a>'. "\n";
   echo '<ul>'. "\n";
   echo '<li>' . link_to(__('Params'), 'params/list') . '</li>'. "\n";
-  echo '<li>' . link_to(__('Partners'), 'instructions/partners') . '</li>'. "\n";
-  echo '<li>' . link_to(__('Resellers'), 'instructions/resellers') . '</li>'. "\n";
+  echo '<li>' . link_to_online_manual('partners', __('Partners')) . '</li>'. "\n";
+  echo '<li>' . link_to_online_manual('resellers', __('Resellers')) . '</li>'. "\n";
   echo '<li>' . link_to(__('Upload Files'), 'sfMediaLibrary/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('Price Categories'), 'rate_category/list') . '</li>'. "\n";
   echo '<li>' . link_to(__('Telephone Prefixes'), 'telephone_prefix/list') . '</li>'. "\n";
@@ -101,7 +101,8 @@ if ($sf_user->hasCredential('admin')) {
 
   echo '<li><a href="" target="_self" >' . __('Help') . '</a>'. "\n";
   echo '<ul>'. "\n";
-  echo '<li>' . link_to(__('Instructions'), 'instructions/index') . '</li>'. "\n";
+  echo '<li>' . link_to_online_manual(NULL, __('Instructions')) . '</li>'. "\n";
+  echo '<li><a href="' . _compute_public_path('Asterisell', 'help', 'pdf', true) . '">' . __('Instructions as PDF') . '</a></li>'. "\n";
   echo '<li>' . link_to(__('PHP-Info'), 'phpinfo/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('APC-Info'), 'apcinfo/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('Asterisell Website'), 'http://asterisell.profitoss.com') . '</li>'. "\n";

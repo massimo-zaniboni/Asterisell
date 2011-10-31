@@ -19,7 +19,7 @@ $str = <<<VERYLONGSTRING
 
 ## Version
 
-asterisell-free-stable-3.11.0
+asterisell-free-stable-3.12.00
 
 ## Authors / Contributors
 

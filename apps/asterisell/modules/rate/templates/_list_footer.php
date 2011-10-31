@@ -1,5 +1,5 @@
 <?php
-use_helper('Markdown');
+use_helper('Markdown', 'OnlineManual');
 // Default culture is en_US
 //
 echo insertHelp('
@@ -92,7 +92,10 @@ CDR records that are correctly processed, but according classification rates are
 
 In case of big reorganization of active rates, the administrator can force a re-rate of current CDR, in order to propagate changes also to already rated CDRs.
 
-');
+',
+  array(array('rates', 'Initial Rates Configurations'),
+        array('rating', 'Solving Problems in Rate Configurations')));
+
 //}
 
 ?>

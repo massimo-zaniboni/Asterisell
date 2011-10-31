@@ -1,5 +1,5 @@
 <?php
-use_helper('Markdown');
+use_helper('Markdown', 'OnlineManual');
 // Default culture is en_US
 //
 echo insertHelp('
@@ -32,8 +32,5 @@ The administrator is advised if there are new problems not marked as "known prob
 
 The test is performed periodically from the cronjob process, but you can launch the test also using the **test cost limit violations** button.
 
-');
-//}
-
-?><?php
+', array(array('rating', 'Rating Errors')));
 ?>

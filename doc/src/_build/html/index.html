@@ -1,0 +1,1215 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Asterisell Overview &mdash; Asterisell documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '6',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/asterisell_favicon.ico"/>
+    <link rel="top" title="Asterisell documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="#">Asterisell documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="#">
+              <img class="logo" src="_static/asterisell.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Asterisell Overview</a><ul>
+<li><a class="reference internal" href="#usage-scenario">Usage Scenario</a></li>
+<li><a class="reference internal" href="#customizations">Customizations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configurations">Configurations</a><ul>
+<li><a class="reference internal" href="#main-configurations">Main Configurations</a></li>
+<li><a class="reference internal" href="#asterisell-owner-params">Asterisell Owner Params</a></li>
+<li><a class="reference internal" href="#web-site-appearances">Web Site Appearances</a></li>
+<li><a class="reference internal" href="#vendors-specification">Vendors Specification</a></li>
+<li><a class="reference internal" href="#customers-specification">Customers Specification</a></li>
+<li><a class="reference internal" href="#telephone-prefixes-in-call-report">Telephone Prefixes in Call Report</a></li>
+<li><a class="reference internal" href="#rates">Rates</a><ul>
+<li><a class="reference internal" href="#classification-rates">Classification Rates</a></li>
+<li><a class="reference internal" href="#telephone-number-normalizations">Telephone Number Normalizations</a></li>
+<li><a class="reference internal" href="#ignored-cdrs">Ignored CDRs</a></li>
+<li><a class="reference internal" href="#internal-cdrs">Internal CDRs</a></li>
+<li><a class="reference internal" href="#incoming-calls">Incoming Calls</a></li>
+<li><a class="reference internal" href="#revenue-sharing">Revenue Sharing</a></li>
+<li><a class="reference internal" href="#normal-rates">Normal Rates</a></li>
+<li><a class="reference internal" href="#rate-priorities">Rate Priorities</a></li>
+<li><a class="reference internal" href="#price-categories">Price Categories</a></li>
+<li><a class="reference internal" href="#vendor-rates">Vendor Rates</a></li>
+<li><a class="reference internal" href="#rates-specified-using-csv-files">Rates Specified Using CSV Files</a></li>
+<li><a class="reference internal" href="#bundle-rates">Bundle Rates</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#invoicing">Invoicing</a><ul>
+<li><a class="reference internal" href="#report-about-calls">Report about Calls</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#user-interface">User Interface</a><ul>
+<li><a class="reference internal" href="#filters">Filters</a></li>
+<li><a class="reference internal" href="#online-help">Online Help</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rating">Rating</a><ul>
+<li><a class="reference internal" href="#error-in-rate-configurations">Error in Rate Configurations</a><ul>
+<li><a class="reference internal" href="#unrated-cdrs">Unrated CDRs</a></li>
+<li><a class="reference internal" href="#examples-of-problem-solution">Examples of Problem Solution</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cdrs-re-rating">CDRs Re-rating</a></li>
+<li><a class="reference internal" href="#rates-updating">Rates Updating</a><ul>
+<li><a class="reference internal" href="#in-advance">In Advance</a></li>
+<li><a class="reference internal" href="#current">Current</a></li>
+<li><a class="reference internal" href="#changing-customer-price-category">Changing Customer Price Category</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#invoices">Invoices</a><ul>
+<li><a class="reference internal" href="#generation">Generation</a></li>
+<li><a class="reference internal" href="#sending-emails">Sending Emails</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#partners-and-resellers">Partners and Resellers</a><ul>
+<li><a class="reference internal" href="#resellers">Resellers</a><ul>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#main-asterisell-instance-configuration">Main Asterisell Instance Configuration</a></li>
+<li><a class="reference internal" href="#reseller-instance-configuration">Reseller Instance Configuration</a></li>
+<li><a class="reference internal" href="#rerating-of-cdrs">Rerating of CDRs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#partners">Partners</a><ul>
+<li><a class="reference internal" href="#id5">License</a></li>
+<li><a class="reference internal" href="#configuration">Configuration</a></li>
+<li><a class="reference internal" href="#id6">Invoices</a></li>
+<li><a class="reference internal" href="#custom-login-page">Custom Login Page</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#main-configuration-file-content">Main Configuration File Content</a></li>
+<li><a class="reference internal" href="#glossary">Glossary</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="toctree-wrapper compound">
+<ul class="simple">
+</ul>
+</div>
+<div class="section" id="asterisell-overview">
+<h1>Asterisell Overview<a class="headerlink" href="#asterisell-overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="usage-scenario">
+<h2>Usage Scenario<a class="headerlink" href="#usage-scenario" title="Permalink to this headline">¶</a></h2>
+<p>Asterisell is a web application for rating, showing to customers, and billing VoIP calls.</p>
+<dl class="docutils">
+<dt>Usage scenario:</dt>
+<dd><ul class="first last simple">
+<li>you are a vendor of Voice over IP Telephony (VoIP) services;</li>
+<li>your <a class="reference internal" href="#term-customer"><em class="xref std std-term">customers</em></a> pay you for this service;</li>
+<li>your customers can call users residing on telephone networks that are not directly managed/owned from you;</li>
+<li>for routing calls to external networks, you use the services of other <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">telephone vendors</em></a>, and you pay them for this service;</li>
+</ul>
+</dd>
+<dt>Every call has:</dt>
+<dd><ul class="first last simple">
+<li>an income: what your <a class="reference internal" href="#term-customer"><em class="xref std std-term">customer</em></a> pays to you;</li>
+<li>a cost: what you pay to other telephone service vendors (<a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>) in order to route the call;</li>
+<li>an earn: the difference between the income and the cost;</li>
+</ul>
+</dd>
+<dt>You can use Asterisell for:</dt>
+<dd><ul class="first last simple">
+<li>rating calls;</li>
+<li>showing to your customers details about their calls;</li>
+<li>billing your customers;</li>
+<li>calculating what you owe to other telephone service vendors (<a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>)</li>
+</ul>
+</dd>
+</dl>
+<p>You can have different <a class="reference internal" href="#term-partner"><em class="xref std std-term">partners</em></a>, and different <a class="reference internal" href="#term-reseller"><em class="xref std std-term">resellers</em></a>.</p>
+</div>
+<div class="section" id="customizations">
+<span id="asterisell-customizations"></span><h2>Customizations<a class="headerlink" href="#customizations" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Asterisell can be easily extended with custom rates and jobs, because it uses a blackboard approach for processing information:</dt>
+<dd><ul class="first last simple">
+<li>events are put inside the the blackboard;</li>
+<li>jobs are activated when there are proper events on the blackboard;</li>
+<li>jobs can produce new events;</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="configurations">
+<h1>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="main-configurations">
+<span id="id1"></span><h2>Main Configurations<a class="headerlink" href="#main-configurations" title="Permalink to this headline">¶</a></h2>
+<p><tt class="file docutils literal"><span class="pre">apps/asterisell/config/app.yml</span></tt> contains the main configurations of Asterisell. Once they are properly configured, they rarely change.</p>
+<p>The meaning of various settings are explained directly inside the file comments. Details of some settings will be explained in other tasks. Initially set only parameters of witch you are sure, leaving default values otherwise.</p>
+<p>In order to make active the changes, you must execute <strong class="command">./configure.sh</strong>.</p>
+<p><a class="reference internal" href="#main-configuration-file"><em>Main Configuration File Content</em></a>.</p>
+</div>
+<div class="section" id="asterisell-owner-params">
+<span id="asterisell-owner"></span><h2>Asterisell Owner Params<a class="headerlink" href="#asterisell-owner-params" title="Permalink to this headline">¶</a></h2>
+<p>Use <em class="menuselection">Params ‣ Params ‣ Default</em> for defining the params of <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a>.</p>
+</div>
+<div class="section" id="web-site-appearances">
+<h2>Web Site Appearances<a class="headerlink" href="#web-site-appearances" title="Permalink to this headline">¶</a></h2>
+<p>Logo, slogan, title, footer and similar aspects of the web-site can be customized directly from <a class="reference internal" href="#asterisell-owner"><em>Asterisell Owner Params</em></a>.</p>
+<p>Web Site appearance can be further customized changing &#8220;apps/asterisell/templates/asterisell_layout.php&#8221; and &#8220;web/css&#8221; content.</p>
+</div>
+<div class="section" id="vendors-specification">
+<span id="id2"></span><h2>Vendors Specification<a class="headerlink" href="#vendors-specification" title="Permalink to this headline">¶</a></h2>
+<p>Use <em class="menuselection">Parties ‣ Customers / Vendors</em> for defining a <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>.</p>
+<p>Use <em class="menuselection">Rates</em> for creating rates associated to the <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>, calculating the cost of calls.</p>
+<p>You can define one or more vendors, and you can use different vendors for different calls, associating cost rates to corresponding VoIP vendor.</p>
+</div>
+<div class="section" id="customers-specification">
+<h2>Customers Specification<a class="headerlink" href="#customers-specification" title="Permalink to this headline">¶</a></h2>
+<p>Use <em class="menuselection">Parties ‣ Customers / Vendors</em> for defining a <a class="reference internal" href="#term-customer"><em class="xref std std-term">customer</em></a>.</p>
+<p>Use <em class="menuselection">Parties ‣ Customer Offices</em> for defining one or more  <a class="reference internal" href="#term-customer-office"><em class="xref std std-term">customer office</em></a> associated to a customer.</p>
+<p>Use <em class="menuselection">Parties ‣ VoIP Accounts</em> for defining one or more  <a class="reference internal" href="#term-voip-account"><em class="xref std std-term">VoIP account</em></a>, associated to an office.</p>
+<p>The <a class="reference internal" href="#term-call-report"><em class="xref std std-term">call report</em></a> will display office and account information only when they are relevant. They are not displayed in case of logged customers with only one office, or only one VoIP account.</p>
+<p>If a customer is not more active, disable the <tt class="docutils literal"><span class="pre">Is</span> <span class="pre">Active</span></tt> flag. Invoices associated to the customer will not generated.</p>
+</div>
+<div class="section" id="telephone-prefixes-in-call-report">
+<span id="telephone-prefixes"></span><h2>Telephone Prefixes in Call Report<a class="headerlink" href="#telephone-prefixes-in-call-report" title="Permalink to this headline">¶</a></h2>
+<p>The call report contains something like</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="28%" />
+<col width="33%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Tel.Tr.</th>
+<th class="head">Location</th>
+<th class="head">Connection</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>3932894234XXX
+1707782466XXX</td>
+<td>Italy
+USA</td>
+<td>Mobile Line
+Fixed Line</td>
+</tr>
+</tbody>
+</table>
+<p>It associate a a <cite>location</cite> and a <cite>connection type</cite> to a telephone number.</p>
+<dl class="docutils">
+<dt>This association is done inspecting the <em class="menuselection">Params ‣ Telephone Prefixes</em> table:</dt>
+<dd><ul class="first last simple">
+<li>A prefix like &#8220;39&#8221; can be associated to a generic &#8220;Italian Operator&#8221;.</li>
+<li>A prefix like &#8220;393&#8221; can be associated to a generic (but more specific) &#8220;Mobile Italian Operator&#8221;.</li>
+<li>A prefix like &#8220;39328&#8221; can be associated to the specific &#8220;Wind Mobile Italian Operator&#8221;.</li>
+<li>A telephone number is associated to its more specific prefix. So &#8220;3944444&#8221; is associated to &#8220;Italian Operator&#8221;, while &#8220;39344444&#8221; to &#8220;Mobile Italian Operator&#8221; and finally &#8220;393284444&#8221; to &#8220;Wind Mobile Italian Operator&#8221;.</li>
+</ul>
+</dd>
+</dl>
+<p>The already rated CDRs must be rerated again, in order to see the effects of changes in the table.</p>
+<p>Telephone Prefix table is not used in rating process, but only in call report.</p>
+<p>Initial Asterisell installation already load a complete list of standard world-wide prefixes. You can manually add custom prefixes associated to your specific settings.</p>
+<dl class="docutils">
+<dt>It is possible to complete the table also importing from a CSV file:</dt>
+<dd><ul class="first last simple">
+<li><em class="menuselection">Params ‣ Rates</em>.</li>
+<li>Create a pseudo rate of type <cite>CSV File with Tel.Prefixes and Rates</cite>.</li>
+<li>Set the rate according the format of the CSV file.</li>
+<li>Make sure activating <cite>Update also prefix table</cite>.</li>
+<li>Press <cite>Save</cite> button.</li>
+<li>Note that in default settings, local numbers are stored internally in their complete form with the international prefix. Make sure that it is part of the table.</li>
+<li>Delete the rate.</li>
+<li>Check the prefix table.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="rates">
+<span id="cdr-rating-process"></span><h2>Rates<a class="headerlink" href="#rates" title="Permalink to this headline">¶</a></h2>
+<p>Rates classify every <a class="reference internal" href="#term-cdr"><em class="xref std std-term">CDR</em></a>, and associate a cost and an income to them.</p>
+<div class="section" id="classification-rates">
+<h3>Classification Rates<a class="headerlink" href="#classification-rates" title="Permalink to this headline">¶</a></h3>
+<p>A new <a class="reference internal" href="#term-cdr"><em class="xref std std-term">CDR</em></a> starts with state unprocessed, and they are initially managed from <a class="reference internal" href="#term-classification-rate"><em class="xref std std-term">classification rate</em></a>. They inspect mainly the amaflags and disposition fields where Asterisk server put billing hints/information.</p>
+<dl class="docutils">
+<dt>A classification rate classifies a call:</dt>
+<dd><ul class="first last simple">
+<li>as <tt class="docutils literal"><span class="pre">outgoing</span></tt>, if the call is made from the customer to an external telephone number;</li>
+<li>as <tt class="docutils literal"><span class="pre">incoming</span></tt>, it the call is from an external telephone number to the customer VoIP number;</li>
+<li>as <tt class="docutils literal"><span class="pre">internal</span></tt>, if the call is made from the customer to an internal VoIP account;</li>
+<li>as <tt class="docutils literal"><span class="pre">ignore</span></tt>, if the CDR can be ignored;</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="telephone-number-normalizations">
+<h3>Telephone Number Normalizations<a class="headerlink" href="#telephone-number-normalizations" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Advanced CDR processing can be performed from customized <tt class="docutils literal"><span class="pre">classification</span> <span class="pre">rates</span></tt>, that are usually created from developers according the specific needs of Asterisell instance. Some example of doable operations are:</dt>
+<dd><ul class="first last simple">
+<li>recognition of complex patterns for local/mobile/interstate/intrastate telephone numbers;</li>
+<li>ad-hoc formatting of telephone numbers according their type;</li>
+<li>recognition of off-peak, peak or week-end calls, according the call-time;</li>
+</ul>
+</dd>
+</dl>
+<p>These operations are performed by custom PHP code, so you must consult your Asterisell assistance.</p>
+</div>
+<div class="section" id="ignored-cdrs">
+<h3>Ignored CDRs<a class="headerlink" href="#ignored-cdrs" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>CDRs of type <tt class="docutils literal"><span class="pre">ignore</span></tt> are not further processed:</dt>
+<dd><ul class="first last simple">
+<li>they are not displayed in the <a class="reference internal" href="#term-call-report"><em class="xref std std-term">call report</em></a>;</li>
+<li>they are not billed;</li>
+<li>their fields can be in a bad format;</li>
+</ul>
+</dd>
+</dl>
+<p>They remain in the <a class="reference internal" href="#term-cdr-table"><em class="xref std std-term">CDR table</em></a>, but they are ignored.</p>
+<p>Note that they are not deleted, and in case of change of the classification rate, usually during initial phase of Asterisell customized deployment, the ignored CDRs can be re-rated as all other CDRs, and in case they can become CDRs of other type, if the classification logic is changed.</p>
+</div>
+<div class="section" id="internal-cdrs">
+<h3>Internal CDRs<a class="headerlink" href="#internal-cdrs" title="Permalink to this headline">¶</a></h3>
+<p>CDRs of type <tt class="docutils literal"><span class="pre">internal</span></tt> are calls between two local VoIP users.</p>
+<p>Usually they have no cost, so they are usually associated to rates saying their cost and income is simply 0.</p>
+<p>They can be displayed or not displayed in the <a class="reference internal" href="#term-call-report"><em class="xref std std-term">call report</em></a>, according the setting <tt class="docutils literal"><span class="pre">show_internal_calls</span></tt> in <a class="reference internal" href="#main-configurations"><em>Main Configurations</em></a>. If they are not displayed in the call report, then they are also ignored during the invoice phase. The administrator views always all the type of calls, except ignored calls, because he must have a complete vision of CDR table content.</p>
+</div>
+<div class="section" id="incoming-calls">
+<h3>Incoming Calls<a class="headerlink" href="#incoming-calls" title="Permalink to this headline">¶</a></h3>
+<p>Incoming calls usually have no cost, so they are usually associated to rates saying their cost and income is simply 0.</p>
+<p>They can be displayed or not displayed in the <a class="reference internal" href="#term-call-report"><em class="xref std std-term">call report</em></a>, according the setting <tt class="docutils literal"><span class="pre">show_incoming_calls</span></tt> in <a class="reference internal" href="#main-configurations"><em>Main Configurations</em></a>. If they are not displayed in the call report, then they are also ignored during the invoice phase. The administrator views always all the type of calls, except ignored calls, because he must have a complete vision of CDR table content.</p>
+</div>
+<div class="section" id="revenue-sharing">
+<h3>Revenue Sharing<a class="headerlink" href="#revenue-sharing" title="Permalink to this headline">¶</a></h3>
+<p>A call can have a negative cost. In this case you (as <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a>) are earning something for the call. There can be a revenue sharing between the <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a> and you (as <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a>). This can be the case for incoming calls for mobile telephone numbers.</p>
+<p>A call can have a negative income. In this case there can be a revenue sharing between your customer and you.</p>
+<p>Separate invoices can be created for revenue sharing, setting the <tt class="docutils literal"><span class="pre">Is</span> <span class="pre">Revenue</span> <span class="pre">Sharing</span></tt> field, during invoice generation. All the CDRs with negative incomes are part of revenue sharing invoices.</p>
+</div>
+<div class="section" id="normal-rates">
+<h3>Normal Rates<a class="headerlink" href="#normal-rates" title="Permalink to this headline">¶</a></h3>
+<p>CDRs of type <tt class="docutils literal"><span class="pre">outgoing</span></tt>, <tt class="docutils literal"><span class="pre">incoming</span></tt>, <tt class="docutils literal"><span class="pre">internal</span></tt> are processed from <tt class="docutils literal"><span class="pre">normal</span> <span class="pre">rates</span></tt>, for determining their cost and income.</p>
+<p>Income rates are associated to the customers of a specific price category.</p>
+<p>Cost rates are associated to a specific <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>.</p>
+</div>
+<div class="section" id="rate-priorities">
+<h3>Rate Priorities<a class="headerlink" href="#rate-priorities" title="Permalink to this headline">¶</a></h3>
+<p>There can be one or more rates applicable to a CDR. It is always used the most specific rate. When there are doubts about which is the most specific rate, an error is generated, and the CDR remains unprocessed.</p>
+<p>Every rate have a priority method. Two rates are comparable if they have the same priority method. If there are two rates applicable to the same CDR, but with two different priority method, an error is generated, because there is no way for determining what is the most specific rate.</p>
+<p>Usually classification rates use destination channel as priority method, and normal rates the <a class="reference internal" href="#term-external-telephone-number"><em class="xref std std-term">external telephone number</em></a>.</p>
+<dl class="docutils">
+<dt>For example given:</dt>
+<dd><ul class="first last simple">
+<li>a rate <tt class="docutils literal"><span class="pre">A</span></tt> with the <a class="reference internal" href="#term-external-telephone-number"><em class="xref std std-term">external telephone number</em></a> priority method, matching numbers like <tt class="docutils literal"><span class="pre">123</span></tt>;</li>
+<li>a rate <tt class="docutils literal"><span class="pre">B</span></tt> matching numbers like <tt class="docutils literal"><span class="pre">1234</span></tt>;</li>
+<li>a telephone number <tt class="docutils literal"><span class="pre">AA</span></tt> like <tt class="docutils literal"><span class="pre">12355555</span></tt>;</li>
+<li>a telephone number <tt class="docutils literal"><span class="pre">BB</span></tt> like <tt class="docutils literal"><span class="pre">12344444</span></tt>;</li>
+</ul>
+</dd>
+</dl>
+<p>then the rate <tt class="docutils literal"><span class="pre">A</span></tt> is the best match for <tt class="docutils literal"><span class="pre">AA</span></tt>, while <tt class="docutils literal"><span class="pre">B</span></tt> is the best match for <tt class="docutils literal"><span class="pre">BB</span></tt>.</p>
+<p>A rate can have the <tt class="docutils literal"><span class="pre">exception</span></tt> field activated. They have a greater priority respect no exception rates. The most specific exception is selected, if there is any. This allows creating special rating rules, having priority methods different from other normal rates.</p>
+</div>
+<div class="section" id="price-categories">
+<h3>Price Categories<a class="headerlink" href="#price-categories" title="Permalink to this headline">¶</a></h3>
+<p>Income rates have a price category. They are applicable only to customers of the same price category. Example of price categories can be <tt class="docutils literal"><span class="pre">normal</span></tt>, <tt class="docutils literal"><span class="pre">discounted</span></tt>, <tt class="docutils literal"><span class="pre">reseller</span></tt>.</p>
+<p>Price categories must be assigned to every <a class="reference internal" href="#term-customer"><em class="xref std std-term">customer</em></a>, and optionally to <a class="reference internal" href="#term-customer-office"><em class="xref std std-term">customer office</em></a> when they are different from the price category of the owner customer, and optionally to <a class="reference internal" href="#term-voip-account"><em class="xref std std-term">VoIP account</em></a> when they are different from the price category of the owner office. The price categories are obviously specified inside <em class="menuselection">Parties ‣ Customers / Vendors</em>, <em class="menuselection">Parties ‣ Customer Offices</em>, and <em class="menuselection">Parties ‣ VoIP Accounts</em>.</p>
+</div>
+<div class="section" id="vendor-rates">
+<h3>Vendor Rates<a class="headerlink" href="#vendor-rates" title="Permalink to this headline">¶</a></h3>
+<p>Vendors are typically identified by the <tt class="docutils literal"><span class="pre">dstchannel</span></tt> field of the <a class="reference internal" href="#term-cdr-table"><em class="xref std std-term">CDR table</em></a>. This field is set from the Asterisk server and it identifies the channel used to route the call.</p>
+<p>If you have different <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendors</em></a>, then you must specify different cost rates, associated to different <tt class="docutils literal"><span class="pre">dstchannels</span></tt> and <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendors</em></a>.</p>
+</div>
+<div class="section" id="rates-specified-using-csv-files">
+<h3>Rates Specified Using CSV Files<a class="headerlink" href="#rates-specified-using-csv-files" title="Permalink to this headline">¶</a></h3>
+<p>CSV files are useful for specifying rates associated to <a class="reference internal" href="#term-external-telephone-number"><em class="xref std std-term">external telephone number</em></a> according their initial prefix. A single CSV file can contain the rating parameters of thousands of telephone prefixes, and it can be managed from Asterisell and from <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a> in a lot more efficient way respect thousands of different rates.</p>
+<p>Asterisell is shipped with a rather powerful rate, accepting a CSV file in many configurable formats. If it is not enough, it is possible <a class="reference internal" href="#asterisell-customizations"><em>adding custom CSV based rates</em></a> following the format of the <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>. This is an example of CSV content:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Afghanistan&quot;</span> <span class="p">,</span>  <span class="mi">9375</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Afghanistan&quot;</span> <span class="p">,</span>  <span class="mi">9377</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Afghanistan&quot;</span> <span class="p">,</span>  <span class="mi">9378</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Afghanistan&quot;</span> <span class="p">,</span>  <span class="mi">9379</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Fixed line&quot;</span> <span class="p">,</span> <span class="s">&quot;Albania&quot;</span> <span class="p">,</span>  <span class="mi">355</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Albania&quot;</span> <span class="p">,</span>  <span class="mi">35567</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Albania&quot;</span> <span class="p">,</span>  <span class="mi">35568</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Albania&quot;</span> <span class="p">,</span>  <span class="mi">35569</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Fixed line&quot;</span> <span class="p">,</span> <span class="s">&quot;Algeria&quot;</span> <span class="p">,</span>  <span class="mi">213</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Algeria&quot;</span> <span class="p">,</span>  <span class="mi">2136</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Algeria&quot;</span> <span class="p">,</span>  <span class="mi">2137</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;Algeria&quot;</span> <span class="p">,</span>  <span class="mi">2139</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Fixed line&quot;</span> <span class="p">,</span> <span class="s">&quot;Algeria [Wataniya]&quot;</span> <span class="p">,</span>  <span class="mi">2135</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Fixed line&quot;</span> <span class="p">,</span> <span class="s">&quot;Algeria [Wataniya]&quot;</span> <span class="p">,</span>  <span class="mi">21355</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Fixed line&quot;</span> <span class="p">,</span> <span class="s">&quot;American Samoa&quot;</span> <span class="p">,</span>  <span class="mi">1684</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Fixed line&quot;</span> <span class="p">,</span> <span class="s">&quot;American Samoa&quot;</span> <span class="p">,</span>  <span class="mi">684</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;American Samoa&quot;</span> <span class="p">,</span>  <span class="mi">1684252</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+<span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;Mobile line&quot;</span> <span class="p">,</span> <span class="s">&quot;American Samoa&quot;</span> <span class="p">,</span>  <span class="mi">1684254</span> <span class="p">,</span> <span class="s">&quot;0.1&quot;</span>
+</pre></div>
+</div>
+<p>Up to date, there is no way in Asterisell for retrieving a loaded CSV file, again in his original format. So make sure having a copy somewhere of loaded CSV files.</p>
+</div>
+<div class="section" id="bundle-rates">
+<h3>Bundle Rates<a class="headerlink" href="#bundle-rates" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="#term-bundle-rate"><em class="xref std std-term">Bundle Rates</em></a> can be used for specifying things like the minimum income, or line rental costs. They are associated to an invoicing period, and all the CDRs of this period, but not to any CDR in particular.</p>
+</div>
+</div>
+<div class="section" id="invoicing">
+<h2>Invoicing<a class="headerlink" href="#invoicing" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Inside <a class="reference internal" href="#main-configurations"><em>Main Configurations</em></a>, set the options:</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">invoice_date_format</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">long_details_in_invoice</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">use_inclusive_end_date_in_invoice</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">currency</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">currency_ascii_char</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">currency_decimal_places_in_invoices</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">culture</span></tt></li>
+</ul>
+</dd>
+<dt>Invoices are generated from the jobs:</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">GenerateInvoices</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">GenerateInvoiceDetails</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">GenerateInvoiceReportAsHTML</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">GenerateInvoiceReportAsPDF</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">GenerateCallReportAsPDF</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">GenerateInvoiceEmail</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">SendInvoiceEmails</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">SendInvoiceEmail</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">SendInvoiceNotificationToAccountant</span></tt></li>
+</ul>
+</dd>
+</dl>
+<p>In case of invoices with a customized layout, you can substitute the job <tt class="docutils literal"><span class="pre">GenerateInvoiceReportAsPDF</span></tt> with another custom job.</p>
+<p>Set <a class="reference internal" href="#asterisell-owner"><em>Asterisell Owner Params</em></a> for setting invoice seller params.</p>
+<p>Emails and invoices are generated using the culture specified in <tt class="docutils literal"><span class="pre">apps/asterisell/config/app.yml</span></tt> file.</p>
+<dl class="docutils">
+<dt>Emails con be customized replacing the job <tt class="docutils literal"><span class="pre">GenerateInvoiceEmail</span></tt>, with a custom job:</dt>
+<dd><ul class="first last simple">
+<li>a new job like <tt class="docutils literal"><span class="pre">GenerateAcmeInvoiceEmail</span></tt> must be created;</li>
+<li>the job must be added to <tt class="docutils literal"><span class="pre">jobs</span></tt> list, inside <a class="reference internal" href="#main-configurations"><em>Main Configurations</em></a>, and the old <tt class="docutils literal"><span class="pre">GenerateInvoiceEmail</span></tt> must be removed;</li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="report-about-calls">
+<h3>Report about Calls<a class="headerlink" href="#report-about-calls" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>The job <tt class="docutils literal"><span class="pre">GenerateCallReportAsPDF</span></tt> generates a detailed call report about the type of calls:</dt>
+<dd><ul class="first last simple">
+<li>30 Most Expensive Outgoing Calls;</li>
+<li>30 Longest Duration Outgoing Calls;</li>
+<li>30 Most Frequently Dialled Numbers;</li>
+<li>30 Most Expensive Dialled Numbers;</li>
+<li>calls ordered by destination type;</li>
+</ul>
+</dd>
+</dl>
+<p>It can be sent to customers, in order show them how they used your services.</p>
+</div>
+</div>
+</div>
+<div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="user-interface">
+<h2>User Interface<a class="headerlink" href="#user-interface" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="filters">
+<h3>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h3>
+<p>All textual filters accessible from the administrator, require an ending <tt class="docutils literal"><span class="pre">*</span></tt>. For example a filter like <tt class="docutils literal"><span class="pre">abc*</span></tt>, select all the strings having <tt class="docutils literal"><span class="pre">abc</span></tt> as prefix.</p>
+<p>Filters inside <a class="reference internal" href="#term-call-report"><em class="xref std std-term">call report</em></a> add implicitly the <tt class="docutils literal"><span class="pre">*</span></tt> character to each search term, in order to simplify its usage for end users.</p>
+</div>
+<div class="section" id="online-help">
+<h3>Online Help<a class="headerlink" href="#online-help" title="Permalink to this headline">¶</a></h3>
+<p>Read carefully the notes of fields, and the comments at the bottom of each form.</p>
+</div>
+</div>
+<div class="section" id="rating">
+<h2>Rating<a class="headerlink" href="#rating" title="Permalink to this headline">¶</a></h2>
+<p>Make sure understanding the <a class="reference internal" href="#cdr-rating-process"><em>basics of CDRs rating process</em></a> before defining and changing rates.</p>
+<div class="section" id="error-in-rate-configurations">
+<h3>Error in Rate Configurations<a class="headerlink" href="#error-in-rate-configurations" title="Permalink to this headline">¶</a></h3>
+<p>During rating process, Asterisell signals errors and conflicts in rates. Rates are usually the most difficult thing to configure in Asterisell, so at least initially, errors are the norm.</p>
+<p>Asterisell has a safe approach during rating. A <a class="reference internal" href="#term-cdr"><em class="xref std std-term">CDR</em></a> is rated only if there is exactly one applicable classification rate, one cost rate, and one income rate, otherwise an error is signaled, and the CDR rating is postponed until rates configuration is fixed. So Asterisell prefers annoying the administrator with error-messages, than silently rating in the wrong way the VoIP calls.</p>
+<p>Error notifications contain hints about the solution of the problem, so read them carefully.</p>
+<dl class="docutils">
+<dt>If properly configured, errors are notified to Asterisell administrator also by email:</dt>
+<dd><ul class="first last simple">
+<li>job <tt class="docutils literal"><span class="pre">AdviseAdminOfNewProblems</span></tt> in <a class="reference internal" href="#main-configurations"><em>Main Configurations</em></a> must be active;</li>
+<li><tt class="docutils literal"><span class="pre">Customers</span> <span class="pre">support</span> <span class="pre">email,</span> <span class="pre">and</span> <span class="pre">automatic</span> <span class="pre">problem</span> <span class="pre">notification</span> <span class="pre">email</span></tt> field in <a class="reference internal" href="#asterisell-owner"><em>Asterisell Owner Params</em></a> must be specified;</li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="unrated-cdrs">
+<h4>Unrated CDRs<a class="headerlink" href="#unrated-cdrs" title="Permalink to this headline">¶</a></h4>
+<p>CDRs with problems are not displayed to customers, but they are only visible to administrators in the <em class="menuselection">Calls ‣ Unprocessed Calls</em> web form. Note that in this section there are also the few CDRs that were inserted in the CDR table, after the last cron-job processing job. After the next rating process, they will be moved to the <a class="reference internal" href="#term-call-report"><em class="xref std std-term">call report</em></a>.</p>
+</div>
+<div class="section" id="examples-of-problem-solution">
+<h4>Examples of Problem Solution<a class="headerlink" href="#examples-of-problem-solution" title="Permalink to this headline">¶</a></h4>
+<p>An example of error notification:</p>
+<blockquote>
+<div><p>Description: No Rate to apply at date 2011-06-08 of type vendor (calculating a cost) on CDR with id <tt class="docutils literal"><span class="pre">11906</span></tt>, and destination_type <tt class="docutils literal"><span class="pre">outgoing</span></tt> for customer of price category <tt class="docutils literal"><span class="pre">Normal</span></tt> for external telephone number <tt class="docutils literal"><span class="pre">0033631988888</span></tt> (with number portability applied it is <tt class="docutils literal"><span class="pre">0033631988888</span></tt>), and for dstchannel <tt class="docutils literal"><span class="pre">SIP/abcd-12</span></tt>.</p>
+<p>Effect: CDRs in the given rate interval will not be rated.</p>
+<p>Suggested Solution: Complete the rate table and wait for the next rate pass. Use menu entry Calls/Unprocessed Calls, for inspecting all details of unprocessed calls.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>Its solution:</dt>
+<dd><ul class="first last simple">
+<li>check all the active rates of type vendor, active at date 2011-06-08;</li>
+<li>check if they are applicable to the telephone number <tt class="docutils literal"><span class="pre">0033631988888</span></tt>, and price category <tt class="docutils literal"><span class="pre">Normal</span></tt>;</li>
+<li>fix the rate for supporting also this type, or add a new rate;</li>
+<li>delete the problems from the list;</li>
+<li>re-rate old CDRs that can be affected by the changes in rates;</li>
+<li>check if the error is signaled again in the error table;</li>
+<li>note that errors generated during on-line rerating are not sent to the administrators emails, in order to reducing the number of sent emails during administration and maintenance work.</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="cdrs-re-rating">
+<span id="cdr-rerating"></span><h3>CDRs Re-rating<a class="headerlink" href="#cdrs-re-rating" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>open <em class="menuselection">Calls ‣ Call Report</em>;</li>
+<li>select the time frame of CDRs you want re-rate;</li>
+<li>note that other filters take no effect during re-rating, only the time-frame criteria;</li>
+<li>click on <cite>Re-rate Calls in Time-frame</cite>;</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="rates-updating">
+<h3>Rates Updating<a class="headerlink" href="#rates-updating" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="in-advance">
+<h4>In Advance<a class="headerlink" href="#in-advance" title="Permalink to this headline">¶</a></h4>
+<p>If your <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a> communicates you the changes of rates before they take effect, you can create the corresponding new rates, specifying the start date and time. They will be applied only to CDRs after the starting date. You must also set the ending date of current rates, because after the new rates are active, they must be disabled.</p>
+<p>This is the best way for updating the rates, because if you rerate CDRs, Asterisell can always apply the correct rate.</p>
+</div>
+<div class="section" id="current">
+<h4>Current<a class="headerlink" href="#current" title="Permalink to this headline">¶</a></h4>
+<p>If you update current rates, because there are errors, you must rerate current CDRs, otherwise the modified rates will be applied only to new inserted CDRs. CDRs are rerated <a class="reference internal" href="#cdr-rerating"><em>in this way</em></a>.</p>
+</div>
+<div class="section" id="changing-customer-price-category">
+<h4>Changing Customer Price Category<a class="headerlink" href="#changing-customer-price-category" title="Permalink to this headline">¶</a></h4>
+<p>Up to date customer price category has no start and end date, as in the case of rates. A customer has only one price category, and if you change it, it takes effect immediately. All new CDRs associated to the customer will be calculated according the new price category. If you want apply the price category also to old CDRs, you must rerate them <a class="reference internal" href="#cdr-rerating"><em>in this way</em></a>.</p>
+<p>A drawback of this approach it is that if you rerate old CDRs of the customer, they will be rated according the current price category, and not the price category when the CDRs were made. This is obviously a problem in Asterisell specification of price categories. In practice this problem it is not severe, because usually a customer changes his price category at the beginning of the new invoicing period, and rarely CDRs already billed are re-rated. So the typically way for changing price category, is rerating all the CDRs of the current month.</p>
+</div>
+</div>
+</div>
+<div class="section" id="invoices">
+<h2>Invoices<a class="headerlink" href="#invoices" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="generation">
+<h3>Generation<a class="headerlink" href="#generation" title="Permalink to this headline">¶</a></h3>
+<p><em class="menuselection">Accounting ‣ Customer Invoices</em> for generating the invoice of a single customer.</p>
+<p><em class="menuselection">Accounting ‣ Batch Invoice Creation</em> for generating all invoices of active customers, of a specific billing period.</p>
+<p><em class="menuselection">Accounting ‣ Vendor Invoices</em> for generating the amount you owe to your <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>, according the costs calculated from Asterisell. The generated pseudo invoices should correspond to the invoices received from vendors.</p>
+<p>If you change the cost of calls already invoiced, then the invoice is not updated automatically. You can force a regeneration of an invoice using the <tt class="docutils literal"><span class="pre">Regenerate</span> <span class="pre">Invoice</span> <span class="pre">button</span></tt> which is displayed in the edit form of an invoice. It can be used also for batch invoices, and all invoices are simply updated.</p>
+</div>
+<div class="section" id="sending-emails">
+<h3>Sending Emails<a class="headerlink" href="#sending-emails" title="Permalink to this headline">¶</a></h3>
+<p>Email is sent only if the <tt class="docutils literal"><span class="pre">Send</span> <span class="pre">email</span> <span class="pre">to</span> <span class="pre">customer</span></tt> button is pressed and the customer has an associated email.</p>
+<p>If there were a problem sending an email, then Asterisell signal the problem, and mark the invoice as not sent.</p>
+<p>If SMTP params are left incomplete, then Asterisell will simply not send emails, and it does not consider this an error.</p>
+<p>If SMTP params are not correct then Asterisell signal the problem inside problem table.</p>
+</div>
+</div>
+</div>
+<div class="section" id="partners-and-resellers">
+<h1>Partners and Resellers<a class="headerlink" href="#partners-and-resellers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="resellers">
+<span id="id3"></span><h2>Resellers<a class="headerlink" href="#resellers" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference internal" href="#term-reseller"><em class="xref std std-term">reseller</em></a> is a company selling VoIP calls to his customers, and where you play the role of his VoIP vendor.</p>
+<dl class="docutils">
+<dt>In case of resellers, there are two running instances of Asterisell:</dt>
+<dd><ul class="first last simple">
+<li>your main instance;</li>
+<li>reseller instance;</li>
+</ul>
+</dd>
+<dt>A reseller has distinct:</dt>
+<dd><ul class="first last simple">
+<li>Asterisell website address;</li>
+<li>Asterisell database;</li>
+<li>customers;</li>
+<li>rates;</li>
+<li>invoices;</li>
+</ul>
+</dd>
+</dl>
+<p>Usually a reseller uses your VoIP servers for managing the calls of his customers, and usually you install the Asterisell reseller instance on the same server of your main instance, but this is not mandatory.</p>
+<div class="section" id="license">
+<h3>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h3>
+<p>You need a separate license of Asterisell for each reseller.</p>
+</div>
+<div class="section" id="main-asterisell-instance-configuration">
+<h3>Main Asterisell Instance Configuration<a class="headerlink" href="#main-asterisell-instance-configuration" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>In your main Asterisell instance you must:</dt>
+<dd><ul class="first last simple">
+<li>make sure that in <cite>always_scheduled_jobs</cite> of <a class="reference internal" href="#main-configurations"><em>Main Configurations</em></a>, the job <cite>ExportCDRToReseller</cite> is active.</li>
+<li>create a customer for the reseller;</li>
+<li>enable the <cite>Is Reseller</cite> flag in the <em class="menuselection">Parties ‣ Customers / Vendors</em> form;</li>
+<li>configure the <cite>reseller short code</cite>;</li>
+</ul>
+</dd>
+</dl>
+<p>Usually resellers have also a reseller price category.</p>
+<p>From now all the CDRs of VoIP accounts associated to the reseller will be exported to CSV files, and put inside the directory <cite>cdr-exported-to-resellers/reseller-short-code</cite>. The directory will be created automatically from Asterisell. The CSV files have name like <cite>cdr-12345678.csv</cite> where <cite>123456789</cite> is a unique and progressive number.</p>
+<p>In case of installation of reseller and main instance on the same machine, make sure that the main instance export directory is readable and writable from the cron-job.</p>
+<dl class="docutils">
+<dt>Supposing your reseller <cite>Gold</cite> has customer <cite>Acme</cite>, with VoIP account <cite>acme001</cite>:</dt>
+<dd><ul class="first last simple">
+<li>you must enable VoIP account <cite>acme01</cite> on your VoIP server;</li>
+<li>in Asterisell, you must create the VoIP account <cite>acme01</cite> associated to customer <cite>Gold</cite>;</li>
+<li>you <em>must not</em> create customer <cite>Acme</cite> on your Asterisell instance;</li>
+</ul>
+</dd>
+</dl>
+<p>So you don&#8217;t know anything about the customers of your reseller, and the applied rates. You only know about the VoIP accounts you manage, and what a reseller must pay you for this service.</p>
+<p>Asterisell will produce a unique invoice with all the calls of the VoIP accounts associated to the reseller customer. This is the usual Asterisell work-flow, because a reseller is a normal customer inside Asterisell main instance.</p>
+</div>
+<div class="section" id="reseller-instance-configuration">
+<h3>Reseller Instance Configuration<a class="headerlink" href="#reseller-instance-configuration" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>Install Asterisell for the reseller.</li>
+<li>Set <cite>external_asterisell_voip_provider</cite> options inside <a class="reference internal" href="#main-configurations"><em>Main Configurations</em></a>. If the two instances are put on separated computers/network, you must create some script copying new CSV files in the main Asterisell instance, in a local directory of the reseller instance.</li>
+<li>Make sure that in <cite>always_scheduled_jobs</cite>, the jobs <cite>ImportCDRFromAsterisellProvider</cite> and <cite>CompareProviderCostWithCalculatedCost</cite> are active.</li>
+<li>Set vendor rates equal to the rates you apply to reseller on the main Asterisell instance. Note: CDRs imported on the reseller  instance will be checked, and the reseller will be informed if there is some difference between the cost of VoIP calls calculated from main  instance, and the cost calculated from reseller  instance, applying the vendor rates.</li>
+<li>Remove all classification rates, and add the <cite>ProcessImportedCDR</cite> classification rate. This rate recognizes CDRs imported from the main Asterisell instance.</li>
+<li>Create initial customers, using the same VoIP accounts enabled on the main instance. Note: it is not important activating accounts first on reseller or first on main instance, because data will be not lost in any case.</li>
+</ul>
+</div></blockquote>
+<p>Reseller instance will produce an invoice for each of his customers. This is the normal Asterisell work-flow, because every reseller customer, is a normal customer inside reseller instance.</p>
+</div>
+<div class="section" id="rerating-of-cdrs">
+<h3>Rerating of CDRs<a class="headerlink" href="#rerating-of-cdrs" title="Permalink to this headline">¶</a></h3>
+<p>If already exported CDRs will be rated again on the Asterisell main instance (for example after changing rates, or fixing errors), they will be exported again to the reseller, and reseller instance will update the old CDRs with new values, without creating duplicated/conflicting CDRs.</p>
+<dl class="docutils">
+<dt>So reseller instance can recognize and manage properly all events like:</dt>
+<dd><ul class="first last simple">
+<li>a CDR changed cost/income;</li>
+<li>a CDR changed VoIP account;</li>
+<li>a CDR changed outgoing/incoming/internal state;</li>
+<li>a CDR changed destination/source telephone number;</li>
+<li>and so on..;</li>
+</ul>
+</dd>
+</dl>
+<p>The only exception is in case of CDRs becoming <a class="reference internal" href="#term-ignored-call"><em class="xref std std-term">ignored call</em></a> on the Asterisell main instance, after they were already sent as a different CDR type. In practice this is not a big problem because rules about CDRs to ignore, rarely change.</p>
+</div>
+</div>
+<div class="section" id="partners">
+<span id="id4"></span><h2>Partners<a class="headerlink" href="#partners" title="Permalink to this headline">¶</a></h2>
+<p>A <a class="reference internal" href="#term-partner"><em class="xref std std-term">partner</em></a> is another company collaborating with you, that uses your same Asterisell instance, and the same VoIP server.</p>
+<dl class="docutils">
+<dt>Partners can have distinct:</dt>
+<dd><ul class="first last simple">
+<li>customers;</li>
+<li>invoices;</li>
+<li>login page;</li>
+<li>web site logo, header, footer;</li>
+<li>rates;</li>
+</ul>
+</dd>
+</dl>
+<p>All partners have the same administrator privileges on the same Asterisell instance, so they can read and change all the data of other partners.</p>
+<div class="section" id="id5">
+<h3>License<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>On the contrary of resellers, partners can use both the same Asterisell license, because it is the same Asterisell instance.</p>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>Create a partner on <em class="menuselection">Params ‣ Params</em>.</li>
+<li>Associate customers to their partner.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id6">
+<h3>Invoices<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>Each customer invoice will use as seller the corresponding partner.</p>
+</div>
+<div class="section" id="custom-login-page">
+<h3>Custom Login Page<a class="headerlink" href="#custom-login-page" title="Permalink to this headline">¶</a></h3>
+<p>After login a customer see always the logo, header and footers of his associated partner.</p>
+<p>Before login it is not possible, because there is a unique Asterisell web address for each partner. So you must use a common header for all partners.</p>
+<p>It is possible creating a custom login page, with a specific address, for each partner.. In <em class="menuselection">Params ‣ Params</em> web form, you can specify in <cite>Login URN</cite> a URL-friendly short name for the partner. Then the custom login page with the headers and footers of the partner is accessible on something like <cite>https://www.example.com/partner-name</cite>.</p>
+</div>
+</div>
+<div class="section" id="main-configuration-file-content">
+<span id="main-configuration-file"></span><h2>Main Configuration File Content<a class="headerlink" href="#main-configuration-file-content" title="Permalink to this headline">¶</a></h2>
+<p><tt class="file docutils literal"><span class="pre">apps/asterisell/config/app.yml</span></tt></p>
+<div class="highlight-python"><pre># !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+# !!!                                                                           !!! #
+# !!! I M P O R T A N T:                                                        !!! #
+# !!!                                                                           !!! #
+# !!! 1) if you change these values then execute "configure.sh" in order to     !!! #
+# !!! update the application behaviour;                                         !!! #
+# !!!                                                                           !!! #
+# !!! 2) many parameters need a rerate of old calls in order to be propagated   !!! #
+# !!! also to old calls. When this is the case, it is signaled in the parameter !!! # 
+# !!! comments as "IMPORTANT"                                                   !!! #
+# !!!                                                                           !!! #
+# !!! 3) avoid TABS inside this file, they are not accepted, use only SPACES    !!! #
+# !!!                                                                           !!! #
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+
+all:
+  available:
+
+    # The PhpRate class available during the setup of a rate plan.
+    # The class are located in apps/asterisell/lib/ directory.
+    # You can add your own classed.
+    # The format is: 
+    #
+    # &gt; PHP-Class-Name: Rate Description
+    #
+    phpRates: 
+      PhpCDRProcessing: CDR initial classification
+      PhpRateByDuration: By Duration
+      PhpRateInCommercialVersion: CSV File with Tel.Prefixes and Rates
+
+    # These jobs are executed every time the job-queue processor
+    # is invoked. They are indipendent from job-data or events.
+    # They are executed before "available jobs".
+    #
+    # These jobs are processed following the order of declaration.
+    #
+    # These jobs are processed only one time for each activation
+    # of the JobQueueProcessor.
+    #
+    # These jobs are of class FixedJobProcessor.
+    #
+    # NOTE: if one of this jobs fails, then the next job is executed 
+    # in any case.
+    #
+    # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+    # so you must force a rerate if you want apply the new mask only to already
+    # rated calls.
+    #
+    always_scheduled_jobs:
+      - RateCalls
+      - CleanCacheFromOldItems              # maintanance work
+      - CheckWebsiteUpdates                 # check if there are news on Asterisell web-site
+      - CheckPartiesWithoutParams           # maintanance work
+      # - CheckCallCostLimit                # check if customers have reached theirs call cost limit.
+      # - CheckSafeLimitForConcurrentCalls  # check if the server has reached his limit about the maximum (safe) number of concurrent calls. In case advise the administrator via mail
+      - AdviseAdminOfNewProblems            # send emails with found problems to administrator
+
+
+    # The jobs that are activate when there is a compatible event
+    # on the job queue.
+    #
+    # Jobs are iteratively checked for every initial and new event,
+    # so if a Job fires new events, they can be immediately processed
+    # from other jobs.
+    #
+    # These jobs are of class JobProcessor.
+    #
+    # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+    # so you must force a rerate if you want apply the new mask only to already
+    # rated calls.
+    #
+    jobs:
+      - WarnCustomerForHighCallCost  # This job is executed only if it active also the `CheckCallCostLimit` corresponding job. It sends the emails to customers.
+
+  # Complete only if this Asterisell instance is a reseller of another
+  # Asterisell server acting like a VoIP provider.
+  # 
+  # NOTE: if this is the Asterisell acting like a main VoIP provider, these
+  # settings must be left empty. They must be completed on the reseller side.
+  #
+  # NOTE: these options can be used only for commercial version of Asterisell.
+  #
+  external_asterisell_voip_provider:
+    - csv_files_source_directory: ""
+    - temp_processing_csv_files_directory: ""
+    - processed_csv_files_directory: ""
+    - insert_cdr_using_dstchannel: ""
+
+  # Enable/disable displaying of incoming/incoming/internal 
+  # calls in the customer call report.
+  # This allows to reduce the information overhead.
+  #
+  # This settings influence also INVOICE GENERATION:
+  # if incoming/internal calls are not displayed in the CALL REPORT
+  # then they are not displated / summed up in the invoices,
+  # otherwise they are showed / summed up in the invoices.
+  #
+  # IMPORTANT: if you assign an earn to incoming and internal 
+  # calls, but they are not displayed in the call report,
+  # then these earns are lost because they are not inserted
+  # in the invoices. The underline philosophy of Asterisell
+  # is that you can account to customers only showed costs
+  # in the call report.
+  #
+  # Ignored and Unprocessed calls are not displayed by default.
+  #
+  # The administrator can all these type of calls, 
+  # in any case, indipendently from these settings.
+  #
+  # allowed values: true / false (case sensitive)
+  #
+  show_incoming_calls: false
+  show_outgoing_calls: true
+  show_internal_calls: false
+  
+  # Display in the customer call report also 
+  # the direction of the call (incoming/outgoing/internal)
+  # for each call.
+  #
+  # The administrar is not affected from this setting, because 
+  # he sees always the call direction.
+  #
+  # If both incoming and outgoing calls are displayed, the safer
+  # approach is enabling also displying of call direction, otherwise
+  # can be difficult for the end-user, distinguish between the type 
+  # of a call.
+  #
+  # allowed values: true / false (case sensitive)
+  #
+  show_call_direction: false
+
+  # Display in the customer call report
+  # also a filter on the call direction (incoming/outgoing/internal).
+  #
+  # This setting influence only the call report
+  # of customer. The administrator can always
+  # filter on call direction.
+  #
+  show_filter_on_call_direction: false
+
+  # How many calls shows in the call report
+  # containing the list of made calls.
+  # This is the main report of the program.
+  # 
+  how_many_calls_in_call_report: 30
+
+  # External telephone number with the specified
+  # prefix are displayed in a short form, without
+  # the prefix.
+  # 
+  # This option is useful when all your customers
+  # reside in the same area. So you can remove 
+  # the standard/default prefix from called numbers
+  # when they are in the standard/default area.
+  #
+  # All other numbers are not modified.
+  # 
+  # In any case, this option does not change the
+  # stored numbers inside the database, only their
+  # visualization.
+  #
+  # Use "-", if you want to disable this feature.
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate, if you want apply the new settings
+  # also to already rated calls.
+  #
+  not_displayed_telephone_prefix: "-"
+
+  # Check cost-limits interval expressed in minutes.
+  # Cost-limits check is an heavy operation to do and 
+  # it can be executed after a certain interval of time.
+  # 
+  check_cost_limits_after_minutes: 60
+
+  # In case the job GenerateMailWarningCustomerForHighCallCost 
+  # is enabled (it is inserted in the list of active jobs), 
+  # this params set how often a customer is warned
+  # about his call cost exceeding his cost limit.
+  #
+  # 0 for disable customer advise (only admin is advised).
+  #
+  repeat_advise_of_high_cost_limit_after_days: 0
+
+  # How to calculate the max cost limit for each customer.
+  #
+  # "30" for considering the cost of last 30 days.
+  # "m" for considering the current month.
+  # 
+  max_cost_limit_timeframe: m
+
+   # Used from job CheckFrauds (enabled only in commercial version)
+   # The job run according the scheduling of `check_cost_limits_after_minutes`
+   #
+   check_frauds:
+     max_unprocessed_calls: 10
+     # if there are more than these unprocessed calls,
+     # then advise the administrator, because there can be unnoticed high calls costs
+
+     compare_xx_last_days_respect_customer_daily_max_cost: 5
+     # note: customer daily max cost is the customer monthly max cost, specified in the user interface,
+     # divided by 30. Set to 0 for disabling it.
+
+     compare_x_last_months_respect_current_costs: 3
+     # warn if a customer spent a 25% more than the maximum cost of last x months in the
+     # same day of week and a comparable hour of the day (hours grouped by 00-06, 06-12, 12-18, 18-24).
+     # Set to 0 for disabling it.
+
+  # How many concurrent calls, the Asterisk server can support in a safely
+  # manner. If this number of concurrent calls is reached, 
+  # then the administrator is advised.
+  # 
+  # This number depends from the incoming/outgoing bandwidth of the Asterisell
+  # server and from the bandwidth reserved/used from each call/connection.
+  # It is only an indicative/warning value, used for monitoring when
+  # the system reach a warning usage level.
+  # 
+  safe_limit_for_concurrent_calls: 5
+
+  # The format to use for date/timestamp display in CDR call report.
+  # The format is specified using PHP "date" function format:
+  #    http://www.php.net/manual/en/function.date.php
+  #
+  date_format: "Y/m/d, G:i:s"
+    # "r" for something like "Thu, 21 Dec 2000 16:01:07 +0200"
+    # "c" for something like "2004-02-12T15:19:21+00:00"
+    # "F d, Y G:i:s" for something like "Dec 21, 2000 16:01:07"
+    # "d/m/Y, G:i:s" for italian format
+
+  # The format to use for date display in Invoices
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
+  #
+  invoice_date_format: "Y-m-d"
+  # invoice_date_format: "d/m/Y"  for italian format
+
+  # true for having invoices with details like:
+  # &gt; Italy - Fixed Line        200 calls  ....
+  # &gt; Italy - Mobile Line       100 calls  ...
+  # (grouped by geographi location and type of operator)
+  #
+  # false for having invoices with details like:
+  # &gt; Fixed Line                 200 calls
+  # &gt; Mobile Lines               100 calls
+  # (grouped by type of operator. 
+  #  Maybe you can further create operators like "National Fixed Line", 
+  # "International Fixed Line" and os on...)
+  #
+  long_details_in_invoice: true
+
+  # true for using the last day of the month, in invoices of the month,
+  # like "from 2011-06-01 to 2011-06-30".
+  #
+  # false for using the first day of the next month, in invoices of the month, 
+  # like "from 2011-06-01 to 2011-07-01".
+  # 
+  use_inclusive_end_date_in_invoice: false
+
+  # the default currency used for rates, cost and incomes.
+  #
+  currency: EUR
+  # currency: USD
+  # currency: AUD
+
+  # The ASCII char to use for representing the currency
+  # in PDF and textual forms.
+  #
+  # EUR: 128
+  # US: 36
+  # GBP: 163
+  # 
+  # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
+  #
+  currency_ascii_char: 128
+
+  # The decimal separator symbol to use in CSV files exported to customers.
+  #
+  decimal_separator_symbol_in_csv: "."
+
+  # true for exporting numbers like "1.234" in CSV files exported to customers.
+  # false for exporting numbers like 1.234 (without \").
+  #
+  # true is a more safe option of your customers have different locale 
+  # with different types of decimal separator.
+  #
+  # false allows recognizing more easily numbers, during importing of CSV files
+  # inside a spreadsheet.
+  #
+  numbers_as_strings_in_csv: true
+
+  # The field separator used in CSV files exported to customers.
+  # Normally it is ",".
+  #
+  # If you are using "," also as decimal separator, 
+  # and numbers are not surrounded between \", then use something like ";".
+  #
+  csv_field_separator: ","
+
+  # The default culture to use for formatting numbers, dates and so on.
+  # Something like en_US, it_IT, ...
+  #
+  # IMPORTANT: if you change this value update also the corresponding
+  # "apps/asterisell/config/settings.yml" file in "prod: default_culture".
+  # This is not strictly necessary because after login, Asterisell
+  # set the culture of the session to this value, but it is 
+  # a safe setting.
+  #
+  # culture: en_US
+  # culture: it_IT
+  culture: en_US
+
+  # decimal places to use for currency when stored in the database CDR table
+  #
+  # IMPORTANT: if you change this value then force a re-rate of all calls
+  # because already rated calls will be in an inconsisten format.
+  #
+  currency_decimal_places: 4
+
+  # decimal places to use for each currency in an invoice
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
+  #
+  # IMPORTANT: this parameter is also used for rounding
+  # costs/incomes in CALL REPORT. Supposing 2 decimal places,
+  # a cost like "0.005" is rounded to "0.01".
+  # 
+  currency_decimal_places_in_invoices: 2
+
+  # If these field is an empty list ([]) then "cdr.dst" field is the destination
+  # telephone number of the call.
+  #
+  # If the value of this setting is a list then
+  # cdr.lastdata field is the destination telephone number of the call.
+  # For each billable call, "cdr.lastapp" must be a value inside the list, 
+  # otherwise the call is not rated and the problem 
+  # is signaled to the administrator. 
+  # 
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate if you want apply the new mask only to already
+  # rated calls.
+  # 
+  lastapp_accepted_values: []
+
+  # The internal telephone number is the VoIP account code,
+  # managed from the Asterisk server.
+  #
+  # The external telephone number is the number residing on 
+  # external lines, reachable using the services of the
+  # VoIP service provider.
+  #
+  # In an outgoing call, the internal telephone number is the source of the call.
+  # In an incoming call, the internal telephone number is the destination of the call.
+  #
+  # In an outgoing call, the external telephone number is the destination of the call.
+  # In an incoming call, the external telephone number is the source of the call.
+  #
+  # Asterisell displays in CALL REPORT something like:
+  #
+  # &gt; | INTERNAL VoIP Account | Call Direction | EXTERNAL Telephone Number |
+  # &gt; +-----------------------+----------------+---------------------------+
+  # &gt; | account123            |    outgoing    | 390423XXXX                |
+  # &gt; | account123            |    incoming    | 39343XXXXX                |
+  #
+  # so the distinction is between internal and external telephone number
+  # and not between call source and destination.
+  # The same distinction is done also in the rate forms.
+  #
+  # The problem is: what fields of the CDR record must Asterisell 
+  # use for displaying in the call report the internal and external telephone number?
+  #
+  # Available options:
+  # * 0: use "accountcode" field as internal telephone number (display in CALL REPORT the account-code name),
+  #      use "dst/lastapp_accepted_values" field as external telephone number.
+  # * 1: use "src" field as internal telephone number only for outgoing calls, 
+  #      use "src" field as external telephone number only for incoming calls,
+  #      use "dst/lastapp_accepted_values" as external telephone number only for outgoing calls,
+  #      use "dst/lastapp_accepted_values" as internal telephone number only for incoming calls.
+  #      in case of unprocessed/ignored/internal use always "src" field for internal calls.
+  # * 2: use "src" field as internal telephone number,
+  #      use "dst/lastapp_accepted_values" field as external telephone number.
+  #      in case of unprocessed/ignored/internal use always "src" field for internal calls.
+  # * 3: it is assigned from the CDRInitialProcessing rate, that must complete during initial processing of a rate,
+  #      these fields:
+  #        - `cdr.ar_asterisk_account_id` (null if it is missing, and RateProcess will inform the user of the error);
+  #        - `cdr.cached_internal_telephone_number`;
+  #        - `cdr.cached_external_telephone_number`;
+  #        - `cdr.cached_masked_external_telephone_number`, can be null (it is completed from the framework), or with an explicit value
+  #        - `cdr.ar_telephone_prefix.id` can be null (it is completed from the framework),
+  #           or with an explicit value, in this case number portability is not automatically transferred to the telephone prefix,
+  #           and it must be explicitely managed from the CDR processor;
+  #      See `apps/asterisell/lib/rates/CustomCDRProcessing.php` for a template of associated processing rate.
+  #      A rate like the proposed example must be added to the rate table.
+  # * 4: use "accountcode" field as internal telephone number (display in CALL REPORT the account-code name),
+  #      use "dst" as external telephone number for outgoing and internal calls,
+  #      use "src" as external telephone number for incoming calls.
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate if you want apply the new mask only to already
+  # rated calls.
+  # 
+  internal_external_telephone_numbers: 0
+
+  # An external telephone number can be masked in the CALL REPORT view,
+  # for privacy reasons.
+  #
+  # This parameter identifies the number of last digits to mask in the
+  # external telephone number.
+  #
+  # A typical value is 3 digits to mask, in order to obtain something
+  # like "39059567XXX".
+  #
+  # 0 stays for no number masking.
+  #
+  # Internal calls (in the case they are displayed in the
+  # CALL REPORT), between two VoIP accounts are no masked.
+  #
+  # Unprocessed calls are never masked, but they are viewable
+  # only from the administrator.
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate if you want apply the new mask only to already
+  # rated calls.
+  # 
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate if you want apply the new mask only to already
+  # rated calls.
+  # 
+  mask_for_external_telephone_number: 3
+
+  # Remove a log message from the Job Log Table 
+  # when it is older than this number of months.
+  #
+  months_after_removing_a_job_log_entry: 2
+
+  # Where uploaded files are put/read.
+  # This is a directory inside "web" directory,
+  # and it must be web-server readable and writable.
+  #
+  # This default directory is already created.
+  # If you set up a new directory, you must manually
+  # create it.
+  #
+  sfMediaLibrary:
+    upload_dir: uploads/assets
+    </pre>
+</div>
+</div>
+<div class="section" id="glossary">
+<h2>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h2>
+<dl class="glossary docutils">
+<dt id="term-asterisell-owner">Asterisell owner</dt>
+<dd>You: a company selling VoIP services to his <a class="reference internal" href="#term-customer"><em class="xref std std-term">customers</em></a>. It uses one or more <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendors</em></a>, and it can have optionally one or more <a class="reference internal" href="#term-partner"><em class="xref std std-term">partners</em></a>.</dd>
+<dt id="term-bundle-rate">bundle rate</dt>
+<dd>A rate associated to the set of CDRs of the invoicing period, as the minimum income, or line rentals.</dd>
+<dt id="term-call-report">call report</dt>
+<dd>The web page displaying all the VoIP calls, and related data to administrator or to end users. It displays specialized information according the type of logged user.</dd>
+<dt id="term-cdr">CDR</dt>
+<dd>A call detail record of the <a class="reference internal" href="#term-cdr-table"><em class="xref std std-term">CDR table</em></a>, containing all the details of a VoIP call.</dd>
+<dt id="term-cdr-table">CDR table</dt>
+<dd>A MySQL table where the VoIP server put details about the VoIP calls.</dd>
+<dt id="term-classification-rate">classification rate</dt>
+<dd>A rate that classifies the <a class="reference internal" href="#term-cdr"><em class="xref std std-term">CDR</em></a> as <a class="reference internal" href="#term-outgoing-call"><em class="xref std std-term">outgoing call</em></a>, or <a class="reference internal" href="#term-incoming-call"><em class="xref std std-term">incoming call</em></a>, or <a class="reference internal" href="#term-internal-call"><em class="xref std std-term">internal call</em></a>, or <a class="reference internal" href="#term-ignored-call"><em class="xref std std-term">ignored call</em></a>.</dd>
+<dt id="term-cost-rate">cost rate</dt>
+<dd>A rate that assigns the cost of the <a class="reference internal" href="#term-cdr"><em class="xref std std-term">CDR</em></a>, that is what you (the <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a>) must pay to another <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a> for routing the calls.</dd>
+<dt id="term-customer">customer</dt>
+<dd>A party that uses the services of <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a> for making VoIP calls. He can have one or more <a class="reference internal" href="#term-customer-office"><em class="xref std std-term">customer offices</em></a>.</dd>
+<dt id="term-customer-office">customer office</dt>
+<dd>It identifies distinct physical locations, or distinct business units, of a <a class="reference internal" href="#term-customer"><em class="xref std std-term">customer</em></a>. It can have one or more <a class="reference internal" href="#term-voip-account"><em class="xref std std-term">VoIP accounts</em></a>.</dd>
+<dt id="term-external-telephone-number">external telephone number</dt>
+<dd>It is the number residing on external lines, reachable using the services of the <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>. In case of <a class="reference internal" href="#term-outgoing-call"><em class="xref std std-term">outgoing call</em></a>, it is the destination of the call. In case of <a class="reference internal" href="#term-incoming-call"><em class="xref std std-term">incoming call</em></a>, it is the source of the call.</dd>
+<dt id="term-ignored-call">ignored call</dt>
+<dd>A call that has no income, cost, and that is not displayed in the <a class="reference internal" href="#term-call-report"><em class="xref std std-term">call report</em></a>. It can be completely ignored.</dd>
+<dt id="term-income-rate">income rate</dt>
+<dd>A rate that assigns the income of the <a class="reference internal" href="#term-cdr"><em class="xref std std-term">CDR</em></a>, that is what the <a class="reference internal" href="#term-customer"><em class="xref std std-term">customer</em></a> must pay for it.</dd>
+<dt id="term-incoming-call">incoming call</dt>
+<dd>A call coming from a telephone network not directly managed from you, and having one of your customer <a class="reference internal" href="#term-voip-account"><em class="xref std std-term">VoIP account</em></a> as destination.</dd>
+<dt id="term-internal-call">internal call</dt>
+<dd>A call inside a telephone network directly managed from you. The call source and destination are usually both associated to your customers.</dd>
+<dt id="term-internal-telephone-number">internal telephone number</dt>
+<dd>It is the <a class="reference internal" href="#term-voip-account"><em class="xref std std-term">VoIP account</em></a> code. In case of <a class="reference internal" href="#term-outgoing-call"><em class="xref std std-term">outgoing call</em></a>, it is the source of the call. In case of <a class="reference internal" href="#term-incoming-call"><em class="xref std std-term">incoming call</em></a>, it is the destination of the call.</dd>
+<dt id="term-outgoing-call">outgoing call</dt>
+<dd>A call directed to a telephone network not directly managed from you, and having one of your customer <a class="reference internal" href="#term-voip-account"><em class="xref std std-term">VoIP account</em></a> as source of the call.</dd>
+<dt id="term-partner">partner</dt>
+<dd>A Partner is a company collaborating with you, that uses your same Asterisell instance for selling VoIP calls to his customers.</dd>
+<dt id="term-reseller">reseller</dt>
+<dd>A Reseller is a company selling VoIP calls to his customers, and where you play the role of his <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>.</dd>
+<dt id="term-voip-account">VoIP account</dt>
+<dd>A VoIP internal telephone number managed from the Asterisk server.
+It is an internal account code. Usually Asterisk VoIP server put it on the <tt class="docutils literal"><span class="pre">accountcode</span></tt> field of the <a class="reference internal" href="#term-cdr-table"><em class="xref std std-term">CDR table</em></a>.</dd>
+<dt id="term-voip-vendor">VoIP vendor</dt>
+<dd>A company that can route VoIP calls to destination end-points, typically traditional telephone networks. It is used from the <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a> for routing the VoIP calls.</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="#">Asterisell documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2011, Massimo Zaniboni - licensed under Creative Commons 3.0 Unported License..
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
