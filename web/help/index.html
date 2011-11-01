@@ -189,8 +189,9 @@
 </div>
 <div class="section" id="customizations">
 <span id="asterisell-customizations"></span><h2>Customizations<a class="headerlink" href="#customizations" title="Permalink to this headline">¶</a></h2>
+<p>Asterisell can be easily extended with custom rates and jobs.</p>
 <dl class="docutils">
-<dt>Asterisell can be easily extended with custom rates and jobs, because it uses a blackboard approach for processing information:</dt>
+<dt>It uses a blackboard approach for processing information:</dt>
 <dd><ul class="first last simple">
 <li>events are put inside the the blackboard;</li>
 <li>jobs are activated when there are proper events on the blackboard;</li>
@@ -257,7 +258,7 @@ Fixed Line</td>
 </tr>
 </tbody>
 </table>
-<p>It associate a a <cite>location</cite> and a <cite>connection type</cite> to a telephone number.</p>
+<p>The table associates a <cite>location</cite> and a <cite>connection type</cite> to a telephone number.</p>
 <dl class="docutils">
 <dt>This association is done inspecting the <em class="menuselection">Params ‣ Telephone Prefixes</em> table:</dt>
 <dd><ul class="first last simple">
@@ -268,11 +269,11 @@ Fixed Line</td>
 </ul>
 </dd>
 </dl>
-<p>The already rated CDRs must be rerated again, in order to see the effects of changes in the table.</p>
+<p>CDRs must be rerated again, in order to see the effects of changes in the table.</p>
 <p>Telephone Prefix table is not used in rating process, but only in call report.</p>
 <p>Initial Asterisell installation already load a complete list of standard world-wide prefixes. You can manually add custom prefixes associated to your specific settings.</p>
 <dl class="docutils">
-<dt>It is possible to complete the table also importing from a CSV file:</dt>
+<dt>The table can be completed also importing from a CSV file:</dt>
 <dd><ul class="first last simple">
 <li><em class="menuselection">Params ‣ Rates</em>.</li>
 <li>Create a pseudo rate of type <cite>CSV File with Tel.Prefixes and Rates</cite>.</li>
@@ -314,7 +315,7 @@ Fixed Line</td>
 </ul>
 </dd>
 </dl>
-<p>These operations are performed by custom PHP code, so you must consult your Asterisell assistance.</p>
+<p>These operations are performed by custom PHP code, so you must consult Asterisell assistance and support.</p>
 </div>
 <div class="section" id="ignored-cdrs">
 <h3>Ignored CDRs<a class="headerlink" href="#ignored-cdrs" title="Permalink to this headline">¶</a></h3>
@@ -487,8 +488,8 @@ Fixed Line</td>
 <p>Make sure understanding the <a class="reference internal" href="#cdr-rating-process"><em>basics of CDRs rating process</em></a> before defining and changing rates.</p>
 <div class="section" id="error-in-rate-configurations">
 <h3>Error in Rate Configurations<a class="headerlink" href="#error-in-rate-configurations" title="Permalink to this headline">¶</a></h3>
-<p>During rating process, Asterisell signals errors and conflicts in rates. Rates are usually the most difficult thing to configure in Asterisell, so at least initially, errors are the norm.</p>
-<p>Asterisell has a safe approach during rating. A <a class="reference internal" href="#term-cdr"><em class="xref std std-term">CDR</em></a> is rated only if there is exactly one applicable classification rate, one cost rate, and one income rate, otherwise an error is signaled, and the CDR rating is postponed until rates configuration is fixed. So Asterisell prefers annoying the administrator with error-messages, than silently rating in the wrong way the VoIP calls.</p>
+<p>During rating process, Asterisell signals rate errors and conflicts. Rates are usually the most difficult thing to configure in Asterisell, so at least initially, errors are the norm.</p>
+<p>Asterisell has a safe approach during rating: a <a class="reference internal" href="#term-cdr"><em class="xref std std-term">CDR</em></a> is rated only if there is exactly one applicable classification rate, one cost rate, and one income rate, otherwise an error is signaled, and the CDR rating is postponed until rate configurations are fixed. So Asterisell prefers annoying the administrator with error-messages, than silently rating in the wrong way the VoIP calls.</p>
 <p>Error notifications contain hints about the solution of the problem, so read them carefully.</p>
 <dl class="docutils">
 <dt>If properly configured, errors are notified to Asterisell administrator also by email:</dt>

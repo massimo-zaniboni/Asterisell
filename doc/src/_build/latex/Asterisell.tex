@@ -167,8 +167,10 @@ You can have different {\hyperref[index:term-partner]{\emph{partners}}}, and dif
 
 
 \chapter{Customizations}
-\label{index:asterisell-customizations}\label{index:customizations}\begin{description}
-\item[{Asterisell can be easily extended with custom rates and jobs, because it uses a blackboard approach for processing information:}] \leavevmode\begin{itemize}
+\label{index:asterisell-customizations}\label{index:customizations}
+Asterisell can be easily extended with custom rates and jobs.
+\begin{description}
+\item[{It uses a blackboard approach for processing information:}] \leavevmode\begin{itemize}
 \item {} 
 events are put inside the the blackboard;
 
@@ -259,7 +261,7 @@ Fixed Line
 \end{tabulary}
 
 
-It associate a a \emph{location} and a \emph{connection type} to a telephone number.
+The table associates a \emph{location} and a \emph{connection type} to a telephone number.
 \begin{description}
 \item[{This association is done inspecting the \emph{Params \(\rightarrow\) Telephone Prefixes} table:}] \leavevmode\begin{itemize}
 \item {} 
@@ -278,13 +280,13 @@ A telephone number is associated to its more specific prefix. So ``3944444'' is 
 
 \end{description}
 
-The already rated CDRs must be rerated again, in order to see the effects of changes in the table.
+CDRs must be rerated again, in order to see the effects of changes in the table.
 
 Telephone Prefix table is not used in rating process, but only in call report.
 
 Initial Asterisell installation already load a complete list of standard world-wide prefixes. You can manually add custom prefixes associated to your specific settings.
 \begin{description}
-\item[{It is possible to complete the table also importing from a CSV file:}] \leavevmode\begin{itemize}
+\item[{The table can be completed also importing from a CSV file:}] \leavevmode\begin{itemize}
 \item {} 
 \emph{Params \(\rightarrow\) Rates}.
 
@@ -357,7 +359,7 @@ recognition of off-peak, peak or week-end calls, according the call-time;
 
 \end{description}
 
-These operations are performed by custom PHP code, so you must consult your Asterisell assistance.
+These operations are performed by custom PHP code, so you must consult Asterisell assistance and support.
 
 
 \subsection{Ignored CDRs}
@@ -620,9 +622,9 @@ Make sure understanding the {\hyperref[index:cdr-rating-process]{\emph{basics of
 
 \subsection{Error in Rate Configurations}
 \label{index:error-in-rate-configurations}
-During rating process, Asterisell signals errors and conflicts in rates. Rates are usually the most difficult thing to configure in Asterisell, so at least initially, errors are the norm.
+During rating process, Asterisell signals rate errors and conflicts. Rates are usually the most difficult thing to configure in Asterisell, so at least initially, errors are the norm.
 
-Asterisell has a safe approach during rating. A {\hyperref[index:term-cdr]{\emph{CDR}}} is rated only if there is exactly one applicable classification rate, one cost rate, and one income rate, otherwise an error is signaled, and the CDR rating is postponed until rates configuration is fixed. So Asterisell prefers annoying the administrator with error-messages, than silently rating in the wrong way the VoIP calls.
+Asterisell has a safe approach during rating: a {\hyperref[index:term-cdr]{\emph{CDR}}} is rated only if there is exactly one applicable classification rate, one cost rate, and one income rate, otherwise an error is signaled, and the CDR rating is postponed until rate configurations are fixed. So Asterisell prefers annoying the administrator with error-messages, than silently rating in the wrong way the VoIP calls.
 
 Error notifications contain hints about the solution of the problem, so read them carefully.
 \begin{description}

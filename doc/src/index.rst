@@ -34,7 +34,9 @@ You can have different :term:`partners <partner>`, and different :term:`reseller
 Customizations
 ==============
 
-Asterisell can be easily extended with custom rates and jobs, because it uses a blackboard approach for processing information:
+Asterisell can be easily extended with custom rates and jobs.
+
+It uses a blackboard approach for processing information:
   * events are put inside the the blackboard;
   * jobs are activated when there are proper events on the blackboard;
   * jobs can produce new events;
@@ -108,7 +110,7 @@ The call report contains something like
 |1707782466XXX  | USA       | Fixed Line  |
 +---------------+-----------+-------------+
 
-It associate a a `location` and a `connection type` to a telephone number.
+The table associates a `location` and a `connection type` to a telephone number.
 
 This association is done inspecting the :menuselection:`Params --> Telephone Prefixes` table:
   * A prefix like "39" can be associated to a generic "Italian Operator".
@@ -116,13 +118,13 @@ This association is done inspecting the :menuselection:`Params --> Telephone Pre
   * A prefix like "39328" can be associated to the specific "Wind Mobile Italian Operator".
   * A telephone number is associated to its more specific prefix. So "3944444" is associated to "Italian Operator", while "39344444" to "Mobile Italian Operator" and finally "393284444" to "Wind Mobile Italian Operator".
 
-The already rated CDRs must be rerated again, in order to see the effects of changes in the table.
+CDRs must be rerated again, in order to see the effects of changes in the table.
 
 Telephone Prefix table is not used in rating process, but only in call report.
 
 Initial Asterisell installation already load a complete list of standard world-wide prefixes. You can manually add custom prefixes associated to your specific settings.
 
-It is possible to complete the table also importing from a CSV file:
+The table can be completed also importing from a CSV file:
   * :menuselection:`Params --> Rates`.
   * Create a pseudo rate of type `CSV File with Tel.Prefixes and Rates`.
   * Set the rate according the format of the CSV file.
@@ -158,7 +160,7 @@ Advanced CDR processing can be performed from customized ``classification rates`
   * ad-hoc formatting of telephone numbers according their type;
   * recognition of off-peak, peak or week-end calls, according the call-time;
 
-These operations are performed by custom PHP code, so you must consult your Asterisell assistance.
+These operations are performed by custom PHP code, so you must consult Asterisell assistance and support.
 
 Ignored CDRs
 ------------
@@ -346,9 +348,9 @@ Make sure understanding the :ref:`basics of CDRs rating process <cdr_rating_proc
 Error in Rate Configurations
 ----------------------------
 
-During rating process, Asterisell signals errors and conflicts in rates. Rates are usually the most difficult thing to configure in Asterisell, so at least initially, errors are the norm.
+During rating process, Asterisell signals rate errors and conflicts. Rates are usually the most difficult thing to configure in Asterisell, so at least initially, errors are the norm.
 
-Asterisell has a safe approach during rating. A :term:`CDR` is rated only if there is exactly one applicable classification rate, one cost rate, and one income rate, otherwise an error is signaled, and the CDR rating is postponed until rates configuration is fixed. So Asterisell prefers annoying the administrator with error-messages, than silently rating in the wrong way the VoIP calls. 
+Asterisell has a safe approach during rating: a :term:`CDR` is rated only if there is exactly one applicable classification rate, one cost rate, and one income rate, otherwise an error is signaled, and the CDR rating is postponed until rate configurations are fixed. So Asterisell prefers annoying the administrator with error-messages, than silently rating in the wrong way the VoIP calls. 
 
 Error notifications contain hints about the solution of the problem, so read them carefully.
 
