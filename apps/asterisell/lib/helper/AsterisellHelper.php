@@ -750,7 +750,6 @@ function resetCallsCostInTimeFrame($fromDate, $toDate)
  */
 function resetCallsCostInTimeFrameAndRecalc($fromDate, $toDate)
 {
-
     resetCallsCostInTimeFrame($fromDate, $toDate);
 
     // Rerate calls.

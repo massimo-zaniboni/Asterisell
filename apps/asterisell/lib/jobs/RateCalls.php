@@ -235,14 +235,14 @@ class RateCalls extends FixedJobProcessor {
             list($newMaxRate, $nr) = $this->process2($maxDate, $chunk);
             $nrOfRates += $nr;
             $maxDate = $newMaxRate;
-        } while ($nr >= $chunk);
+        } while ($nr >= $chunk && JobQueueProcessor::isThereTimeForOtherJobs());
 
         // Store incremental data on the database
         // NOTE: also if this operation fails, after CDR rating,
         // it is not a consistency problem, because incremental-info
         // will be calculated the next-time, again. So it is only
         // a performance problem.
-        if (!is_null($this->bundleRateInfoCache)) {
+        if (!is_null($this->bundleRateInfoCache) && JobQueueProcessor::isThereTimeForOtherJobs()) {
             $this->bundleRateInfoCache->closeAndUpdateDatabase();
         }
 
@@ -298,7 +298,7 @@ class RateCalls extends FixedJobProcessor {
         // this is a *must* because there can be many CDRs records to process.
         $count = 0;
         $maxCallDate = NULL;
-        while ($rs->next()) {
+        while ($rs->next() && JobQueueProcessor::isThereTimeForOtherJobs()) {
             $count++;
             $cdr = new Cdr();
             $cdr->hydrate($rs);
