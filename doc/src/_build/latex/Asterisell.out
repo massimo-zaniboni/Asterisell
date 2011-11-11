@@ -1,21 +1,32 @@
 \BOOKMARK [0][-]{chapter.1}{Usage Scenario}{}% 1
-\BOOKMARK [0][-]{chapter.2}{Customizations}{}% 2
-\BOOKMARK [0][-]{chapter.3}{Configurations}{}% 3
-\BOOKMARK [1][-]{section.3.1}{Main Configurations}{chapter.3}% 4
-\BOOKMARK [1][-]{section.3.2}{Asterisell Owner Params}{chapter.3}% 5
-\BOOKMARK [1][-]{section.3.3}{Web Site Appearances}{chapter.3}% 6
-\BOOKMARK [1][-]{section.3.4}{Vendors Specification}{chapter.3}% 7
-\BOOKMARK [1][-]{section.3.5}{Customers Specification}{chapter.3}% 8
-\BOOKMARK [1][-]{section.3.6}{Telephone Prefixes in Call Report}{chapter.3}% 9
-\BOOKMARK [1][-]{section.3.7}{Rates}{chapter.3}% 10
-\BOOKMARK [1][-]{section.3.8}{Invoicing}{chapter.3}% 11
-\BOOKMARK [0][-]{chapter.4}{Usage}{}% 12
-\BOOKMARK [1][-]{section.4.1}{User Interface}{chapter.4}% 13
-\BOOKMARK [1][-]{section.4.2}{Rating}{chapter.4}% 14
-\BOOKMARK [1][-]{section.4.3}{Invoices}{chapter.4}% 15
-\BOOKMARK [0][-]{chapter.5}{Partners and Resellers}{}% 16
-\BOOKMARK [1][-]{section.5.1}{Resellers}{chapter.5}% 17
-\BOOKMARK [1][-]{section.5.2}{Partners}{chapter.5}% 18
-\BOOKMARK [1][-]{section.5.3}{Main Configuration File Content}{chapter.5}% 19
-\BOOKMARK [1][-]{section.5.4}{Glossary}{chapter.5}% 20
-\BOOKMARK [0][-]{section*.28}{Index}{}% 21
+\BOOKMARK [0][-]{chapter.2}{Installation}{}% 2
+\BOOKMARK [1][-]{section.2.1}{Requirements}{chapter.2}% 3
+\BOOKMARK [1][-]{section.2.2}{Software Infrastructure}{chapter.2}% 4
+\BOOKMARK [1][-]{section.2.3}{Download}{chapter.2}% 5
+\BOOKMARK [1][-]{section.2.4}{Asterisell Installation}{chapter.2}% 6
+\BOOKMARK [1][-]{section.2.5}{MySQL Database Configuration}{chapter.2}% 7
+\BOOKMARK [1][-]{section.2.6}{Web Server}{chapter.2}% 8
+\BOOKMARK [1][-]{section.2.7}{Cron Job}{chapter.2}% 9
+\BOOKMARK [1][-]{section.2.8}{Asterisell Customizations}{chapter.2}% 10
+\BOOKMARK [1][-]{section.2.9}{Troubleshooting}{chapter.2}% 11
+\BOOKMARK [1][-]{section.2.10}{Security}{chapter.2}% 12
+\BOOKMARK [1][-]{section.2.11}{MySQL advanced optimizations}{chapter.2}% 13
+\BOOKMARK [0][-]{chapter.3}{Configurations}{}% 14
+\BOOKMARK [1][-]{section.3.1}{Main Configurations}{chapter.3}% 15
+\BOOKMARK [1][-]{section.3.2}{Asterisell Owner Params}{chapter.3}% 16
+\BOOKMARK [1][-]{section.3.3}{Web Site Appearances}{chapter.3}% 17
+\BOOKMARK [1][-]{section.3.4}{Vendors Specification}{chapter.3}% 18
+\BOOKMARK [1][-]{section.3.5}{Customers Specification}{chapter.3}% 19
+\BOOKMARK [1][-]{section.3.6}{Telephone Prefixes in Call Report}{chapter.3}% 20
+\BOOKMARK [1][-]{section.3.7}{Rates}{chapter.3}% 21
+\BOOKMARK [1][-]{section.3.8}{Invoicing}{chapter.3}% 22
+\BOOKMARK [0][-]{chapter.4}{Usage}{}% 23
+\BOOKMARK [1][-]{section.4.1}{User Interface}{chapter.4}% 24
+\BOOKMARK [1][-]{section.4.2}{Rating}{chapter.4}% 25
+\BOOKMARK [1][-]{section.4.3}{Invoices}{chapter.4}% 26
+\BOOKMARK [0][-]{chapter.5}{Partners and Resellers}{}% 27
+\BOOKMARK [1][-]{section.5.1}{Resellers}{chapter.5}% 28
+\BOOKMARK [1][-]{section.5.2}{Partners}{chapter.5}% 29
+\BOOKMARK [1][-]{section.5.3}{Main Configuration File Content}{chapter.5}% 30
+\BOOKMARK [0][-]{chapter.6}{Glossary}{}% 31
+\BOOKMARK [0][-]{section*.30}{Index}{}% 32

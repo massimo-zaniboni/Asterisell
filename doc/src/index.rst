@@ -5,9 +5,6 @@
 Asterisell Overview
 ###################
 
-Usage Scenario
-==============
-
 Asterisell is a web application for rating, showing to customers, and billing VoIP calls.
 
 Usage scenario:
@@ -29,17 +26,519 @@ You can use Asterisell for:
 
 You can have different :term:`partners <partner>`, and different :term:`resellers <reseller>`.
 
+############
+Installation
+############
+
+Requirements
+============
+  
+  * HTTP WEB Server;
+  * PHP 5.0 or greater (PHP 4.0 is not supported);
+  * `GD support <http://www.php.net/manual/en/image.installation.php>`_ enabled in PHP;
+  * MySQL DBMS;
+
+Software Infrastructure
+=======================
+
+VoIP calls are managed usually from an `Asterisk Server <http://www.asterisk.org>`_
+  * it routes the calls to the proper dial peer;
+  * it associates to every customer a unique "accountcode";
+  * it writes Call Detail Records (CDRs) on a specific MySQL database table shared with Asterisell.
+
+VoIP calls can be managed from other servers, or call detail records can be imported from CSV files.
+
+Asterisell is a PHP5 web application that:
+  * reads calls information from the CDR table shared with Asterisk Server;
+  * associate to every call a cost (what the service provider pays to other vendors for routing the customer's call);
+  * associate to every call an income (what the customer pays to the service provider);
+  * displays calls info;
+
+Download
+========
+
+The suggested way to download this release is using `Git version control system <http://git-scm.com/>`_ . This allows to:
+    * download application updates in an efficient way;
+    * be advised of conflicts between your customizations and application updates;
+    * send back to me bug-fixes and improvements;
+    * receive improvements from other in an efficient way;
+    * upgrade to commercial release easily without loosing your customizations;
+
+For initial download::
+
+  git clone http://github.com/massimo-zaniboni/Asterisell.git
+
+For updating/upgrading to new releases::
+
+  git commit -a -m "My custom changes."
+  git pull http://github.com/massimo-zaniboni/Asterisell.git
+
+Then follow the Git procedure to resolve merge conflicts. Usually there will not merge conflicts, because Git tries to preserve both you customization and new version modifications.
+
+In case of troubles, ask to forum. I will update these installation notes, according the signaled problems/suggestions.
+
+Asterisell Installation
+=======================
+
+Asterisell File Installation
+----------------------------
+
+Choose a directory where installing Asterisell. For example `/var/www/asterisell3`.
+
+In Linux Debian make sure that the "www-data" user can read the content of the installation directory::
+
+  chown -R :www-data asterisell3
+  chmod -R g+rwx asterisell3
+
+Packages
+--------
+
+The typical installation requires:
+  * Apache2 HTTP server
+  * mod_php5
+  * mod_ssl
+  * MySQL database server
+  * awk
+
+Asterisell use some PHP5 libraries. On Fedora/Centos for example you must install::
+
+    yum install awk
+    yum install httpd
+    yum install php php-cli php-common
+    yum install mysql mysql-server php-mysql
+    yum install php-bcmath php-xml php-mbstring
+
+and then execute::
+
+    /etc/init.d/httpd restart
+
+MySQL Database Configuration
+============================
+
+Up to date Asterisell is tested only with `MySQL DBMS <http://www.mysql.com>`_ , but the Symfony framework support many other popular open source DBMS.
+
+Database Access Parameters
+--------------------------
+
+Update::
+
+  config/databases.yml
+  config/propel.ini
+  scripts/initdb.sh
+
+according your needs using the correct host, username and password for MySQL access. 
+
+Initially you must use the root/admin account of MySQL, because  configuration scripts will create a new database. Later you can create a specific user for the Asterisell database, in order to limit the capability of the Asterisell user. 
+
+The suggested database name is `asterisell3` in order to avoid conflicts with previous or new version of Asterisell needing different database schemas.
+
+How to create a Database User with Limited Access to Asterisell Database
+------------------------------------------------------------------------
+
+Enter into MySQL shell::
+
+  mysql -u root -p mysql
+  
+Create a user that can invoke MySQL only from localhost (supposing that Asterisell webserver hosts also the MySQL DBMS)::
+
+  CREATE USER 'asterisell3user'@'localhost' IDENTIFIED BY 'some-password-here';
+  GRANT ALL ON asterisell3.* TO 'asterisell3user'@'localhost';
+
+This example, supposes that `asterisell3` is the name of created Asterisell database, and `asterisell3user` the name of database user.
+
+NOTE: `GRANT ALL` is needed in order to support the database upgrade script.
+
+Installation Script
+-------------------
+
+The installation script will:
+  * create a new `asterisell3` database;
+  * load the tables;
+  * initializing the Asterisell application with demo data;
+  * fix directory permissions;
+  * reset the Symfony cache;
+
+It must not be used if it is an update of Asterisell, because otherwise all data will be lost.
+
+In any case the script will warn you about this.
+
+Execute::
+
+
+  cd scripts
+  sh initdb.sh
+
+and answer to questions. 
+
+The very last versions of MySQL requires `Engine=InnoDB;` instead of `Type=InnoDB;` inside file `data/sql/lib.model.schema.sql`. In case of problems during database creation (initial installation of Asterisell), you must update manually this file. 
+
+Change Demo Data Later
+----------------------
+
+The installation script will load also some demo data in order to test Asterisell.
+
+If you want later, start with an empty database, you can execute::
+
+  cd scripts
+  php reset_db_and_init_data.php init <some-password-for-root-user-access>
+
+for creating an empty database, with only minimal data, and a "root" user with the chosen password for initial login.
+
+The scripts supports other type of data initialization. This command will display all its options::
+
+  cd scripts
+  php reset_db_and_init_data.php
+
+You can also inspect the content of `scripts/initdb.sh` in order to see the details of performed actions.
+
+Optional Configuration for Developers
+-------------------------------------
+
+If you are a developer, and you are changing Asterisell source code, maybe you want to change also its database schema, contained in `config/schema.yml`. 
+
+In this case, you must also instruct `config/propel.ini` about how to access the MySQL database. These are the same parameters of `config/databases.yml`, but they are used from a different tool, and so they must be repeated here.
+
+Update `config/propel.ini` according your needs.
+
+Adapt it, using the same parameters of the `databases.yml`. This file contains a lot of parameters, but you must only change these lines::
+
+    propel.database.createUrl  = mysql://localhost/
+    propel.database.url        = mysql://localhost/asterisell3
+    propel.output.dir          = /var/www/asterisell3
+
+
+If you have changed the database structure in the file `config/schema.yml`, you must also update the SQL instructions creating the MySQL database. You can use the script `scripts/makedb.sh`. It will recreate the SQL commands and then it call `initdb.sh` in order to load the new database.
+
+Web Server
+==========
+  
+Website Configuration 
+---------------------
+
+Create the file `asterisell.conf` inside the directory:
+  * `/etc/httpd/conf.d/` or
+  * `/etc/apache2/conf.d/`
+  
+The content is something like::
+
+    Alias /your-voip-service /var/www/asterisell3/web/
+
+    <Location /your-voip-service>
+      Order allow,deny
+      Allow from all 
+
+      # If you have mod_ssl installed 
+      # then with these lines you can force the usage of https connections
+      # for all Asterisell access.
+      # If you omit them, then the passwords are sent in plain text and
+      # they can be intercepted from hackers...
+      #
+      AllowOverride All
+      <IfModule mod_rewrite.c>
+        RewriteEngine On
+        RewriteCond %{HTTPS} off
+        RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+      </IfModule>
+  
+    </Location>
+
+NOTE: remember to add `/web` to your Asterisell installation directory. This because it is only the `web` subdirectory of Asterisell project that must be part of the web-space.
+
+Restart the apache2 httpd server in order to render active the configurations using a command like::
+
+    /etc/init.d/httpd restart  
+
+or::
+
+    /etc/init.d/apache2 restart
+
+If it is all correct then `http://your-voip-service` will display the login form.
+
+PHP Resources
+-------------
+
+The administrator can invoke heavy jobs, for example graph and stats about calls. In this case it is usefull to increase the resources of PHP scripts inside on-line sessions.
+
+In CENTOS the settings are in `/etc/php.ini`, in Debian are in `/etc/php5/apache2/php.ini`. Change somethiing like::
+
+  ;;;;;;;;;;;;;;;;;;;
+  ; Resource Limits ;
+  ;;;;;;;;;;;;;;;;;;;
+
+  max_execution_time = 30     ; Maximum execution time of each script, in seconds
+  max_input_time = 60 ; Maximum amount of time each script may spend parsing request data
+  ;max_input_nesting_level = 64 ; Maximum input variable nesting level
+  memory_limit = 128M      ; Maximum amount of memory a script may consume (128MB)
+
+
+into something like::
+
+
+  ;;;;;;;;;;;;;;;;;;;
+  ; Resource Limits ;
+  ;;;;;;;;;;;;;;;;;;;
+
+  max_execution_time = 180     ; Maximum execution time of each script, in seconds
+  max_input_time = 60 ; Maximum amount of time each script may spend parsing request data
+  ;max_input_nesting_level = 64 ; Maximum input variable nesting level
+  memory_limit = 128M      ; Maximum amount of memory a script may consume (128MB)
+
+
+increasing the execution time from 30 seconds to 180 seconds.
+
+NOTE: heavy jobs like email sending, are done from the cron-job, in off-line mode, and they are not affected from these settings / constraints.
+
+PHP Speedup
+-----------
+
+`APC <http://pecl.php.net/package/APC>`_ is a free, open source framework that caches data and compiled code from the PHP bytecode compiler in shared memory.
+  
+I suggest installing it, because it is well tested, and it speeds-up a lot the execution of Asterisell and other PHP applications.
+
+For installing it in Debian::
+
+  aptitude install php-apc
+  
+or in CENTOS follow `the instruction of this webpage <http://2bits.com/articles/installing-php-apc-gnulinux-centos-5.html>`_ (up to date the APC package is not part of CENTOS).
+
+IMPORTANT: In order to activate it, the Apache web server must be restarted.
+
+IMPORTANT: Up to date there can be conflicts between APC (version 3.0.19) and SwiftMailer. If after the sending of the first mail, an error message appears in the problem table (something like `Fatal error: Cannot inherit previously-inherited or override constant LEVEL_TOP from interface Swift_Mime_Message`), then try to upgrade APC or disactivate APC.
+
+MySQL
+-----
+
+Rates based on CSV files can be rather big, because they contain a lot of data. Asterisell save them in a record, and the SQL command can be rather big.
+
+So you must use a reasonable `max_allowed_packet` size, for communication between PHP and MySQL.
+
+Check that inside `/etc/mysql/my.cnf` there is something like::
+
+  [mysqld]
+  max_allowed_packet = 16M
+  
+In case of problems, increase this limit, and then restart MySQL (NOTE: during restart new inserted CDR records will be lost)::
+
+  /etc/init.d/mysql restart
+
+Last versions of MySQL execute a fsync (flush) on disk for every transaction. This is a very big slow down for Asterisell, because it does not group batch work on CDRs on a single transaction. If MySQL is slow, it can be configured for flushing on disk the transactions every seconds. Add inside `/etc/mysql/my.cnf`::
+
+  innodb_flush_log_at_trx_commit = 0
+
+Consult `MySQL related documentation <http://dev.mysql.com/doc/refman/4.1/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit>`_ for more details on side effects of this setting.
+
+Additional File Access Permissions
+----------------------------------
+
+If you have not used the default installation script (`scripts/initdb.sh`), then make sure to execute::
+
+    ./symfony fix-perms
+
+or::
+
+    chmod -R a+rw log
+    chmod -R a+rw cache
+
+in order to enable the write rights on (only) these two directories.
+
+Cron Job
+========
+ 
+Calls Rating and Jobs Processing
+--------------------------------
+
+Asterisell rates the calls and execute other jobs off-line, using a cron-job process. This allows to use all the resources of the machine, without the constraints of online sessions.
+
+The list of jobs to execute and the various parameters are inside `apps/asterisell/config/app.yml`.
+
+In case of problems during job execution, a mail is sent to the administrator.
+
+User Permissions
+----------------
+
+The process must be executed from the same user that is associated to the http connection. 
+
+On Fedora/Centos it is typically `apache`, on Debian `www-data`. In order to retrieve it, you can enter into Asterisell web interface, select Help menu and PHP-INFO option. Then you can search the element `User/Group`. The first value is the name of the PHP/webserver user.
+
+Cron Job Setting
+----------------
+
+Supposing the http user is "apache" you can associate to it a cron job using the command::
+
+  crontab -u apache -e
+
+This command will open an editor. If the defalt editor is `vi`, then digit `:i` (and press enter) in order to start editing, and `:wq` (and press enter) at the end of editing, in order to `write` and `quit/exit` from the editor
+
+Add this line::
+
+  5,10,15,20,25,30,35,40,45,50,55 * * * * sh -c "cd /your-asterisell-dir/scripts/ ; nice php process_jobs.php > /dev/null "
+
+
+The meaning of the line is to execute at minutes 5, 10, 15, 20, ... of every hour the `php rate_all_and_test.php` command inside the Asterisell directory.
+
+Log Rotate
+----------
+
+In order to reduce log file size put `asterisell-logrotate` with execution privileges in `/etc/cron.monthly` directory::
+
+
+    #!/bin/sh
+    cd /your-asterisell-install-dir
+    ./symfony log-rotate asterisell prod
+
+and set it as an executable file ::
+
+  chmod u+x asterisell-logrotate
+
+Note that `asterisell` after `symfony` command is the name of the application and it is not depends from the directory installation.
+
 .. _asterisell_customizations:
 
-Customizations
-==============
+Asterisell Customizations
+=========================
 
-Asterisell can be easily extended with custom rates and jobs.
+Jobs/Workflow Customizations
+----------------------------
 
-It uses a blackboard approach for processing information:
-  * events are put inside the the blackboard;
-  * jobs are activated when there are proper events on the blackboard;
-  * jobs can produce new events;
+Asterisell uses a blackboard approach to process information:
+    * events are put inside the database/blackboard;
+    * customizable/configurable jobs react to events;
+    * jobs can produce new events;
+
+In this way it is possible to add new jobs, changing the behaviour of the application.
+
+If you add new `jobs` make sure to add them to the `apps/asterisell/lib/jobs/userjobs`, otherwise during subsequent update of Asterisell application, all new jobs could be lost or there can be a lot of Git merge conflicts.
+
+Some Jobs like PDF invoicing, email composition and so on require some customization. You can create a custom Job modifying already existing jobs, put them in `apps/asterisell/lib/jobs/userjobs` directory. The more elegant way is to change also the name of the job, add it to the `apps/asterisell/config/app.yml` file, removing the old job.
+
+Rates Customizations
+--------------------
+
+New type of rate methods can be added:
+  * add a new rate inside `apps/asterisell/lib/rates`
+  * enable the rate inside `apps/asterisell/config/app.yml`
+  * refresh the cache `./configure.sh`
+
+Troubleshooting
+===============
+
+File Permissions
+----------------
+
+Log Directory
+~~~~~~~~~~~~~
+
+Often after upgrades there are problems related to the Asterisell log files inside log directory.
+
+If this file was created from root then the `apache` user is not able to add info to it and the entire Asterisell application is blocked. In this case change the permissions of file with something like::
+
+    cd log
+    chmod a+rw asterisell_prod.log
+    chmod a+rw asterisell_dev.log
+
+or better change the owner in something like::
+
+    cd log
+    chown apache asterisell_prod.log
+    chown apache asterisell_dev.log
+
+or execute::
+
+    ./symfony fix-perms
+
+Try also to restart the web server.
+
+Created Files
+~~~~~~~~~~~~~
+  
+During initial Asterisell configuration new files can be created. Check if these files are readable from web-server process. For example on my debian machine I performs::
+  
+     chown -R :www-data * 
+     chmod -R g+rx *
+     sh configure.sh
+
+where `www-data` is the group used from my webserver.
+
+Additional Run-Time Debug Info
+------------------------------
+
+In case of problems you can enable the development/debug version of Asterisell that shows useful informations about its execution and related problems. Execute::
+
+    ./symfony enable asterisell dev
+
+and open the url `http://your-web-url/asterisell_dev.php/login`
+
+When finished remember to execute::
+
+    ./symfony disable asterisell dev
+
+NOTE: on the contrary of Asterisell production version, in the development version if you change Asterisell source code, you must not execute `sh configure.sh`, because the development version recreate all files every time in order to speed up development at the expense of run-time executions. 
+
+NOTE: as in the Asterisell product version, in the development version if you change some configuration parameters you must execute `sh configure.sh` because certain Asterisell modules are regenerated according the configured values.
+
+Run Time Configuration Problems
+-------------------------------
+
+Every problem encountered from Asterisell during the call rating process is clearly reported to the administrator with hints of how to resolve it.
+
+The presence of problems is signaled also via email to the administrator.
+
+In case of dubious configurations Asterisell advise the administrator and suspend the rate of affected calls.
+
+The rate process is rather robust and error-free regarding ill defined configurations because:
+  * re-rating of calls is always possible;
+  * problems are always signaled;
+
+Feedback
+--------
+
+Web servers, PHP environment, libraries, and os on... can interact in strange ways. If something is not working properly let me know!
+
+Security
+========
+
+The end user interacts only with the `Call Report` form. The content of user input fields is checked by a very conservative function that removes every non proper character.
+
+No particular care is put on other forms because they are accessible only from the administrator.
+
+User session handling is managed directly from Symfony and PHP engine.
+
+MySQL advanced optimizations
+============================
+
+For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of last 1-2 months must be saved in the MySQL database cache in RAM. This makes a big difference in performances. Make sure having a `my.cnf` file like this::
+
+  [mysqld]
+  ###############################  
+  # ASTERISELL RELATED SETTINGS #
+  ############################### 
+  # Optimize InnoDB performances for Asterisell usage.
+  # NOTE: it will use the majority of the RAM of the server
+  # for Asterisell and other MySQL databases.
+  #
+  # Set this to 60-80% the RAM of the server
+  innodb_buffer_pool_size = 1G
+
+  sort_buffer_size = 50M
+  thread_cache_size = 4
+  tmp_table_size = 50M
+  sync_binlog = 0
+
+  # not very important
+  innodb_additional_mem_pool_size = 10M
+
+  # Commits are flushed on the disk each second,
+  # and not immediately.
+  innodb_flush_log_at_trx_commit = 0
+
+  innodb_lock_wait_timeout = 50
+  table_cache = 92
+  innodb_flush_method=O_DIRECT
+
+  # speed-up rating of CDRs and also other performances - very important
+  innodb_log_buffer_size = 8M
+
+Restart MySQL for enabling changes in configuration.
 
 ##############
 Configurations
@@ -70,7 +569,7 @@ Web Site Appearances
 
 Logo, slogan, title, footer and similar aspects of the web-site can be customized directly from :ref:`asterisell_owner`. 
 
-Web Site appearance can be further customized changing "apps/asterisell/templates/asterisell_layout.php" and "web/css" content.
+Web Site appearance can be further customized changing `apps/asterisell/templates/asterisell_layout.php` and `web/css` content.
 
 .. _vendors_specification:
 
@@ -570,8 +1069,9 @@ Main Configuration File Content
 
 .. literalinclude:: ../../apps/asterisell/config/app.yml
 
+########
 Glossary
-========
+########
 
 .. glossary::
    :sorted:
@@ -579,6 +1079,7 @@ Glossary
    VoIP account
       A VoIP internal telephone number managed from the Asterisk server.
       It is an internal account code. Usually Asterisk VoIP server put it on the ``accountcode`` field of the :term:`CDR table`.
+      Note: the Asterisk standard documentation pretends that this code is specified on a per-channel basis, but this is not the case in Asterisell configuration. So each accountcode has the same associated customer for every channel. This is also useful/practical in case of the same customer using different channels.
 
    customer office
       It identifies distinct physical locations, or distinct business units, of a :term:`customer`. It can have one or more :term:`VoIP accounts <VoIP account>`. 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2012/dev/Arch Linux) (format=pdflatex 2011.10.24)  10 NOV 2011 16:36
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (TeX Live 2012/dev/Arch Linux) (format=pdflatex 2011.10.24)  11 NOV 2011 02:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -876,23 +876,21 @@ LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <17.28> not available
 ] (./Asterisell.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
-)
-\tf@toc=\write7
-\openout7 = `Asterisell.toc'.
-
-
-Adding blank page after the table of contents.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 113.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 89.
 pdfTeX warning (ext4): destination with the same identifier (name{page.i}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.113 \tableofcontents
-                       [1
+l.89 ...r}{\numberline {6}Glossary}{37}{chapter.6}
+                                                   [1
 
-]pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) ha
-s been already used, duplicate ignored
+])
+\tf@toc=\write7
+\openout7 = `Asterisell.toc'.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.ii}) has
+ been already used, duplicate ignored
 <to be read again> 
                    \relax 
 l.113 \tableofcontents
@@ -911,110 +909,122 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 
 ]
 Chapter 2.
-[3] [4
+[3]
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 249.
+ (/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 268.
+ [4] [5]
+Underfull \hbox (badness 10000) in paragraph at lines 396--397
+[]\T1/ptm/m/n/10 The very last ver-sions of MySQL re-quires \T1/ptm/m/it/10 En-
+gine=InnoDB; \T1/ptm/m/n/10 in-stead of \T1/ptm/m/it/10 Type=InnoDB; \T1/ptm/m/
+n/10 in-side file
+ []
+
+LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
+(Font)              Font shape `T1/ptm/b/it' tried instead on input line 446.
+[6] [7] [8] [9] [10] [11] [12] [13] [14
 
 ]
 Chapter 3.
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 193.
-(/usr/share/texmf-dist/tex/latex/psnfss/t1pcr.fd
-File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
-) [5]
-LaTeX Font Info:    Font shape `T1/ptm/bx/it' in size <10> not available
-(Font)              Font shape `T1/ptm/b/it' tried instead on input line 266.
- [6]
-LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 324.
+[15] [16]
 LaTeX Font Info:    Font shape `T1/pcr/bx/n' in size <10> not available
-(Font)              Font shape `T1/pcr/b/n' tried instead on input line 348.
+(Font)              Font shape `T1/pcr/b/n' tried instead on input line 1001.
 
-Overfull \hbox (487.10693pt too wide) in paragraph at lines 348--348
+Overfull \hbox (487.10693pt too wide) in paragraph at lines 1001--1001
 []
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 348--348
+Underfull \hbox (badness 10000) in paragraph at lines 1001--1001
 
  []
 
-[7] [8] [9] [10]
+[17] [18] [19] [20]
 Chapter 4.
-[11
+[21
 
-] [12] [13] [14
+] [22] [23] [24
 
 ]
 Chapter 5.
-[15] [16] [17] [18]
-Underfull \vbox (badness 10000) detected at line 1396
+[25] [26] [27] [28]
+Underfull \vbox (badness 10000) detected at line 2049
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1396
+Underfull \vbox (badness 10000) detected at line 2049
  []
 
-[19]
-Underfull \vbox (badness 10000) detected at line 1396
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1396
- []
-
-[20]
-Underfull \vbox (badness 10000) detected at line 1396
+[29]
+Underfull \vbox (badness 10000) detected at line 2049
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1396
+Underfull \vbox (badness 10000) detected at line 2049
  []
 
-[21]
-Underfull \vbox (badness 10000) detected at line 1396
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1396
- []
-
-[22]
-Underfull \vbox (badness 10000) detected at line 1396
+[30]
+Underfull \vbox (badness 10000) detected at line 2049
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1396
+Underfull \vbox (badness 10000) detected at line 2049
  []
 
-[23]
-Underfull \vbox (badness 10000) detected at line 1396
+[31]
+Underfull \vbox (badness 10000) detected at line 2049
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1396
+Underfull \vbox (badness 10000) detected at line 2049
  []
 
-[24] [25] (./Asterisell.ind [26] [27
+[32]
+Underfull \vbox (badness 10000) detected at line 2049
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 2049
+ []
+
+[33]
+Underfull \vbox (badness 10000) detected at line 2049
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 2049
+ []
+
+[34] [35] [36
+
+]
+Chapter 6.
+[37] (./Asterisell.ind [38] [39
 
 
 
 ])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 1488.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 1488.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 2142.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 2142.
  (./Asterisell.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1488.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1488.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 2142.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 2142.
 
 Package rerunfilecheck Info: File `Asterisell.out' has not changed.
-(rerunfilecheck)             Checksum: 38B6FF0D304A06987A22E9501896A413;1225.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1488.
+(rerunfilecheck)             Checksum: 228741AE0E1E84A26B80B76F509BCBCD;1919.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 2142.
  ) 
 Here is how much of TeX's memory you used:
- 8890 strings out of 493633
- 122061 string characters out of 3148831
- 253243 words of memory out of 3000000
- 11905 multiletter control sequences out of 15000+200000
+ 8984 strings out of 493633
+ 123777 string characters out of 3148831
+ 255121 words of memory out of 3000000
+ 11952 multiletter control sequences out of 15000+200000
  59599 words of font info for 66 fonts, out of 3000000 for 9000
  832 hyphenation exceptions out of 8191
- 36i,12n,45p,640b,429s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,12n,48p,640b,493s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1/urw/c
 ourier/ucrb8a.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></u
@@ -1024,10 +1034,10 @@ vetic/uhvr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
 share/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texmf-dist/fonts
 /type1/urw/times/utmr8a.pfb></usr/share/texmf-dist/fonts/type1/urw/times/utmri8
 a.pfb>
-Output written on Asterisell.pdf (31 pages, 174908 bytes).
+Output written on Asterisell.pdf (43 pages, 202992 bytes).
 PDF statistics:
- 480 PDF objects out of 1000 (max. 8388607)
- 432 compressed objects within 5 object streams
- 106 named destinations out of 1000 (max. 500000)
- 169 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 629 PDF objects out of 1000 (max. 8388607)
+ 568 compressed objects within 6 object streams
+ 153 named destinations out of 1000 (max. 500000)
+ 257 words of extra memory for PDF output out of 10000 (max. 10000000)
 

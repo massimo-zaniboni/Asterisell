@@ -12,7 +12,7 @@
 
 
 \title{Asterisell Documentation}
-\date{November 10, 2011}
+\date{November 11, 2011}
 \release{asterisell-free-stable-3.12.00
 }
 \author{Massimo Zaniboni}
@@ -166,16 +166,504 @@ calculating what you owe to other telephone service vendors ({\hyperref[index:te
 You can have different {\hyperref[index:term-partner]{\emph{partners}}}, and different {\hyperref[index:term-reseller]{\emph{resellers}}}.
 
 
-\chapter{Customizations}
-\label{index:asterisell-customizations}\label{index:customizations}
-Asterisell can be easily extended with custom rates and jobs.
-\begin{description}
-\item[{It uses a blackboard approach for processing information:}] \leavevmode\begin{itemize}
+\chapter{Installation}
+\label{index:installation}
+
+\section{Requirements}
+\label{index:requirements}\begin{itemize}
 \item {} 
-events are put inside the the blackboard;
+HTTP WEB Server;
 
 \item {} 
-jobs are activated when there are proper events on the blackboard;
+PHP 5.0 or greater (PHP 4.0 is not supported);
+
+\item {} 
+\href{http://www.php.net/manual/en/image.installation.php}{GD support} enabled in PHP;
+
+\item {} 
+MySQL DBMS;
+
+\end{itemize}
+
+
+\section{Software Infrastructure}
+\label{index:software-infrastructure}\begin{description}
+\item[{VoIP calls are managed usually from an \href{http://www.asterisk.org}{Asterisk Server}}] \leavevmode\begin{itemize}
+\item {} 
+it routes the calls to the proper dial peer;
+
+\item {} 
+it associates to every customer a unique ``accountcode'';
+
+\item {} 
+it writes Call Detail Records (CDRs) on a specific MySQL database table shared with Asterisell.
+
+\end{itemize}
+
+\end{description}
+
+VoIP calls can be managed from other servers, or call detail records can be imported from CSV files.
+\begin{description}
+\item[{Asterisell is a PHP5 web application that:}] \leavevmode\begin{itemize}
+\item {} 
+reads calls information from the CDR table shared with Asterisk Server;
+
+\item {} 
+associate to every call a cost (what the service provider pays to other vendors for routing the customer's call);
+
+\item {} 
+associate to every call an income (what the customer pays to the service provider);
+
+\item {} 
+displays calls info;
+
+\end{itemize}
+
+\end{description}
+
+
+\section{Download}
+\label{index:download}\begin{description}
+\item[{The suggested way to download this release is using \href{http://git-scm.com/}{Git version control system} . This allows to:}] \leavevmode\begin{itemize}
+\item {} 
+download application updates in an efficient way;
+
+\item {} 
+be advised of conflicts between your customizations and application updates;
+
+\item {} 
+send back to me bug-fixes and improvements;
+
+\item {} 
+receive improvements from other in an efficient way;
+
+\item {} 
+upgrade to commercial release easily without loosing your customizations;
+
+\end{itemize}
+
+\end{description}
+
+For initial download:
+
+\begin{Verbatim}[commandchars=@\[\]]
+git clone http://github.com/massimo-zaniboni/Asterisell.git
+\end{Verbatim}
+
+For updating/upgrading to new releases:
+
+\begin{Verbatim}[commandchars=@\[\]]
+git commit -a -m "My custom changes."
+git pull http://github.com/massimo-zaniboni/Asterisell.git
+\end{Verbatim}
+
+Then follow the Git procedure to resolve merge conflicts. Usually there will not merge conflicts, because Git tries to preserve both you customization and new version modifications.
+
+In case of troubles, ask to forum. I will update these installation notes, according the signaled problems/suggestions.
+
+
+\section{Asterisell Installation}
+\label{index:asterisell-installation}
+
+\subsection{Asterisell File Installation}
+\label{index:asterisell-file-installation}
+Choose a directory where installing Asterisell. For example \emph{/var/www/asterisell3}.
+
+In Linux Debian make sure that the ``www-data'' user can read the content of the installation directory:
+
+\begin{Verbatim}[commandchars=@\[\]]
+chown -R :www-data asterisell3
+chmod -R g+rwx asterisell3
+\end{Verbatim}
+
+
+\subsection{Packages}
+\label{index:packages}\begin{description}
+\item[{The typical installation requires:}] \leavevmode\begin{itemize}
+\item {} 
+Apache2 HTTP server
+
+\item {} 
+mod\_php5
+
+\item {} 
+mod\_ssl
+
+\item {} 
+MySQL database server
+
+\item {} 
+awk
+
+\end{itemize}
+
+\end{description}
+
+Asterisell use some PHP5 libraries. On Fedora/Centos for example you must install:
+
+\begin{Verbatim}[commandchars=@\[\]]
+yum install awk
+yum install httpd
+yum install php php-cli php-common
+yum install mysql mysql-server php-mysql
+yum install php-bcmath php-xml php-mbstring
+\end{Verbatim}
+
+and then execute:
+
+\begin{Verbatim}[commandchars=@\[\]]
+/etc/init.d/httpd restart
+\end{Verbatim}
+
+
+\section{MySQL Database Configuration}
+\label{index:mysql-database-configuration}
+Up to date Asterisell is tested only with \href{http://www.mysql.com}{MySQL DBMS} , but the Symfony framework support many other popular open source DBMS.
+
+
+\subsection{Database Access Parameters}
+\label{index:database-access-parameters}
+Update:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{config}\PYG{o}{/}\PYG{n}{databases}\PYG{o}{.}\PYG{n}{yml}
+\PYG{n}{config}\PYG{o}{/}\PYG{n}{propel}\PYG{o}{.}\PYG{n}{ini}
+\PYG{n}{scripts}\PYG{o}{/}\PYG{n}{initdb}\PYG{o}{.}\PYG{n}{sh}
+\end{Verbatim}
+
+according your needs using the correct host, username and password for MySQL access.
+
+Initially you must use the root/admin account of MySQL, because  configuration scripts will create a new database. Later you can create a specific user for the Asterisell database, in order to limit the capability of the Asterisell user.
+
+The suggested database name is \emph{asterisell3} in order to avoid conflicts with previous or new version of Asterisell needing different database schemas.
+
+
+\subsection{How to create a Database User with Limited Access to Asterisell Database}
+\label{index:how-to-create-a-database-user-with-limited-access-to-asterisell-database}
+Enter into MySQL shell:
+
+\begin{Verbatim}[commandchars=@\[\]]
+mysql -u root -p mysql
+\end{Verbatim}
+
+Create a user that can invoke MySQL only from localhost (supposing that Asterisell webserver hosts also the MySQL DBMS):
+
+\begin{Verbatim}[commandchars=@\[\]]
+CREATE USER 'asterisell3user'@PYGZat[]'localhost' IDENTIFIED BY 'some-password-here';
+GRANT ALL ON asterisell3.* TO 'asterisell3user'@PYGZat[]'localhost';
+\end{Verbatim}
+
+This example, supposes that \emph{asterisell3} is the name of created Asterisell database, and \emph{asterisell3user} the name of database user.
+
+NOTE: \emph{GRANT ALL} is needed in order to support the database upgrade script.
+
+
+\subsection{Installation Script}
+\label{index:installation-script}\begin{description}
+\item[{The installation script will:}] \leavevmode\begin{itemize}
+\item {} 
+create a new \emph{asterisell3} database;
+
+\item {} 
+load the tables;
+
+\item {} 
+initializing the Asterisell application with demo data;
+
+\item {} 
+fix directory permissions;
+
+\item {} 
+reset the Symfony cache;
+
+\end{itemize}
+
+\end{description}
+
+It must not be used if it is an update of Asterisell, because otherwise all data will be lost.
+
+In any case the script will warn you about this.
+
+Execute:
+
+\begin{Verbatim}[commandchars=@\[\]]
+cd scripts
+sh initdb.sh
+\end{Verbatim}
+
+and answer to questions.
+
+The very last versions of MySQL requires \emph{Engine=InnoDB;} instead of \emph{Type=InnoDB;} inside file \emph{data/sql/lib.model.schema.sql}. In case of problems during database creation (initial installation of Asterisell), you must update manually this file.
+
+
+\subsection{Change Demo Data Later}
+\label{index:change-demo-data-later}
+The installation script will load also some demo data in order to test Asterisell.
+
+If you want later, start with an empty database, you can execute:
+
+\begin{Verbatim}[commandchars=@\[\]]
+cd scripts
+php reset@_db@_and@_init@_data.php init @textless[]some-password-for-root-user-access@textgreater[]
+\end{Verbatim}
+
+for creating an empty database, with only minimal data, and a ``root'' user with the chosen password for initial login.
+
+The scripts supports other type of data initialization. This command will display all its options:
+
+\begin{Verbatim}[commandchars=@\[\]]
+cd scripts
+php reset@_db@_and@_init@_data.php
+\end{Verbatim}
+
+You can also inspect the content of \emph{scripts/initdb.sh} in order to see the details of performed actions.
+
+
+\subsection{Optional Configuration for Developers}
+\label{index:optional-configuration-for-developers}
+If you are a developer, and you are changing Asterisell source code, maybe you want to change also its database schema, contained in \emph{config/schema.yml}.
+
+In this case, you must also instruct \emph{config/propel.ini} about how to access the MySQL database. These are the same parameters of \emph{config/databases.yml}, but they are used from a different tool, and so they must be repeated here.
+
+Update \emph{config/propel.ini} according your needs.
+
+Adapt it, using the same parameters of the \emph{databases.yml}. This file contains a lot of parameters, but you must only change these lines:
+
+\begin{Verbatim}[commandchars=@\[\]]
+propel.database.createUrl  = mysql://localhost/
+propel.database.url        = mysql://localhost/asterisell3
+propel.output.dir          = /var/www/asterisell3
+\end{Verbatim}
+
+If you have changed the database structure in the file \emph{config/schema.yml}, you must also update the SQL instructions creating the MySQL database. You can use the script \emph{scripts/makedb.sh}. It will recreate the SQL commands and then it call \emph{initdb.sh} in order to load the new database.
+
+
+\section{Web Server}
+\label{index:web-server}
+
+\subsection{Website Configuration}
+\label{index:website-configuration}\begin{description}
+\item[{Create the file \emph{asterisell.conf} inside the directory:}] \leavevmode\begin{itemize}
+\item {} 
+\emph{/etc/httpd/conf.d/} or
+
+\item {} 
+\emph{/etc/apache2/conf.d/}
+
+\end{itemize}
+
+\end{description}
+
+The content is something like:
+
+\begin{Verbatim}[commandchars=@\[\]]
+Alias /your-voip-service /var/www/asterisell3/web/
+
+@textless[]Location /your-voip-service@textgreater[]
+  Order allow,deny
+  Allow from all
+
+  @# If you have mod@_ssl installed
+  @# then with these lines you can force the usage of https connections
+  @# for all Asterisell access.
+  @# If you omit them, then the passwords are sent in plain text and
+  @# they can be intercepted from hackers...
+  @#
+  AllowOverride All
+  @textless[]IfModule mod@_rewrite.c@textgreater[]
+    RewriteEngine On
+    RewriteCond @%{HTTPS} off
+    RewriteRule (.*) https://@%{HTTP@_HOST}@%{REQUEST@_URI}
+  @textless[]/IfModule@textgreater[]
+
+@textless[]/Location@textgreater[]
+\end{Verbatim}
+
+NOTE: remember to add \emph{/web} to your Asterisell installation directory. This because it is only the \emph{web} subdirectory of Asterisell project that must be part of the web-space.
+
+Restart the apache2 httpd server in order to render active the configurations using a command like:
+
+\begin{Verbatim}[commandchars=@\[\]]
+/etc/init.d/httpd restart
+\end{Verbatim}
+
+or:
+
+\begin{Verbatim}[commandchars=@\[\]]
+/etc/init.d/apache2 restart
+\end{Verbatim}
+
+If it is all correct then \emph{http://your-voip-service} will display the login form.
+
+
+\subsection{PHP Resources}
+\label{index:php-resources}
+The administrator can invoke heavy jobs, for example graph and stats about calls. In this case it is usefull to increase the resources of PHP scripts inside on-line sessions.
+
+In CENTOS the settings are in \emph{/etc/php.ini}, in Debian are in \emph{/etc/php5/apache2/php.ini}. Change somethiing like:
+
+\begin{Verbatim}[commandchars=@\[\]]
+;;;;;;;;;;;;;;;;;;;
+; Resource Limits ;
+;;;;;;;;;;;;;;;;;;;
+
+max@_execution@_time = 30     ; Maximum execution time of each script, in seconds
+max@_input@_time = 60 ; Maximum amount of time each script may spend parsing request data
+;max@_input@_nesting@_level = 64 ; Maximum input variable nesting level
+memory@_limit = 128M      ; Maximum amount of memory a script may consume (128MB)
+\end{Verbatim}
+
+into something like:
+
+\begin{Verbatim}[commandchars=@\[\]]
+;;;;;;;;;;;;;;;;;;;
+; Resource Limits ;
+;;;;;;;;;;;;;;;;;;;
+
+max@_execution@_time = 180     ; Maximum execution time of each script, in seconds
+max@_input@_time = 60 ; Maximum amount of time each script may spend parsing request data
+;max@_input@_nesting@_level = 64 ; Maximum input variable nesting level
+memory@_limit = 128M      ; Maximum amount of memory a script may consume (128MB)
+\end{Verbatim}
+
+increasing the execution time from 30 seconds to 180 seconds.
+
+NOTE: heavy jobs like email sending, are done from the cron-job, in off-line mode, and they are not affected from these settings / constraints.
+
+
+\subsection{PHP Speedup}
+\label{index:php-speedup}
+\href{http://pecl.php.net/package/APC}{APC} is a free, open source framework that caches data and compiled code from the PHP bytecode compiler in shared memory.
+
+I suggest installing it, because it is well tested, and it speeds-up a lot the execution of Asterisell and other PHP applications.
+
+For installing it in Debian:
+
+\begin{Verbatim}[commandchars=@\[\]]
+aptitude install php-apc
+\end{Verbatim}
+
+or in CENTOS follow \href{http://2bits.com/articles/installing-php-apc-gnulinux-centos-5.html}{the instruction of this webpage} (up to date the APC package is not part of CENTOS).
+
+IMPORTANT: In order to activate it, the Apache web server must be restarted.
+
+IMPORTANT: Up to date there can be conflicts between APC (version 3.0.19) and SwiftMailer. If after the sending of the first mail, an error message appears in the problem table (something like \emph{Fatal error: Cannot inherit previously-inherited or override constant LEVEL\_TOP from interface Swift\_Mime\_Message}), then try to upgrade APC or disactivate APC.
+
+
+\subsection{MySQL}
+\label{index:mysql}
+Rates based on CSV files can be rather big, because they contain a lot of data. Asterisell save them in a record, and the SQL command can be rather big.
+
+So you must use a reasonable \emph{max\_allowed\_packet} size, for communication between PHP and MySQL.
+
+Check that inside \emph{/etc/mysql/my.cnf} there is something like:
+
+\begin{Verbatim}[commandchars=@\[\]]
+@PYGZlb[]mysqld@PYGZrb[]
+max@_allowed@_packet = 16M
+\end{Verbatim}
+
+In case of problems, increase this limit, and then restart MySQL (NOTE: during restart new inserted CDR records will be lost):
+
+\begin{Verbatim}[commandchars=@\[\]]
+/etc/init.d/mysql restart
+\end{Verbatim}
+
+Last versions of MySQL execute a fsync (flush) on disk for every transaction. This is a very big slow down for Asterisell, because it does not group batch work on CDRs on a single transaction. If MySQL is slow, it can be configured for flushing on disk the transactions every seconds. Add inside \emph{/etc/mysql/my.cnf}:
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n}{innodb\PYGZus{}flush\PYGZus{}log\PYGZus{}at\PYGZus{}trx\PYGZus{}commit} \PYG{o}{=} \PYG{l+m+mi}{0}
+\end{Verbatim}
+
+Consult \href{http://dev.mysql.com/doc/refman/4.1/en/innodb-parameters.html\#sysvar\_innodb\_flush\_log\_at\_trx\_commit}{MySQL related documentation} for more details on side effects of this setting.
+
+
+\subsection{Additional File Access Permissions}
+\label{index:additional-file-access-permissions}
+If you have not used the default installation script (\emph{scripts/initdb.sh}), then make sure to execute:
+
+\begin{Verbatim}[commandchars=@\[\]]
+./symfony fix-perms
+\end{Verbatim}
+
+or:
+
+\begin{Verbatim}[commandchars=@\[\]]
+chmod -R a+rw log
+chmod -R a+rw cache
+\end{Verbatim}
+
+in order to enable the write rights on (only) these two directories.
+
+
+\section{Cron Job}
+\label{index:cron-job}
+
+\subsection{Calls Rating and Jobs Processing}
+\label{index:calls-rating-and-jobs-processing}
+Asterisell rates the calls and execute other jobs off-line, using a cron-job process. This allows to use all the resources of the machine, without the constraints of online sessions.
+
+The list of jobs to execute and the various parameters are inside \emph{apps/asterisell/config/app.yml}.
+
+In case of problems during job execution, a mail is sent to the administrator.
+
+
+\subsection{User Permissions}
+\label{index:user-permissions}
+The process must be executed from the same user that is associated to the http connection.
+
+On Fedora/Centos it is typically \emph{apache}, on Debian \emph{www-data}. In order to retrieve it, you can enter into Asterisell web interface, select Help menu and PHP-INFO option. Then you can search the element \emph{User/Group}. The first value is the name of the PHP/webserver user.
+
+
+\subsection{Cron Job Setting}
+\label{index:cron-job-setting}
+Supposing the http user is ``apache'' you can associate to it a cron job using the command:
+
+\begin{Verbatim}[commandchars=@\[\]]
+crontab -u apache -e
+\end{Verbatim}
+
+This command will open an editor. If the defalt editor is \emph{vi}, then digit \emph{:i} (and press enter) in order to start editing, and \emph{:wq} (and press enter) at the end of editing, in order to \emph{write} and \emph{quit/exit} from the editor
+
+Add this line:
+
+\begin{Verbatim}[commandchars=@\[\]]
+5,10,15,20,25,30,35,40,45,50,55 * * * * sh -c "cd /your-asterisell-dir/scripts/ ; nice php process@_jobs.php @textgreater[] /dev/null "
+\end{Verbatim}
+
+The meaning of the line is to execute at minutes 5, 10, 15, 20, ... of every hour the \emph{php rate\_all\_and\_test.php} command inside the Asterisell directory.
+
+
+\subsection{Log Rotate}
+\label{index:log-rotate}
+In order to reduce log file size put \emph{asterisell-logrotate} with execution privileges in \emph{/etc/cron.monthly} directory:
+
+\begin{Verbatim}[commandchars=@\[\]]
+@#!/bin/sh
+cd /your-asterisell-install-dir
+./symfony log-rotate asterisell prod
+\end{Verbatim}
+
+and set it as an executable file
+
+\begin{Verbatim}[commandchars=@\[\]]
+chmod u+x asterisell-logrotate
+\end{Verbatim}
+
+Note that \emph{asterisell} after \emph{symfony} command is the name of the application and it is not depends from the directory installation.
+
+
+\section{Asterisell Customizations}
+\label{index:asterisell-customizations}\label{index:id1}
+
+\subsection{Jobs/Workflow Customizations}
+\label{index:jobs-workflow-customizations}\begin{description}
+\item[{Asterisell uses a blackboard approach to process information:}] \leavevmode\begin{itemize}
+\item {} 
+events are put inside the database/blackboard;
+
+\item {} 
+customizable/configurable jobs react to events;
 
 \item {} 
 jobs can produce new events;
@@ -184,12 +672,177 @@ jobs can produce new events;
 
 \end{description}
 
+In this way it is possible to add new jobs, changing the behaviour of the application.
+
+If you add new \emph{jobs} make sure to add them to the \emph{apps/asterisell/lib/jobs/userjobs}, otherwise during subsequent update of Asterisell application, all new jobs could be lost or there can be a lot of Git merge conflicts.
+
+Some Jobs like PDF invoicing, email composition and so on require some customization. You can create a custom Job modifying already existing jobs, put them in \emph{apps/asterisell/lib/jobs/userjobs} directory. The more elegant way is to change also the name of the job, add it to the \emph{apps/asterisell/config/app.yml} file, removing the old job.
+
+
+\subsection{Rates Customizations}
+\label{index:rates-customizations}\begin{description}
+\item[{New type of rate methods can be added:}] \leavevmode\begin{itemize}
+\item {} 
+add a new rate inside \emph{apps/asterisell/lib/rates}
+
+\item {} 
+enable the rate inside \emph{apps/asterisell/config/app.yml}
+
+\item {} 
+refresh the cache \emph{./configure.sh}
+
+\end{itemize}
+
+\end{description}
+
+
+\section{Troubleshooting}
+\label{index:troubleshooting}
+
+\subsection{File Permissions}
+\label{index:file-permissions}
+
+\subsubsection{Log Directory}
+\label{index:log-directory}
+Often after upgrades there are problems related to the Asterisell log files inside log directory.
+
+If this file was created from root then the \emph{apache} user is not able to add info to it and the entire Asterisell application is blocked. In this case change the permissions of file with something like:
+
+\begin{Verbatim}[commandchars=@\[\]]
+cd log
+chmod a+rw asterisell@_prod.log
+chmod a+rw asterisell@_dev.log
+\end{Verbatim}
+
+or better change the owner in something like:
+
+\begin{Verbatim}[commandchars=@\[\]]
+cd log
+chown apache asterisell@_prod.log
+chown apache asterisell@_dev.log
+\end{Verbatim}
+
+or execute:
+
+\begin{Verbatim}[commandchars=@\[\]]
+./symfony fix-perms
+\end{Verbatim}
+
+Try also to restart the web server.
+
+
+\subsubsection{Created Files}
+\label{index:created-files}
+During initial Asterisell configuration new files can be created. Check if these files are readable from web-server process. For example on my debian machine I performs:
+
+\begin{Verbatim}[commandchars=@\[\]]
+chown -R :www-data *
+chmod -R g+rx *
+sh configure.sh
+\end{Verbatim}
+
+where \emph{www-data} is the group used from my webserver.
+
+
+\subsection{Additional Run-Time Debug Info}
+\label{index:additional-run-time-debug-info}
+In case of problems you can enable the development/debug version of Asterisell that shows useful informations about its execution and related problems. Execute:
+
+\begin{Verbatim}[commandchars=@\[\]]
+./symfony enable asterisell dev
+\end{Verbatim}
+
+and open the url \emph{http://your-web-url/asterisell\_dev.php/login}
+
+When finished remember to execute:
+
+\begin{Verbatim}[commandchars=@\[\]]
+./symfony disable asterisell dev
+\end{Verbatim}
+
+NOTE: on the contrary of Asterisell production version, in the development version if you change Asterisell source code, you must not execute \emph{sh configure.sh}, because the development version recreate all files every time in order to speed up development at the expense of run-time executions.
+
+NOTE: as in the Asterisell product version, in the development version if you change some configuration parameters you must execute \emph{sh configure.sh} because certain Asterisell modules are regenerated according the configured values.
+
+
+\subsection{Run Time Configuration Problems}
+\label{index:run-time-configuration-problems}
+Every problem encountered from Asterisell during the call rating process is clearly reported to the administrator with hints of how to resolve it.
+
+The presence of problems is signaled also via email to the administrator.
+
+In case of dubious configurations Asterisell advise the administrator and suspend the rate of affected calls.
+\begin{description}
+\item[{The rate process is rather robust and error-free regarding ill defined configurations because:}] \leavevmode\begin{itemize}
+\item {} 
+re-rating of calls is always possible;
+
+\item {} 
+problems are always signaled;
+
+\end{itemize}
+
+\end{description}
+
+
+\subsection{Feedback}
+\label{index:feedback}
+Web servers, PHP environment, libraries, and os on... can interact in strange ways. If something is not working properly let me know!
+
+
+\section{Security}
+\label{index:security}
+The end user interacts only with the \emph{Call Report} form. The content of user input fields is checked by a very conservative function that removes every non proper character.
+
+No particular care is put on other forms because they are accessible only from the administrator.
+
+User session handling is managed directly from Symfony and PHP engine.
+
+
+\section{MySQL advanced optimizations}
+\label{index:mysql-advanced-optimizations}
+For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of last 1-2 months must be saved in the MySQL database cache in RAM. This makes a big difference in performances. Make sure having a \emph{my.cnf} file like this:
+
+\begin{Verbatim}[commandchars=@\[\]]
+@PYGZlb[]mysqld@PYGZrb[]
+@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#
+@# ASTERISELL RELATED SETTINGS @#
+@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#@#
+@# Optimize InnoDB performances for Asterisell usage.
+@# NOTE: it will use the majority of the RAM of the server
+@# for Asterisell and other MySQL databases.
+@#
+@# Set this to 60-80@% the RAM of the server
+innodb@_buffer@_pool@_size = 1G
+
+sort@_buffer@_size = 50M
+thread@_cache@_size = 4
+tmp@_table@_size = 50M
+sync@_binlog = 0
+
+@# not very important
+innodb@_additional@_mem@_pool@_size = 10M
+
+@# Commits are flushed on the disk each second,
+@# and not immediately.
+innodb@_flush@_log@_at@_trx@_commit = 0
+
+innodb@_lock@_wait@_timeout = 50
+table@_cache = 92
+innodb@_flush@_method=O@_DIRECT
+
+@# speed-up rating of CDRs and also other performances - very important
+innodb@_log@_buffer@_size = 8M
+\end{Verbatim}
+
+Restart MySQL for enabling changes in configuration.
+
 
 \chapter{Configurations}
 \label{index:configurations}
 
 \section{Main Configurations}
-\label{index:main-configurations}\label{index:id1}
+\label{index:main-configurations}\label{index:id2}
 \code{apps/asterisell/config/app.yml} contains the main configurations of Asterisell. Once they are properly configured, they rarely change.
 
 The meaning of various settings are explained directly inside the file comments. Details of some settings will be explained in other tasks. Initially set only parameters of witch you are sure, leaving default values otherwise.
@@ -208,11 +861,11 @@ Use \emph{Params \(\rightarrow\) Params \(\rightarrow\) Default} for defining th
 \label{index:web-site-appearances}
 Logo, slogan, title, footer and similar aspects of the web-site can be customized directly from {\hyperref[index:asterisell-owner]{\emph{Asterisell Owner Params}}}.
 
-Web Site appearance can be further customized changing ``apps/asterisell/templates/asterisell\_layout.php'' and ``web/css'' content.
+Web Site appearance can be further customized changing \emph{apps/asterisell/templates/asterisell\_layout.php} and \emph{web/css} content.
 
 
 \section{Vendors Specification}
-\label{index:vendors-specification}\label{index:id2}
+\label{index:vendors-specification}\label{index:id3}
 Use \emph{Parties \(\rightarrow\) Customers / Vendors} for defining a {\hyperref[index:term-voip-vendor]{\emph{VoIP vendor}}}.
 
 Use \emph{Rates} for creating rates associated to the {\hyperref[index:term-voip-vendor]{\emph{VoIP vendor}}}, calculating the cost of calls.
@@ -752,7 +1405,7 @@ If SMTP params are not correct then Asterisell signal the problem inside problem
 \label{index:partners-and-resellers}
 
 \section{Resellers}
-\label{index:resellers}\label{index:id3}
+\label{index:resellers}\label{index:id4}
 A {\hyperref[index:term-reseller]{\emph{reseller}}} is a company selling VoIP calls to his customers, and where you play the role of his VoIP vendor.
 \begin{description}
 \item[{In case of resellers, there are two running instances of Asterisell:}] \leavevmode\begin{itemize}
@@ -889,7 +1542,7 @@ The only exception is in case of CDRs becoming {\hyperref[index:term-ignored-cal
 
 
 \section{Partners}
-\label{index:partners}\label{index:id4}
+\label{index:partners}\label{index:id5}
 A {\hyperref[index:term-partner]{\emph{partner}}} is another company collaborating with you, that uses your same Asterisell instance, and the same VoIP server.
 \begin{description}
 \item[{Partners can have distinct:}] \leavevmode\begin{itemize}
@@ -916,7 +1569,7 @@ All partners have the same administrator privileges on the same Asterisell insta
 
 
 \subsection{License}
-\label{index:id5}
+\label{index:id6}
 On the contrary of resellers, partners can use both the same Asterisell license, because it is the same Asterisell instance.
 
 
@@ -932,7 +1585,7 @@ Associate customers to their partner.
 
 
 \subsection{Invoices}
-\label{index:id6}
+\label{index:id7}
 Each customer invoice will use as seller the corresponding partner.
 
 
@@ -1396,7 +2049,7 @@ all:
 \end{Verbatim}
 
 
-\section{Glossary}
+\chapter{Glossary}
 \label{index:glossary}\begin{description}
 
 \index{Asterisell owner}\item[{Asterisell owner}] \leavevmode\phantomsection\label{index:term-asterisell-owner}
@@ -1474,6 +2127,7 @@ A Reseller is a company selling VoIP calls to his customers, and where you play 
 \index{VoIP account}\item[{VoIP account}] \leavevmode\phantomsection\label{index:term-voip-account}
 A VoIP internal telephone number managed from the Asterisk server.
 It is an internal account code. Usually Asterisk VoIP server put it on the \code{accountcode} field of the {\hyperref[index:term-cdr-table]{\emph{CDR table}}}.
+Note: the Asterisk standard documentation pretends that this code is specified on a per-channel basis, but this is not the case in Asterisell configuration. So each accountcode has the same associated customer for every channel. This is also useful/practical in case of the same customer using different channels.
 
 
 \index{VoIP vendor}\item[{VoIP vendor}] \leavevmode\phantomsection\label{index:term-voip-vendor}

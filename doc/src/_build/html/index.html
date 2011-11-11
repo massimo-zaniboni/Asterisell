@@ -78,24 +78,462 @@
 </dl>
 <p>You can have different <a class="reference internal" href="#term-partner"><em class="xref std std-term">partners</em></a>, and different <a class="reference internal" href="#term-reseller"><em class="xref std std-term">resellers</em></a>.</p>
 </div>
-<div class="section" id="customizations">
-<span id="asterisell-customizations"></span><h2>Customizations<a class="headerlink" href="#customizations" title="Permalink to this headline">¶</a></h2>
-<p>Asterisell can be easily extended with custom rates and jobs.</p>
+</div>
+<div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li>HTTP WEB Server;</li>
+<li>PHP 5.0 or greater (PHP 4.0 is not supported);</li>
+<li><a class="reference external" href="http://www.php.net/manual/en/image.installation.php">GD support</a> enabled in PHP;</li>
+<li>MySQL DBMS;</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="software-infrastructure">
+<h2>Software Infrastructure<a class="headerlink" href="#software-infrastructure" title="Permalink to this headline">¶</a></h2>
 <dl class="docutils">
-<dt>It uses a blackboard approach for processing information:</dt>
+<dt>VoIP calls are managed usually from an <a class="reference external" href="http://www.asterisk.org">Asterisk Server</a></dt>
 <dd><ul class="first last simple">
-<li>events are put inside the the blackboard;</li>
-<li>jobs are activated when there are proper events on the blackboard;</li>
+<li>it routes the calls to the proper dial peer;</li>
+<li>it associates to every customer a unique &#8220;accountcode&#8221;;</li>
+<li>it writes Call Detail Records (CDRs) on a specific MySQL database table shared with Asterisell.</li>
+</ul>
+</dd>
+</dl>
+<p>VoIP calls can be managed from other servers, or call detail records can be imported from CSV files.</p>
+<dl class="docutils">
+<dt>Asterisell is a PHP5 web application that:</dt>
+<dd><ul class="first last simple">
+<li>reads calls information from the CDR table shared with Asterisk Server;</li>
+<li>associate to every call a cost (what the service provider pays to other vendors for routing the customer&#8217;s call);</li>
+<li>associate to every call an income (what the customer pays to the service provider);</li>
+<li>displays calls info;</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="download">
+<h2>Download<a class="headerlink" href="#download" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>The suggested way to download this release is using <a class="reference external" href="http://git-scm.com/">Git version control system</a> . This allows to:</dt>
+<dd><ul class="first last simple">
+<li>download application updates in an efficient way;</li>
+<li>be advised of conflicts between your customizations and application updates;</li>
+<li>send back to me bug-fixes and improvements;</li>
+<li>receive improvements from other in an efficient way;</li>
+<li>upgrade to commercial release easily without loosing your customizations;</li>
+</ul>
+</dd>
+</dl>
+<p>For initial download:</p>
+<div class="highlight-python"><pre>git clone http://github.com/massimo-zaniboni/Asterisell.git</pre>
+</div>
+<p>For updating/upgrading to new releases:</p>
+<div class="highlight-python"><pre>git commit -a -m "My custom changes."
+git pull http://github.com/massimo-zaniboni/Asterisell.git</pre>
+</div>
+<p>Then follow the Git procedure to resolve merge conflicts. Usually there will not merge conflicts, because Git tries to preserve both you customization and new version modifications.</p>
+<p>In case of troubles, ask to forum. I will update these installation notes, according the signaled problems/suggestions.</p>
+</div>
+<div class="section" id="asterisell-installation">
+<h2>Asterisell Installation<a class="headerlink" href="#asterisell-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="asterisell-file-installation">
+<h3>Asterisell File Installation<a class="headerlink" href="#asterisell-file-installation" title="Permalink to this headline">¶</a></h3>
+<p>Choose a directory where installing Asterisell. For example <cite>/var/www/asterisell3</cite>.</p>
+<p>In Linux Debian make sure that the &#8220;www-data&#8221; user can read the content of the installation directory:</p>
+<div class="highlight-python"><pre>chown -R :www-data asterisell3
+chmod -R g+rwx asterisell3</pre>
+</div>
+</div>
+<div class="section" id="packages">
+<h3>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>The typical installation requires:</dt>
+<dd><ul class="first last simple">
+<li>Apache2 HTTP server</li>
+<li>mod_php5</li>
+<li>mod_ssl</li>
+<li>MySQL database server</li>
+<li>awk</li>
+</ul>
+</dd>
+</dl>
+<p>Asterisell use some PHP5 libraries. On Fedora/Centos for example you must install:</p>
+<div class="highlight-python"><pre>yum install awk
+yum install httpd
+yum install php php-cli php-common
+yum install mysql mysql-server php-mysql
+yum install php-bcmath php-xml php-mbstring</pre>
+</div>
+<p>and then execute:</p>
+<div class="highlight-python"><pre>/etc/init.d/httpd restart</pre>
+</div>
+</div>
+</div>
+<div class="section" id="mysql-database-configuration">
+<h2>MySQL Database Configuration<a class="headerlink" href="#mysql-database-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Up to date Asterisell is tested only with <a class="reference external" href="http://www.mysql.com">MySQL DBMS</a> , but the Symfony framework support many other popular open source DBMS.</p>
+<div class="section" id="database-access-parameters">
+<h3>Database Access Parameters<a class="headerlink" href="#database-access-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Update:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">config</span><span class="o">/</span><span class="n">databases</span><span class="o">.</span><span class="n">yml</span>
+<span class="n">config</span><span class="o">/</span><span class="n">propel</span><span class="o">.</span><span class="n">ini</span>
+<span class="n">scripts</span><span class="o">/</span><span class="n">initdb</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>according your needs using the correct host, username and password for MySQL access.</p>
+<p>Initially you must use the root/admin account of MySQL, because  configuration scripts will create a new database. Later you can create a specific user for the Asterisell database, in order to limit the capability of the Asterisell user.</p>
+<p>The suggested database name is <cite>asterisell3</cite> in order to avoid conflicts with previous or new version of Asterisell needing different database schemas.</p>
+</div>
+<div class="section" id="how-to-create-a-database-user-with-limited-access-to-asterisell-database">
+<h3>How to create a Database User with Limited Access to Asterisell Database<a class="headerlink" href="#how-to-create-a-database-user-with-limited-access-to-asterisell-database" title="Permalink to this headline">¶</a></h3>
+<p>Enter into MySQL shell:</p>
+<div class="highlight-python"><pre>mysql -u root -p mysql</pre>
+</div>
+<p>Create a user that can invoke MySQL only from localhost (supposing that Asterisell webserver hosts also the MySQL DBMS):</p>
+<div class="highlight-python"><pre>CREATE USER 'asterisell3user'@'localhost' IDENTIFIED BY 'some-password-here';
+GRANT ALL ON asterisell3.* TO 'asterisell3user'@'localhost';</pre>
+</div>
+<p>This example, supposes that <cite>asterisell3</cite> is the name of created Asterisell database, and <cite>asterisell3user</cite> the name of database user.</p>
+<p>NOTE: <cite>GRANT ALL</cite> is needed in order to support the database upgrade script.</p>
+</div>
+<div class="section" id="installation-script">
+<h3>Installation Script<a class="headerlink" href="#installation-script" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>The installation script will:</dt>
+<dd><ul class="first last simple">
+<li>create a new <cite>asterisell3</cite> database;</li>
+<li>load the tables;</li>
+<li>initializing the Asterisell application with demo data;</li>
+<li>fix directory permissions;</li>
+<li>reset the Symfony cache;</li>
+</ul>
+</dd>
+</dl>
+<p>It must not be used if it is an update of Asterisell, because otherwise all data will be lost.</p>
+<p>In any case the script will warn you about this.</p>
+<p>Execute:</p>
+<div class="highlight-python"><pre>cd scripts
+sh initdb.sh</pre>
+</div>
+<p>and answer to questions.</p>
+<p>The very last versions of MySQL requires <cite>Engine=InnoDB;</cite> instead of <cite>Type=InnoDB;</cite> inside file <cite>data/sql/lib.model.schema.sql</cite>. In case of problems during database creation (initial installation of Asterisell), you must update manually this file.</p>
+</div>
+<div class="section" id="change-demo-data-later">
+<h3>Change Demo Data Later<a class="headerlink" href="#change-demo-data-later" title="Permalink to this headline">¶</a></h3>
+<p>The installation script will load also some demo data in order to test Asterisell.</p>
+<p>If you want later, start with an empty database, you can execute:</p>
+<div class="highlight-python"><pre>cd scripts
+php reset_db_and_init_data.php init &lt;some-password-for-root-user-access&gt;</pre>
+</div>
+<p>for creating an empty database, with only minimal data, and a &#8220;root&#8221; user with the chosen password for initial login.</p>
+<p>The scripts supports other type of data initialization. This command will display all its options:</p>
+<div class="highlight-python"><pre>cd scripts
+php reset_db_and_init_data.php</pre>
+</div>
+<p>You can also inspect the content of <cite>scripts/initdb.sh</cite> in order to see the details of performed actions.</p>
+</div>
+<div class="section" id="optional-configuration-for-developers">
+<h3>Optional Configuration for Developers<a class="headerlink" href="#optional-configuration-for-developers" title="Permalink to this headline">¶</a></h3>
+<p>If you are a developer, and you are changing Asterisell source code, maybe you want to change also its database schema, contained in <cite>config/schema.yml</cite>.</p>
+<p>In this case, you must also instruct <cite>config/propel.ini</cite> about how to access the MySQL database. These are the same parameters of <cite>config/databases.yml</cite>, but they are used from a different tool, and so they must be repeated here.</p>
+<p>Update <cite>config/propel.ini</cite> according your needs.</p>
+<p>Adapt it, using the same parameters of the <cite>databases.yml</cite>. This file contains a lot of parameters, but you must only change these lines:</p>
+<div class="highlight-python"><pre>propel.database.createUrl  = mysql://localhost/
+propel.database.url        = mysql://localhost/asterisell3
+propel.output.dir          = /var/www/asterisell3</pre>
+</div>
+<p>If you have changed the database structure in the file <cite>config/schema.yml</cite>, you must also update the SQL instructions creating the MySQL database. You can use the script <cite>scripts/makedb.sh</cite>. It will recreate the SQL commands and then it call <cite>initdb.sh</cite> in order to load the new database.</p>
+</div>
+</div>
+<div class="section" id="web-server">
+<h2>Web Server<a class="headerlink" href="#web-server" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="website-configuration">
+<h3>Website Configuration<a class="headerlink" href="#website-configuration" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Create the file <cite>asterisell.conf</cite> inside the directory:</dt>
+<dd><ul class="first last simple">
+<li><cite>/etc/httpd/conf.d/</cite> or</li>
+<li><cite>/etc/apache2/conf.d/</cite></li>
+</ul>
+</dd>
+</dl>
+<p>The content is something like:</p>
+<div class="highlight-python"><pre>Alias /your-voip-service /var/www/asterisell3/web/
+
+&lt;Location /your-voip-service&gt;
+  Order allow,deny
+  Allow from all
+
+  # If you have mod_ssl installed
+  # then with these lines you can force the usage of https connections
+  # for all Asterisell access.
+  # If you omit them, then the passwords are sent in plain text and
+  # they can be intercepted from hackers...
+  #
+  AllowOverride All
+  &lt;IfModule mod_rewrite.c&gt;
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+  &lt;/IfModule&gt;
+
+&lt;/Location&gt;</pre>
+</div>
+<p>NOTE: remember to add <cite>/web</cite> to your Asterisell installation directory. This because it is only the <cite>web</cite> subdirectory of Asterisell project that must be part of the web-space.</p>
+<p>Restart the apache2 httpd server in order to render active the configurations using a command like:</p>
+<div class="highlight-python"><pre>/etc/init.d/httpd restart</pre>
+</div>
+<p>or:</p>
+<div class="highlight-python"><pre>/etc/init.d/apache2 restart</pre>
+</div>
+<p>If it is all correct then <cite>http://your-voip-service</cite> will display the login form.</p>
+</div>
+<div class="section" id="php-resources">
+<h3>PHP Resources<a class="headerlink" href="#php-resources" title="Permalink to this headline">¶</a></h3>
+<p>The administrator can invoke heavy jobs, for example graph and stats about calls. In this case it is usefull to increase the resources of PHP scripts inside on-line sessions.</p>
+<p>In CENTOS the settings are in <cite>/etc/php.ini</cite>, in Debian are in <cite>/etc/php5/apache2/php.ini</cite>. Change somethiing like:</p>
+<div class="highlight-python"><pre>;;;;;;;;;;;;;;;;;;;
+; Resource Limits ;
+;;;;;;;;;;;;;;;;;;;
+
+max_execution_time = 30     ; Maximum execution time of each script, in seconds
+max_input_time = 60 ; Maximum amount of time each script may spend parsing request data
+;max_input_nesting_level = 64 ; Maximum input variable nesting level
+memory_limit = 128M      ; Maximum amount of memory a script may consume (128MB)</pre>
+</div>
+<p>into something like:</p>
+<div class="highlight-python"><pre>;;;;;;;;;;;;;;;;;;;
+; Resource Limits ;
+;;;;;;;;;;;;;;;;;;;
+
+max_execution_time = 180     ; Maximum execution time of each script, in seconds
+max_input_time = 60 ; Maximum amount of time each script may spend parsing request data
+;max_input_nesting_level = 64 ; Maximum input variable nesting level
+memory_limit = 128M      ; Maximum amount of memory a script may consume (128MB)</pre>
+</div>
+<p>increasing the execution time from 30 seconds to 180 seconds.</p>
+<p>NOTE: heavy jobs like email sending, are done from the cron-job, in off-line mode, and they are not affected from these settings / constraints.</p>
+</div>
+<div class="section" id="php-speedup">
+<h3>PHP Speedup<a class="headerlink" href="#php-speedup" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://pecl.php.net/package/APC">APC</a> is a free, open source framework that caches data and compiled code from the PHP bytecode compiler in shared memory.</p>
+<p>I suggest installing it, because it is well tested, and it speeds-up a lot the execution of Asterisell and other PHP applications.</p>
+<p>For installing it in Debian:</p>
+<div class="highlight-python"><pre>aptitude install php-apc</pre>
+</div>
+<p>or in CENTOS follow <a class="reference external" href="http://2bits.com/articles/installing-php-apc-gnulinux-centos-5.html">the instruction of this webpage</a> (up to date the APC package is not part of CENTOS).</p>
+<p>IMPORTANT: In order to activate it, the Apache web server must be restarted.</p>
+<p>IMPORTANT: Up to date there can be conflicts between APC (version 3.0.19) and SwiftMailer. If after the sending of the first mail, an error message appears in the problem table (something like <cite>Fatal error: Cannot inherit previously-inherited or override constant LEVEL_TOP from interface Swift_Mime_Message</cite>), then try to upgrade APC or disactivate APC.</p>
+</div>
+<div class="section" id="mysql">
+<h3>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
+<p>Rates based on CSV files can be rather big, because they contain a lot of data. Asterisell save them in a record, and the SQL command can be rather big.</p>
+<p>So you must use a reasonable <cite>max_allowed_packet</cite> size, for communication between PHP and MySQL.</p>
+<p>Check that inside <cite>/etc/mysql/my.cnf</cite> there is something like:</p>
+<div class="highlight-python"><pre>[mysqld]
+max_allowed_packet = 16M</pre>
+</div>
+<p>In case of problems, increase this limit, and then restart MySQL (NOTE: during restart new inserted CDR records will be lost):</p>
+<div class="highlight-python"><pre>/etc/init.d/mysql restart</pre>
+</div>
+<p>Last versions of MySQL execute a fsync (flush) on disk for every transaction. This is a very big slow down for Asterisell, because it does not group batch work on CDRs on a single transaction. If MySQL is slow, it can be configured for flushing on disk the transactions every seconds. Add inside <cite>/etc/mysql/my.cnf</cite>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">innodb_flush_log_at_trx_commit</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>Consult <a class="reference external" href="http://dev.mysql.com/doc/refman/4.1/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit">MySQL related documentation</a> for more details on side effects of this setting.</p>
+</div>
+<div class="section" id="additional-file-access-permissions">
+<h3>Additional File Access Permissions<a class="headerlink" href="#additional-file-access-permissions" title="Permalink to this headline">¶</a></h3>
+<p>If you have not used the default installation script (<cite>scripts/initdb.sh</cite>), then make sure to execute:</p>
+<div class="highlight-python"><pre>./symfony fix-perms</pre>
+</div>
+<p>or:</p>
+<div class="highlight-python"><pre>chmod -R a+rw log
+chmod -R a+rw cache</pre>
+</div>
+<p>in order to enable the write rights on (only) these two directories.</p>
+</div>
+</div>
+<div class="section" id="cron-job">
+<h2>Cron Job<a class="headerlink" href="#cron-job" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="calls-rating-and-jobs-processing">
+<h3>Calls Rating and Jobs Processing<a class="headerlink" href="#calls-rating-and-jobs-processing" title="Permalink to this headline">¶</a></h3>
+<p>Asterisell rates the calls and execute other jobs off-line, using a cron-job process. This allows to use all the resources of the machine, without the constraints of online sessions.</p>
+<p>The list of jobs to execute and the various parameters are inside <cite>apps/asterisell/config/app.yml</cite>.</p>
+<p>In case of problems during job execution, a mail is sent to the administrator.</p>
+</div>
+<div class="section" id="user-permissions">
+<h3>User Permissions<a class="headerlink" href="#user-permissions" title="Permalink to this headline">¶</a></h3>
+<p>The process must be executed from the same user that is associated to the http connection.</p>
+<p>On Fedora/Centos it is typically <cite>apache</cite>, on Debian <cite>www-data</cite>. In order to retrieve it, you can enter into Asterisell web interface, select Help menu and PHP-INFO option. Then you can search the element <cite>User/Group</cite>. The first value is the name of the PHP/webserver user.</p>
+</div>
+<div class="section" id="cron-job-setting">
+<h3>Cron Job Setting<a class="headerlink" href="#cron-job-setting" title="Permalink to this headline">¶</a></h3>
+<p>Supposing the http user is &#8220;apache&#8221; you can associate to it a cron job using the command:</p>
+<div class="highlight-python"><pre>crontab -u apache -e</pre>
+</div>
+<p>This command will open an editor. If the defalt editor is <cite>vi</cite>, then digit <cite>:i</cite> (and press enter) in order to start editing, and <cite>:wq</cite> (and press enter) at the end of editing, in order to <cite>write</cite> and <cite>quit/exit</cite> from the editor</p>
+<p>Add this line:</p>
+<div class="highlight-python"><pre>5,10,15,20,25,30,35,40,45,50,55 * * * * sh -c "cd /your-asterisell-dir/scripts/ ; nice php process_jobs.php &gt; /dev/null "</pre>
+</div>
+<p>The meaning of the line is to execute at minutes 5, 10, 15, 20, ... of every hour the <cite>php rate_all_and_test.php</cite> command inside the Asterisell directory.</p>
+</div>
+<div class="section" id="log-rotate">
+<h3>Log Rotate<a class="headerlink" href="#log-rotate" title="Permalink to this headline">¶</a></h3>
+<p>In order to reduce log file size put <cite>asterisell-logrotate</cite> with execution privileges in <cite>/etc/cron.monthly</cite> directory:</p>
+<div class="highlight-python"><pre>#!/bin/sh
+cd /your-asterisell-install-dir
+./symfony log-rotate asterisell prod</pre>
+</div>
+<p>and set it as an executable file</p>
+<div class="highlight-python"><pre>chmod u+x asterisell-logrotate</pre>
+</div>
+<p>Note that <cite>asterisell</cite> after <cite>symfony</cite> command is the name of the application and it is not depends from the directory installation.</p>
+</div>
+</div>
+<div class="section" id="asterisell-customizations">
+<span id="id1"></span><h2>Asterisell Customizations<a class="headerlink" href="#asterisell-customizations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="jobs-workflow-customizations">
+<h3>Jobs/Workflow Customizations<a class="headerlink" href="#jobs-workflow-customizations" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Asterisell uses a blackboard approach to process information:</dt>
+<dd><ul class="first last simple">
+<li>events are put inside the database/blackboard;</li>
+<li>customizable/configurable jobs react to events;</li>
 <li>jobs can produce new events;</li>
+</ul>
+</dd>
+</dl>
+<p>In this way it is possible to add new jobs, changing the behaviour of the application.</p>
+<p>If you add new <cite>jobs</cite> make sure to add them to the <cite>apps/asterisell/lib/jobs/userjobs</cite>, otherwise during subsequent update of Asterisell application, all new jobs could be lost or there can be a lot of Git merge conflicts.</p>
+<p>Some Jobs like PDF invoicing, email composition and so on require some customization. You can create a custom Job modifying already existing jobs, put them in <cite>apps/asterisell/lib/jobs/userjobs</cite> directory. The more elegant way is to change also the name of the job, add it to the <cite>apps/asterisell/config/app.yml</cite> file, removing the old job.</p>
+</div>
+<div class="section" id="rates-customizations">
+<h3>Rates Customizations<a class="headerlink" href="#rates-customizations" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>New type of rate methods can be added:</dt>
+<dd><ul class="first last simple">
+<li>add a new rate inside <cite>apps/asterisell/lib/rates</cite></li>
+<li>enable the rate inside <cite>apps/asterisell/config/app.yml</cite></li>
+<li>refresh the cache <cite>./configure.sh</cite></li>
 </ul>
 </dd>
 </dl>
 </div>
 </div>
+<div class="section" id="troubleshooting">
+<h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="file-permissions">
+<h3>File Permissions<a class="headerlink" href="#file-permissions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="log-directory">
+<h4>Log Directory<a class="headerlink" href="#log-directory" title="Permalink to this headline">¶</a></h4>
+<p>Often after upgrades there are problems related to the Asterisell log files inside log directory.</p>
+<p>If this file was created from root then the <cite>apache</cite> user is not able to add info to it and the entire Asterisell application is blocked. In this case change the permissions of file with something like:</p>
+<div class="highlight-python"><pre>cd log
+chmod a+rw asterisell_prod.log
+chmod a+rw asterisell_dev.log</pre>
+</div>
+<p>or better change the owner in something like:</p>
+<div class="highlight-python"><pre>cd log
+chown apache asterisell_prod.log
+chown apache asterisell_dev.log</pre>
+</div>
+<p>or execute:</p>
+<div class="highlight-python"><pre>./symfony fix-perms</pre>
+</div>
+<p>Try also to restart the web server.</p>
+</div>
+<div class="section" id="created-files">
+<h4>Created Files<a class="headerlink" href="#created-files" title="Permalink to this headline">¶</a></h4>
+<p>During initial Asterisell configuration new files can be created. Check if these files are readable from web-server process. For example on my debian machine I performs:</p>
+<div class="highlight-python"><pre>chown -R :www-data *
+chmod -R g+rx *
+sh configure.sh</pre>
+</div>
+<p>where <cite>www-data</cite> is the group used from my webserver.</p>
+</div>
+</div>
+<div class="section" id="additional-run-time-debug-info">
+<h3>Additional Run-Time Debug Info<a class="headerlink" href="#additional-run-time-debug-info" title="Permalink to this headline">¶</a></h3>
+<p>In case of problems you can enable the development/debug version of Asterisell that shows useful informations about its execution and related problems. Execute:</p>
+<div class="highlight-python"><pre>./symfony enable asterisell dev</pre>
+</div>
+<p>and open the url <cite>http://your-web-url/asterisell_dev.php/login</cite></p>
+<p>When finished remember to execute:</p>
+<div class="highlight-python"><pre>./symfony disable asterisell dev</pre>
+</div>
+<p>NOTE: on the contrary of Asterisell production version, in the development version if you change Asterisell source code, you must not execute <cite>sh configure.sh</cite>, because the development version recreate all files every time in order to speed up development at the expense of run-time executions.</p>
+<p>NOTE: as in the Asterisell product version, in the development version if you change some configuration parameters you must execute <cite>sh configure.sh</cite> because certain Asterisell modules are regenerated according the configured values.</p>
+</div>
+<div class="section" id="run-time-configuration-problems">
+<h3>Run Time Configuration Problems<a class="headerlink" href="#run-time-configuration-problems" title="Permalink to this headline">¶</a></h3>
+<p>Every problem encountered from Asterisell during the call rating process is clearly reported to the administrator with hints of how to resolve it.</p>
+<p>The presence of problems is signaled also via email to the administrator.</p>
+<p>In case of dubious configurations Asterisell advise the administrator and suspend the rate of affected calls.</p>
+<dl class="docutils">
+<dt>The rate process is rather robust and error-free regarding ill defined configurations because:</dt>
+<dd><ul class="first last simple">
+<li>re-rating of calls is always possible;</li>
+<li>problems are always signaled;</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="feedback">
+<h3>Feedback<a class="headerlink" href="#feedback" title="Permalink to this headline">¶</a></h3>
+<p>Web servers, PHP environment, libraries, and os on... can interact in strange ways. If something is not working properly let me know!</p>
+</div>
+</div>
+<div class="section" id="security">
+<h2>Security<a class="headerlink" href="#security" title="Permalink to this headline">¶</a></h2>
+<p>The end user interacts only with the <cite>Call Report</cite> form. The content of user input fields is checked by a very conservative function that removes every non proper character.</p>
+<p>No particular care is put on other forms because they are accessible only from the administrator.</p>
+<p>User session handling is managed directly from Symfony and PHP engine.</p>
+</div>
+<div class="section" id="mysql-advanced-optimizations">
+<h2>MySQL advanced optimizations<a class="headerlink" href="#mysql-advanced-optimizations" title="Permalink to this headline">¶</a></h2>
+<p>For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of last 1-2 months must be saved in the MySQL database cache in RAM. This makes a big difference in performances. Make sure having a <cite>my.cnf</cite> file like this:</p>
+<div class="highlight-python"><pre>[mysqld]
+###############################
+# ASTERISELL RELATED SETTINGS #
+###############################
+# Optimize InnoDB performances for Asterisell usage.
+# NOTE: it will use the majority of the RAM of the server
+# for Asterisell and other MySQL databases.
+#
+# Set this to 60-80% the RAM of the server
+innodb_buffer_pool_size = 1G
+
+sort_buffer_size = 50M
+thread_cache_size = 4
+tmp_table_size = 50M
+sync_binlog = 0
+
+# not very important
+innodb_additional_mem_pool_size = 10M
+
+# Commits are flushed on the disk each second,
+# and not immediately.
+innodb_flush_log_at_trx_commit = 0
+
+innodb_lock_wait_timeout = 50
+table_cache = 92
+innodb_flush_method=O_DIRECT
+
+# speed-up rating of CDRs and also other performances - very important
+innodb_log_buffer_size = 8M</pre>
+</div>
+<p>Restart MySQL for enabling changes in configuration.</p>
+</div>
+</div>
 <div class="section" id="configurations">
 <h1>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="main-configurations">
-<span id="id1"></span><h2>Main Configurations<a class="headerlink" href="#main-configurations" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2>Main Configurations<a class="headerlink" href="#main-configurations" title="Permalink to this headline">¶</a></h2>
 <p><tt class="file docutils literal"><span class="pre">apps/asterisell/config/app.yml</span></tt> contains the main configurations of Asterisell. Once they are properly configured, they rarely change.</p>
 <p>The meaning of various settings are explained directly inside the file comments. Details of some settings will be explained in other tasks. Initially set only parameters of witch you are sure, leaving default values otherwise.</p>
 <p>In order to make active the changes, you must execute <strong class="command">./configure.sh</strong>.</p>
@@ -108,10 +546,10 @@
 <div class="section" id="web-site-appearances">
 <h2>Web Site Appearances<a class="headerlink" href="#web-site-appearances" title="Permalink to this headline">¶</a></h2>
 <p>Logo, slogan, title, footer and similar aspects of the web-site can be customized directly from <a class="reference internal" href="#asterisell-owner"><em>Asterisell Owner Params</em></a>.</p>
-<p>Web Site appearance can be further customized changing &#8220;apps/asterisell/templates/asterisell_layout.php&#8221; and &#8220;web/css&#8221; content.</p>
+<p>Web Site appearance can be further customized changing <cite>apps/asterisell/templates/asterisell_layout.php</cite> and <cite>web/css</cite> content.</p>
 </div>
 <div class="section" id="vendors-specification">
-<span id="id2"></span><h2>Vendors Specification<a class="headerlink" href="#vendors-specification" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2>Vendors Specification<a class="headerlink" href="#vendors-specification" title="Permalink to this headline">¶</a></h2>
 <p>Use <em class="menuselection">Parties ‣ Customers / Vendors</em> for defining a <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>.</p>
 <p>Use <em class="menuselection">Rates</em> for creating rates associated to the <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>, calculating the cost of calls.</p>
 <p>You can define one or more vendors, and you can use different vendors for different calls, associating cost rates to corresponding VoIP vendor.</p>
@@ -467,7 +905,7 @@ Fixed Line</td>
 <div class="section" id="partners-and-resellers">
 <h1>Partners and Resellers<a class="headerlink" href="#partners-and-resellers" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="resellers">
-<span id="id3"></span><h2>Resellers<a class="headerlink" href="#resellers" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>Resellers<a class="headerlink" href="#resellers" title="Permalink to this headline">¶</a></h2>
 <p>A <a class="reference internal" href="#term-reseller"><em class="xref std std-term">reseller</em></a> is a company selling VoIP calls to his customers, and where you play the role of his VoIP vendor.</p>
 <dl class="docutils">
 <dt>In case of resellers, there are two running instances of Asterisell:</dt>
@@ -550,7 +988,7 @@ Fixed Line</td>
 </div>
 </div>
 <div class="section" id="partners">
-<span id="id4"></span><h2>Partners<a class="headerlink" href="#partners" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>Partners<a class="headerlink" href="#partners" title="Permalink to this headline">¶</a></h2>
 <p>A <a class="reference internal" href="#term-partner"><em class="xref std std-term">partner</em></a> is another company collaborating with you, that uses your same Asterisell instance, and the same VoIP server.</p>
 <dl class="docutils">
 <dt>Partners can have distinct:</dt>
@@ -564,8 +1002,8 @@ Fixed Line</td>
 </dd>
 </dl>
 <p>All partners have the same administrator privileges on the same Asterisell instance, so they can read and change all the data of other partners.</p>
-<div class="section" id="id5">
-<h3>License<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>License<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>On the contrary of resellers, partners can use both the same Asterisell license, because it is the same Asterisell instance.</p>
 </div>
 <div class="section" id="configuration">
@@ -577,8 +1015,8 @@ Fixed Line</td>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="id6">
-<h3>Invoices<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>Invoices<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>Each customer invoice will use as seller the corresponding partner.</p>
 </div>
 <div class="section" id="custom-login-page">
@@ -1037,8 +1475,9 @@ all:
     </pre>
 </div>
 </div>
+</div>
 <div class="section" id="glossary">
-<h2>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h2>
+<h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
 <dl class="glossary docutils">
 <dt id="term-asterisell-owner">Asterisell owner</dt>
 <dd>You: a company selling VoIP services to his <a class="reference internal" href="#term-customer"><em class="xref std std-term">customers</em></a>. It uses one or more <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendors</em></a>, and it can have optionally one or more <a class="reference internal" href="#term-partner"><em class="xref std std-term">partners</em></a>.</dd>
@@ -1078,11 +1517,11 @@ all:
 <dd>A Reseller is a company selling VoIP calls to his customers, and where you play the role of his <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>.</dd>
 <dt id="term-voip-account">VoIP account</dt>
 <dd>A VoIP internal telephone number managed from the Asterisk server.
-It is an internal account code. Usually Asterisk VoIP server put it on the <tt class="docutils literal"><span class="pre">accountcode</span></tt> field of the <a class="reference internal" href="#term-cdr-table"><em class="xref std std-term">CDR table</em></a>.</dd>
+It is an internal account code. Usually Asterisk VoIP server put it on the <tt class="docutils literal"><span class="pre">accountcode</span></tt> field of the <a class="reference internal" href="#term-cdr-table"><em class="xref std std-term">CDR table</em></a>.
+Note: the Asterisk standard documentation pretends that this code is specified on a per-channel basis, but this is not the case in Asterisell configuration. So each accountcode has the same associated customer for every channel. This is also useful/practical in case of the same customer using different channels.</dd>
 <dt id="term-voip-vendor">VoIP vendor</dt>
 <dd>A company that can route VoIP calls to destination end-points, typically traditional telephone networks. It is used from the <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a> for routing the VoIP calls.</dd>
 </dl>
-</div>
 </div>
 
 
@@ -1098,7 +1537,58 @@ It is an internal account code. Usually Asterisk VoIP server put it on the <tt c
   <ul>
 <li><a class="reference internal" href="#">Asterisell Overview</a><ul>
 <li><a class="reference internal" href="#usage-scenario">Usage Scenario</a></li>
-<li><a class="reference internal" href="#customizations">Customizations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#software-infrastructure">Software Infrastructure</a></li>
+<li><a class="reference internal" href="#download">Download</a></li>
+<li><a class="reference internal" href="#asterisell-installation">Asterisell Installation</a><ul>
+<li><a class="reference internal" href="#asterisell-file-installation">Asterisell File Installation</a></li>
+<li><a class="reference internal" href="#packages">Packages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mysql-database-configuration">MySQL Database Configuration</a><ul>
+<li><a class="reference internal" href="#database-access-parameters">Database Access Parameters</a></li>
+<li><a class="reference internal" href="#how-to-create-a-database-user-with-limited-access-to-asterisell-database">How to create a Database User with Limited Access to Asterisell Database</a></li>
+<li><a class="reference internal" href="#installation-script">Installation Script</a></li>
+<li><a class="reference internal" href="#change-demo-data-later">Change Demo Data Later</a></li>
+<li><a class="reference internal" href="#optional-configuration-for-developers">Optional Configuration for Developers</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#web-server">Web Server</a><ul>
+<li><a class="reference internal" href="#website-configuration">Website Configuration</a></li>
+<li><a class="reference internal" href="#php-resources">PHP Resources</a></li>
+<li><a class="reference internal" href="#php-speedup">PHP Speedup</a></li>
+<li><a class="reference internal" href="#mysql">MySQL</a></li>
+<li><a class="reference internal" href="#additional-file-access-permissions">Additional File Access Permissions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cron-job">Cron Job</a><ul>
+<li><a class="reference internal" href="#calls-rating-and-jobs-processing">Calls Rating and Jobs Processing</a></li>
+<li><a class="reference internal" href="#user-permissions">User Permissions</a></li>
+<li><a class="reference internal" href="#cron-job-setting">Cron Job Setting</a></li>
+<li><a class="reference internal" href="#log-rotate">Log Rotate</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#asterisell-customizations">Asterisell Customizations</a><ul>
+<li><a class="reference internal" href="#jobs-workflow-customizations">Jobs/Workflow Customizations</a></li>
+<li><a class="reference internal" href="#rates-customizations">Rates Customizations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
+<li><a class="reference internal" href="#file-permissions">File Permissions</a><ul>
+<li><a class="reference internal" href="#log-directory">Log Directory</a></li>
+<li><a class="reference internal" href="#created-files">Created Files</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#additional-run-time-debug-info">Additional Run-Time Debug Info</a></li>
+<li><a class="reference internal" href="#run-time-configuration-problems">Run Time Configuration Problems</a></li>
+<li><a class="reference internal" href="#feedback">Feedback</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#security">Security</a></li>
+<li><a class="reference internal" href="#mysql-advanced-optimizations">MySQL advanced optimizations</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configurations">Configurations</a><ul>
@@ -1166,16 +1656,16 @@ It is an internal account code. Usually Asterisk VoIP server put it on the <tt c
 </ul>
 </li>
 <li><a class="reference internal" href="#partners">Partners</a><ul>
-<li><a class="reference internal" href="#id5">License</a></li>
+<li><a class="reference internal" href="#id6">License</a></li>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
-<li><a class="reference internal" href="#id6">Invoices</a></li>
+<li><a class="reference internal" href="#id7">Invoices</a></li>
 <li><a class="reference internal" href="#custom-login-page">Custom Login Page</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#main-configuration-file-content">Main Configuration File Content</a></li>
-<li><a class="reference internal" href="#glossary">Glossary</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#glossary">Glossary</a></li>
 </ul>
 
   <h3>This Page</h3>
