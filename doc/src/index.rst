@@ -26,6 +26,8 @@ You can use Asterisell for:
 
 You can have different :term:`partners <partner>`, and different :term:`resellers <reseller>`.
 
+.. _installation:
+
 ############
 Installation
 ############
@@ -539,13 +541,14 @@ For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of 
 
 Restart MySQL for enabling changes in configuration.
 
-.. _asterisell_upgrading:
+.. _upgrading:
 
-Asterisell Upgrading
-====================
+#########
+Upgrading
+#########
 
 Create deploy directory
------------------------
+=======================
 
 In order to reduce the downtime of main Asterisell application, you can test the new version in a separate directory, and then deploy the new version, when it is all ok.
 
@@ -554,7 +557,7 @@ Copy the current Asterisell directory content inside another directory::
   cp -r <source-directory> <test-directory>
 
 Merge your customizations with new Asterisell version
------------------------------------------------------
+=====================================================
 
 If you have installed the application using Git (the suggested way), these are the commands for free Asterisell version::
 
@@ -578,7 +581,7 @@ Then follow the Git procedure to resolve merge conflicts. Usually there will no 
 In case of troubles, `ask to the forum. <:http://groups.google.it/group/asterisell>`_ I will update these installation notes, according the signaled problems/suggestions.
 
 Database Upgrade
-----------------
+================
 
 Versions with the same major version number, use compatible database schema with minor changes, so they can be easily upgraded.
 
@@ -595,7 +598,7 @@ Then upgrade the current database using::
   php upgradedb.php
   
 Code refresh
-------------
+============
 
 After changing some code, for example after resolving merging conflicts, or after applying customization, you *must execute*::
 
@@ -604,14 +607,14 @@ After changing some code, for example after resolving merging conflicts, or afte
 in order to flush the Symfony cache and fix the permission on "log" and "cache" directories, and for generating some PHP files depending from application settings.
 
 Application testing
--------------------
+===================
 
 If you use the same database both for production and new version testing, you must first disable the cron job processing of the production version, in order avoiding two job processors running on the same database.
   
 If you use different databases, make sure to use again the production database, when you deploy the application.
 
 Deploy
-------
+======
 
   * Disable cron job processing.
   * Rename the current production directory to another name.
