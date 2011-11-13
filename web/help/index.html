@@ -48,8 +48,6 @@
 </div>
 <div class="section" id="asterisell-overview">
 <h1>Asterisell Overview<a class="headerlink" href="#asterisell-overview" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="usage-scenario">
-<h2>Usage Scenario<a class="headerlink" href="#usage-scenario" title="Permalink to this headline">¶</a></h2>
 <p>Asterisell is a web application for rating, showing to customers, and billing VoIP calls.</p>
 <dl class="docutils">
 <dt>Usage scenario:</dt>
@@ -77,7 +75,6 @@
 </dd>
 </dl>
 <p>You can have different <a class="reference internal" href="#term-partner"><em class="xref std std-term">partners</em></a>, and different <a class="reference internal" href="#term-reseller"><em class="xref std std-term">resellers</em></a>.</p>
-</div>
 </div>
 <div class="section" id="installation">
 <h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
@@ -128,21 +125,18 @@
 </ul>
 </dd>
 </dl>
-<p>For initial download:</p>
+<p>There is an Asterisell repository at <a class="reference external" href="http://github.com/massimo-zaniboni/Asterisell">http://github.com/massimo-zaniboni/Asterisell.</a></p>
+<p>Choose a directory where installing Asterisell. For example <cite>/var/www/asterisell3</cite>.</p>
+<p>For initial download of the free version:</p>
 <div class="highlight-python"><pre>git clone http://github.com/massimo-zaniboni/Asterisell.git</pre>
 </div>
-<p>For updating/upgrading to new releases:</p>
-<div class="highlight-python"><pre>git commit -a -m "My custom changes."
-git pull http://github.com/massimo-zaniboni/Asterisell.git</pre>
+<p>For the commercial version:</p>
+<div class="highlight-python"><pre>git clone http://your-license:your-license@support.profitoss.com/asterisell/git/asterisell-commercial-stable-3.git &lt;your-new-asterisell-directory&gt;</pre>
 </div>
-<p>Then follow the Git procedure to resolve merge conflicts. Usually there will not merge conflicts, because Git tries to preserve both you customization and new version modifications.</p>
-<p>In case of troubles, ask to forum. I will update these installation notes, according the signaled problems/suggestions.</p>
-</div>
-<div class="section" id="asterisell-installation">
-<h2>Asterisell Installation<a class="headerlink" href="#asterisell-installation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="asterisell-file-installation">
-<h3>Asterisell File Installation<a class="headerlink" href="#asterisell-file-installation" title="Permalink to this headline">¶</a></h3>
-<p>Choose a directory where installing Asterisell. For example <cite>/var/www/asterisell3</cite>.</p>
+<p>replacing <cite>your-license</cite> with your license code, obtained after purchasing the commercial version. NOTE: the download operation is rather slow (1-8 minutes).</p>
+<p>It is always possible upgrading a free version to a commercial version. For updating/upgrading to new releases see <a class="reference internal" href="#asterisell-upgrading"><em>Asterisell Upgrading</em></a>.</p>
+<div class="section" id="file-permissions">
+<h3>File Permissions<a class="headerlink" href="#file-permissions" title="Permalink to this headline">¶</a></h3>
 <p>In Linux Debian make sure that the &#8220;www-data&#8221; user can read the content of the installation directory:</p>
 <div class="highlight-python"><pre>chown -R :www-data asterisell3
 chmod -R g+rwx asterisell3</pre>
@@ -427,8 +421,8 @@ cd /your-asterisell-install-dir
 </div>
 <div class="section" id="troubleshooting">
 <h2>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="file-permissions">
-<h3>File Permissions<a class="headerlink" href="#file-permissions" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h3>File Permissions<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="log-directory">
 <h4>Log Directory<a class="headerlink" href="#log-directory" title="Permalink to this headline">¶</a></h4>
 <p>Often after upgrades there are problems related to the Asterisell log files inside log directory.</p>
@@ -529,11 +523,83 @@ innodb_log_buffer_size = 8M</pre>
 </div>
 <p>Restart MySQL for enabling changes in configuration.</p>
 </div>
+<div class="section" id="asterisell-upgrading">
+<span id="id3"></span><h2>Asterisell Upgrading<a class="headerlink" href="#asterisell-upgrading" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="create-deploy-directory">
+<h3>Create deploy directory<a class="headerlink" href="#create-deploy-directory" title="Permalink to this headline">¶</a></h3>
+<p>In order to reduce the downtime of main Asterisell application, you can test the new version in a separate directory, and then deploy the new version, when it is all ok.</p>
+<p>Copy the current Asterisell directory content inside another directory:</p>
+<div class="highlight-python"><pre>cp -r &lt;source-directory&gt; &lt;test-directory&gt;</pre>
+</div>
+</div>
+<div class="section" id="merge-your-customizations-with-new-asterisell-version">
+<h3>Merge your customizations with new Asterisell version<a class="headerlink" href="#merge-your-customizations-with-new-asterisell-version" title="Permalink to this headline">¶</a></h3>
+<p>If you have installed the application using Git (the suggested way), these are the commands for free Asterisell version:</p>
+<div class="highlight-python"><pre>git commit -a -m "&lt;DESCRIBE YOUR CUSTOM CHANGES&gt;"
+git pull http://github.com/massimo-zaniboni/Asterisell.git</pre>
+</div>
+<p>These are the commands for the commercial Asterisell version:</p>
+<div class="highlight-python"><pre>git commit -a -m "&lt;DESCRIBE YOUR CUSTOM CHANGES&gt;"
+git pull http://your-license:your-license@support.profitoss.com/asterisell/git/asterisell-commercial-stable-3.git`</pre>
+</div>
+<p>where &#8220;your-license&#8221;, must be replaced with your license code, obtained after purchasing the commercial version.</p>
+<dl class="docutils">
+<dt>Then follow the Git procedure to resolve merge conflicts. Usually there will no merge conflicts, because Git tries to preserve both you customizations and new version modifications. In case of conflicts:</dt>
+<dd><ul class="first last simple">
+<li>edit the files with problem,</li>
+<li>fix the <cite>&gt;&gt;&gt;&gt;&gt;&gt; .... &lt;&lt;&lt;&lt;&lt;&lt;&lt;</cite> sections,</li>
+<li>signal to git that the conflict on the file is resolved using <cite>git add &lt;fixed-file&gt;</cite>,</li>
+<li>check pending conflict with <cite>git status</cite>,</li>
+<li>commit the final merged version when done with <cite>git commit -a</cite></li>
+</ul>
+</dd>
+</dl>
+<p>In case of troubles, <a class="reference external" href=":http://groups.google.it/group/asterisell">ask to the forum.</a> I will update these installation notes, according the signaled problems/suggestions.</p>
+</div>
+<div class="section" id="database-upgrade">
+<h3>Database Upgrade<a class="headerlink" href="#database-upgrade" title="Permalink to this headline">¶</a></h3>
+<p>Versions with the same major version number, use compatible database schema with minor changes, so they can be easily upgraded.</p>
+<p>For security reasons, make first a backup of current database using something like:</p>
+<div class="highlight-python"><pre>mysqldump -u &lt;your-user&gt; &lt;your-database&gt; --single-transaction &gt; asterisell3.sql</pre>
+</div>
+<p>Note that the <cite>&#8211;single-transaction</cite> option allows to make the database backup, without locking MySQL database, and so new CDRs can be processed.</p>
+<p>Then upgrade the current database using:</p>
+<div class="highlight-python"><pre>cd scripts
+php upgradedb.php</pre>
+</div>
+</div>
+<div class="section" id="code-refresh">
+<h3>Code refresh<a class="headerlink" href="#code-refresh" title="Permalink to this headline">¶</a></h3>
+<p>After changing some code, for example after resolving merging conflicts, or after applying customization, you <em>must execute</em>:</p>
+<div class="highlight-python"><pre>sh generate.sh</pre>
+</div>
+<p>in order to flush the Symfony cache and fix the permission on &#8220;log&#8221; and &#8220;cache&#8221; directories, and for generating some PHP files depending from application settings.</p>
+</div>
+<div class="section" id="application-testing">
+<h3>Application testing<a class="headerlink" href="#application-testing" title="Permalink to this headline">¶</a></h3>
+<p>If you use the same database both for production and new version testing, you must first disable the cron job processing of the production version, in order avoiding two job processors running on the same database.</p>
+<p>If you use different databases, make sure to use again the production database, when you deploy the application.</p>
+</div>
+<div class="section" id="deploy">
+<h3>Deploy<a class="headerlink" href="#deploy" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>Disable cron job processing.</li>
+<li>Rename the current production directory to another name.</li>
+<li>Rename the current testing directory to the name of production directory.</li>
+<li>Make sure using the correct production database.</li>
+<li>Use the correct read/write/ownership permissions for new production directory.</li>
+<li>Test web-site.</li>
+<li>Enable cron job processing.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
 </div>
 <div class="section" id="configurations">
 <h1>Configurations<a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="main-configurations">
-<span id="id2"></span><h2>Main Configurations<a class="headerlink" href="#main-configurations" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2>Main Configurations<a class="headerlink" href="#main-configurations" title="Permalink to this headline">¶</a></h2>
 <p><tt class="file docutils literal"><span class="pre">apps/asterisell/config/app.yml</span></tt> contains the main configurations of Asterisell. Once they are properly configured, they rarely change.</p>
 <p>The meaning of various settings are explained directly inside the file comments. Details of some settings will be explained in other tasks. Initially set only parameters of witch you are sure, leaving default values otherwise.</p>
 <p>In order to make active the changes, you must execute <strong class="command">./configure.sh</strong>.</p>
@@ -549,7 +615,7 @@ innodb_log_buffer_size = 8M</pre>
 <p>Web Site appearance can be further customized changing <cite>apps/asterisell/templates/asterisell_layout.php</cite> and <cite>web/css</cite> content.</p>
 </div>
 <div class="section" id="vendors-specification">
-<span id="id3"></span><h2>Vendors Specification<a class="headerlink" href="#vendors-specification" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>Vendors Specification<a class="headerlink" href="#vendors-specification" title="Permalink to this headline">¶</a></h2>
 <p>Use <em class="menuselection">Parties ‣ Customers / Vendors</em> for defining a <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>.</p>
 <p>Use <em class="menuselection">Rates</em> for creating rates associated to the <a class="reference internal" href="#term-voip-vendor"><em class="xref std std-term">VoIP vendor</em></a>, calculating the cost of calls.</p>
 <p>You can define one or more vendors, and you can use different vendors for different calls, associating cost rates to corresponding VoIP vendor.</p>
@@ -905,7 +971,7 @@ Fixed Line</td>
 <div class="section" id="partners-and-resellers">
 <h1>Partners and Resellers<a class="headerlink" href="#partners-and-resellers" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="resellers">
-<span id="id4"></span><h2>Resellers<a class="headerlink" href="#resellers" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2>Resellers<a class="headerlink" href="#resellers" title="Permalink to this headline">¶</a></h2>
 <p>A <a class="reference internal" href="#term-reseller"><em class="xref std std-term">reseller</em></a> is a company selling VoIP calls to his customers, and where you play the role of his VoIP vendor.</p>
 <dl class="docutils">
 <dt>In case of resellers, there are two running instances of Asterisell:</dt>
@@ -988,7 +1054,7 @@ Fixed Line</td>
 </div>
 </div>
 <div class="section" id="partners">
-<span id="id5"></span><h2>Partners<a class="headerlink" href="#partners" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>Partners<a class="headerlink" href="#partners" title="Permalink to this headline">¶</a></h2>
 <p>A <a class="reference internal" href="#term-partner"><em class="xref std std-term">partner</em></a> is another company collaborating with you, that uses your same Asterisell instance, and the same VoIP server.</p>
 <dl class="docutils">
 <dt>Partners can have distinct:</dt>
@@ -1002,8 +1068,8 @@ Fixed Line</td>
 </dd>
 </dl>
 <p>All partners have the same administrator privileges on the same Asterisell instance, so they can read and change all the data of other partners.</p>
-<div class="section" id="id6">
-<h3>License<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3>License<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>On the contrary of resellers, partners can use both the same Asterisell license, because it is the same Asterisell instance.</p>
 </div>
 <div class="section" id="configuration">
@@ -1015,8 +1081,8 @@ Fixed Line</td>
 </ul>
 </div></blockquote>
 </div>
-<div class="section" id="id7">
-<h3>Invoices<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h3>Invoices<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>Each customer invoice will use as seller the corresponding partner.</p>
 </div>
 <div class="section" id="custom-login-page">
@@ -1535,16 +1601,12 @@ Note: the Asterisk standard documentation pretends that this code is specified o
             </a></p>
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Asterisell Overview</a><ul>
-<li><a class="reference internal" href="#usage-scenario">Usage Scenario</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#">Asterisell Overview</a></li>
 <li><a class="reference internal" href="#installation">Installation</a><ul>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
 <li><a class="reference internal" href="#software-infrastructure">Software Infrastructure</a></li>
-<li><a class="reference internal" href="#download">Download</a></li>
-<li><a class="reference internal" href="#asterisell-installation">Asterisell Installation</a><ul>
-<li><a class="reference internal" href="#asterisell-file-installation">Asterisell File Installation</a></li>
+<li><a class="reference internal" href="#download">Download</a><ul>
+<li><a class="reference internal" href="#file-permissions">File Permissions</a></li>
 <li><a class="reference internal" href="#packages">Packages</a></li>
 </ul>
 </li>
@@ -1577,7 +1639,7 @@ Note: the Asterisk standard documentation pretends that this code is specified o
 </ul>
 </li>
 <li><a class="reference internal" href="#troubleshooting">Troubleshooting</a><ul>
-<li><a class="reference internal" href="#file-permissions">File Permissions</a><ul>
+<li><a class="reference internal" href="#id2">File Permissions</a><ul>
 <li><a class="reference internal" href="#log-directory">Log Directory</a></li>
 <li><a class="reference internal" href="#created-files">Created Files</a></li>
 </ul>
@@ -1589,6 +1651,15 @@ Note: the Asterisk standard documentation pretends that this code is specified o
 </li>
 <li><a class="reference internal" href="#security">Security</a></li>
 <li><a class="reference internal" href="#mysql-advanced-optimizations">MySQL advanced optimizations</a></li>
+<li><a class="reference internal" href="#asterisell-upgrading">Asterisell Upgrading</a><ul>
+<li><a class="reference internal" href="#create-deploy-directory">Create deploy directory</a></li>
+<li><a class="reference internal" href="#merge-your-customizations-with-new-asterisell-version">Merge your customizations with new Asterisell version</a></li>
+<li><a class="reference internal" href="#database-upgrade">Database Upgrade</a></li>
+<li><a class="reference internal" href="#code-refresh">Code refresh</a></li>
+<li><a class="reference internal" href="#application-testing">Application testing</a></li>
+<li><a class="reference internal" href="#deploy">Deploy</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configurations">Configurations</a><ul>
@@ -1656,9 +1727,9 @@ Note: the Asterisk standard documentation pretends that this code is specified o
 </ul>
 </li>
 <li><a class="reference internal" href="#partners">Partners</a><ul>
-<li><a class="reference internal" href="#id6">License</a></li>
+<li><a class="reference internal" href="#id8">License</a></li>
 <li><a class="reference internal" href="#configuration">Configuration</a></li>
-<li><a class="reference internal" href="#id7">Invoices</a></li>
+<li><a class="reference internal" href="#id9">Invoices</a></li>
 <li><a class="reference internal" href="#custom-login-page">Custom Login Page</a></li>
 </ul>
 </li>

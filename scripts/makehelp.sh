@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-# Build a DB starting from Symfony Schema.
+# Compile and put the help/manual in the web directory
 #
 
 BASE=`basename $PWD`
@@ -11,6 +11,7 @@ if [ "$BASE" = "scripts" ]; then
   make html
   make latexpdf
   sphinx-build -b html -d doctrees . ../../web/help
+  rm ../../web/help/.buildinfo
   cp _build/latex/Asterisell.pdf ../../web/help/.
 else
   echo "Execute inside scripts directory."

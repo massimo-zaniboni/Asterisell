@@ -5,9 +5,6 @@
 Asterisell Overview
 ###################
 
-Usage Scenario
-==============
-
 Asterisell is a web application for rating, showing to customers, and billing VoIP calls.
 
 Usage scenario:
@@ -67,26 +64,24 @@ The suggested way to download this release is using `Git version control system 
     * receive improvements from other in an efficient way;
     * upgrade to commercial release easily without loosing your customizations;
 
-For initial download::
+There is an Asterisell repository at `http://github.com/massimo-zaniboni/Asterisell. <http://github.com/massimo-zaniboni/Asterisell>`_
+
+Choose a directory where installing Asterisell. For example `/var/www/asterisell3`. 
+
+For initial download of the free version::
 
   git clone http://github.com/massimo-zaniboni/Asterisell.git
 
-For updating/upgrading to new releases::
+For the commercial version::
 
-  git commit -a -m "My custom changes."
-  git pull http://github.com/massimo-zaniboni/Asterisell.git
+  git clone http://your-license:your-license@support.profitoss.com/asterisell/git/asterisell-commercial-stable-3.git <your-new-asterisell-directory>
 
-Then follow the Git procedure to resolve merge conflicts. Usually there will not merge conflicts, because Git tries to preserve both you customization and new version modifications.
+replacing `your-license` with your license code, obtained after purchasing the commercial version. NOTE: the download operation is rather slow (1-8 minutes).
 
-In case of troubles, ask to forum. I will update these installation notes, according the signaled problems/suggestions.
+It is always possible upgrading a free version to a commercial version. For updating/upgrading to new releases see :ref:`asterisell_upgrading`.
 
-Asterisell Installation
-=======================
-
-Asterisell File Installation
-----------------------------
-
-Choose a directory where installing Asterisell. For example `/var/www/asterisell3`.
+File Permissions
+----------------
 
 In Linux Debian make sure that the "www-data" user can read the content of the installation directory::
 
@@ -275,6 +270,7 @@ In CENTOS the settings are in `/etc/php.ini`, in Debian are in `/etc/php5/apache
 
 
 into something like::
+
 
 
   ;;;;;;;;;;;;;;;;;;;
@@ -542,6 +538,88 @@ For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of 
   innodb_log_buffer_size = 8M
 
 Restart MySQL for enabling changes in configuration.
+
+.. _asterisell_upgrading:
+
+Asterisell Upgrading
+====================
+
+Create deploy directory
+-----------------------
+
+In order to reduce the downtime of main Asterisell application, you can test the new version in a separate directory, and then deploy the new version, when it is all ok.
+
+Copy the current Asterisell directory content inside another directory::
+
+  cp -r <source-directory> <test-directory>
+
+Merge your customizations with new Asterisell version
+-----------------------------------------------------
+
+If you have installed the application using Git (the suggested way), these are the commands for free Asterisell version::
+
+  git commit -a -m "<DESCRIBE YOUR CUSTOM CHANGES>"
+  git pull http://github.com/massimo-zaniboni/Asterisell.git
+
+These are the commands for the commercial Asterisell version::
+
+  git commit -a -m "<DESCRIBE YOUR CUSTOM CHANGES>"
+  git pull http://your-license:your-license@support.profitoss.com/asterisell/git/asterisell-commercial-stable-3.git`
+
+where "your-license", must be replaced with your license code, obtained after purchasing the commercial version.
+
+Then follow the Git procedure to resolve merge conflicts. Usually there will no merge conflicts, because Git tries to preserve both you customizations and new version modifications. In case of conflicts:
+  * edit the files with problem, 
+  * fix the `>>>>>> .... <<<<<<<` sections, 
+  * signal to git that the conflict on the file is resolved using `git add <fixed-file>`, 
+  * check pending conflict with `git status`,
+  * commit the final merged version when done with `git commit -a`
+
+In case of troubles, `ask to the forum. <:http://groups.google.it/group/asterisell>`_ I will update these installation notes, according the signaled problems/suggestions.
+
+Database Upgrade
+----------------
+
+Versions with the same major version number, use compatible database schema with minor changes, so they can be easily upgraded.
+
+For security reasons, make first a backup of current database using something like::
+
+  mysqldump -u <your-user> <your-database> --single-transaction > asterisell3.sql
+
+
+Note that the `--single-transaction` option allows to make the database backup, without locking MySQL database, and so new CDRs can be processed.
+  
+Then upgrade the current database using::
+
+  cd scripts
+  php upgradedb.php
+  
+Code refresh
+------------
+
+After changing some code, for example after resolving merging conflicts, or after applying customization, you *must execute*::
+
+  sh generate.sh
+
+in order to flush the Symfony cache and fix the permission on "log" and "cache" directories, and for generating some PHP files depending from application settings.
+
+Application testing
+-------------------
+
+If you use the same database both for production and new version testing, you must first disable the cron job processing of the production version, in order avoiding two job processors running on the same database.
+  
+If you use different databases, make sure to use again the production database, when you deploy the application.
+
+Deploy
+------
+
+  * Disable cron job processing.
+  * Rename the current production directory to another name.
+  * Rename the current testing directory to the name of production directory.
+  * Make sure using the correct production database.
+  * Use the correct read/write/ownership permissions for new production directory.
+  * Test web-site.
+  * Enable cron job processing.
 
 ##############
 Configurations

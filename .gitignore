@@ -4,4 +4,7 @@ cache/*
 web/generated_graphs/*
 web/*.lock
 TAGS
+doc/src/_build/doctrees/*
+doc/src/doctrees/*
+web/help/.buildinfo
 
