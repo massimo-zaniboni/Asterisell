@@ -1542,6 +1542,38 @@ all:
 </div>
 </div>
 </div>
+<div class="section" id="development">
+<h1>Development<a class="headerlink" href="#development" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="project-repository">
+<h2>Project Repository<a class="headerlink" href="#project-repository" title="Permalink to this headline">¶</a></h2>
+<p>This is the project page <a class="reference external" href="http://github.com/massimo-zaniboni/Asterisell">http://github.com/massimo-zaniboni/Asterisell</a></p>
+</div>
+<div class="section" id="symfony-framework">
+<h2>Symfony Framework<a class="headerlink" href="#symfony-framework" title="Permalink to this headline">¶</a></h2>
+<p>Asterisell uses the <a class="reference external" href="http://www.symfony-project.com">Symfony PHP framework</a>, that is a well designed and documentated framework.</p>
+<p>Asterisell distribution contanins a &#8220;snapshot&#8221; of the Symfony framework, version 1.0.5. The directory <cite>symfony-patch</cite> contains some patches to the framework. They are already applied to the version shipped with Asterisell.</p>
+</div>
+<div class="section" id="debug">
+<h2>Debug<a class="headerlink" href="#debug" title="Permalink to this headline">¶</a></h2>
+<p>In order to enable the development mode execute:</p>
+<div class="highlight-python"><pre>symfony enable asterisell dev</pre>
+</div>
+<p>If Asterisell project is in the <cite>/var/www/asterisell</cite> directory and your local apache server is listening on port 3000, then you must open the web page <cite>http://localhost:3000/asterisell/web/asterisell_dev.php/login</cite>.</p>
+</div>
+<div class="section" id="localization">
+<h2>Localization<a class="headerlink" href="#localization" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>If you want to support a new language / culture you must:</dt>
+<dd><ul class="first last simple">
+<li>add to <cite>apps/asterisell/config/app.yml</cite> the new currency and culture;</li>
+<li>copy <cite>apps/asterisell/i18n/messages.it.xml</cite> to <cite>apps/asterisell/i18n/messages.your_culture_code.xml</cite>;</li>
+<li>replace all Italian translations with your locale translations;</li>
+<li>execute &#8220;sh configure.sh&#8221; in order to clear the cache and view the new messages;</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
 <div class="section" id="glossary">
 <h1>Glossary<a class="headerlink" href="#glossary" title="Permalink to this headline">¶</a></h1>
 <dl class="glossary docutils">
@@ -1734,6 +1766,13 @@ Note: the Asterisk standard documentation pretends that this code is specified o
 </ul>
 </li>
 <li><a class="reference internal" href="#main-configuration-file-content">Main Configuration File Content</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#development">Development</a><ul>
+<li><a class="reference internal" href="#project-repository">Project Repository</a></li>
+<li><a class="reference internal" href="#symfony-framework">Symfony Framework</a></li>
+<li><a class="reference internal" href="#debug">Debug</a></li>
+<li><a class="reference internal" href="#localization">Localization</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#glossary">Glossary</a></li>

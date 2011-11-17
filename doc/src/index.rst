@@ -1153,6 +1153,43 @@ Main Configuration File Content
 
 .. literalinclude:: ../../apps/asterisell/config/app.yml
 
+
+###########
+Development
+###########
+
+Project Repository
+==================
+
+This is the project page `http://github.com/massimo-zaniboni/Asterisell <http://github.com/massimo-zaniboni/Asterisell>`_
+
+Symfony Framework
+=================
+
+Asterisell uses the `Symfony PHP framework <http://www.symfony-project.com>`_, that is a well designed and documentated framework. 
+
+Asterisell distribution contanins a "snapshot" of the Symfony framework, version 1.0.5. The directory `symfony-patch` contains some patches to the framework. They are already applied to the version shipped with Asterisell.
+
+Debug
+=====
+ 
+In order to enable the development mode execute::
+
+  symfony enable asterisell dev
+
+
+If Asterisell project is in the `/var/www/asterisell` directory and your local apache server is listening on port 3000, then you must open the web page `http://localhost:3000/asterisell/web/asterisell_dev.php/login`.
+
+
+Localization
+============
+
+If you want to support a new language / culture you must:
+  * add to `apps/asterisell/config/app.yml` the new currency and culture;
+  * copy `apps/asterisell/i18n/messages.it.xml` to `apps/asterisell/i18n/messages.your_culture_code.xml`;
+  * replace all Italian translations with your locale translations;
+  * execute "sh configure.sh" in order to clear the cache and view the new messages;
+
 ########
 Glossary
 ########
