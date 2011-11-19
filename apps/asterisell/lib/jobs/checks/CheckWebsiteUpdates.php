@@ -39,9 +39,9 @@ class CheckWebsiteUpdates extends FixedJobProcessor
      */
     const HOW_OFTEN_CHECK = 1;
 
-    const WEBSITE_FEEDS = 'http://asterisell.profitoss.com/rss-f.xml';
+    const WEBSITE_FEEDS = 'http://www.asterisell.com/rss-f.xml';
 
-    const WEBSITE_HOMEPAGE = 'http://asterisell.profitoss.com';
+    const WEBSITE_HOMEPAGE = 'http://www.asterisell.com';
 
     public function process()
     {
