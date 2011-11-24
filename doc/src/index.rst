@@ -76,7 +76,7 @@ For initial download of the free version::
 
 For the commercial version::
 
-  git clone http://your-license:your-license@support.profitoss.com/asterisell/git/asterisell-commercial-stable-3.git <your-new-asterisell-directory>
+  git clone http://your-license:your-license@support.asterisell.com/asterisell/git/asterisell-commercial-stable-3.git <your-new-asterisell-directory>
 
 replacing `your-license` with your license code, obtained after purchasing the commercial version. NOTE: the download operation is rather slow (1-8 minutes).
 
@@ -567,7 +567,7 @@ If you have installed the application using Git (the suggested way), these are t
 These are the commands for the commercial Asterisell version::
 
   git commit -a -m "<DESCRIBE YOUR CUSTOM CHANGES>"
-  git pull http://your-license:your-license@support.profitoss.com/asterisell/git/asterisell-commercial-stable-3.git`
+  git pull http://your-license:your-license@support.asterisell.com/asterisell/git/asterisell-commercial-stable-3.git`
 
 where "your-license", must be replaced with your license code, obtained after purchasing the commercial version.
 
