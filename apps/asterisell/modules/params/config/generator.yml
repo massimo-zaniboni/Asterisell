@@ -53,9 +53,9 @@ generator:
 
       phone2:               { name: Telephon 2 }
 
-      invoice_notes:        { name: Invoice footer notes, help: "Invoice footer notes. Use character sequence \n for new lines." }
+      invoice_notes:        { name: Invoice footer notes, help: "Invoice footer notes.", type: textarea_tag, params: size=50x5 }
 
-      invoice_payment_terms: { name: Invoice payment terms, help: "Invoice payment terms, and other legal terms. Use character sequence \n for new lines." }
+      invoice_payment_terms: { name: Invoice payment terms, help: "Invoice payment terms, and other legal terms.", type: textarea_tag, params: size=50x5 }
 
       legal_fax:            { name: Fax, help: "If not empty, it will be displayed in address." }
 

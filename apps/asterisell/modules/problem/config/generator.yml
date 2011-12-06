@@ -6,16 +6,16 @@ generator:
 
     fields:
       created_at:        { name: Found at }
-      description:       { name: Description }
-      effect:            { name: Effect }
-      proposed_solution: { name: Proposed Solution }
-      user_notes:        { name: User Notes }
+      description:       { name: Description, type: textarea_tag, params: size=70x10 }
+      effect:            { name: Effect, type: textarea_tag, params: size=70x10 }
+      proposed_solution: { name: Proposed Solution, type: textarea_tag, params: size=70x10 }
+      user_notes:        { name: User Notes, type: textarea_tag, params: size=70x10 }
       mantain:           { name: Known Problem, help: "Mark if the problem is known, and the administrator must not be advised of it. Unmark when the problem is (maybe) solved."  }
 
     list:
       title: Current Problems
       actions: []
-      display: [created_at, =description, effect, proposed_solution, user_notes, mantain]
+      display: [=created_at, description, effect, proposed_solution, user_notes, mantain]
       sort:    [created_at, desc]
 
     edit:
