@@ -5,7 +5,7 @@ $str = <<<VERYLONGSTRING
 
 This feature is part of the Asterisell Commercial Release.
 
-See <http://asterisell.profitoss.com> for more details.
+See <http://www.asterisell.com> for more details.
 
 VERYLONGSTRING;
 

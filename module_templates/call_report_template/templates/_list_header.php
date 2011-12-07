@@ -143,7 +143,12 @@ echo '<tr class="sf_admin_row_0">';
 
   echo '<td>' . form_tag("$moduleName/exportToExcel") .  submit_tag(__('Export to MS Excel')) . '</form>' . '</td>';
 
-  echo '<td></td>';
+  <?php if ($generateForCustomer) { ?>
+    echo '<td>' . form_tag("$moduleName/viewInvoices") .  submit_tag(__('View Invoices')) . '</form>' . '</td>';
+  <?php } else { ?>
+    echo '<td></td>';
+  <?php } ?>
+
   echo '<td></td>';
 
 <?php

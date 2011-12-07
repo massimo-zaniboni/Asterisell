@@ -28,6 +28,10 @@ class admin_tt_call_reportActions extends autoAdmin_tt_call_reportActions {
     return $this->redirect('commercial_feature/index');
   }
 
+  public function executeViewInvoices() {
+    return $this->redirect('commercial_feature/index');
+  }
+
   public function executeGetSvg() {
     // execute templates/getSvgSuccess.php
     //

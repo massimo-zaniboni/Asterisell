@@ -35,6 +35,10 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     return $this->redirect('commercial_feature/index');
   }
 
+  public function executeViewInvoices() {
+    return $this->redirect('commercial_feature/index');
+  }
+
   public function executeGetSvg() {
     // execute templates/getSvgSuccess.php
     //

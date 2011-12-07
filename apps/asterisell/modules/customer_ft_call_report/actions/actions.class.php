@@ -28,6 +28,10 @@ class customer_ft_call_reportActions extends autoCustomer_ft_call_reportActions 
     return $this->redirect('commercial_feature/index');
   }
 
+  public function executeViewInvoices() {
+    return $this->redirect('commercial_feature/index');
+  }
+
   public function executeGetSvg() {
     // execute templates/getSvgSuccess.php
     //

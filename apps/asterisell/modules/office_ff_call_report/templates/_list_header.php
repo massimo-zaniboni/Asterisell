@@ -53,7 +53,8 @@ echo '<tr class="sf_admin_row_0">';
 
   echo '<td>' . form_tag("$moduleName/exportToExcel") .  submit_tag(__('Export to MS Excel')) . '</form>' . '</td>';
 
-  echo '<td></td>';
+      echo '<td></td>';
+  
   echo '<td></td>';
 
 echo '</tr>';
