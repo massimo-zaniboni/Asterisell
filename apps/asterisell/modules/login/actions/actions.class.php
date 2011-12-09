@@ -99,53 +99,14 @@ class loginActions extends sfActions {
     }
 
     // Select the best type of call report according the characteristics of the account.
-    // 
-    if ($this->getUser()->hasCredential('party')) {
-      $showOffice = "t";
-      $showAccount = "t";
-
-      $reportType = ArParty::getSuggestedCallReportTypeForParty($this->getUser()->getPartyId());
-      switch($reportType) {
-	case ArParty::MANY_OFFICES_AND_MANY_VOIP:
-	  $showOffice = "t";
-	  $showAccount = "t";
-	  break;
-      case ArParty::MANY_OFFICES_ONE_VOIP:
-	  $showOffice = "t";
-	  $showAccount = "f";
-	  break;
-      case ArParty::ONE_OFFICE_MANY_VOIP:
-	  $showOffice = "f";
-	  $showAccount = "t";
-	  break;
-      case ArParty::ONE_OFFICE_ONE_VOIP:
-	  $showOffice = "f";
-	  $showAccount = "f";
-	  break;
-      default:
-	$showOffice = "t";
-	$showAccount = "t";
-      }	
-
-      $this->redirect('customer_' . $showOffice . $showAccount . '_call_report/list');
-    }      
-	
-    if ($this->getUser()->hasCredential('office')) {
-      $showOffice = "f";
-      $showAccount = "t";
-      
-      $officeId = $this->getUser()->getOfficeId();
-      $accountId = ArOffice::getUniqueArAsteriskAccountIdForOfficeId($officeId);
-      if (!is_null($accountId)) {
-	$showAccount = "f";
-      }
-      $this->redirect('office_' . $showOffice . $showAccount . '_call_report/list');
+    $module = getSuggestedCallReportModule($this->getUser());
+    if (!is_null($module)) {
+      $this->redirect($module);
+    }  else {
+        // Account of unknwon type
+        $this->getUser()->logout();
+        $this->forceReloginWithError();
     }
-
-    // Account of unknwon type
-    //
-    $this->getUser()->logout();
-    $this->forceReloginWithError();
   }
 
   public function executeLogout() {

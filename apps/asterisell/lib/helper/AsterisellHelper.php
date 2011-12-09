@@ -26,15 +26,17 @@ sfLoader::loadHelpers(array('Form', 'Number', 'Date'));
 /**
  * @return the root directory where Asterisell is installed.
  */
-function getAsterisellRootDirectory() {
+function getAsterisellRootDirectory()
+{
     return sfConfig::get('sf_root_dir');
-}  
+}
 
 /**
  * @return TRUE if configuratiohn "safe_limit_for_concurrent_calls" is equal to "30",
  * FALSE if it is equal to "m".
  */
-function isCostLimitTimeFrame30Days() {
+function isCostLimitTimeFrame30Days()
+{
     if (trim(sfConfig::get('app_max_cost_limit_timeframe')) === 'm') {
         return FALSE;
     } else {
@@ -42,7 +44,8 @@ function isCostLimitTimeFrame30Days() {
     }
 }
 
-function getConcurrentCallsSafeLimit() {
+function getConcurrentCallsSafeLimit()
+{
     return sfConfig::get('app_safe_limit_for_concurrent_calls');
 }
 
@@ -50,7 +53,8 @@ function getConcurrentCallsSafeLimit() {
  * @param dateStr a date formatted according the current Symfony application locale/culture
  * @return a unix timestamp, or NULL if $dateStr is not a valid date
  */
-function fromSymfonyDateToUnixTimestamp($dateStr) {
+function fromSymfonyDateToUnixTimestamp($dateStr)
+{
 
     $context = sfContext::getInstance();
 
@@ -75,7 +79,8 @@ function fromSymfonyDateToUnixTimestamp($dateStr) {
  * @param dateStr a date formatted according the current Symfony application locale/culture
  * @return a unix timestamp, or NULL if $dateStr is not a valid date
  */
-function fromSymfonyTimestampToUnixTimestamp($dateStr) {
+function fromSymfonyTimestampToUnixTimestamp($dateStr)
+{
 
     $context = sfContext::getInstance();
 
@@ -88,7 +93,8 @@ function fromSymfonyTimestampToUnixTimestamp($dateStr) {
  * @param $d a date in unix timestamp numeric format
  * @return a date string formatted according current Symfony locale/culture setting
  */
-function fromUnixTimestampToSymfonyStrDate($d) {
+function fromUnixTimestampToSymfonyStrDate($d)
+{
     return format_date($d, 's');
 }
 
@@ -96,7 +102,8 @@ function fromUnixTimestampToSymfonyStrDate($d) {
  * @param $d a date in unix timestamp numeric format
  * @return a date string formatted according current Symfony locale/culture setting
  */
-function fromUnixTimestampToSymfonyStrTimestamp($d) {
+function fromUnixTimestampToSymfonyStrTimestamp($d)
+{
     return format_date($d, 's');
 }
 
@@ -108,7 +115,8 @@ function fromUnixTimestampToSymfonyStrTimestamp($d) {
  * @return string in Y-m-d format recognized from MySQL.
  *
  */
-function fromUnixTimestampToMySQLDate($d) {
+function fromUnixTimestampToMySQLDate($d)
+{
     return date('Y-m-d', $d);
 }
 
@@ -120,14 +128,16 @@ function fromUnixTimestampToMySQLDate($d) {
  * @return a timestamp in a format recognized from MySQL.
  *
  */
-function fromUnixTimestampToMySQLTimestamp($d) {
+function fromUnixTimestampToMySQLTimestamp($d)
+{
     return date('Y-m-d H:i:s', $d);
 }
 
 /**
  * @return Number of days between two date in timestamp format.
  */
-function getDaysBetween($timestamp1, $timestamp2) {
+function getDaysBetween($timestamp1, $timestamp2)
+{
     $delta = $timestamp2 - $timestamp1;
     return round(($delta / 86400), 0);
 }
@@ -135,7 +145,8 @@ function getDaysBetween($timestamp1, $timestamp2) {
 /**
  * @return "$a . $b . $c" if $b is not null and it is not empty
  */
-function maybeAdd($a, $b, $c) {
+function maybeAdd($a, $b, $c)
+{
     if (!is_null($b)) {
         if (strlen(trim($b)) > 0) {
             return $a . $b . $c;
@@ -147,14 +158,15 @@ function maybeAdd($a, $b, $c) {
 /**
  * @return the number of lines inside the string.
  */
-function number_of_lines($s) {
+function number_of_lines($s)
+{
     $lines = explode("\n", $s);
     $c = count($lines);
 
     if ($c > 0) {
         // if the last line is an empty line, then remove it from the count of lines...
         //
-    $l = $lines[$c - 1];
+        $l = $lines[$c - 1];
         if (strlen(trim($l)) == 0) {
             $c = $c - 1;
         }
@@ -162,7 +174,8 @@ function number_of_lines($s) {
     return $c + 1;
 }
 
-function format_zip_city_address($zipCode, $city, $stateProvince, $country) {
+function format_zip_city_address($zipCode, $city, $stateProvince, $country)
+{
     $culture = sfConfig::get('app_culture');
     if ($culture === "it_IT") {
         return $zipCode . " " . $city . maybeAdd(" (", $stateProvince, ")") . maybeAdd(" - ", $country, "");
@@ -174,16 +187,18 @@ function format_zip_city_address($zipCode, $city, $stateProvince, $country) {
 /**
  * @return seconds with microsecond resolution
  */
-function microtime_float() {
+function microtime_float()
+{
     list($usec, $sec) = explode(" ", microtime());
-    return ((float) $usec + (float) $sec);
+    return ((float)$usec + (float)$sec);
 }
 
 /**
  * Format a date in universal format.
  * This is the format to use in debug message for the administrator.
  */
-function format_date_for_debug_msg($dateToFormat) {
+function format_date_for_debug_msg($dateToFormat)
+{
     if (is_null($dateToFormat)) {
         $d = time();
     } else {
@@ -197,7 +212,8 @@ function format_date_for_debug_msg($dateToFormat) {
  * Format a date/timestamp in CALL REPORT
  * according the parameters of the configuration file.
  */
-function format_date_according_config($dateToFormat) {
+function format_date_according_config($dateToFormat)
+{
     $format = sfConfig::get('app_date_format');
     return date($format, strtotime($dateToFormat));
 }
@@ -208,7 +224,8 @@ function format_date_according_config($dateToFormat) {
  *
  * @param $dateFormat a date in DB format
  */
-function format_invoice_date_according_config($dateToFormat) {
+function format_invoice_date_according_config($dateToFormat)
+{
     $format = sfConfig::get('app_invoice_date_format');
     return date($format, strtotime($dateToFormat));
 }
@@ -219,7 +236,8 @@ function format_invoice_date_according_config($dateToFormat) {
  *
  * @param $dateFormat a date in UNIX timestamp format
  */
-function format_invoice_timestamp_according_config($dateToFormat) {
+function format_invoice_timestamp_according_config($dateToFormat)
+{
     $format = sfConfig::get('app_invoice_date_format');
     return date($format, $dateToFormat);
 }
@@ -228,7 +246,8 @@ function format_invoice_timestamp_according_config($dateToFormat) {
  * Permit to select one of the app_available_cultures defined in
  * config/app.yml.
  */
-function select_available_culture_tag($name, $culture) {
+function select_available_culture_tag($name, $culture)
+{
     $cultures = sfConfig::get('app_available_cultures');
     $pos = array_search($culture, $cultures);
     if ($pos == FALSE) {
@@ -238,7 +257,8 @@ function select_available_culture_tag($name, $culture) {
     }
 }
 
-function select_customer_or_vendor_tag($name, $cv, $enableEmpty = false) {
+function select_customer_or_vendor_tag($name, $cv, $enableEmpty = false)
+{
     if ($enableEmpty) {
         $arr = array("" => "", "C" => __("Customer"), "V" => __("Vendor"));
     } else {
@@ -255,7 +275,8 @@ function select_customer_or_vendor_tag($name, $cv, $enableEmpty = false) {
  * @param $seconds time in seconds
  * @return a string with elapsed minutes and seconds
  */
-function format_minute($seconds) {
+function format_minute($seconds)
+{
     $min = floor($seconds / 60);
     $sec = $seconds - ($min * 60);
     $hour = floor($min / 60);
@@ -269,7 +290,8 @@ function format_minute($seconds) {
     }
 }
 
-function csv_field($val, $isFirst) {
+function csv_field($val, $isFirst)
+{
     if ($isFirst) {
         $r = "";
     } else {
@@ -282,27 +304,29 @@ function csv_field($val, $isFirst) {
 /**
  * Similar to standard PHP function `str_getcsv`.
  * I'm not using it, because it is shipped only with PHP >= 5.3.0
- * 
+ *
  * @param type $input
  * @param type $delimiter
  * @param type $enclosure
  * @param type $escape
- * @return type 
+ * @return type
  */
-function csv2array($input,$delimiter=',',$enclosure='"',$escape='\\'){ 
-    $fields=explode($enclosure.$delimiter.$enclosure,substr($input,1,-1)); 
-    foreach ($fields as $key=>$value) {
-        $fields[$key]=str_replace($escape.$enclosure,$enclosure,$value); 
+function csv2array($input, $delimiter = ',', $enclosure = '"', $escape = '\\')
+{
+    $fields = explode($enclosure . $delimiter . $enclosure, substr($input, 1, -1));
+    foreach ($fields as $key => $value) {
+        $fields[$key] = str_replace($escape . $enclosure, $enclosure, $value);
     }
-    return($fields); 
-} 
+    return ($fields);
+}
 
 /**
  * The max precision (decimal places) of a currency.
  * This precision is used to store data inside CDR table
  * and during computations.
  */
-function get_decimal_places_for_currency() {
+function get_decimal_places_for_currency()
+{
     return sfConfig::get('app_currency_decimal_places');
 }
 
@@ -311,7 +335,8 @@ function get_decimal_places_for_currency() {
  * @return a string like "EUR 123,56" with the current locale number format.
  * The format string is in HTML format.
  */
-function format_from_db_decimal_to_currency_locale($value) {
+function format_from_db_decimal_to_currency_locale($value)
+{
     return format_from_db_decimal_to_call_report_currency($value);
 }
 
@@ -321,7 +346,8 @@ function format_from_db_decimal_to_currency_locale($value) {
  * The format string is in HTML format.
  * The value round/truncation is done according the needs of CALL REPORT.
  */
-function format_from_db_decimal_to_call_report_currency($value) {
+function format_from_db_decimal_to_call_report_currency($value)
+{
     $decimalValue = from_db_decimal_to_invoice_decimal($value);
 
     $currency = sfConfig::get('app_currency');
@@ -333,7 +359,8 @@ function format_from_db_decimal_to_call_report_currency($value) {
  * @param $value a number like "123456" where the last digits are decimal parts.
  * @return a number like "12.3456" in case there 4 precision/decimal digits.
  */
-function from_db_decimal_to_php_decimal($value) {
+function from_db_decimal_to_php_decimal($value)
+{
     if (is_null($value)) {
         return "0";
     }
@@ -347,7 +374,8 @@ function from_db_decimal_to_php_decimal($value) {
  * Like `from_db_decimal_to_php_decimal` but eliminating
  * non necessary decimal digits. For example "19.5" instead of "19.5000"
  */
-function from_db_decimal_to_smart_php_decimal($value) {
+function from_db_decimal_to_smart_php_decimal($value)
+{
     $d = from_db_decimal_to_php_decimal($value);
     $d = $d + "0";
     return sprintf($d);
@@ -358,13 +386,15 @@ function from_db_decimal_to_smart_php_decimal($value) {
  * @return a number like "12.35" with the "currency_decimal_places_in_invoices"
  * number of precision digits.
  */
-function from_php_decimal_to_invoice_decimal($value) {
+function from_php_decimal_to_invoice_decimal($value)
+{
     $l = sfConfig::get('app_currency_decimal_places_in_invoices');
     $decimalValue = round($value, $l);
     return sprintf("%." . $l . "F", $decimalValue);
 }
 
-function from_php_decimal_to_pdf_txt_decimal($value) {
+function from_php_decimal_to_pdf_txt_decimal($value)
+{
     return get_currency_ascii_char() . from_php_decimal_to_invoice_decimal($value);
 }
 
@@ -372,7 +402,8 @@ function from_php_decimal_to_pdf_txt_decimal($value) {
  * $param $value a number like "123456" where the last digits are decimal parts.
  * @return a php decimal value, rounded to the invoice precision digits.
  */
-function from_db_decimal_to_invoice_decimal($value) {
+function from_db_decimal_to_invoice_decimal($value)
+{
     $value2 = from_db_decimal_to_php_decimal($value);
     return from_php_decimal_to_invoice_decimal($value2);
 }
@@ -382,7 +413,8 @@ function from_db_decimal_to_invoice_decimal($value) {
  * @return a number in the same format, but rounded according invoice
  * required decimals.
  */
-function round_db_decimal_according_invoice_decimal($value) {
+function round_db_decimal_according_invoice_decimal($value)
+{
     $value2 = from_db_decimal_to_invoice_decimal($value);
     return convertToDbMoney($value2);
 }
@@ -393,7 +425,8 @@ function round_db_decimal_according_invoice_decimal($value) {
  * @return a string like "123.56" without currency simbol but
  * with the correct number of decimal places. The number is formatted according locale/culture.
  */
-function from_db_decimal_to_locale_decimal($value) {
+function from_db_decimal_to_locale_decimal($value)
+{
     $culture = sfConfig::get('app_culture');
     return format_number(from_db_decimal_to_invoice_decimal($value), $culture);
 }
@@ -404,7 +437,8 @@ function from_db_decimal_to_locale_decimal($value) {
  * @return a string like "123.567" without currency simbol but
  * with all the decimal digits and formatted according locale/culture.
  */
-function from_db_decimal_to_locale_decimal_with_full_precision($value) {
+function from_db_decimal_to_locale_decimal_with_full_precision($value)
+{
     $culture = sfConfig::get('app_culture');
     return format_number(from_db_decimal_to_php_decimal($value), $culture);
 }
@@ -413,7 +447,8 @@ function from_db_decimal_to_locale_decimal_with_full_precision($value) {
  * @return a string like "1256E-4" in scientific notation in order
  * to produce unanbigous numbers.
  */
-function from_db_decimal_to_scientific_notation($value) {
+function from_db_decimal_to_scientific_notation($value)
+{
     if (is_null($value)) {
         return NULL;
     } else {
@@ -427,7 +462,8 @@ function from_db_decimal_to_scientific_notation($value) {
  *
  * @return a number with the proper decimals, in the default culture format.
  */
-function from_db_decimal_to_vat_perc_according_culture($value) {
+function from_db_decimal_to_vat_perc_according_culture($value)
+{
     $culture = sfConfig::get('app_culture');
 
     $value = from_db_decimal_to_smart_php_decimal($value);
@@ -443,7 +479,8 @@ function from_db_decimal_to_vat_perc_according_culture($value) {
  * @return a string like "EUR 123,56" with EUR in text form
  * and the monetary value in the culture format.
  */
-function from_db_decimal_to_monetary_txt_according_locale($value) {
+function from_db_decimal_to_monetary_txt_according_locale($value)
+{
     $currency = sfConfig::get('app_currency');
     return sfConfig::get('app_currency') . ' ' . from_db_decimal_to_locale_decimal($value);
 }
@@ -451,7 +488,8 @@ function from_db_decimal_to_monetary_txt_according_locale($value) {
 /**
  * Return the ASCII char for the currency symbol.
  */
-function get_currency_ascii_char() {
+function get_currency_ascii_char()
+{
     return chr(sfConfig::get('app_currency_ascii_char'));
 }
 
@@ -463,7 +501,8 @@ function get_currency_ascii_char() {
  *
  * @return a string like "$123,56" where "$" is the currency symbol.
  */
-function from_db_decimal_to_pdf_txt_decimal($value) {
+function from_db_decimal_to_pdf_txt_decimal($value)
+{
     return get_currency_ascii_char() . from_db_decimal_to_locale_decimal($value);
 }
 
@@ -472,7 +511,8 @@ function from_db_decimal_to_pdf_txt_decimal($value) {
  * @return a integer with the last digits implicitely associated to the decimal part
  * according the number of decimal places specified in config/app.yml for the currency.
  */
-function convertToDbMoney($moneyStr) {
+function convertToDbMoney($moneyStr)
+{
     $sourcePrecision = get_decimal_places_for_currency();
     return number_format($moneyStr, $sourcePrecision, '', '');
 }
@@ -480,7 +520,8 @@ function convertToDbMoney($moneyStr) {
 /**
  * Synonimous for `convertToDbMoney`
  */
-function from_php_decimal_to_db_decimal($v) {
+function from_php_decimal_to_db_decimal($v)
+{
     return convertToDbMoney($v);
 }
 
@@ -491,7 +532,8 @@ function from_php_decimal_to_db_decimal($v) {
  * all the precision and does not format according standard currency locales.
  * used in computations.
  */
-function formatCostAccordingCurrency($cost) {
+function formatCostAccordingCurrency($cost)
+{
     $currencySymbol = sfConfig::get('app_currency');
     $culture = sfConfig::get('app_culture');
     $n = format_number($cost, $culture);
@@ -504,7 +546,8 @@ function formatCostAccordingCurrency($cost) {
  * @return a number represented as a String with the correct "." decimal separator symbol,
  *         null if $numberAsString is not a number.
  */
-function convertToArbitraryPrecisionFloat($numberAsString, $decimalSeparator) {
+function convertToArbitraryPrecisionFloat($numberAsString, $decimalSeparator)
+{
     $s1 = trim($numberAsString);
     if ($decimalSeparator != '.') {
         $s2 = str_replace($decimalSeparator, '.', $s1);
@@ -545,7 +588,8 @@ function bcRound($x)
  * @param  $vatPerc the vat perc in PHP decimal format
  * @return list($totalVat, $totalWithVat) in db_decimal format, with the precision needed for invoices
  */
-function invoice_amount_with_vat($totIncome, $vatPerc) {
+function invoice_amount_with_vat($totIncome, $vatPerc)
+{
     $totIncome = round_db_decimal_according_invoice_decimal($totIncome);
     $totalVat1 = bcmul($totIncome, $vatPerc, 0);
     $totalVat = round_db_decimal_according_invoice_decimal(bcdiv($totalVat1, 100, 0));
@@ -560,7 +604,8 @@ function invoice_amount_with_vat($totIncome, $vatPerc) {
  * that performs this type of filtering before sending queries
  * to MySQL database.
  */
-function filterStrForSQLQuery($str) {
+function filterStrForSQLQuery($str)
+{
     $n = strlen($str);
     $w = '';
     for ($i = 0; $i < $n; $i++) {
@@ -573,7 +618,8 @@ function filterStrForSQLQuery($str) {
  * @return ch1 if it is a number / alpha / "-" / "+" / "/" char,
  * "" otherwise
  */
-function filterCharForSQLQuery($ch1) {
+function filterCharForSQLQuery($ch1)
+{
     $pos = strpos('0123456789 abcdefghijklmnopqrstuvzwxyABCDEFGHILMNOPQSTUVZKJWXY-+/:@', $ch1);
     if ($pos === false) {
         return '';
@@ -582,19 +628,21 @@ function filterCharForSQLQuery($ch1) {
     }
 }
 
-function areAllValidCharacters($str) {
-  for ($i = 0, $j = strlen($str); $i < $j; $i++) {
-    if (filterCharForSQLQuery($str[$i]) === "") {
-      return FALSE;
+function areAllValidCharacters($str)
+{
+    for ($i = 0, $j = strlen($str); $i < $j; $i++) {
+        if (filterCharForSQLQuery($str[$i]) === "") {
+            return FALSE;
+        }
     }
-  }
-  return TRUE;
+    return TRUE;
 }
 
 /**
  * A string with '\n' and other special characters, substituted with new lines.
  */
-function from_user_string_to_php_string($str) {
+function from_user_string_to_php_string($str)
+{
     return str_replace("\\n", "\n", $str);
 }
 
@@ -604,7 +652,8 @@ function from_user_string_to_php_string($str) {
  *
  * @return a path to the same file inside the file system, or null if it is not specified, or the files does not exists
  */
-function uploadedImageFilePath($urlPath) {
+function uploadedImageFilePath($urlPath)
+{
     if (is_null($urlPath)) {
         return null;
     }
@@ -631,7 +680,8 @@ function uploadedImageFilePath($urlPath) {
  *
  * @return NULL if format is not correct
  */
-function html2rgb($color) {
+function html2rgb($color)
+{
 
 
     if (is_null($color)) {
@@ -649,8 +699,8 @@ function html2rgb($color) {
 
     if (strlen($color) == 6)
         list($r, $g, $b) = array($color[0] . $color[1],
-            $color[2] . $color[3],
-            $color[4] . $color[5]);
+                                 $color[2] . $color[3],
+                                 $color[4] . $color[5]);
     elseif (strlen($color) == 3)
         list($r, $g, $b) = array($color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2]);
     else
@@ -668,7 +718,8 @@ function html2rgb($color) {
  *
  * @return true if $prefix is a prefix of $number, false otherwise.
  */
-function isPrefixOf($prefix, $number) {
+function isPrefixOf($prefix, $number)
+{
     $prefix = trim($prefix);
     $prefixLen = strlen($prefix);
 
@@ -686,15 +737,17 @@ function isPrefixOf($prefix, $number) {
 /**
  *
  * @param type $filters
- * @param type $index 
+ * @param type $index
  * @return null if the filter is not selected. Its value otherwise.
  */
-function filterValue($filters, $index) {
+function filterValue($filters, $index)
+{
     $r = NULL;
     if (isset($filters[$index])
-            && (!is_null($filters[$index]))
-            && (strlen(trim($filters[$index])) != 0)
-            && ($filters[$index] != -1)) {
+        && (!is_null($filters[$index]))
+        && (strlen(trim($filters[$index])) != 0)
+        && ($filters[$index] != -1)
+    ) {
         $r = $filters[$index];
     }
 
@@ -763,7 +816,8 @@ function resetCallsCostInTimeFrameAndRecalc($fromDate, $toDate)
  * @return unix-timestamp of the max/last Cdr Call Date
  * NOTE: for sure this is a fast query that does not scan the table
  */
-function getMaxCdrCallDate() {
+function getMaxCdrCallDate()
+{
     $connection = Propel::getConnection();
     $stm = $connection->createStatement();
     $rs = $stm->executeQuery('SELECT calldate FROM cdr force index (cdr_calldate_index) order by calldate desc limit 1');
@@ -774,5 +828,57 @@ function getMaxCdrCallDate() {
     return strtotime($r);
 }
 
+/**
+ * @return the name of call report module associated to the current customer,
+ *         null in case problems.
+ */
+function getSuggestedCallReportModule($user) {
+
+    // Select the best type of call report according the characteristics of the account.
+    //
+    if ($user->hasCredential('party')) {
+        $showOffice = "t";
+        $showAccount = "t";
+
+        $reportType = ArParty::getSuggestedCallReportTypeForParty($user->getPartyId());
+        switch ($reportType) {
+            case ArParty::MANY_OFFICES_AND_MANY_VOIP:
+                $showOffice = "t";
+                $showAccount = "t";
+                break;
+            case ArParty::MANY_OFFICES_ONE_VOIP:
+                $showOffice = "t";
+                $showAccount = "f";
+                break;
+            case ArParty::ONE_OFFICE_MANY_VOIP:
+                $showOffice = "f";
+                $showAccount = "t";
+                break;
+            case ArParty::ONE_OFFICE_ONE_VOIP:
+                $showOffice = "f";
+                $showAccount = "f";
+                break;
+            default:
+                $showOffice = "t";
+                $showAccount = "t";
+        }
+
+        return 'customer_' . $showOffice . $showAccount . '_call_report/list';
+    }
+
+    if ($user->hasCredential('office')) {
+        $showOffice = "f";
+        $showAccount = "t";
+
+        $officeId = $user->getOfficeId();
+        $accountId = ArOffice::getUniqueArAsteriskAccountIdForOfficeId($officeId);
+        if (!is_null($accountId)) {
+            $showAccount = "f";
+        }
+        return 'office_' . $showOffice . $showAccount . '_call_report/list';
+    }
+
+    return null;
+}
 
 ?>
