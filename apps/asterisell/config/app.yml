@@ -144,6 +144,10 @@ all:
   # 
   how_many_calls_in_call_report: 30
 
+  # True for showing invoices marked as sent, to customers that are on line.
+  #
+  show_online_sent_invoices_to_customers: false
+
   # External telephone number with the specified
   # prefix are displayed in a short form, without
   # the prefix.

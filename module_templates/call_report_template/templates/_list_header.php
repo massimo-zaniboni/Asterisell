@@ -144,7 +144,11 @@ echo '<tr class="sf_admin_row_0">';
   echo '<td>' . form_tag("$moduleName/exportToExcel") .  submit_tag(__('Export to MS Excel')) . '</form>' . '</td>';
 
   <?php if ($generateForCustomer) { ?>
-    echo '<td>' . form_tag("$moduleName/viewInvoices") .  submit_tag(__('View Invoices')) . '</form>' . '</td>';
+    if (sfConfig::get('app_show_online_sent_invoices_to_customers') === TRUE) {
+      echo '<td>' . form_tag("$moduleName/viewInvoices") .  submit_tag(__('View Invoices')) . '</form>' . '</td>';
+    } else {
+      echo '<td></td>';
+    }
   <?php } else { ?>
     echo '<td></td>';
   <?php } ?>
