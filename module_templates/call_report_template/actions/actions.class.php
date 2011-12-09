@@ -50,15 +50,6 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     return sfView::SUCCESS;
   }
 
-  public function executeShowChannelUsage() {
-    return $this->redirect('commercial_feature/index');
-  }
-
-  public function executeHideChannelUsage() {
-    $this->setFlash('show_channel_usage', FALSE);
-    return $this->forward('admin_tt_call_report', 'list');
-  }
-
   /**
    * Call this function before call other functions on filters.
    */
@@ -203,7 +194,9 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
     // can view only their CDR records, and not use only filter parameters,
     // because they can be faked. So use always also logged user criteria.
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  
+
+    parent::addFiltersCriteria($c);
+
     list($partyId, $officeId, $accountId) = $this->getFiltersOnCallReport($this->filters);
   
     // NOTE: the joins are already added/processed from
@@ -294,7 +287,6 @@ class <?php echo $className; ?> extends <?php echo   $parentClassName; ?> {
         $c->add(CdrPeer::CACHED_MASKED_EXTERNAL_TELEPHONE_NUMBER, $loc .'%', Criteria::LIKE);
     }
 
-    parent::addFiltersCriteria($c);
   }
 
 /**
@@ -397,6 +389,16 @@ function getFiltersOnCallReport($filters) {
 
     return $this->redirect('admin_tt_call_report/list');
   }
+
+  public function executeShowChannelUsage() {
+    return $this->redirect('commercial_feature/index');
+  }
+
+  public function executeHideChannelUsage() {
+    $this->setFlash('show_channel_usage', FALSE);
+    return $this->forward('admin_tt_call_report', 'list');
+  }
+
   <?php } ?>
 
 
