@@ -80,7 +80,7 @@ For the commercial version::
 
 replacing `your-license` with your license code, obtained after purchasing the commercial version. NOTE: the download operation is rather slow (1-8 minutes).
 
-It is always possible upgrading a free version to a commercial version. For updating/upgrading to new releases see :ref:`asterisell_upgrading`.
+It is always possible upgrading a free version to a commercial version. For updating/upgrading to new releases see :ref:`upgrading`.
 
 File Permissions
 ----------------
@@ -1151,7 +1151,7 @@ Main Configuration File Content
 
 :file:`apps/asterisell/config/app.yml` 
 
-.. literalinclude:: ../../apps/asterisell/config/app.yml
+.. literalinclude:: _static/app.yml
 
 
 ###########

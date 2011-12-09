@@ -13,7 +13,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     'asterisell-free-stable-3.12.00
+        VERSION:     'asterisell-free-stable-3.13.00
 ',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -134,7 +134,7 @@
 <div class="highlight-python"><pre>git clone http://your-license:your-license@support.asterisell.com/asterisell/git/asterisell-commercial-stable-3.git &lt;your-new-asterisell-directory&gt;</pre>
 </div>
 <p>replacing <cite>your-license</cite> with your license code, obtained after purchasing the commercial version. NOTE: the download operation is rather slow (1-8 minutes).</p>
-<p>It is always possible upgrading a free version to a commercial version. For updating/upgrading to new releases see <em class="xref std std-ref">asterisell_upgrading</em>.</p>
+<p>It is always possible upgrading a free version to a commercial version. For updating/upgrading to new releases see <a class="reference internal" href="#upgrading"><em>Upgrading</em></a>.</p>
 <div class="section" id="file-permissions">
 <h3>File Permissions<a class="headerlink" href="#file-permissions" title="Permalink to this headline">¶</a></h3>
 <p>In Linux Debian make sure that the &#8220;www-data&#8221; user can read the content of the installation directory:</p>
@@ -1121,9 +1121,14 @@ all:
     # &gt; PHP-Class-Name: Rate Description
     #
     phpRates: 
+      ProcessImportedCDR: Process CDR imported from VoIP vendor
       PhpCDRProcessing: CDR initial classification
       PhpRateByDuration: By Duration
-      PhpRateInCommercialVersion: CSV File with Tel.Prefixes and Rates
+      PhpRateImportFromCSV: CSV File with Tel.Prefixes and Rates
+      MinimumCostBundleRate: Account Minimum Cost
+      UseImportedSourceCost: Use VoIP provider cost.
+      # DataUpgradeRatePass1: Imported CDR from previous Asterisell versions, pass 1  
+      # DataUpgradeRatePass2: Imported CDR from previous Asterisell versions, pass 2
 
     # These jobs are executed every time the job-queue processor
     # is invoked. They are indipendent from job-data or events.
@@ -1144,14 +1149,18 @@ all:
     # rated calls.
     #
     always_scheduled_jobs:
+      - ImportCDRFromAsterisellProvider     # does nothing if there are no provider settings (see below)
       - RateCalls
+      - ExportCDRToReseller                 # does nothing if there are no resellers
+      - CheckSafeLimitForConcurrentCalls    # warn if the Asterisell server has reached a big number of concurrent calls
+      - CheckCallCostLimit
+      - CheckFrauds                         # see check_frauds options in this file for configuring it
       - CleanCacheFromOldItems              # maintanance work
       - CheckWebsiteUpdates                 # check if there are news on Asterisell web-site
       - CheckPartiesWithoutParams           # maintanance work
-      # - CheckCallCostLimit                # check if customers have reached theirs call cost limit.
-      # - CheckSafeLimitForConcurrentCalls  # check if the server has reached his limit about the maximum (safe) number of concurrent calls. In case advise the administrator via mail
+      # - CompareProviderCostWithCalculatedCost  # in case of CDR imported from a provider sending also his calculated cost, 
+                                                 # check them with Asterisell calculated cost
       - AdviseAdminOfNewProblems            # send emails with found problems to administrator
-
 
     # The jobs that are activate when there is a compatible event
     # on the job queue.
@@ -1167,7 +1176,18 @@ all:
     # rated calls.
     #
     jobs:
-      - WarnCustomerForHighCallCost  # This job is executed only if it active also the `CheckCallCostLimit` corresponding job. It sends the emails to customers.
+      - GenerateInvoices
+      - GenerateInvoiceDetails
+      - GenerateInvoiceReportAsHTML
+      - GenerateInvoiceReportAsPDF  
+      # - GenerateInvoiceAsCenteredTemplate   # this is another type of invoice format, enable this or `GenerateInvoiceReportaAsPDF` or another format
+      - GenerateCallReportAsPDF
+      - GenerateInvoiceEmail
+      - SendInvoiceEmails
+      - SendInvoiceEmail
+      - SendInvoiceNotificationToAccountant
+      # - GenerateMailWarningCustomerForHighCallCost  # ...
+      # - WarnCustomerForHighCallCost                 # activate these two jobs if you want send an email directly to customer in case of high call costs.
 
   # Complete only if this Asterisell instance is a reseller of another
   # Asterisell server acting like a VoIP provider.
@@ -1178,10 +1198,10 @@ all:
   # NOTE: these options can be used only for commercial version of Asterisell.
   #
   external_asterisell_voip_provider:
-    - csv_files_source_directory: ""
-    - temp_processing_csv_files_directory: ""
-    - processed_csv_files_directory: ""
-    - insert_cdr_using_dstchannel: ""
+    csv_files_source_directory: ""
+    temp_processing_csv_files_directory: ""
+    processed_csv_files_directory: ""
+    insert_cdr_using_dstchannel: ""
 
   # Enable/disable displaying of incoming/incoming/internal 
   # calls in the customer call report.
@@ -1264,11 +1284,11 @@ all:
   #
   not_displayed_telephone_prefix: "-"
 
-  # Check cost-limits interval expressed in minutes.
+  # Check cost-limits and CheckFrauds, interval expressed in minutes.
   # Cost-limits check is an heavy operation to do and 
-  # it can be executed after a certain interval of time.
-  # 
-  check_cost_limits_after_minutes: 60
+  # it must be executed after a certain interval of time.
+  # The job log show if the operation is requiring too much.
+  check_cost_limits_after_minutes: 15
 
   # In case the job GenerateMailWarningCustomerForHighCallCost 
   # is enabled (it is inserted in the list of active jobs), 
@@ -1490,6 +1510,7 @@ all:
   # * 4: use "accountcode" field as internal telephone number (display in CALL REPORT the account-code name),
   #      use "dst" as external telephone number for outgoing and internal calls,
   #      use "src" as external telephone number for incoming calls.
+  #
   # IMPORTANT: Changes to this parameter make effect only on new rated calls,
   # so you must force a rerate if you want apply the new mask only to already
   # rated calls.
@@ -1538,7 +1559,8 @@ all:
   #
   sfMediaLibrary:
     upload_dir: uploads/assets
-    </pre>
+    
+</pre>
 </div>
 </div>
 </div>

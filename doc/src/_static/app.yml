@@ -1,0 +1,465 @@
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+# !!!                                                                           !!! #
+# !!! I M P O R T A N T:                                                        !!! #
+# !!!                                                                           !!! #
+# !!! 1) if you change these values then execute "configure.sh" in order to     !!! #
+# !!! update the application behaviour;                                         !!! #
+# !!!                                                                           !!! #
+# !!! 2) many parameters need a rerate of old calls in order to be propagated   !!! #
+# !!! also to old calls. When this is the case, it is signaled in the parameter !!! # 
+# !!! comments as "IMPORTANT"                                                   !!! #
+# !!!                                                                           !!! #
+# !!! 3) avoid TABS inside this file, they are not accepted, use only SPACES    !!! #
+# !!!                                                                           !!! #
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+
+all:
+  available:
+
+    # The PhpRate class available during the setup of a rate plan.
+    # The class are located in apps/asterisell/lib/ directory.
+    # You can add your own classed.
+    # The format is: 
+    #
+    # > PHP-Class-Name: Rate Description
+    #
+    phpRates: 
+      ProcessImportedCDR: Process CDR imported from VoIP vendor
+      PhpCDRProcessing: CDR initial classification
+      PhpRateByDuration: By Duration
+      PhpRateImportFromCSV: CSV File with Tel.Prefixes and Rates
+      MinimumCostBundleRate: Account Minimum Cost
+      UseImportedSourceCost: Use VoIP provider cost.
+      # DataUpgradeRatePass1: Imported CDR from previous Asterisell versions, pass 1  
+      # DataUpgradeRatePass2: Imported CDR from previous Asterisell versions, pass 2
+
+    # These jobs are executed every time the job-queue processor
+    # is invoked. They are indipendent from job-data or events.
+    # They are executed before "available jobs".
+    #
+    # These jobs are processed following the order of declaration.
+    #
+    # These jobs are processed only one time for each activation
+    # of the JobQueueProcessor.
+    #
+    # These jobs are of class FixedJobProcessor.
+    #
+    # NOTE: if one of this jobs fails, then the next job is executed 
+    # in any case.
+    #
+    # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+    # so you must force a rerate if you want apply the new mask only to already
+    # rated calls.
+    #
+    always_scheduled_jobs:
+      - ImportCDRFromAsterisellProvider     # does nothing if there are no provider settings (see below)
+      - RateCalls
+      - ExportCDRToReseller                 # does nothing if there are no resellers
+      - CheckSafeLimitForConcurrentCalls    # warn if the Asterisell server has reached a big number of concurrent calls
+      - CheckCallCostLimit
+      - CheckFrauds                         # see check_frauds options in this file for configuring it
+      - CleanCacheFromOldItems              # maintanance work
+      - CheckWebsiteUpdates                 # check if there are news on Asterisell web-site
+      - CheckPartiesWithoutParams           # maintanance work
+      # - CompareProviderCostWithCalculatedCost  # in case of CDR imported from a provider sending also his calculated cost, 
+                                                 # check them with Asterisell calculated cost
+      - AdviseAdminOfNewProblems            # send emails with found problems to administrator
+
+    # The jobs that are activate when there is a compatible event
+    # on the job queue.
+    #
+    # Jobs are iteratively checked for every initial and new event,
+    # so if a Job fires new events, they can be immediately processed
+    # from other jobs.
+    #
+    # These jobs are of class JobProcessor.
+    #
+    # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+    # so you must force a rerate if you want apply the new mask only to already
+    # rated calls.
+    #
+    jobs:
+      - GenerateInvoices
+      - GenerateInvoiceDetails
+      - GenerateInvoiceReportAsHTML
+      - GenerateInvoiceReportAsPDF  
+      # - GenerateInvoiceAsCenteredTemplate   # this is another type of invoice format, enable this or `GenerateInvoiceReportaAsPDF` or another format
+      - GenerateCallReportAsPDF
+      - GenerateInvoiceEmail
+      - SendInvoiceEmails
+      - SendInvoiceEmail
+      - SendInvoiceNotificationToAccountant
+      # - GenerateMailWarningCustomerForHighCallCost  # ...
+      # - WarnCustomerForHighCallCost                 # activate these two jobs if you want send an email directly to customer in case of high call costs.
+
+  # Complete only if this Asterisell instance is a reseller of another
+  # Asterisell server acting like a VoIP provider.
+  # 
+  # NOTE: if this is the Asterisell acting like a main VoIP provider, these
+  # settings must be left empty. They must be completed on the reseller side.
+  #
+  # NOTE: these options can be used only for commercial version of Asterisell.
+  #
+  external_asterisell_voip_provider:
+    csv_files_source_directory: ""
+    temp_processing_csv_files_directory: ""
+    processed_csv_files_directory: ""
+    insert_cdr_using_dstchannel: ""
+
+  # Enable/disable displaying of incoming/incoming/internal 
+  # calls in the customer call report.
+  # This allows to reduce the information overhead.
+  #
+  # This settings influence also INVOICE GENERATION:
+  # if incoming/internal calls are not displayed in the CALL REPORT
+  # then they are not displated / summed up in the invoices,
+  # otherwise they are showed / summed up in the invoices.
+  #
+  # IMPORTANT: if you assign an earn to incoming and internal 
+  # calls, but they are not displayed in the call report,
+  # then these earns are lost because they are not inserted
+  # in the invoices. The underline philosophy of Asterisell
+  # is that you can account to customers only showed costs
+  # in the call report.
+  #
+  # Ignored and Unprocessed calls are not displayed by default.
+  #
+  # The administrator can all these type of calls, 
+  # in any case, indipendently from these settings.
+  #
+  # allowed values: true / false (case sensitive)
+  #
+  show_incoming_calls: false
+  show_outgoing_calls: true
+  show_internal_calls: false
+  
+  # Display in the customer call report also 
+  # the direction of the call (incoming/outgoing/internal)
+  # for each call.
+  #
+  # The administrar is not affected from this setting, because 
+  # he sees always the call direction.
+  #
+  # If both incoming and outgoing calls are displayed, the safer
+  # approach is enabling also displying of call direction, otherwise
+  # can be difficult for the end-user, distinguish between the type 
+  # of a call.
+  #
+  # allowed values: true / false (case sensitive)
+  #
+  show_call_direction: false
+
+  # Display in the customer call report
+  # also a filter on the call direction (incoming/outgoing/internal).
+  #
+  # This setting influence only the call report
+  # of customer. The administrator can always
+  # filter on call direction.
+  #
+  show_filter_on_call_direction: false
+
+  # How many calls shows in the call report
+  # containing the list of made calls.
+  # This is the main report of the program.
+  # 
+  how_many_calls_in_call_report: 30
+
+  # External telephone number with the specified
+  # prefix are displayed in a short form, without
+  # the prefix.
+  # 
+  # This option is useful when all your customers
+  # reside in the same area. So you can remove 
+  # the standard/default prefix from called numbers
+  # when they are in the standard/default area.
+  #
+  # All other numbers are not modified.
+  # 
+  # In any case, this option does not change the
+  # stored numbers inside the database, only their
+  # visualization.
+  #
+  # Use "-", if you want to disable this feature.
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate, if you want apply the new settings
+  # also to already rated calls.
+  #
+  not_displayed_telephone_prefix: "-"
+
+  # Check cost-limits and CheckFrauds, interval expressed in minutes.
+  # Cost-limits check is an heavy operation to do and 
+  # it must be executed after a certain interval of time.
+  # The job log show if the operation is requiring too much.
+  check_cost_limits_after_minutes: 15
+
+  # In case the job GenerateMailWarningCustomerForHighCallCost 
+  # is enabled (it is inserted in the list of active jobs), 
+  # this params set how often a customer is warned
+  # about his call cost exceeding his cost limit.
+  #
+  # 0 for disable customer advise (only admin is advised).
+  #
+  repeat_advise_of_high_cost_limit_after_days: 0
+
+  # How to calculate the max cost limit for each customer.
+  #
+  # "30" for considering the cost of last 30 days.
+  # "m" for considering the current month.
+  # 
+  max_cost_limit_timeframe: m
+
+   # Used from job CheckFrauds (enabled only in commercial version)
+   # The job run according the scheduling of `check_cost_limits_after_minutes`
+   #
+   check_frauds:
+     max_unprocessed_calls: 10
+     # if there are more than these unprocessed calls,
+     # then advise the administrator, because there can be unnoticed high calls costs
+
+     compare_xx_last_days_respect_customer_daily_max_cost: 5
+     # note: customer daily max cost is the customer monthly max cost, specified in the user interface,
+     # divided by 30. Set to 0 for disabling it.
+
+     compare_x_last_months_respect_current_costs: 3
+     # warn if a customer spent a 25% more than the maximum cost of last x months in the
+     # same day of week and a comparable hour of the day (hours grouped by 00-06, 06-12, 12-18, 18-24).
+     # Set to 0 for disabling it.
+
+  # How many concurrent calls, the Asterisk server can support in a safely
+  # manner. If this number of concurrent calls is reached, 
+  # then the administrator is advised.
+  # 
+  # This number depends from the incoming/outgoing bandwidth of the Asterisell
+  # server and from the bandwidth reserved/used from each call/connection.
+  # It is only an indicative/warning value, used for monitoring when
+  # the system reach a warning usage level.
+  # 
+  safe_limit_for_concurrent_calls: 5
+
+  # The format to use for date/timestamp display in CDR call report.
+  # The format is specified using PHP "date" function format:
+  #    http://www.php.net/manual/en/function.date.php
+  #
+  date_format: "Y/m/d, G:i:s"
+    # "r" for something like "Thu, 21 Dec 2000 16:01:07 +0200"
+    # "c" for something like "2004-02-12T15:19:21+00:00"
+    # "F d, Y G:i:s" for something like "Dec 21, 2000 16:01:07"
+    # "d/m/Y, G:i:s" for italian format
+
+  # The format to use for date display in Invoices
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
+  #
+  invoice_date_format: "Y-m-d"
+  # invoice_date_format: "d/m/Y"  for italian format
+
+  # true for having invoices with details like:
+  # > Italy - Fixed Line        200 calls  ....
+  # > Italy - Mobile Line       100 calls  ...
+  # (grouped by geographi location and type of operator)
+  #
+  # false for having invoices with details like:
+  # > Fixed Line                 200 calls
+  # > Mobile Lines               100 calls
+  # (grouped by type of operator. 
+  #  Maybe you can further create operators like "National Fixed Line", 
+  # "International Fixed Line" and os on...)
+  #
+  long_details_in_invoice: true
+
+  # true for using the last day of the month, in invoices of the month,
+  # like "from 2011-06-01 to 2011-06-30".
+  #
+  # false for using the first day of the next month, in invoices of the month, 
+  # like "from 2011-06-01 to 2011-07-01".
+  # 
+  use_inclusive_end_date_in_invoice: false
+
+  # the default currency used for rates, cost and incomes.
+  #
+  currency: EUR
+  # currency: USD
+  # currency: AUD
+
+  # The ASCII char to use for representing the currency
+  # in PDF and textual forms.
+  #
+  # EUR: 128
+  # US: 36
+  # GBP: 163
+  # 
+  # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
+  #
+  currency_ascii_char: 128
+
+  # The decimal separator symbol to use in CSV files exported to customers.
+  #
+  decimal_separator_symbol_in_csv: "."
+
+  # true for exporting numbers like "1.234" in CSV files exported to customers.
+  # false for exporting numbers like 1.234 (without \").
+  #
+  # true is a more safe option of your customers have different locale 
+  # with different types of decimal separator.
+  #
+  # false allows recognizing more easily numbers, during importing of CSV files
+  # inside a spreadsheet.
+  #
+  numbers_as_strings_in_csv: true
+
+  # The field separator used in CSV files exported to customers.
+  # Normally it is ",".
+  #
+  # If you are using "," also as decimal separator, 
+  # and numbers are not surrounded between \", then use something like ";".
+  #
+  csv_field_separator: ","
+
+  # The default culture to use for formatting numbers, dates and so on.
+  # Something like en_US, it_IT, ...
+  #
+  # IMPORTANT: if you change this value update also the corresponding
+  # "apps/asterisell/config/settings.yml" file in "prod: default_culture".
+  # This is not strictly necessary because after login, Asterisell
+  # set the culture of the session to this value, but it is 
+  # a safe setting.
+  #
+  # culture: en_US
+  # culture: it_IT
+  culture: en_US
+
+  # decimal places to use for currency when stored in the database CDR table
+  #
+  # IMPORTANT: if you change this value then force a re-rate of all calls
+  # because already rated calls will be in an inconsisten format.
+  #
+  currency_decimal_places: 4
+
+  # decimal places to use for each currency in an invoice
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new generated invoices.
+  #
+  # IMPORTANT: this parameter is also used for rounding
+  # costs/incomes in CALL REPORT. Supposing 2 decimal places,
+  # a cost like "0.005" is rounded to "0.01".
+  # 
+  currency_decimal_places_in_invoices: 2
+
+  # If these field is an empty list ([]) then "cdr.dst" field is the destination
+  # telephone number of the call.
+  #
+  # If the value of this setting is a list then
+  # cdr.lastdata field is the destination telephone number of the call.
+  # For each billable call, "cdr.lastapp" must be a value inside the list, 
+  # otherwise the call is not rated and the problem 
+  # is signaled to the administrator. 
+  # 
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate if you want apply the new mask only to already
+  # rated calls.
+  # 
+  lastapp_accepted_values: []
+
+  # The internal telephone number is the VoIP account code,
+  # managed from the Asterisk server.
+  #
+  # The external telephone number is the number residing on 
+  # external lines, reachable using the services of the
+  # VoIP service provider.
+  #
+  # In an outgoing call, the internal telephone number is the source of the call.
+  # In an incoming call, the internal telephone number is the destination of the call.
+  #
+  # In an outgoing call, the external telephone number is the destination of the call.
+  # In an incoming call, the external telephone number is the source of the call.
+  #
+  # Asterisell displays in CALL REPORT something like:
+  #
+  # > | INTERNAL VoIP Account | Call Direction | EXTERNAL Telephone Number |
+  # > +-----------------------+----------------+---------------------------+
+  # > | account123            |    outgoing    | 390423XXXX                |
+  # > | account123            |    incoming    | 39343XXXXX                |
+  #
+  # so the distinction is between internal and external telephone number
+  # and not between call source and destination.
+  # The same distinction is done also in the rate forms.
+  #
+  # The problem is: what fields of the CDR record must Asterisell 
+  # use for displaying in the call report the internal and external telephone number?
+  #
+  # Available options:
+  # * 0: use "accountcode" field as internal telephone number (display in CALL REPORT the account-code name),
+  #      use "dst/lastapp_accepted_values" field as external telephone number.
+  # * 1: use "src" field as internal telephone number only for outgoing calls, 
+  #      use "src" field as external telephone number only for incoming calls,
+  #      use "dst/lastapp_accepted_values" as external telephone number only for outgoing calls,
+  #      use "dst/lastapp_accepted_values" as internal telephone number only for incoming calls.
+  #      in case of unprocessed/ignored/internal use always "src" field for internal calls.
+  # * 2: use "src" field as internal telephone number,
+  #      use "dst/lastapp_accepted_values" field as external telephone number.
+  #      in case of unprocessed/ignored/internal use always "src" field for internal calls.
+  # * 3: it is assigned from the CDRInitialProcessing rate, that must complete during initial processing of a rate,
+  #      these fields:
+  #        - `cdr.ar_asterisk_account_id` (null if it is missing, and RateProcess will inform the user of the error);
+  #        - `cdr.cached_internal_telephone_number`;
+  #        - `cdr.cached_external_telephone_number`;
+  #        - `cdr.cached_masked_external_telephone_number`, can be null (it is completed from the framework), or with an explicit value
+  #        - `cdr.ar_telephone_prefix.id` can be null (it is completed from the framework),
+  #           or with an explicit value, in this case number portability is not automatically transferred to the telephone prefix,
+  #           and it must be explicitely managed from the CDR processor;
+  #      See `apps/asterisell/lib/rates/CustomCDRProcessing.php` for a template of associated processing rate.
+  #      A rate like the proposed example must be added to the rate table.
+  # * 4: use "accountcode" field as internal telephone number (display in CALL REPORT the account-code name),
+  #      use "dst" as external telephone number for outgoing and internal calls,
+  #      use "src" as external telephone number for incoming calls.
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate if you want apply the new mask only to already
+  # rated calls.
+  # 
+  internal_external_telephone_numbers: 0
+
+  # An external telephone number can be masked in the CALL REPORT view,
+  # for privacy reasons.
+  #
+  # This parameter identifies the number of last digits to mask in the
+  # external telephone number.
+  #
+  # A typical value is 3 digits to mask, in order to obtain something
+  # like "39059567XXX".
+  #
+  # 0 stays for no number masking.
+  #
+  # Internal calls (in the case they are displayed in the
+  # CALL REPORT), between two VoIP accounts are no masked.
+  #
+  # Unprocessed calls are never masked, but they are viewable
+  # only from the administrator.
+  #
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate if you want apply the new mask only to already
+  # rated calls.
+  # 
+  # IMPORTANT: Changes to this parameter make effect only on new rated calls,
+  # so you must force a rerate if you want apply the new mask only to already
+  # rated calls.
+  # 
+  mask_for_external_telephone_number: 3
+
+  # Remove a log message from the Job Log Table 
+  # when it is older than this number of months.
+  #
+  months_after_removing_a_job_log_entry: 2
+
+  # Where uploaded files are put/read.
+  # This is a directory inside "web" directory,
+  # and it must be web-server readable and writable.
+  #
+  # This default directory is already created.
+  # If you set up a new directory, you must manually
+  # create it.
+  #
+  sfMediaLibrary:
+    upload_dir: uploads/assets
+    

@@ -836,6 +836,11 @@ function getSuggestedCallReportModule($user) {
 
     // Select the best type of call report according the characteristics of the account.
     //
+
+    if ($user->hasCredential('admin')) {
+      return 'admin_tt_call_report/list';
+    }
+
     if ($user->hasCredential('party')) {
         $showOffice = "t";
         $showAccount = "t";

@@ -493,6 +493,72 @@ function getFiltersOnCallReport($filters) {
     $this->filters['filter_on_calldate_from'] = fromUnixTimestampToSymfonyStrDate($fromDate);
   }
 
+protected function manageSecurityError() {
+  $this->signalSecurityError();
+  $module = getSuggestedCallReportModule(sfContext::getInstance()->getUser());
+  return $this->redirect($module);
+}
+
+protected function signalSecurityError() {
+  $id = sfContext::getInstance()->getUser()->getLogin();
+  $p = new ArProblem();
+  $p->setDuplicationKey("Security problem on Website account  - $id");
+  $p->setDescription("Website account with account login \"$id\", tried changing the content of CDR table.");
+  $p->setCreatedAt(date("c"));
+  $p->setEffect("This type of action is no more allowed, but previous versions of Asterisell were vulnerable to this problem. CDRs could be deleted or modified from customers knowing the vulnerability.");
+  $p->setProposedSolution("Probably this customer (or someone knowing his password) stoled some VoIP calls. You can re-rate CDRs of the customer, and then check if there are differences between new and old calls cost and income, and if the total cost is the same of the cost your VoIP provider sent you.");
+  ArProblemException::addProblemIntoDBOnlyIfNew($p);
+}
+
+public function executeCreate()
+{
+  return $this->manageSecurityError();
+}
+
+public function executeSave()
+{
+  return $this->manageSecurityError();
+}
+
+public function executeEdit()
+{
+  return $this->manageSecurityError();
+}
+
+public function executeDelete()
+{
+  return $this->manageSecurityError();
+}
+
+public function handleErrorEdit()
+{
+  return $this->manageSecurityError();
+}
+
+/**
+ * Make explicitely nothing
+ */
+protected function saveCdr($cdr)
+{
+  $this->signalSecurityError();
+}
+
+/**
+ * Make explicitely nothing
+ */
+protected function deleteCdr($cdr)
+{
+  $this->signalSecurityError();
+}
+
+/**
+ * Make explicitely nothing
+ */
+protected function updateCdrFromRequest()
+{
+  $this->signalSecurityError();
+}
+
 }
 
 ?>
