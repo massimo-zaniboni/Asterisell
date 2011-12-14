@@ -583,6 +583,10 @@ propel:
     #
     # true if the invoice is already sent to customer or received from vendor
 
+    displayed_online: boolean
+    #
+    # true if the invoice can be displayed online to costumers, in other words it is a definitive invoice
+
     info_or_ads_image1: varchar(1024)
     #
     # a path to a file containing an info/ads image to (maybe) add inside the invoice during creation

@@ -66,6 +66,46 @@ class JobQueueProcessor
      */
     public static $MAX_EXECUTION_TIME = 0;
 
+    protected $mutex = NULL;
+
+    /**
+     * Try acquiring a lock. This can be used internally or externally.
+     * Call `unlock` at the end.
+     *
+     * @return TRUE if the lock was acquired.
+     */
+    public function lock($isCronProcess = TRUE) {
+        // Only one processor can execute jobs because they can change the
+        // external environment.
+        // In any case if there is another job processor running, then
+        // current jobs will be executed in any case so it is not a problem.
+        //
+        $mutex = new Mutex(JobQueueProcessor::MUTEX_FILE_NAME);
+        $mutex->setIsCronProcess($isCronProcess);
+        $acquired = $mutex->maybeLock();
+
+        if ($acquired) {
+            $this->mutex = $mutex;
+        }
+
+        return $acquired;
+    }
+
+    public function unlock() {
+        if (!is_null($this->mutex)) {
+            $this->mutex->unlock();
+        }
+    }
+
+    public function forceUnlockOfHaltedWebProcess() {
+        $mutex = new Mutex(JobQueueProcessor::MUTEX_FILE_NAME);
+        $acquired = $mutex->maybeLock(TRUE);
+
+        if ($acquired) {
+            $mutex->unlock();
+        }
+    }
+
     /**
      * @return TRUE if there is time for other jobs,
      *         FALSE if there is no more time, and signal the problem to the user.
@@ -151,14 +191,7 @@ class JobQueueProcessor
             self::$MAX_EXECUTION_TIME = strtotime("+$t seconds");
         }
 
-        // Only one processor can execute jobs because they can change the
-        // external environment.
-        // In any case if there is another job processor running, then
-        // current jobs will be executed in any case so it is not a problem.
-        //
-        $mutex = new Mutex(JobQueueProcessor::MUTEX_FILE_NAME);
-        $mutex->setIsCronProcess($isCronProcess);
-        $isLocked = $mutex->maybeLock();
+        $isLocked = $this->lock($isCronProcess);
 
         // exit if there is no acquired lock
         // (another job-queue-processor is running).
@@ -311,7 +344,7 @@ class JobQueueProcessor
         // NOTE: it is very important to release the lock in case of error,
         // otherwise the system will be blocked!!!
         //
-        $mutex->unlock();
+        $this->unlock();
 
         return $allOk;
     }
@@ -352,6 +385,8 @@ class JobQueueProcessor
 
         return $signalProblem;
     }
+
+
 
 }
 

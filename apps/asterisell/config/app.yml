@@ -2,8 +2,11 @@
 # !!!                                                                           !!! #
 # !!! I M P O R T A N T:                                                        !!! #
 # !!!                                                                           !!! #
-# !!! 1) if you change these values then execute "configure.sh" in order to     !!! #
-# !!! update the application behaviour;                                         !!! #
+# !!! 1) if you change these values then execute                                !!! #
+# !!!                                                                           !!! #
+# !!!    > php asterisell.php activate                                          !!! #
+# !!!                                                                           !!! #
+# !!! in order to update the application behaviour;                             !!! #
 # !!!                                                                           !!! #
 # !!! 2) many parameters need a rerate of old calls in order to be propagated   !!! #
 # !!! also to old calls. When this is the case, it is signaled in the parameter !!! # 

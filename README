@@ -1,9 +1,14 @@
 Asterisell is a open source web application for rating, 
-billing, and showing to costumers Asterisk VoIP calls.
+billing, and showing to costumers VoIP calls.
 
 Asterisell is released under GPLv3 license.
 
-For more details, see <http://asterisell.profitoss.com> website.
+For more details, see <http://wwww.asterisell.com> website,
+or consult the included manual: `web/help/index.html`.
 
+Execute
 
+> php asterisell.php help
+
+for a list of installation and related commands.
 

@@ -307,6 +307,7 @@ CREATE TABLE `ar_invoice`
 	`email_subject` VARCHAR(1024),
 	`email_message` TEXT,
 	`already_sent` INTEGER,
+	`displayed_online` INTEGER,
 	`info_or_ads_image1` VARCHAR(1024),
 	`info_or_ads_image2` VARCHAR(1024),
 	`ar_params_id` INTEGER,

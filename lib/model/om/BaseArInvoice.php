@@ -89,6 +89,10 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 
 	
+	protected $displayed_online;
+
+
+	
 	protected $info_or_ads_image1;
 
 
@@ -294,6 +298,13 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 	{
 
 		return $this->already_sent;
+	}
+
+	
+	public function getDisplayedOnline()
+	{
+
+		return $this->displayed_online;
 	}
 
 	
@@ -617,6 +628,16 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setDisplayedOnline($v)
+	{
+
+		if ($this->displayed_online !== $v) {
+			$this->displayed_online = $v;
+			$this->modifiedColumns[] = ArInvoicePeer::DISPLAYED_ONLINE;
+		}
+
+	} 
+	
 	public function setInfoOrAdsImage1($v)
 	{
 
@@ -707,17 +728,19 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 
 			$this->already_sent = $rs->getBoolean($startcol + 19);
 
-			$this->info_or_ads_image1 = $rs->getString($startcol + 20);
+			$this->displayed_online = $rs->getBoolean($startcol + 20);
 
-			$this->info_or_ads_image2 = $rs->getString($startcol + 21);
+			$this->info_or_ads_image1 = $rs->getString($startcol + 21);
 
-			$this->ar_params_id = $rs->getInt($startcol + 22);
+			$this->info_or_ads_image2 = $rs->getString($startcol + 22);
+
+			$this->ar_params_id = $rs->getInt($startcol + 23);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 23; 
+						return $startcol + 24; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArInvoice object", $e);
 		}
@@ -935,12 +958,15 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				return $this->getAlreadySent();
 				break;
 			case 20:
-				return $this->getInfoOrAdsImage1();
+				return $this->getDisplayedOnline();
 				break;
 			case 21:
-				return $this->getInfoOrAdsImage2();
+				return $this->getInfoOrAdsImage1();
 				break;
 			case 22:
+				return $this->getInfoOrAdsImage2();
+				break;
+			case 23:
 				return $this->getArParamsId();
 				break;
 			default:
@@ -973,9 +999,10 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 			$keys[17] => $this->getEmailSubject(),
 			$keys[18] => $this->getEmailMessage(),
 			$keys[19] => $this->getAlreadySent(),
-			$keys[20] => $this->getInfoOrAdsImage1(),
-			$keys[21] => $this->getInfoOrAdsImage2(),
-			$keys[22] => $this->getArParamsId(),
+			$keys[20] => $this->getDisplayedOnline(),
+			$keys[21] => $this->getInfoOrAdsImage1(),
+			$keys[22] => $this->getInfoOrAdsImage2(),
+			$keys[23] => $this->getArParamsId(),
 		);
 		return $result;
 	}
@@ -1052,12 +1079,15 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 				$this->setAlreadySent($value);
 				break;
 			case 20:
-				$this->setInfoOrAdsImage1($value);
+				$this->setDisplayedOnline($value);
 				break;
 			case 21:
-				$this->setInfoOrAdsImage2($value);
+				$this->setInfoOrAdsImage1($value);
 				break;
 			case 22:
+				$this->setInfoOrAdsImage2($value);
+				break;
+			case 23:
 				$this->setArParamsId($value);
 				break;
 		} 	}
@@ -1087,9 +1117,10 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[17], $arr)) $this->setEmailSubject($arr[$keys[17]]);
 		if (array_key_exists($keys[18], $arr)) $this->setEmailMessage($arr[$keys[18]]);
 		if (array_key_exists($keys[19], $arr)) $this->setAlreadySent($arr[$keys[19]]);
-		if (array_key_exists($keys[20], $arr)) $this->setInfoOrAdsImage1($arr[$keys[20]]);
-		if (array_key_exists($keys[21], $arr)) $this->setInfoOrAdsImage2($arr[$keys[21]]);
-		if (array_key_exists($keys[22], $arr)) $this->setArParamsId($arr[$keys[22]]);
+		if (array_key_exists($keys[20], $arr)) $this->setDisplayedOnline($arr[$keys[20]]);
+		if (array_key_exists($keys[21], $arr)) $this->setInfoOrAdsImage1($arr[$keys[21]]);
+		if (array_key_exists($keys[22], $arr)) $this->setInfoOrAdsImage2($arr[$keys[22]]);
+		if (array_key_exists($keys[23], $arr)) $this->setArParamsId($arr[$keys[23]]);
 	}
 
 	
@@ -1117,6 +1148,7 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArInvoicePeer::EMAIL_SUBJECT)) $criteria->add(ArInvoicePeer::EMAIL_SUBJECT, $this->email_subject);
 		if ($this->isColumnModified(ArInvoicePeer::EMAIL_MESSAGE)) $criteria->add(ArInvoicePeer::EMAIL_MESSAGE, $this->email_message);
 		if ($this->isColumnModified(ArInvoicePeer::ALREADY_SENT)) $criteria->add(ArInvoicePeer::ALREADY_SENT, $this->already_sent);
+		if ($this->isColumnModified(ArInvoicePeer::DISPLAYED_ONLINE)) $criteria->add(ArInvoicePeer::DISPLAYED_ONLINE, $this->displayed_online);
 		if ($this->isColumnModified(ArInvoicePeer::INFO_OR_ADS_IMAGE1)) $criteria->add(ArInvoicePeer::INFO_OR_ADS_IMAGE1, $this->info_or_ads_image1);
 		if ($this->isColumnModified(ArInvoicePeer::INFO_OR_ADS_IMAGE2)) $criteria->add(ArInvoicePeer::INFO_OR_ADS_IMAGE2, $this->info_or_ads_image2);
 		if ($this->isColumnModified(ArInvoicePeer::AR_PARAMS_ID)) $criteria->add(ArInvoicePeer::AR_PARAMS_ID, $this->ar_params_id);
@@ -1187,6 +1219,8 @@ abstract class BaseArInvoice extends BaseObject  implements Persistent {
 		$copyObj->setEmailMessage($this->email_message);
 
 		$copyObj->setAlreadySent($this->already_sent);
+
+		$copyObj->setDisplayedOnline($this->displayed_online);
 
 		$copyObj->setInfoOrAdsImage1($this->info_or_ads_image1);
 
