@@ -3,15 +3,23 @@ use_helper('Number');
 use_helper('I18N');
 use_helper('Date');
 
-// Display error messages
-//
+
+$message = '';
+if (MyUser::isAppLockedForMaintanance()) {
+    $message .= MyUser::getMaintananceModeMessage() . '</br>';
+}
+
 if ($sf_request->hasErrors()) {
   $errorNames = $sf_request->getErrorNames();
-  $message = '';
   foreach($errorNames as $errorName) {
     $errorDescr = $sf_request->getError($errorName);
     $message .= htmlentities($errorDescr) . '</br>';
   }
+}
+
+// Display notification messages
+//
+if (strlen($message) > 0) {
   echo '<div class="form-errors">';
   echo "<h2>$message</h2>";
   echo '</div>';

@@ -93,7 +93,16 @@ class loginActions extends sfActions {
       $this->forceReloginWithError();
     }
 
+    // login
     $this->getUser()->login($webAccount);
+
+    // Skip in case of maintanance mode
+    if (MyUser::isAppLockedForMaintanance() && (!$this->getUser()->hasCredential('admin'))) {
+        return $this->executeLogout();
+    }
+
+    // Go to proper module according user type
+
     if ($this->getUser()->hasCredential('admin')) {
       return $this->redirect('problem/list');
     }

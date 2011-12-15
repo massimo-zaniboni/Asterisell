@@ -2461,6 +2461,14 @@ function unlockHaltedJobs()
     $processor->forceUnlockOfHaltedWebProcess();
 }
 
+function showMaintananceMode() {
+
+    if (MyUser::isAppLockedForMaintanance()) {
+        echo "\nWARNING: Up to date Asterisell application can be accessed only from administrators, because it is in maintanance mode.";
+        echo "\n         You can enable Asterisell, with command `php asterisell.php app enable`";
+    }
+}
+
 //////////////////////
 // MAIN ENTRY POINT //
 //////////////////////
@@ -2515,6 +2523,8 @@ function displayUsage()
     echo "\nphp asterisell.php data merge-telephone-prefixes ";
     echo "\n  add new telephone prefixes to the telephone prefix table.";
     echo "\n";
+
+    showMaintananceMode();
     echo "\n";
 }
 
@@ -2554,6 +2564,10 @@ function main($argc, $argv)
         exit(0);
     } else if ($mainCommand == "app" && $subCommand === "unlock-halted-jobs") {
         unlockHaltedJobs();
+
+        showMaintananceMode();
+        echo "\n";
+
         exit(0);
     }
 
@@ -2561,6 +2575,9 @@ function main($argc, $argv)
     // COMMANDS //
     //////////////
 
+    // XXX dovrebbe ricordarsi il previous app mode e dopo upgrade fare unlock solamente se non lo era gia`...
+    // XXX probabilmente e` solo durante upgrade che devo mettere il lock all'interfaccia grafica e lo dico all'amministratore e dopo tolgo dato che suppongo sia una procedura corretta
+    
     $lock = waitCronJob();
 
     if ($mainCommand === "install") {
@@ -2570,6 +2587,15 @@ function main($argc, $argv)
         makeUpgrade();
     } else  if ($mainCommand === "activate") {
         makeActivate();
+    } else if ($mainCommand === "app") {
+        if ($subCommand === "enable") {
+            MyUser::unlockAppForMaintanance();
+        } else if ($subCommand === "disable") {
+            MyUser::lockAppForMaintanance();
+        } else {
+            displayUsage();
+            exit(1);
+        }
     } else if ($mainCommand === "data") {
         if ($subCommand === "root") {
             $paramsId = createDefaultParams();
@@ -2617,9 +2643,11 @@ function main($argc, $argv)
 
     echo "\nExecute pending jobs.";
     runJobProcessorQueue();
-    echo "\nDone\n";
-
-    // XXX indicare se e` DISABLED or ENABLED all'utente come warning
+    echo "\nDone";
+    
+    echo "\n";
+    showMaintananceMode();
+    echo "\n";
 }
 
 ?>
