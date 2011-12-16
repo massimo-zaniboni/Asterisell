@@ -521,7 +521,6 @@ function makeDataUpgrade()
         echo "\nThis upgrading does not involve the CDR table, so there is no dangerous locking, or interruption of service.";
         echo "\n ";
         echo "\nContinue upgrading? [y/N]";
-        $fh = fopen('php://stdin', 'r');
         $next_line = trim(fgets($fh, 1024));
         if ($next_line === "y" || $next_line === "Y") {
             $continue = TRUE;
