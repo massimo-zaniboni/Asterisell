@@ -564,7 +564,7 @@ function makeActivate()
 
     // Assign the user group
     $user = sfConfig::get('app_web_server_user');
-    $cmd = 'chown -R :' . $user . ' web/ apps/ ext_libs/';
+    $cmd = 'chown -R :' . $user . ' . ';
     echo "\nFix files ownership with command `$cmd`, assuming you are running as super user? [y/N] ";
     $fh = fopen('php://stdin', 'r');
     $next_line = trim(fgets($fh, 1024));
