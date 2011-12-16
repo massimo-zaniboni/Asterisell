@@ -17,6 +17,30 @@
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
 
 all:
+
+  # Source code upgrade command.
+  #
+  # In case of commercial version replace the git source location,
+  # with the corresponding address, containing the license key.
+  #
+  # In case of separated production and test instances:
+  #   - point test instance to free or commercial license link;
+  #   - point the production instance to the test instance;
+  # In this way, you can first resolve conflicts on the test instance,
+  # and then import them in the production instance.
+  #
+  git_upgrade_command: git pull https://github.com/massimo-zaniboni/Asterisell
+
+  # The Unix user that must owns the files that must be readable from the web server.
+  # It depends from your distrubution:
+  #   - www-data for Debian;
+  #   - apache for Centos;
+  #   - http for Arch;
+  #
+  # It is the "User" directive of Apache Web Server configuration files.
+  #
+  web_server_user: http
+
   available:
 
     # The PhpRate class available during the setup of a rate plan.

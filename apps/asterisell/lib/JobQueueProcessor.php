@@ -75,6 +75,7 @@ class JobQueueProcessor
      * @return TRUE if the lock was acquired.
      */
     public function lock($isCronProcess = TRUE) {
+
         // Only one processor can execute jobs because they can change the
         // external environment.
         // In any case if there is another job processor running, then
@@ -197,6 +198,10 @@ class JobQueueProcessor
         // (another job-queue-processor is running).
         //
         if (!$isLocked) return NULL;
+
+        // NOTE: online jobs started from the administrator can always start
+        //
+        if ($isCronProcess && MyUser::isCronLockedForMaintanance()) return NULL;
 
         // Signal the problem if some old job were not completely executed.
         //

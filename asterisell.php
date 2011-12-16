@@ -463,7 +463,40 @@ function makeDatabaseBackup($isInteractive = TRUE)
     echo "\nDone";
 }
 
-function makeUpgrade()
+/**
+ * Manage in a complete way the application upgrade procedure.
+ *
+ * @return the suggestion about next commands
+ */
+function makeAppUpgrade()
+{
+    $fh = fopen('php://stdin', 'r');
+
+    echo "\nLock the application access to users, so code can be upgraded safely.";
+    MyUser::lockCronForMaintanance();
+    MyUser::lockAppForMaintanance();
+
+    $cmd = sfConfig::get('app_git_upgrade_command');
+    echo "\nConfirm the execution of `$cmd` for upgrading the source code? [y/N]";
+    $next_line = trim(fgets($fh, 1024));
+    if ($next_line === "y" || $next_line === "Y") {
+        $continue = TRUE;
+    }
+
+    if ($continue) {
+        myExecute("Update source code", $cmd);
+        return "\nResolve conflicts in source code. Then `git commit -a`. Then `php asterisell.php data upgrade`\n";
+    } else {
+        return "";
+    }
+}
+
+/**
+ * Manage in a complete way the data upgrade procedure.
+ * 
+ * @return void
+ */
+function makeDataUpgrade()
 {
     $fh = fopen('php://stdin', 'r');
 
@@ -529,6 +562,17 @@ function makeActivate()
     $version = "asterisell-$f1-$f2";
     fwrite($fh, $version);
     fclose($fh);
+
+    // Assign the user group
+    $user = sfConfig::get('app_web_server_user');
+    $cmd = "chown -R :$user web/ apps/ ext_libs/";
+    echo "\nFix files ownership with command `$cmd`, assuming you are running as super user? [y/N] ";
+    $fh = fopen('php://stdin', 'r');
+    $next_line = trim(fgets($fh, 1024));
+    if ($next_line === "y" || $next_line === "Y") {
+        myExecute("Fix ownerships", $cmd);
+        explicitContinue();
+    }
 
     myExecute("Clear symfony cache, in order to enable new settings.", "./symfony cc");
     myExecute("Fix Permissions", "./symfony fix-perms");
@@ -2463,9 +2507,16 @@ function unlockHaltedJobs()
 
 function showMaintananceMode() {
 
+    if (MyUser::isCronLockedForMaintanance()) {
+        echo "\nWARNING:";
+        echo "\n  Up to date all cron jobs are locked, because the application is in maintanance mode.";
+        echo "\n  You can enable it again with command `php asterisell.php cron enable`";
+    }
+
     if (MyUser::isAppLockedForMaintanance()) {
-        echo "\nWARNING: Up to date Asterisell application can be accessed only from administrators, because it is in maintanance mode.";
-        echo "\n         You can enable Asterisell, with command `php asterisell.php app enable`";
+        echo "\nWARNING:";
+        echo "\n  Up to date Asterisell Web application can be accessed only from administrators, because it is in maintanance mode.";
+        echo "\n  You can enable Asterisell again with command `php asterisell.php app enable`";
     }
 }
 
@@ -2480,7 +2531,19 @@ function displayUsage()
     echo "\n  this help";
     echo "\n";
     echo "\nphp asterisell.php activate";
-    echo "\n  always safe management operations: clear cache, set directories, and so on";
+    echo "\n  clear cache, set directories, and other common and safe management operations";
+    echo "\n";
+    echo "\nphp asterisell.php app upgrade";
+    echo "\n  upgrade safely a running instance to a new version";
+    echo "\n";
+    echo "\nphp asterisell.php data upgrade";
+    echo "\n  upgrade safely data to the current new version (call after `app upgrade`)";
+    echo "\n";
+    echo "\nphp asterisell.php cron disable";
+    echo "\n  disable cron job processor";
+    echo "\n";
+    echo "\nphp asterisell.php cron enable";
+    echo "\n  enable cron job processor";
     echo "\n";
     echo "\nphp asterisell.php app disable";
     echo "\n  disable access to the application to normal users and to cron processor";
@@ -2490,9 +2553,6 @@ function displayUsage()
     echo "\n";
     echo "\nphp asterisell.php app unlock-halted-jobs";
     echo "\n  remove locks about jobs started from the administrator on the web";
-    echo "\n";
-    echo "\nphp asterisell.php upgrade";
-    echo "\n  upgrade safely a running instance to new version, calling disable by default";
     echo "\n";
     echo "\nphp asterisell.php install";
     echo "\n  initial install";
@@ -2575,16 +2635,13 @@ function main($argc, $argv)
     // COMMANDS //
     //////////////
 
-    // XXX dovrebbe ricordarsi il previous app mode e dopo upgrade fare unlock solamente se non lo era gia`...
-    // XXX probabilmente e` solo durante upgrade che devo mettere il lock all'interfaccia grafica e lo dico all'amministratore e dopo tolgo dato che suppongo sia una procedura corretta
-    
     $lock = waitCronJob();
+
+    $suggestion = "";
 
     if ($mainCommand === "install") {
         explicitConfirmForDeletion();
         makeInstall();
-    } else  if ($mainCommand === "upgrade") {
-        makeUpgrade();
     } else  if ($mainCommand === "activate") {
         makeActivate();
     } else if ($mainCommand === "app") {
@@ -2592,6 +2649,17 @@ function main($argc, $argv)
             MyUser::unlockAppForMaintanance();
         } else if ($subCommand === "disable") {
             MyUser::lockAppForMaintanance();
+        } else if ($subCommand === "upgrade") {
+            $suggestion = makeAppUpgrade();
+        } else {
+            displayUsage();
+            exit(1);
+        }
+    } else if ($mainCommand === "cron") {
+        if ($subCommand === "enable") {
+            MyUser::unlockCronForMaintanance();
+        } else if ($subCommand === "disable") {
+            MyUser::lockCronForMaintanance();
         } else {
             displayUsage();
             exit(1);
@@ -2629,6 +2697,8 @@ function main($argc, $argv)
             addNewTelephonePrefixes();
         } else if ($subCommand === "backup") {
             makeDatabaseBackup(TRUE);
+        } else if ($subCommand === "upgrade") {
+            makeDataUpgrade();
         } else {
             displayUsage();
             exit(1);
@@ -2648,6 +2718,8 @@ function main($argc, $argv)
     echo "\n";
     showMaintananceMode();
     echo "\n";
+
+    echo $suggestion;
 }
 
 ?>

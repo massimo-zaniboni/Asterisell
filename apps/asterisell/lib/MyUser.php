@@ -32,7 +32,7 @@ class myUser extends sfBasicSecurityUser
 {
 
     /**
-     * In maintanance mode only administrators can use the application.
+     * In maintenance mode only administrators can use the application.
      *
      * @static
      * @return void
@@ -65,6 +65,42 @@ class myUser extends sfBasicSecurityUser
     static public function appLockFileName()
     {
         return (realpath(dirname(__FILE__) . '/../../../web') . '/REMOVE_ME_FOR_ENABLING_ASTERISELL_APP');
+    }
+
+    /**
+     * Disable cron job processing for maintenance mode.
+     *
+     * @static
+     * @return void
+     */
+    static public function lockCronForMaintanance()
+    {
+        $h = fopen(self::cronLockFileName(), "w");
+        if ($h === FALSE) {
+        } else {
+            fclose($h);
+        }
+    }
+
+    static public function unlockCronForMaintanance()
+    {
+        unlink(self::cronLockFileName());
+    }
+
+    /**
+     *
+     * @static
+     * @return TRUE if the cron job processor is locked in maintanance mode
+     */
+    static public function isCronLockedForMaintanance()
+    {
+        // note: use a fast file operation
+        return file_exists(self::cronLockFileName());
+    }
+
+    static public function cronLockFileName()
+    {
+        return (realpath(dirname(__FILE__) . '/../../../web') . '/REMOVE_ME_FOR_ENABLING_ASTERISELL_CRON_JOB_PROCESSOR');
     }
 
     static public function getMaintananceModeMessage() {
