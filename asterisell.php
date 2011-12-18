@@ -575,9 +575,8 @@ function makeActivate()
 
     myExecute("Clear symfony cache, in order to enable new settings.", "./symfony cc");
     myExecute("Fix Permissions", "./symfony fix-perms");
-    myExecute("Fix Permissions", "chmod -R ug+rwx web/");
-    myExecute("Fix Permissions", "chmod -R ug+rx ext_libs/");
-    myExecute("Fix Permissions", "chmod -R ug+rx apps/");
+    myExecute("Fix Web Server Permissions", "chmod -R ug+rwx web/");
+    myExecute("Fix Permissions", "chmod -R ug+rx ext_libs/ apps/ scripts/");
     myExecute("Remove old lock files", "rm -f web/*.lock");
 
     myExecute("Regenerate modules depending from the new cache values.", "cd module_templates; php generate.php");

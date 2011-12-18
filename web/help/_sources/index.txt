@@ -61,10 +61,10 @@ Download
 
 The suggested way to download this release is using `Git version control system <http://git-scm.com/>`_ . This allows to:
     * download application updates in an efficient way;
-    * be advised of conflicts between your customizations and application updates;
+    * be advised of conflicts between your customization and application updates;
     * send back to me bug-fixes and improvements;
     * receive improvements from other in an efficient way;
-    * upgrade to commercial release easily without loosing your customizations;
+    * upgrade to commercial release easily without loosing your customization's;
 
 There is an Asterisell repository at `http://github.com/massimo-zaniboni/Asterisell. <http://github.com/massimo-zaniboni/Asterisell>`_
 
@@ -85,10 +85,12 @@ It is always possible upgrading a free version to a commercial version. For upda
 File Permissions
 ----------------
 
-In Linux Debian make sure that the "www-data" user can read the content of the installation directory::
+Make sure that the :term:`Web Server User` can read the content of the installation directory. Execute something like::
 
   chown -R :www-data asterisell3
   chmod -R g+rwx asterisell3
+
+where `www-data` must be replaced with the correct :term:`Web Server User`.
 
 Packages
 --------
@@ -115,7 +117,7 @@ and then execute::
 MySQL Database Configuration
 ============================
 
-Up to date Asterisell is tested only with `MySQL DBMS <http://www.mysql.com>`_ , but the Symfony framework support many other popular open source DBMS.
+Up to date Asterisell supports only `MySQL DBMS <http://www.mysql.com>`_.
 
 Database Access Parameters
 --------------------------
@@ -124,13 +126,12 @@ Update::
 
   config/databases.yml
   config/propel.ini
-  scripts/initdb.sh
 
 according your needs using the correct host, username and password for MySQL access. 
 
 Initially you must use the root/admin account of MySQL, because  configuration scripts will create a new database. Later you can create a specific user for the Asterisell database, in order to limit the capability of the Asterisell user. 
 
-The suggested database name is `asterisell3` in order to avoid conflicts with previous or new version of Asterisell needing different database schemas.
+The suggested database name is `asterisell3` in order to avoid conflicts with previous or new version of Asterisell needing different database schema.
 
 How to create a Database User with Limited Access to Asterisell Database
 ------------------------------------------------------------------------
@@ -139,7 +140,7 @@ Enter into MySQL shell::
 
   mysql -u root -p mysql
   
-Create a user that can invoke MySQL only from localhost (supposing that Asterisell webserver hosts also the MySQL DBMS)::
+Create a user that can invoke MySQL only from localhost (supposing that Asterisell web-server hosts also the MySQL DBMS)::
 
   CREATE USER 'asterisell3user'@'localhost' IDENTIFIED BY 'some-password-here';
   GRANT ALL ON asterisell3.* TO 'asterisell3user'@'localhost';
@@ -158,38 +159,66 @@ The installation script will:
   * fix directory permissions;
   * reset the Symfony cache;
 
-It must not be used if it is an update of Asterisell, because otherwise all data will be lost.
+It must not be used if it is an upgrade of Asterisell, because otherwise all data will be lost. In any case the script will warn you about this.
 
-In any case the script will warn you about this.
+First edit `apps/asterisell/confip/app.yml`, and associate to `web_server_user` the correct :term:`Web Server User`. 
 
-Execute::
+Then execute::
 
-
-  cd scripts
-  sh initdb.sh
-
-and answer to questions. 
-
-The very last versions of MySQL requires `Engine=InnoDB;` instead of `Type=InnoDB;` inside file `data/sql/lib.model.schema.sql`. In case of problems during database creation (initial installation of Asterisell), you must update manually this file. 
+  php asterisell.php activate
+  php asterisell.php install
 
 Change Demo Data Later
 ----------------------
 
 The installation script will load also some demo data in order to test Asterisell.
 
-If you want later, start with an empty database, you can execute::
+If you want later, start with an empty database, you must execute::
 
-  cd scripts
-  php reset_db_and_init_data.php init <some-password-for-root-user-access>
+  php asterisell.php data init <some-password-for-root-user-access>
 
-for creating an empty database, with only minimal data, and a "root" user with the chosen password for initial login.
+for creating a database, with only minimal data, and a "root" user with the chosen password for initial login. Then you can start inserting real data inside this database.
 
-The scripts supports other type of data initialization. This command will display all its options::
+The initialization script supports other type of data initialization. For a complete list of supported commands::
 
-  cd scripts
-  php reset_db_and_init_data.php
+  php asterisell.php help
 
-You can also inspect the content of `scripts/initdb.sh` in order to see the details of performed actions.
+MySQL advanced optimizations
+----------------------------
+
+For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of last 1-2 months must be saved in the MySQL database cache in RAM. This makes a big difference in performances. Make sure having a `my.cnf` file like this::
+
+  [mysqld]
+  ###############################  
+  # ASTERISELL RELATED SETTINGS #
+  ############################### 
+  # Optimize InnoDB performances for Asterisell usage.
+  # NOTE: it will use the majority of the RAM of the server
+  # for Asterisell and other MySQL databases.
+  #
+  # Set this to 60-80% the RAM of the server
+  innodb_buffer_pool_size = 1G
+
+  sort_buffer_size = 50M
+  thread_cache_size = 4
+  tmp_table_size = 50M
+  sync_binlog = 0
+
+  # not very important
+  innodb_additional_mem_pool_size = 10M
+
+  # Commits are flushed on the disk each second,
+  # and not immediately.
+  innodb_flush_log_at_trx_commit = 0
+
+  innodb_lock_wait_timeout = 50
+  table_cache = 92
+  innodb_flush_method=O_DIRECT
+
+  # speed-up rating of CDRs and also other performances - very important
+  innodb_log_buffer_size = 8M
+
+Restart MySQL for enabling changes in configuration.
 
 Optional Configuration for Developers
 -------------------------------------
@@ -207,7 +236,7 @@ Adapt it, using the same parameters of the `databases.yml`. This file contains a
     propel.output.dir          = /var/www/asterisell3
 
 
-If you have changed the database structure in the file `config/schema.yml`, you must also update the SQL instructions creating the MySQL database. You can use the script `scripts/makedb.sh`. It will recreate the SQL commands and then it call `initdb.sh` in order to load the new database.
+If you have changed the database structure in the file `config/schema.yml`, you must also update the SQL instructions creating the MySQL database. You can use the script `scripts/makedb.sh`. It will recreate the SQL commands, then call :command:`php asterisell.php init <some-root-password>` in order to load the new database. You can also extend `asterisell.php` upgrade procedure `upgradeDatabase` with new database upgrade commands, for upgrading live instances of Asterisell.
 
 Web Server
 ==========
@@ -242,7 +271,7 @@ The content is something like::
   
     </Location>
 
-NOTE: remember to add `/web` to your Asterisell installation directory. This because it is only the `web` subdirectory of Asterisell project that must be part of the web-space.
+NOTE: remember to add `/web` to your Asterisell installation directory. This because it is only the `web` sub-directory of Asterisell project that must be part of the web-space.
 
 Restart the apache2 httpd server in order to render active the configurations using a command like::
 
@@ -257,9 +286,9 @@ If it is all correct then `http://your-voip-service` will display the login form
 PHP Resources
 -------------
 
-The administrator can invoke heavy jobs, for example graph and stats about calls. In this case it is usefull to increase the resources of PHP scripts inside on-line sessions.
+The administrator can invoke heavy jobs, for example graph and stats about calls. In this case it is useful to increase the resources of PHP scripts inside on-line sessions.
 
-In CENTOS the settings are in `/etc/php.ini`, in Debian are in `/etc/php5/apache2/php.ini`. Change somethiing like::
+In CENTOS the settings are in `/etc/php.ini`, in Debian are in `/etc/php5/apache2/php.ini`. Change something like::
 
   ;;;;;;;;;;;;;;;;;;;
   ; Resource Limits ;
@@ -270,10 +299,7 @@ In CENTOS the settings are in `/etc/php.ini`, in Debian are in `/etc/php5/apache
   ;max_input_nesting_level = 64 ; Maximum input variable nesting level
   memory_limit = 128M      ; Maximum amount of memory a script may consume (128MB)
 
-
 into something like::
-
-
 
   ;;;;;;;;;;;;;;;;;;;
   ; Resource Limits ;
@@ -292,7 +318,7 @@ NOTE: heavy jobs like email sending, are done from the cron-job, in off-line mod
 PHP Speedup
 -----------
 
-`APC <http://pecl.php.net/package/APC>`_ is a free, open source framework that caches data and compiled code from the PHP bytecode compiler in shared memory.
+`APC <http://pecl.php.net/package/APC>`_ is a free, open source framework that caches data and compiled code from the PHP byte-code compiler in shared memory.
   
 I suggest installing it, because it is well tested, and it speeds-up a lot the execution of Asterisell and other PHP applications.
 
@@ -304,7 +330,7 @@ or in CENTOS follow `the instruction of this webpage <http://2bits.com/articles/
 
 IMPORTANT: In order to activate it, the Apache web server must be restarted.
 
-IMPORTANT: Up to date there can be conflicts between APC (version 3.0.19) and SwiftMailer. If after the sending of the first mail, an error message appears in the problem table (something like `Fatal error: Cannot inherit previously-inherited or override constant LEVEL_TOP from interface Swift_Mime_Message`), then try to upgrade APC or disactivate APC.
+IMPORTANT: Up to date there can be conflicts between APC (version 3.0.19) and SwiftMailer. If after the sending of the first Asterisell mail, an error message appears in the problem table (something like `Fatal error: Cannot inherit previously-inherited or override constant LEVEL_TOP from interface Swift_Mime_Message`), then try to upgrade APC or deactivated APC.
 
 MySQL
 -----
@@ -328,20 +354,6 @@ Last versions of MySQL execute a fsync (flush) on disk for every transaction. Th
 
 Consult `MySQL related documentation <http://dev.mysql.com/doc/refman/4.1/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit>`_ for more details on side effects of this setting.
 
-Additional File Access Permissions
-----------------------------------
-
-If you have not used the default installation script (`scripts/initdb.sh`), then make sure to execute::
-
-    ./symfony fix-perms
-
-or::
-
-    chmod -R a+rw log
-    chmod -R a+rw cache
-
-in order to enable the write rights on (only) these two directories.
-
 Cron Job
 ========
  
@@ -357,14 +369,12 @@ In case of problems during job execution, a mail is sent to the administrator.
 User Permissions
 ----------------
 
-The process must be executed from the same user that is associated to the http connection. 
-
-On Fedora/Centos it is typically `apache`, on Debian `www-data`. In order to retrieve it, you can enter into Asterisell web interface, select Help menu and PHP-INFO option. Then you can search the element `User/Group`. The first value is the name of the PHP/webserver user.
+The process must be executed from the same :term:`Web Server User` that is associated to the http connection. 
 
 Cron Job Setting
 ----------------
 
-Supposing the http user is "apache" you can associate to it a cron job using the command::
+Supposing the :term:`Web Server User` is `apache` you can associate to it a cron job using the command::
 
   crontab -u apache -e
 
@@ -375,7 +385,7 @@ Add this line::
   5,10,15,20,25,30,35,40,45,50,55 * * * * sh -c "cd /your-asterisell-dir/scripts/ ; nice php process_jobs.php > /dev/null "
 
 
-The meaning of the line is to execute at minutes 5, 10, 15, 20, ... of every hour the `php rate_all_and_test.php` command inside the Asterisell directory.
+The meaning of the line is to execute at minutes 5, 10, 15, 20, ... of every hour the job processing command inside the Asterisell directory.
 
 Log Rotate
 ----------
@@ -418,7 +428,7 @@ Rates Customizations
 New type of rate methods can be added:
   * add a new rate inside `apps/asterisell/lib/rates`
   * enable the rate inside `apps/asterisell/config/app.yml`
-  * refresh the cache `./configure.sh`
+  * refresh the cache :command:`php asterisell.php activate`
 
 Troubleshooting
 ===============
@@ -431,17 +441,11 @@ Log Directory
 
 Often after upgrades there are problems related to the Asterisell log files inside log directory.
 
-If this file was created from root then the `apache` user is not able to add info to it and the entire Asterisell application is blocked. In this case change the permissions of file with something like::
+If this file was created from root then the :term:`Web Server User` is not able to add info to it and the entire Asterisell application is blocked. In this case change the permissions of file with something like::
 
     cd log
     chmod a+rw asterisell_prod.log
     chmod a+rw asterisell_dev.log
-
-or better change the owner in something like::
-
-    cd log
-    chown apache asterisell_prod.log
-    chown apache asterisell_dev.log
 
 or execute::
 
@@ -452,18 +456,16 @@ Try also to restart the web server.
 Created Files
 ~~~~~~~~~~~~~
   
-During initial Asterisell configuration new files can be created. Check if these files are readable from web-server process. For example on my debian machine I performs::
-  
-     chown -R :www-data * 
-     chmod -R g+rx *
-     sh configure.sh
+During initial Asterisell configuration, and upgrade new files can be created. In this case they can be not readable from :term:`Web Server User`. In this case perform a::
 
-where `www-data` is the group used from my webserver.
+  php asterisell activate
+
+with super user access (maybe `sudo php asterisell activate`), for applying the correct ownership to files.
 
 Additional Run-Time Debug Info
 ------------------------------
 
-In case of problems you can enable the development/debug version of Asterisell that shows useful informations about its execution and related problems. Execute::
+In case of problems you can enable the development/debug version of Asterisell that shows useful information about its execution and related problems. Execute::
 
     ./symfony enable asterisell dev
 
@@ -473,9 +475,9 @@ When finished remember to execute::
 
     ./symfony disable asterisell dev
 
-NOTE: on the contrary of Asterisell production version, in the development version if you change Asterisell source code, you must not execute `sh configure.sh`, because the development version recreate all files every time in order to speed up development at the expense of run-time executions. 
+NOTE: on the contrary of Asterisell production version, in the development version if you change Asterisell source code, you must not execute :command:`php asterisell.php activate`, because the development version recreate all files every time in order to speed up development at the expense of run-time executions. 
 
-NOTE: as in the Asterisell product version, in the development version if you change some configuration parameters you must execute `sh configure.sh` because certain Asterisell modules are regenerated according the configured values.
+NOTE: as in the Asterisell product version, in the development version if you change some configuration parameters you must execute :command:`php asterisell.php activate` because certain Asterisell modules are regenerated according the configured values.
 
 Run Time Configuration Problems
 -------------------------------
@@ -493,7 +495,7 @@ The rate process is rather robust and error-free regarding ill defined configura
 Feedback
 --------
 
-Web servers, PHP environment, libraries, and os on... can interact in strange ways. If something is not working properly let me know!
+Web servers, PHP environment, libraries, and so on... can interact in strange ways. If something is not working properly let me know!
 
 Security
 ========
@@ -504,42 +506,6 @@ No particular care is put on other forms because they are accessible only from t
 
 User session handling is managed directly from Symfony and PHP engine.
 
-MySQL advanced optimizations
-============================
-
-For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of last 1-2 months must be saved in the MySQL database cache in RAM. This makes a big difference in performances. Make sure having a `my.cnf` file like this::
-
-  [mysqld]
-  ###############################  
-  # ASTERISELL RELATED SETTINGS #
-  ############################### 
-  # Optimize InnoDB performances for Asterisell usage.
-  # NOTE: it will use the majority of the RAM of the server
-  # for Asterisell and other MySQL databases.
-  #
-  # Set this to 60-80% the RAM of the server
-  innodb_buffer_pool_size = 1G
-
-  sort_buffer_size = 50M
-  thread_cache_size = 4
-  tmp_table_size = 50M
-  sync_binlog = 0
-
-  # not very important
-  innodb_additional_mem_pool_size = 10M
-
-  # Commits are flushed on the disk each second,
-  # and not immediately.
-  innodb_flush_log_at_trx_commit = 0
-
-  innodb_lock_wait_timeout = 50
-  table_cache = 92
-  innodb_flush_method=O_DIRECT
-
-  # speed-up rating of CDRs and also other performances - very important
-  innodb_log_buffer_size = 8M
-
-Restart MySQL for enabling changes in configuration.
 
 .. _upgrading:
 
@@ -547,82 +513,120 @@ Restart MySQL for enabling changes in configuration.
 Upgrading
 #########
 
-Create deploy directory
-=======================
+Migrating from Free to Commercial Version
+=========================================
 
-In order to reduce the downtime of main Asterisell application, you can test the new version in a separate directory, and then deploy the new version, when it is all ok.
+Inside `apps/asterisell/config/app.yml`, change::
 
-Copy the current Asterisell directory content inside another directory::
+  git_upgrade_command: git pull https://github.com/massimo-zaniboni/Asterisell
 
-  cp -r <source-directory> <test-directory>
+into::
+
+  git_upgrade_command: git pull http://your-license:your-license@support.asterisell.com/asterisell/git/asterisell-commercial-stable-3.git`
+
+
+where `your-license`, must be replaced with your license code, obtained after purchasing the commercial version.
+
+Then make effective this change with::
+
+  php asterisell.php activate
+
+From now you will use the commercial version as source of upgrades. The next passages are the same of normal upgrades.
+
+Procedure Outline
+=================
+
+These are the steps performed in a partially automatic way from the procedure:
+  * Disable cron job processing.
+  * Disable access of normal users to the application.
+  * Inform users that the system is in maintenance mode.
+  * Merge updates of Asterisell application, with your customizations using Git.
+  * Upgrade the database.
+  * Test the application as administrator.
+  * Enable cron job processing, and access of normal users. 
 
 Merge your customizations with new Asterisell version
 =====================================================
 
-If you have installed the application using Git (the suggested way), these are the commands for free Asterisell version::
+Before upgrading the source code you must save your local changes (customizations) inside local Git repository::
 
   git commit -a -m "<DESCRIBE YOUR CUSTOM CHANGES>"
-  git pull http://github.com/massimo-zaniboni/Asterisell.git
 
-These are the commands for the commercial Asterisell version::
+You can also see the current un-versioned files with::
 
-  git commit -a -m "<DESCRIBE YOUR CUSTOM CHANGES>"
-  git pull http://your-license:your-license@support.asterisell.com/asterisell/git/asterisell-commercial-stable-3.git`
+  git status
 
-where "your-license", must be replaced with your license code, obtained after purchasing the commercial version.
+and add files to ignore editing the file `.gitignore`, or add files to the repository with::
 
-Then follow the Git procedure to resolve merge conflicts. Usually there will no merge conflicts, because Git tries to preserve both you customizations and new version modifications. In case of conflicts:
-  * edit the files with problem, 
+  git add <file-name>
+
+Now you are ready for starting the source code upgrading/merging phase, with::
+
+  php asterisell.php app upgrade
+
+This command will:
+  * lock the cron job processor;
+  * avoid the usage of application from normal users, informing them that the application is in maintenance mode;
+  * execute the merge/upgrade command;
+
+There can be merge conflicts, between upstream changes and your local changes. You must resolve them, using the standard Git approach:
+  * :command:`git status` shows the files with conflicts;
+  * edit the files with problems, 
   * fix the `>>>>>> .... <<<<<<<` sections, 
-  * signal to git that the conflict on the file is resolved using `git add <fixed-file>`, 
-  * check pending conflict with `git status`,
-  * commit the final merged version when done with `git commit -a`
+  * signal to git that the conflict on the file is resolved using :command:`git add <fixed-file>`, 
+  * check pending conflicts with :command:`git status`,
+  * commit the final merged version when done with :command:`git commit -a`
 
 In case of troubles, `ask to the forum. <:http://groups.google.it/group/asterisell>`_ I will update these installation notes, according the signaled problems/suggestions.
 
-Database Upgrade
-================
+When conflicts are resolved you can upgrade the database, with::
 
-Versions with the same major version number, use compatible database schema with minor changes, so they can be easily upgraded.
+  php asterisell.php data upgrade
 
-For security reasons, make first a backup of current database using something like::
+This command will:
+  * ask for making an optional backup of your data;
+  * upgrade the database;
 
-  mysqldump -u <your-user> <your-database> --single-transaction > asterisell3.sql
+You should test the behaviour of the application as administrator.
 
+Then you must enable cron job processing::
 
-Note that the `--single-transaction` option allows to make the database backup, without locking MySQL database, and so new CDRs can be processed.
-  
-Then upgrade the current database using::
+  php asterisell.php cron enable
 
-  cd scripts
-  php upgradedb.php
+and user access to the application::
+
+  php asterisell.php app enable
   
 Code refresh
 ============
 
 After changing some code, for example after resolving merging conflicts, or after applying customization, you *must execute*::
 
-  sh generate.sh
+  php asterisell.php activate
 
-in order to flush the Symfony cache and fix the permission on "log" and "cache" directories, and for generating some PHP files depending from application settings.
+in order to flush the Symfony cache and fix the permission on `log` and `cache` directories, and for generating some PHP files depending from application settings.
 
-Application testing
-===================
+This command is automatically called form upgrade procedure.
 
-If you use the same database both for production and new version testing, you must first disable the cron job processing of the production version, in order avoiding two job processors running on the same database.
-  
-If you use different databases, make sure to use again the production database, when you deploy the application.
+Reducing Application Downtime
+=============================
 
-Deploy
-======
+You can create a deploy directory, where merging the code and resolving related conflicts, in order to reduce the downtime of the application in the production environment.
 
-  * Disable cron job processing.
-  * Rename the current production directory to another name.
-  * Rename the current testing directory to the name of production directory.
-  * Make sure using the correct production database.
-  * Use the correct read/write/ownership permissions for new production directory.
-  * Test web-site.
-  * Enable cron job processing.
+  * Commit all the changes in current production environment to Git repo (:command:`git commit -a`).
+  * :command:`git clone <production-repo> <testing-repo>` for cloning the current production repo to a testing repo.
+  * :command:`cd <testing-repo>`
+  * Follow the source code upgrade process, without upgrading the database.
+  * :command:`cd <production-repo>`  
+  * Inside `apps/asterisell/config/app.yml`, set the option `git_upgrade_command` to the path of the testing repo. In this way you will upgrade the code in production repo, using a repo with all the merge problems fixed, reducing the down-time.
+  * Follow the upgrade process. Upgrade also the database.
+
+Testing Environment With a Testing Database
+===========================================
+
+You can create a testing environment specifying a distinct database inside `config/databases.yml` options. In this way you can have a full testing environment where you can test the application before deploying it.
+
+When you upgrade the production environment, make sure that the source code upgrade process does not change the name of the production database with the name of the testing database, inside `config/databases.yml` file.
 
 ##############
 Configurations
@@ -637,7 +641,7 @@ Main Configurations
 
 The meaning of various settings are explained directly inside the file comments. Details of some settings will be explained in other tasks. Initially set only parameters of witch you are sure, leaving default values otherwise.
 
-In order to make active the changes, you must execute :command:`./configure.sh`.
+In order to make active the changes, you must execute :command:`php asterisell.php activate`.
 
 :ref:`main_configuration_file`.
 
@@ -1188,7 +1192,7 @@ If you want to support a new language / culture you must:
   * add to `apps/asterisell/config/app.yml` the new currency and culture;
   * copy `apps/asterisell/i18n/messages.it.xml` to `apps/asterisell/i18n/messages.your_culture_code.xml`;
   * replace all Italian translations with your locale translations;
-  * execute "sh configure.sh" in order to clear the cache and view the new messages;
+  * execute :command:`php asterisell.php activate` in order to clear the cache and view the new messages;
 
 ########
 Glossary
@@ -1258,3 +1262,6 @@ Glossary
 
    bundle rate
      A rate associated to the set of CDRs of the invoicing period, as the minimum income, or line rentals.
+
+   Web Server User
+     The unix user associated to the Web Server process. Asterisell files can be read/written only if they are readable/writable from this user. Linux distributions can use different users: `www-data` for Debian, `apache` for Centos and RedHat, `http` for Arch, and so on. It is the `User` directive value, as specified inside Apache Web Server configuration files.

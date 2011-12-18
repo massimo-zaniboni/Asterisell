@@ -118,10 +118,10 @@
 <dt>The suggested way to download this release is using <a class="reference external" href="http://git-scm.com/">Git version control system</a> . This allows to:</dt>
 <dd><ul class="first last simple">
 <li>download application updates in an efficient way;</li>
-<li>be advised of conflicts between your customizations and application updates;</li>
+<li>be advised of conflicts between your customization and application updates;</li>
 <li>send back to me bug-fixes and improvements;</li>
 <li>receive improvements from other in an efficient way;</li>
-<li>upgrade to commercial release easily without loosing your customizations;</li>
+<li>upgrade to commercial release easily without loosing your customization&#8217;s;</li>
 </ul>
 </dd>
 </dl>
@@ -137,10 +137,11 @@
 <p>It is always possible upgrading a free version to a commercial version. For updating/upgrading to new releases see <a class="reference internal" href="#upgrading"><em>Upgrading</em></a>.</p>
 <div class="section" id="file-permissions">
 <h3>File Permissions<a class="headerlink" href="#file-permissions" title="Permalink to this headline">¶</a></h3>
-<p>In Linux Debian make sure that the &#8220;www-data&#8221; user can read the content of the installation directory:</p>
+<p>Make sure that the <a class="reference internal" href="#term-web-server-user"><em class="xref std std-term">Web Server User</em></a> can read the content of the installation directory. Execute something like:</p>
 <div class="highlight-python"><pre>chown -R :www-data asterisell3
 chmod -R g+rwx asterisell3</pre>
 </div>
+<p>where <cite>www-data</cite> must be replaced with the correct <a class="reference internal" href="#term-web-server-user"><em class="xref std std-term">Web Server User</em></a>.</p>
 </div>
 <div class="section" id="packages">
 <h3>Packages<a class="headerlink" href="#packages" title="Permalink to this headline">¶</a></h3>
@@ -169,25 +170,24 @@ yum install php-bcmath php-xml php-mbstring</pre>
 </div>
 <div class="section" id="mysql-database-configuration">
 <h2>MySQL Database Configuration<a class="headerlink" href="#mysql-database-configuration" title="Permalink to this headline">¶</a></h2>
-<p>Up to date Asterisell is tested only with <a class="reference external" href="http://www.mysql.com">MySQL DBMS</a> , but the Symfony framework support many other popular open source DBMS.</p>
+<p>Up to date Asterisell supports only <a class="reference external" href="http://www.mysql.com">MySQL DBMS</a>.</p>
 <div class="section" id="database-access-parameters">
 <h3>Database Access Parameters<a class="headerlink" href="#database-access-parameters" title="Permalink to this headline">¶</a></h3>
 <p>Update:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">config</span><span class="o">/</span><span class="n">databases</span><span class="o">.</span><span class="n">yml</span>
 <span class="n">config</span><span class="o">/</span><span class="n">propel</span><span class="o">.</span><span class="n">ini</span>
-<span class="n">scripts</span><span class="o">/</span><span class="n">initdb</span><span class="o">.</span><span class="n">sh</span>
 </pre></div>
 </div>
 <p>according your needs using the correct host, username and password for MySQL access.</p>
 <p>Initially you must use the root/admin account of MySQL, because  configuration scripts will create a new database. Later you can create a specific user for the Asterisell database, in order to limit the capability of the Asterisell user.</p>
-<p>The suggested database name is <cite>asterisell3</cite> in order to avoid conflicts with previous or new version of Asterisell needing different database schemas.</p>
+<p>The suggested database name is <cite>asterisell3</cite> in order to avoid conflicts with previous or new version of Asterisell needing different database schema.</p>
 </div>
 <div class="section" id="how-to-create-a-database-user-with-limited-access-to-asterisell-database">
 <h3>How to create a Database User with Limited Access to Asterisell Database<a class="headerlink" href="#how-to-create-a-database-user-with-limited-access-to-asterisell-database" title="Permalink to this headline">¶</a></h3>
 <p>Enter into MySQL shell:</p>
 <div class="highlight-python"><pre>mysql -u root -p mysql</pre>
 </div>
-<p>Create a user that can invoke MySQL only from localhost (supposing that Asterisell webserver hosts also the MySQL DBMS):</p>
+<p>Create a user that can invoke MySQL only from localhost (supposing that Asterisell web-server hosts also the MySQL DBMS):</p>
 <div class="highlight-python"><pre>CREATE USER 'asterisell3user'@'localhost' IDENTIFIED BY 'some-password-here';
 GRANT ALL ON asterisell3.* TO 'asterisell3user'@'localhost';</pre>
 </div>
@@ -207,28 +207,58 @@ GRANT ALL ON asterisell3.* TO 'asterisell3user'@'localhost';</pre>
 </ul>
 </dd>
 </dl>
-<p>It must not be used if it is an update of Asterisell, because otherwise all data will be lost.</p>
-<p>In any case the script will warn you about this.</p>
-<p>Execute:</p>
-<div class="highlight-python"><pre>cd scripts
-sh initdb.sh</pre>
+<p>It must not be used if it is an upgrade of Asterisell, because otherwise all data will be lost. In any case the script will warn you about this.</p>
+<p>First edit <cite>apps/asterisell/confip/app.yml</cite>, and associate to <cite>web_server_user</cite> the correct <a class="reference internal" href="#term-web-server-user"><em class="xref std std-term">Web Server User</em></a>.</p>
+<p>Then execute:</p>
+<div class="highlight-python"><pre>php asterisell.php activate
+php asterisell.php install</pre>
 </div>
-<p>and answer to questions.</p>
-<p>The very last versions of MySQL requires <cite>Engine=InnoDB;</cite> instead of <cite>Type=InnoDB;</cite> inside file <cite>data/sql/lib.model.schema.sql</cite>. In case of problems during database creation (initial installation of Asterisell), you must update manually this file.</p>
 </div>
 <div class="section" id="change-demo-data-later">
 <h3>Change Demo Data Later<a class="headerlink" href="#change-demo-data-later" title="Permalink to this headline">¶</a></h3>
 <p>The installation script will load also some demo data in order to test Asterisell.</p>
-<p>If you want later, start with an empty database, you can execute:</p>
-<div class="highlight-python"><pre>cd scripts
-php reset_db_and_init_data.php init &lt;some-password-for-root-user-access&gt;</pre>
+<p>If you want later, start with an empty database, you must execute:</p>
+<div class="highlight-python"><pre>php asterisell.php data init &lt;some-password-for-root-user-access&gt;</pre>
 </div>
-<p>for creating an empty database, with only minimal data, and a &#8220;root&#8221; user with the chosen password for initial login.</p>
-<p>The scripts supports other type of data initialization. This command will display all its options:</p>
-<div class="highlight-python"><pre>cd scripts
-php reset_db_and_init_data.php</pre>
+<p>for creating a database, with only minimal data, and a &#8220;root&#8221; user with the chosen password for initial login. Then you can start inserting real data inside this database.</p>
+<p>The initialization script supports other type of data initialization. For a complete list of supported commands:</p>
+<div class="highlight-python"><pre>php asterisell.php help</pre>
 </div>
-<p>You can also inspect the content of <cite>scripts/initdb.sh</cite> in order to see the details of performed actions.</p>
+</div>
+<div class="section" id="mysql-advanced-optimizations">
+<h3>MySQL advanced optimizations<a class="headerlink" href="#mysql-advanced-optimizations" title="Permalink to this headline">¶</a></h3>
+<p>For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of last 1-2 months must be saved in the MySQL database cache in RAM. This makes a big difference in performances. Make sure having a <cite>my.cnf</cite> file like this:</p>
+<div class="highlight-python"><pre>[mysqld]
+###############################
+# ASTERISELL RELATED SETTINGS #
+###############################
+# Optimize InnoDB performances for Asterisell usage.
+# NOTE: it will use the majority of the RAM of the server
+# for Asterisell and other MySQL databases.
+#
+# Set this to 60-80% the RAM of the server
+innodb_buffer_pool_size = 1G
+
+sort_buffer_size = 50M
+thread_cache_size = 4
+tmp_table_size = 50M
+sync_binlog = 0
+
+# not very important
+innodb_additional_mem_pool_size = 10M
+
+# Commits are flushed on the disk each second,
+# and not immediately.
+innodb_flush_log_at_trx_commit = 0
+
+innodb_lock_wait_timeout = 50
+table_cache = 92
+innodb_flush_method=O_DIRECT
+
+# speed-up rating of CDRs and also other performances - very important
+innodb_log_buffer_size = 8M</pre>
+</div>
+<p>Restart MySQL for enabling changes in configuration.</p>
 </div>
 <div class="section" id="optional-configuration-for-developers">
 <h3>Optional Configuration for Developers<a class="headerlink" href="#optional-configuration-for-developers" title="Permalink to this headline">¶</a></h3>
@@ -240,7 +270,7 @@ php reset_db_and_init_data.php</pre>
 propel.database.url        = mysql://localhost/asterisell3
 propel.output.dir          = /var/www/asterisell3</pre>
 </div>
-<p>If you have changed the database structure in the file <cite>config/schema.yml</cite>, you must also update the SQL instructions creating the MySQL database. You can use the script <cite>scripts/makedb.sh</cite>. It will recreate the SQL commands and then it call <cite>initdb.sh</cite> in order to load the new database.</p>
+<p>If you have changed the database structure in the file <cite>config/schema.yml</cite>, you must also update the SQL instructions creating the MySQL database. You can use the script <cite>scripts/makedb.sh</cite>. It will recreate the SQL commands, then call <strong class="command">php asterisell.php init &lt;some-root-password&gt;</strong> in order to load the new database. You can also extend <cite>asterisell.php</cite> upgrade procedure <cite>upgradeDatabase</cite> with new database upgrade commands, for upgrading live instances of Asterisell.</p>
 </div>
 </div>
 <div class="section" id="web-server">
@@ -277,7 +307,7 @@ propel.output.dir          = /var/www/asterisell3</pre>
 
 &lt;/Location&gt;</pre>
 </div>
-<p>NOTE: remember to add <cite>/web</cite> to your Asterisell installation directory. This because it is only the <cite>web</cite> subdirectory of Asterisell project that must be part of the web-space.</p>
+<p>NOTE: remember to add <cite>/web</cite> to your Asterisell installation directory. This because it is only the <cite>web</cite> sub-directory of Asterisell project that must be part of the web-space.</p>
 <p>Restart the apache2 httpd server in order to render active the configurations using a command like:</p>
 <div class="highlight-python"><pre>/etc/init.d/httpd restart</pre>
 </div>
@@ -288,8 +318,8 @@ propel.output.dir          = /var/www/asterisell3</pre>
 </div>
 <div class="section" id="php-resources">
 <h3>PHP Resources<a class="headerlink" href="#php-resources" title="Permalink to this headline">¶</a></h3>
-<p>The administrator can invoke heavy jobs, for example graph and stats about calls. In this case it is usefull to increase the resources of PHP scripts inside on-line sessions.</p>
-<p>In CENTOS the settings are in <cite>/etc/php.ini</cite>, in Debian are in <cite>/etc/php5/apache2/php.ini</cite>. Change somethiing like:</p>
+<p>The administrator can invoke heavy jobs, for example graph and stats about calls. In this case it is useful to increase the resources of PHP scripts inside on-line sessions.</p>
+<p>In CENTOS the settings are in <cite>/etc/php.ini</cite>, in Debian are in <cite>/etc/php5/apache2/php.ini</cite>. Change something like:</p>
 <div class="highlight-python"><pre>;;;;;;;;;;;;;;;;;;;
 ; Resource Limits ;
 ;;;;;;;;;;;;;;;;;;;
@@ -314,14 +344,14 @@ memory_limit = 128M      ; Maximum amount of memory a script may consume (128MB)
 </div>
 <div class="section" id="php-speedup">
 <h3>PHP Speedup<a class="headerlink" href="#php-speedup" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference external" href="http://pecl.php.net/package/APC">APC</a> is a free, open source framework that caches data and compiled code from the PHP bytecode compiler in shared memory.</p>
+<p><a class="reference external" href="http://pecl.php.net/package/APC">APC</a> is a free, open source framework that caches data and compiled code from the PHP byte-code compiler in shared memory.</p>
 <p>I suggest installing it, because it is well tested, and it speeds-up a lot the execution of Asterisell and other PHP applications.</p>
 <p>For installing it in Debian:</p>
 <div class="highlight-python"><pre>aptitude install php-apc</pre>
 </div>
 <p>or in CENTOS follow <a class="reference external" href="http://2bits.com/articles/installing-php-apc-gnulinux-centos-5.html">the instruction of this webpage</a> (up to date the APC package is not part of CENTOS).</p>
 <p>IMPORTANT: In order to activate it, the Apache web server must be restarted.</p>
-<p>IMPORTANT: Up to date there can be conflicts between APC (version 3.0.19) and SwiftMailer. If after the sending of the first mail, an error message appears in the problem table (something like <cite>Fatal error: Cannot inherit previously-inherited or override constant LEVEL_TOP from interface Swift_Mime_Message</cite>), then try to upgrade APC or disactivate APC.</p>
+<p>IMPORTANT: Up to date there can be conflicts between APC (version 3.0.19) and SwiftMailer. If after the sending of the first Asterisell mail, an error message appears in the problem table (something like <cite>Fatal error: Cannot inherit previously-inherited or override constant LEVEL_TOP from interface Swift_Mime_Message</cite>), then try to upgrade APC or deactivated APC.</p>
 </div>
 <div class="section" id="mysql">
 <h3>MySQL<a class="headerlink" href="#mysql" title="Permalink to this headline">¶</a></h3>
@@ -340,17 +370,6 @@ max_allowed_packet = 16M</pre>
 </div>
 <p>Consult <a class="reference external" href="http://dev.mysql.com/doc/refman/4.1/en/innodb-parameters.html#sysvar_innodb_flush_log_at_trx_commit">MySQL related documentation</a> for more details on side effects of this setting.</p>
 </div>
-<div class="section" id="additional-file-access-permissions">
-<h3>Additional File Access Permissions<a class="headerlink" href="#additional-file-access-permissions" title="Permalink to this headline">¶</a></h3>
-<p>If you have not used the default installation script (<cite>scripts/initdb.sh</cite>), then make sure to execute:</p>
-<div class="highlight-python"><pre>./symfony fix-perms</pre>
-</div>
-<p>or:</p>
-<div class="highlight-python"><pre>chmod -R a+rw log
-chmod -R a+rw cache</pre>
-</div>
-<p>in order to enable the write rights on (only) these two directories.</p>
-</div>
 </div>
 <div class="section" id="cron-job">
 <h2>Cron Job<a class="headerlink" href="#cron-job" title="Permalink to this headline">¶</a></h2>
@@ -362,19 +381,18 @@ chmod -R a+rw cache</pre>
 </div>
 <div class="section" id="user-permissions">
 <h3>User Permissions<a class="headerlink" href="#user-permissions" title="Permalink to this headline">¶</a></h3>
-<p>The process must be executed from the same user that is associated to the http connection.</p>
-<p>On Fedora/Centos it is typically <cite>apache</cite>, on Debian <cite>www-data</cite>. In order to retrieve it, you can enter into Asterisell web interface, select Help menu and PHP-INFO option. Then you can search the element <cite>User/Group</cite>. The first value is the name of the PHP/webserver user.</p>
+<p>The process must be executed from the same <a class="reference internal" href="#term-web-server-user"><em class="xref std std-term">Web Server User</em></a> that is associated to the http connection.</p>
 </div>
 <div class="section" id="cron-job-setting">
 <h3>Cron Job Setting<a class="headerlink" href="#cron-job-setting" title="Permalink to this headline">¶</a></h3>
-<p>Supposing the http user is &#8220;apache&#8221; you can associate to it a cron job using the command:</p>
+<p>Supposing the <a class="reference internal" href="#term-web-server-user"><em class="xref std std-term">Web Server User</em></a> is <cite>apache</cite> you can associate to it a cron job using the command:</p>
 <div class="highlight-python"><pre>crontab -u apache -e</pre>
 </div>
 <p>This command will open an editor. If the defalt editor is <cite>vi</cite>, then digit <cite>:i</cite> (and press enter) in order to start editing, and <cite>:wq</cite> (and press enter) at the end of editing, in order to <cite>write</cite> and <cite>quit/exit</cite> from the editor</p>
 <p>Add this line:</p>
 <div class="highlight-python"><pre>5,10,15,20,25,30,35,40,45,50,55 * * * * sh -c "cd /your-asterisell-dir/scripts/ ; nice php process_jobs.php &gt; /dev/null "</pre>
 </div>
-<p>The meaning of the line is to execute at minutes 5, 10, 15, 20, ... of every hour the <cite>php rate_all_and_test.php</cite> command inside the Asterisell directory.</p>
+<p>The meaning of the line is to execute at minutes 5, 10, 15, 20, ... of every hour the job processing command inside the Asterisell directory.</p>
 </div>
 <div class="section" id="log-rotate">
 <h3>Log Rotate<a class="headerlink" href="#log-rotate" title="Permalink to this headline">¶</a></h3>
@@ -413,7 +431,7 @@ cd /your-asterisell-install-dir
 <dd><ul class="first last simple">
 <li>add a new rate inside <cite>apps/asterisell/lib/rates</cite></li>
 <li>enable the rate inside <cite>apps/asterisell/config/app.yml</cite></li>
-<li>refresh the cache <cite>./configure.sh</cite></li>
+<li>refresh the cache <strong class="command">php asterisell.php activate</strong></li>
 </ul>
 </dd>
 </dl>
@@ -426,15 +444,10 @@ cd /your-asterisell-install-dir
 <div class="section" id="log-directory">
 <h4>Log Directory<a class="headerlink" href="#log-directory" title="Permalink to this headline">¶</a></h4>
 <p>Often after upgrades there are problems related to the Asterisell log files inside log directory.</p>
-<p>If this file was created from root then the <cite>apache</cite> user is not able to add info to it and the entire Asterisell application is blocked. In this case change the permissions of file with something like:</p>
+<p>If this file was created from root then the <a class="reference internal" href="#term-web-server-user"><em class="xref std std-term">Web Server User</em></a> is not able to add info to it and the entire Asterisell application is blocked. In this case change the permissions of file with something like:</p>
 <div class="highlight-python"><pre>cd log
 chmod a+rw asterisell_prod.log
 chmod a+rw asterisell_dev.log</pre>
-</div>
-<p>or better change the owner in something like:</p>
-<div class="highlight-python"><pre>cd log
-chown apache asterisell_prod.log
-chown apache asterisell_dev.log</pre>
 </div>
 <p>or execute:</p>
 <div class="highlight-python"><pre>./symfony fix-perms</pre>
@@ -443,25 +456,23 @@ chown apache asterisell_dev.log</pre>
 </div>
 <div class="section" id="created-files">
 <h4>Created Files<a class="headerlink" href="#created-files" title="Permalink to this headline">¶</a></h4>
-<p>During initial Asterisell configuration new files can be created. Check if these files are readable from web-server process. For example on my debian machine I performs:</p>
-<div class="highlight-python"><pre>chown -R :www-data *
-chmod -R g+rx *
-sh configure.sh</pre>
+<p>During initial Asterisell configuration, and upgrade new files can be created. In this case they can be not readable from <a class="reference internal" href="#term-web-server-user"><em class="xref std std-term">Web Server User</em></a>. In this case perform a:</p>
+<div class="highlight-python"><pre>php asterisell activate</pre>
 </div>
-<p>where <cite>www-data</cite> is the group used from my webserver.</p>
+<p>with super user access (maybe <cite>sudo php asterisell activate</cite>), for applying the correct ownership to files.</p>
 </div>
 </div>
 <div class="section" id="additional-run-time-debug-info">
 <h3>Additional Run-Time Debug Info<a class="headerlink" href="#additional-run-time-debug-info" title="Permalink to this headline">¶</a></h3>
-<p>In case of problems you can enable the development/debug version of Asterisell that shows useful informations about its execution and related problems. Execute:</p>
+<p>In case of problems you can enable the development/debug version of Asterisell that shows useful information about its execution and related problems. Execute:</p>
 <div class="highlight-python"><pre>./symfony enable asterisell dev</pre>
 </div>
 <p>and open the url <cite>http://your-web-url/asterisell_dev.php/login</cite></p>
 <p>When finished remember to execute:</p>
 <div class="highlight-python"><pre>./symfony disable asterisell dev</pre>
 </div>
-<p>NOTE: on the contrary of Asterisell production version, in the development version if you change Asterisell source code, you must not execute <cite>sh configure.sh</cite>, because the development version recreate all files every time in order to speed up development at the expense of run-time executions.</p>
-<p>NOTE: as in the Asterisell product version, in the development version if you change some configuration parameters you must execute <cite>sh configure.sh</cite> because certain Asterisell modules are regenerated according the configured values.</p>
+<p>NOTE: on the contrary of Asterisell production version, in the development version if you change Asterisell source code, you must not execute <strong class="command">php asterisell.php activate</strong>, because the development version recreate all files every time in order to speed up development at the expense of run-time executions.</p>
+<p>NOTE: as in the Asterisell product version, in the development version if you change some configuration parameters you must execute <strong class="command">php asterisell.php activate</strong> because certain Asterisell modules are regenerated according the configured values.</p>
 </div>
 <div class="section" id="run-time-configuration-problems">
 <h3>Run Time Configuration Problems<a class="headerlink" href="#run-time-configuration-problems" title="Permalink to this headline">¶</a></h3>
@@ -479,7 +490,7 @@ sh configure.sh</pre>
 </div>
 <div class="section" id="feedback">
 <h3>Feedback<a class="headerlink" href="#feedback" title="Permalink to this headline">¶</a></h3>
-<p>Web servers, PHP environment, libraries, and os on... can interact in strange ways. If something is not working properly let me know!</p>
+<p>Web servers, PHP environment, libraries, and so on... can interact in strange ways. If something is not working properly let me know!</p>
 </div>
 </div>
 <div class="section" id="security">
@@ -488,112 +499,119 @@ sh configure.sh</pre>
 <p>No particular care is put on other forms because they are accessible only from the administrator.</p>
 <p>User session handling is managed directly from Symfony and PHP engine.</p>
 </div>
-<div class="section" id="mysql-advanced-optimizations">
-<h2>MySQL advanced optimizations<a class="headerlink" href="#mysql-advanced-optimizations" title="Permalink to this headline">¶</a></h2>
-<p>For obtaining a 10x-20x speedup of call-report and related queries, the CDRs of last 1-2 months must be saved in the MySQL database cache in RAM. This makes a big difference in performances. Make sure having a <cite>my.cnf</cite> file like this:</p>
-<div class="highlight-python"><pre>[mysqld]
-###############################
-# ASTERISELL RELATED SETTINGS #
-###############################
-# Optimize InnoDB performances for Asterisell usage.
-# NOTE: it will use the majority of the RAM of the server
-# for Asterisell and other MySQL databases.
-#
-# Set this to 60-80% the RAM of the server
-innodb_buffer_pool_size = 1G
-
-sort_buffer_size = 50M
-thread_cache_size = 4
-tmp_table_size = 50M
-sync_binlog = 0
-
-# not very important
-innodb_additional_mem_pool_size = 10M
-
-# Commits are flushed on the disk each second,
-# and not immediately.
-innodb_flush_log_at_trx_commit = 0
-
-innodb_lock_wait_timeout = 50
-table_cache = 92
-innodb_flush_method=O_DIRECT
-
-# speed-up rating of CDRs and also other performances - very important
-innodb_log_buffer_size = 8M</pre>
-</div>
-<p>Restart MySQL for enabling changes in configuration.</p>
-</div>
 </div>
 <div class="section" id="upgrading">
 <span id="id4"></span><h1>Upgrading<a class="headerlink" href="#upgrading" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="create-deploy-directory">
-<h2>Create deploy directory<a class="headerlink" href="#create-deploy-directory" title="Permalink to this headline">¶</a></h2>
-<p>In order to reduce the downtime of main Asterisell application, you can test the new version in a separate directory, and then deploy the new version, when it is all ok.</p>
-<p>Copy the current Asterisell directory content inside another directory:</p>
-<div class="highlight-python"><pre>cp -r &lt;source-directory&gt; &lt;test-directory&gt;</pre>
+<div class="section" id="migrating-from-free-to-commercial-version">
+<h2>Migrating from Free to Commercial Version<a class="headerlink" href="#migrating-from-free-to-commercial-version" title="Permalink to this headline">¶</a></h2>
+<p>Inside <cite>apps/asterisell/config/app.yml</cite>, change:</p>
+<div class="highlight-python"><pre>git_upgrade_command: git pull https://github.com/massimo-zaniboni/Asterisell</pre>
 </div>
+<p>into:</p>
+<div class="highlight-python"><pre>git_upgrade_command: git pull http://your-license:your-license@support.asterisell.com/asterisell/git/asterisell-commercial-stable-3.git`</pre>
+</div>
+<p>where <cite>your-license</cite>, must be replaced with your license code, obtained after purchasing the commercial version.</p>
+<p>Then make effective this change with:</p>
+<div class="highlight-python"><pre>php asterisell.php activate</pre>
+</div>
+<p>From now you will use the commercial version as source of upgrades. The next passages are the same of normal upgrades.</p>
+</div>
+<div class="section" id="procedure-outline">
+<h2>Procedure Outline<a class="headerlink" href="#procedure-outline" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>These are the steps performed in a partially automatic way from the procedure:</dt>
+<dd><ul class="first last simple">
+<li>Disable cron job processing.</li>
+<li>Disable access of normal users to the application.</li>
+<li>Inform users that the system is in maintenance mode.</li>
+<li>Merge updates of Asterisell application, with your customizations using Git.</li>
+<li>Upgrade the database.</li>
+<li>Test the application as administrator.</li>
+<li>Enable cron job processing, and access of normal users.</li>
+</ul>
+</dd>
+</dl>
 </div>
 <div class="section" id="merge-your-customizations-with-new-asterisell-version">
 <h2>Merge your customizations with new Asterisell version<a class="headerlink" href="#merge-your-customizations-with-new-asterisell-version" title="Permalink to this headline">¶</a></h2>
-<p>If you have installed the application using Git (the suggested way), these are the commands for free Asterisell version:</p>
-<div class="highlight-python"><pre>git commit -a -m "&lt;DESCRIBE YOUR CUSTOM CHANGES&gt;"
-git pull http://github.com/massimo-zaniboni/Asterisell.git</pre>
+<p>Before upgrading the source code you must save your local changes (customizations) inside local Git repository:</p>
+<div class="highlight-python"><pre>git commit -a -m "&lt;DESCRIBE YOUR CUSTOM CHANGES&gt;"</pre>
 </div>
-<p>These are the commands for the commercial Asterisell version:</p>
-<div class="highlight-python"><pre>git commit -a -m "&lt;DESCRIBE YOUR CUSTOM CHANGES&gt;"
-git pull http://your-license:your-license@support.asterisell.com/asterisell/git/asterisell-commercial-stable-3.git`</pre>
+<p>You can also see the current un-versioned files with:</p>
+<div class="highlight-python"><pre>git status</pre>
 </div>
-<p>where &#8220;your-license&#8221;, must be replaced with your license code, obtained after purchasing the commercial version.</p>
+<p>and add files to ignore editing the file <cite>.gitignore</cite>, or add files to the repository with:</p>
+<div class="highlight-python"><pre>git add &lt;file-name&gt;</pre>
+</div>
+<p>Now you are ready for starting the source code upgrading/merging phase, with:</p>
+<div class="highlight-python"><pre>php asterisell.php app upgrade</pre>
+</div>
 <dl class="docutils">
-<dt>Then follow the Git procedure to resolve merge conflicts. Usually there will no merge conflicts, because Git tries to preserve both you customizations and new version modifications. In case of conflicts:</dt>
+<dt>This command will:</dt>
 <dd><ul class="first last simple">
-<li>edit the files with problem,</li>
+<li>lock the cron job processor;</li>
+<li>avoid the usage of application from normal users, informing them that the application is in maintenance mode;</li>
+<li>execute the merge/upgrade command;</li>
+</ul>
+</dd>
+<dt>There can be merge conflicts, between upstream changes and your local changes. You must resolve them, using the standard Git approach:</dt>
+<dd><ul class="first last simple">
+<li><strong class="command">git status</strong> shows the files with conflicts;</li>
+<li>edit the files with problems,</li>
 <li>fix the <cite>&gt;&gt;&gt;&gt;&gt;&gt; .... &lt;&lt;&lt;&lt;&lt;&lt;&lt;</cite> sections,</li>
-<li>signal to git that the conflict on the file is resolved using <cite>git add &lt;fixed-file&gt;</cite>,</li>
-<li>check pending conflict with <cite>git status</cite>,</li>
-<li>commit the final merged version when done with <cite>git commit -a</cite></li>
+<li>signal to git that the conflict on the file is resolved using <strong class="command">git add &lt;fixed-file&gt;</strong>,</li>
+<li>check pending conflicts with <strong class="command">git status</strong>,</li>
+<li>commit the final merged version when done with <strong class="command">git commit -a</strong></li>
 </ul>
 </dd>
 </dl>
 <p>In case of troubles, <a class="reference external" href=":http://groups.google.it/group/asterisell">ask to the forum.</a> I will update these installation notes, according the signaled problems/suggestions.</p>
+<p>When conflicts are resolved you can upgrade the database, with:</p>
+<div class="highlight-python"><pre>php asterisell.php data upgrade</pre>
 </div>
-<div class="section" id="database-upgrade">
-<h2>Database Upgrade<a class="headerlink" href="#database-upgrade" title="Permalink to this headline">¶</a></h2>
-<p>Versions with the same major version number, use compatible database schema with minor changes, so they can be easily upgraded.</p>
-<p>For security reasons, make first a backup of current database using something like:</p>
-<div class="highlight-python"><pre>mysqldump -u &lt;your-user&gt; &lt;your-database&gt; --single-transaction &gt; asterisell3.sql</pre>
+<dl class="docutils">
+<dt>This command will:</dt>
+<dd><ul class="first last simple">
+<li>ask for making an optional backup of your data;</li>
+<li>upgrade the database;</li>
+</ul>
+</dd>
+</dl>
+<p>You should test the behaviour of the application as administrator.</p>
+<p>Then you must enable cron job processing:</p>
+<div class="highlight-python"><pre>php asterisell.php cron enable</pre>
 </div>
-<p>Note that the <cite>&#8211;single-transaction</cite> option allows to make the database backup, without locking MySQL database, and so new CDRs can be processed.</p>
-<p>Then upgrade the current database using:</p>
-<div class="highlight-python"><pre>cd scripts
-php upgradedb.php</pre>
+<p>and user access to the application:</p>
+<div class="highlight-python"><pre>php asterisell.php app enable</pre>
 </div>
 </div>
 <div class="section" id="code-refresh">
 <h2>Code refresh<a class="headerlink" href="#code-refresh" title="Permalink to this headline">¶</a></h2>
 <p>After changing some code, for example after resolving merging conflicts, or after applying customization, you <em>must execute</em>:</p>
-<div class="highlight-python"><pre>sh generate.sh</pre>
+<div class="highlight-python"><pre>php asterisell.php activate</pre>
 </div>
-<p>in order to flush the Symfony cache and fix the permission on &#8220;log&#8221; and &#8220;cache&#8221; directories, and for generating some PHP files depending from application settings.</p>
+<p>in order to flush the Symfony cache and fix the permission on <cite>log</cite> and <cite>cache</cite> directories, and for generating some PHP files depending from application settings.</p>
+<p>This command is automatically called form upgrade procedure.</p>
 </div>
-<div class="section" id="application-testing">
-<h2>Application testing<a class="headerlink" href="#application-testing" title="Permalink to this headline">¶</a></h2>
-<p>If you use the same database both for production and new version testing, you must first disable the cron job processing of the production version, in order avoiding two job processors running on the same database.</p>
-<p>If you use different databases, make sure to use again the production database, when you deploy the application.</p>
-</div>
-<div class="section" id="deploy">
-<h2>Deploy<a class="headerlink" href="#deploy" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="reducing-application-downtime">
+<h2>Reducing Application Downtime<a class="headerlink" href="#reducing-application-downtime" title="Permalink to this headline">¶</a></h2>
+<p>You can create a deploy directory, where merging the code and resolving related conflicts, in order to reduce the downtime of the application in the production environment.</p>
 <blockquote>
 <div><ul class="simple">
-<li>Disable cron job processing.</li>
-<li>Rename the current production directory to another name.</li>
-<li>Rename the current testing directory to the name of production directory.</li>
-<li>Make sure using the correct production database.</li>
-<li>Use the correct read/write/ownership permissions for new production directory.</li>
-<li>Test web-site.</li>
-<li>Enable cron job processing.</li>
+<li>Commit all the changes in current production environment to Git repo (<strong class="command">git commit -a</strong>).</li>
+<li><strong class="command">git clone &lt;production-repo&gt; &lt;testing-repo&gt;</strong> for cloning the current production repo to a testing repo.</li>
+<li><strong class="command">cd &lt;testing-repo&gt;</strong></li>
+<li>Follow the source code upgrade process, without upgrading the database.</li>
+<li><strong class="command">cd &lt;production-repo&gt;</strong></li>
+<li>Inside <cite>apps/asterisell/config/app.yml</cite>, set the option <cite>git_upgrade_command</cite> to the path of the testing repo. In this way you will upgrade the code in production repo, using a repo with all the merge problems fixed, reducing the down-time.</li>
+<li>Follow the upgrade process. Upgrade also the database.</li>
 </ul>
 </div></blockquote>
+</div>
+<div class="section" id="testing-environment-with-a-testing-database">
+<h2>Testing Environment With a Testing Database<a class="headerlink" href="#testing-environment-with-a-testing-database" title="Permalink to this headline">¶</a></h2>
+<p>You can create a testing environment specifying a distinct database inside <cite>config/databases.yml</cite> options. In this way you can have a full testing environment where you can test the application before deploying it.</p>
+<p>When you upgrade the production environment, make sure that the source code upgrade process does not change the name of the production database with the name of the testing database, inside <cite>config/databases.yml</cite> file.</p>
 </div>
 </div>
 <div class="section" id="configurations">
@@ -602,7 +620,7 @@ php upgradedb.php</pre>
 <span id="id5"></span><h2>Main Configurations<a class="headerlink" href="#main-configurations" title="Permalink to this headline">¶</a></h2>
 <p><tt class="file docutils literal"><span class="pre">apps/asterisell/config/app.yml</span></tt> contains the main configurations of Asterisell. Once they are properly configured, they rarely change.</p>
 <p>The meaning of various settings are explained directly inside the file comments. Details of some settings will be explained in other tasks. Initially set only parameters of witch you are sure, leaving default values otherwise.</p>
-<p>In order to make active the changes, you must execute <strong class="command">./configure.sh</strong>.</p>
+<p>In order to make active the changes, you must execute <strong class="command">php asterisell.php activate</strong>.</p>
 <p><a class="reference internal" href="#main-configuration-file"><em>Main Configuration File Content</em></a>.</p>
 </div>
 <div class="section" id="asterisell-owner-params">
@@ -1099,8 +1117,11 @@ Fixed Line</td>
 # !!!                                                                           !!! #
 # !!! I M P O R T A N T:                                                        !!! #
 # !!!                                                                           !!! #
-# !!! 1) if you change these values then execute "configure.sh" in order to     !!! #
-# !!! update the application behaviour;                                         !!! #
+# !!! 1) if you change these values then execute                                !!! #
+# !!!                                                                           !!! #
+# !!!    &gt; php asterisell.php activate                                          !!! #
+# !!!                                                                           !!! #
+# !!! in order to update the application behaviour;                             !!! #
 # !!!                                                                           !!! #
 # !!! 2) many parameters need a rerate of old calls in order to be propagated   !!! #
 # !!! also to old calls. When this is the case, it is signaled in the parameter !!! # 
@@ -1111,6 +1132,30 @@ Fixed Line</td>
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
 
 all:
+
+  # Source code upgrade command.
+  #
+  # In case of commercial version replace the git source location,
+  # with the corresponding address, containing the license key.
+  #
+  # In case of separated production and test instances:
+  #   - point test instance to free or commercial license link;
+  #   - point the production instance to the test instance;
+  # In this way, you can first resolve conflicts on the test instance,
+  # and then import them in the production instance.
+  #
+  git_upgrade_command: git pull https://github.com/massimo-zaniboni/Asterisell
+
+  # The Unix user that must owns the files that must be readable from the web server.
+  # It depends from your distrubution:
+  #   - www-data for Debian;
+  #   - apache for Centos;
+  #   - http for Arch;
+  #
+  # It is the "User" directive of Apache Web Server configuration files.
+  #
+  web_server_user: http
+
   available:
 
     # The PhpRate class available during the setup of a rate plan.
@@ -1260,6 +1305,10 @@ all:
   # This is the main report of the program.
   # 
   how_many_calls_in_call_report: 30
+
+  # True for showing invoices marked as sent, to customers that are on line.
+  #
+  show_online_sent_invoices_to_customers: false
 
   # External telephone number with the specified
   # prefix are displayed in a short form, without
@@ -1590,7 +1639,7 @@ all:
 <li>add to <cite>apps/asterisell/config/app.yml</cite> the new currency and culture;</li>
 <li>copy <cite>apps/asterisell/i18n/messages.it.xml</cite> to <cite>apps/asterisell/i18n/messages.your_culture_code.xml</cite>;</li>
 <li>replace all Italian translations with your locale translations;</li>
-<li>execute &#8220;sh configure.sh&#8221; in order to clear the cache and view the new messages;</li>
+<li>execute <strong class="command">php asterisell.php activate</strong> in order to clear the cache and view the new messages;</li>
 </ul>
 </dd>
 </dl>
@@ -1641,6 +1690,8 @@ It is an internal account code. Usually Asterisk VoIP server put it on the <tt c
 Note: the Asterisk standard documentation pretends that this code is specified on a per-channel basis, but this is not the case in Asterisell configuration. So each accountcode has the same associated customer for every channel. This is also useful/practical in case of the same customer using different channels.</dd>
 <dt id="term-voip-vendor">VoIP vendor</dt>
 <dd>A company that can route VoIP calls to destination end-points, typically traditional telephone networks. It is used from the <a class="reference internal" href="#term-asterisell-owner"><em class="xref std std-term">Asterisell owner</em></a> for routing the VoIP calls.</dd>
+<dt id="term-web-server-user">Web Server User</dt>
+<dd>The unix user associated to the Web Server process. Asterisell files can be read/written only if they are readable/writable from this user. Linux distributions can use different users: <cite>www-data</cite> for Debian, <cite>apache</cite> for Centos and RedHat, <cite>http</cite> for Arch, and so on. It is the <cite>User</cite> directive value, as specified inside Apache Web Server configuration files.</dd>
 </dl>
 </div>
 
@@ -1669,6 +1720,7 @@ Note: the Asterisk standard documentation pretends that this code is specified o
 <li><a class="reference internal" href="#how-to-create-a-database-user-with-limited-access-to-asterisell-database">How to create a Database User with Limited Access to Asterisell Database</a></li>
 <li><a class="reference internal" href="#installation-script">Installation Script</a></li>
 <li><a class="reference internal" href="#change-demo-data-later">Change Demo Data Later</a></li>
+<li><a class="reference internal" href="#mysql-advanced-optimizations">MySQL advanced optimizations</a></li>
 <li><a class="reference internal" href="#optional-configuration-for-developers">Optional Configuration for Developers</a></li>
 </ul>
 </li>
@@ -1677,7 +1729,6 @@ Note: the Asterisk standard documentation pretends that this code is specified o
 <li><a class="reference internal" href="#php-resources">PHP Resources</a></li>
 <li><a class="reference internal" href="#php-speedup">PHP Speedup</a></li>
 <li><a class="reference internal" href="#mysql">MySQL</a></li>
-<li><a class="reference internal" href="#additional-file-access-permissions">Additional File Access Permissions</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#cron-job">Cron Job</a><ul>
@@ -1704,16 +1755,15 @@ Note: the Asterisk standard documentation pretends that this code is specified o
 </ul>
 </li>
 <li><a class="reference internal" href="#security">Security</a></li>
-<li><a class="reference internal" href="#mysql-advanced-optimizations">MySQL advanced optimizations</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#upgrading">Upgrading</a><ul>
-<li><a class="reference internal" href="#create-deploy-directory">Create deploy directory</a></li>
+<li><a class="reference internal" href="#migrating-from-free-to-commercial-version">Migrating from Free to Commercial Version</a></li>
+<li><a class="reference internal" href="#procedure-outline">Procedure Outline</a></li>
 <li><a class="reference internal" href="#merge-your-customizations-with-new-asterisell-version">Merge your customizations with new Asterisell version</a></li>
-<li><a class="reference internal" href="#database-upgrade">Database Upgrade</a></li>
 <li><a class="reference internal" href="#code-refresh">Code refresh</a></li>
-<li><a class="reference internal" href="#application-testing">Application testing</a></li>
-<li><a class="reference internal" href="#deploy">Deploy</a></li>
+<li><a class="reference internal" href="#reducing-application-downtime">Reducing Application Downtime</a></li>
+<li><a class="reference internal" href="#testing-environment-with-a-testing-database">Testing Environment With a Testing Database</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configurations">Configurations</a><ul>
