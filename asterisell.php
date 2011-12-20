@@ -407,24 +407,38 @@ function explicitContinue()
     $next_line = trim(fgets($fh, 1024));
 }
 
-function makeInstall()
+function makeInstallCreateDatabase()
 {
 
     $fh = fopen('php://stdin', 'r');
 
     list($database, $user, $password) = getDatabaseNameUserAndPassword();
 
+    echo "\nConfirm you want create database '$database', user '$user', with password '$password', as specified in file 'configure/databases.yms' [y/N]";
+    $next_line = trim(fgets($fh, 1024));
+    if ($next_line === "y" || $next_line === "Y") {
+    } else {
+        echo "\nStop execution: database data was not confirmed.\n";
+        exit(1);
+    }
+
     echo "\nEnter the name of MySQL administrator user, or another MySQL user that can create new databases: ";
     $rootUser = trim(fgets($fh, 1024));
 
-    echo "\nEnter the MySQL password of the user $rootUser:  ";
+    echo "\nEnter the MySQL password of the administrator user $rootUser:  ";
     $rootPassword = trim(fgets($fh, 1024));
 
-    myExecute("Drop $database database", "mysqladmin -u $rootUser --password=$rootPassword drop --force $database");
-    myExecute("Create $database database", "mysqladmin -u $rootUser --password=$rootPassword create $database");
-    myExecute("Init $database database", "mysql -u $rootUser --password=$rootPassword $database < data/sql/lib.model.schema.sql");
+    myExecute("Drop '$database' database", "mysqladmin -u $rootUser --password=$rootPassword drop --force $database");
+    myExecute("Create '$database' database", "mysqladmin -u $rootUser --password=$rootPassword create $database");
+    myExecute("Create database user '$user'", "mysql -u $rootUser --password=$rootPassword mysql -e \"CREATE USER $user@localhost IDENTIFIED BY '$password';\" ");
+    myExecute("Grant Access", "mysql -u $rootUser --password=$rootPassword mysql -e 'GRANT ALL ON $database.* TO $user@localhost;'");
+    myExecute("Init '$database' database", "mysql -u $rootUser --password=$rootPassword $database < data/sql/lib.model.schema.sql");
     explicitContinue();
     makeActivate();
+}
+
+function makeInstallData()
+{
 
     // this in the first installation of the database, so all upgrades are already applied, and mark them according
     // this simplify other pass of uprade.
@@ -2604,6 +2618,15 @@ function main($argc, $argv)
     $password = trim($argv[3]);
     $options = trim($argv[4]);
 
+    /////////////
+    // INSTALL //
+    /////////////
+
+    if ($mainCommand === "install") {
+        explicitConfirmForDeletion();
+        makeInstallCreateDatabase();
+    }
+
     ///////////////////
     // INITIAL TESTS //
     ///////////////////
@@ -2647,8 +2670,8 @@ function main($argc, $argv)
     $suggestion = "";
 
     if ($mainCommand === "install") {
-        explicitConfirmForDeletion();
-        makeInstall();
+        // perform the second step of installation
+        makeInstallData();
     } else  if ($mainCommand === "activate") {
         makeActivate();
     } else if ($mainCommand === "app") {

@@ -133,28 +133,14 @@ Initially you must use the root/admin account of MySQL, because  configuration s
 
 The suggested database name is `asterisell3` in order to avoid conflicts with previous or new version of Asterisell needing different database schema.
 
-How to create a Database User with Limited Access to Asterisell Database
-------------------------------------------------------------------------
-
-Enter into MySQL shell::
-
-  mysql -u root -p mysql
-  
-Create a user that can invoke MySQL only from localhost (supposing that Asterisell web-server hosts also the MySQL DBMS)::
-
-  CREATE USER 'asterisell3user'@'localhost' IDENTIFIED BY 'some-password-here';
-  GRANT ALL ON asterisell3.* TO 'asterisell3user'@'localhost';
-
-This example, supposes that `asterisell3` is the name of created Asterisell database, and `asterisell3user` the name of database user.
-
-NOTE: `GRANT ALL` is needed in order to support the database upgrade script.
-
 Installation Script
 -------------------
 
 The installation script will:
-  * create a new `asterisell3` database;
-  * load the tables;
+  * create a new database, something like `mysqladmin -u root --password=root create asterisell3`;
+  * create a new user, something like `CREATE USER 'asterisell3user'@'localhost' IDENTIFIED BY 'some-password-here';`
+  * give correct access to the user, something like `GRANT ALL ON asterisell3.* TO 'asterisell3user'@'localhost';` (`GRANT ALL` is needed in order to support the database upgrade script, when there will be changes in the database format);
+  * load the database schema/tables;
   * initializing the Asterisell application with demo data;
   * fix directory permissions;
   * reset the Symfony cache;

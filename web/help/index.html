@@ -182,25 +182,15 @@ yum install php-bcmath php-xml php-mbstring</pre>
 <p>Initially you must use the root/admin account of MySQL, because  configuration scripts will create a new database. Later you can create a specific user for the Asterisell database, in order to limit the capability of the Asterisell user.</p>
 <p>The suggested database name is <cite>asterisell3</cite> in order to avoid conflicts with previous or new version of Asterisell needing different database schema.</p>
 </div>
-<div class="section" id="how-to-create-a-database-user-with-limited-access-to-asterisell-database">
-<h3>How to create a Database User with Limited Access to Asterisell Database<a class="headerlink" href="#how-to-create-a-database-user-with-limited-access-to-asterisell-database" title="Permalink to this headline">¶</a></h3>
-<p>Enter into MySQL shell:</p>
-<div class="highlight-python"><pre>mysql -u root -p mysql</pre>
-</div>
-<p>Create a user that can invoke MySQL only from localhost (supposing that Asterisell web-server hosts also the MySQL DBMS):</p>
-<div class="highlight-python"><pre>CREATE USER 'asterisell3user'@'localhost' IDENTIFIED BY 'some-password-here';
-GRANT ALL ON asterisell3.* TO 'asterisell3user'@'localhost';</pre>
-</div>
-<p>This example, supposes that <cite>asterisell3</cite> is the name of created Asterisell database, and <cite>asterisell3user</cite> the name of database user.</p>
-<p>NOTE: <cite>GRANT ALL</cite> is needed in order to support the database upgrade script.</p>
-</div>
 <div class="section" id="installation-script">
 <h3>Installation Script<a class="headerlink" href="#installation-script" title="Permalink to this headline">¶</a></h3>
 <dl class="docutils">
 <dt>The installation script will:</dt>
 <dd><ul class="first last simple">
-<li>create a new <cite>asterisell3</cite> database;</li>
-<li>load the tables;</li>
+<li>create a new database, something like <cite>mysqladmin -u root &#8211;password=root create asterisell3</cite>;</li>
+<li>create a new user, something like <cite>CREATE USER &#8216;asterisell3user&#8217;&#64;&#8217;localhost&#8217; IDENTIFIED BY &#8216;some-password-here&#8217;;</cite></li>
+<li>give correct access to the user, something like <cite>GRANT ALL ON asterisell3.* TO &#8216;asterisell3user&#8217;&#64;&#8217;localhost&#8217;;</cite> (<cite>GRANT ALL</cite> is needed in order to support the database upgrade script, when there will be changes in the database format);</li>
+<li>load the database schema/tables;</li>
 <li>initializing the Asterisell application with demo data;</li>
 <li>fix directory permissions;</li>
 <li>reset the Symfony cache;</li>
@@ -1717,7 +1707,6 @@ Note: the Asterisk standard documentation pretends that this code is specified o
 </li>
 <li><a class="reference internal" href="#mysql-database-configuration">MySQL Database Configuration</a><ul>
 <li><a class="reference internal" href="#database-access-parameters">Database Access Parameters</a></li>
-<li><a class="reference internal" href="#how-to-create-a-database-user-with-limited-access-to-asterisell-database">How to create a Database User with Limited Access to Asterisell Database</a></li>
 <li><a class="reference internal" href="#installation-script">Installation Script</a></li>
 <li><a class="reference internal" href="#change-demo-data-later">Change Demo Data Later</a></li>
 <li><a class="reference internal" href="#mysql-advanced-optimizations">MySQL advanced optimizations</a></li>
