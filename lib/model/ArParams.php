@@ -23,4 +23,19 @@ class ArParams extends BaseArParams
     $this->setVatTaxPerc(from_php_decimal_to_db_decimal($d));
   }
 
+  /**
+   * @return true if the SMTP is configured, and emails con be sent
+   */
+  public function isSMTPConfigured() {
+      if (is_null($this->getSmtpHost())) {
+          return FALSE;
+      }
+
+      if (strlen(trim($this->getSmtpHost())) == 0) {
+          return FALSE;
+      }
+
+      return TRUE;
+  }
+
 }

@@ -41,17 +41,7 @@ class Mailer {
    * @return TRUE if the mailer is properly configured and email can be sent.
    */
   public static function isConfigured($params) {
-    $host = $params->getSmtpHost();
-
-    if (is_null($host)) {
-      return false;
-    }
-
-    if (strlen(trim($host)) == 0) {
-      return false;
-    }
-
-    return true;
+    return $params->isSMTPConfigured();
   }
 
   /**
