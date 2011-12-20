@@ -384,6 +384,7 @@ function explicitConfirmForDeletion($isInteractive = TRUE)
         $next_line = trim(fgets($fh, 1024));
         if ($next_line === "y" || $next_line === "Y") {
         } else {
+            echo "\nStop execution: database was not modified.\n";
             exit(1);
         }
     }
