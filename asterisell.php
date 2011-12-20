@@ -618,11 +618,19 @@ function runJobProcessorQueue()
     $I18N->setMessageSourceDir(SF_ROOT_DIR . DIRECTORY_SEPARATOR . SF_APP . DIRECTORY_SEPARATOR . 'i18n', $culture);
     $I18N->setCulture($culture);
 
+    echo "\nStarted Job Processor.";
+
     $processor = new JobQueueProcessor();
     $r = $processor->process($webDir);
 
     foreach (glob($webDir . DIRECTORY_SEPARATOR . '*.lock') as $filename) {
         unlink($filename);
+    }
+
+    if (is_null($r)) {
+      echo "\nWARNING: Jobs were not processed, because lock can not be acquired. You should manually lanch job processor.";
+    } else {
+        echo "\nJobs were executed.";
     }
 }
 
@@ -2489,7 +2497,7 @@ function waitCronJob()
  */
 function unlockCronJob($processor)
 {
-    $processor->unlock;
+    $processor->unlock();
 }
 
 /**
@@ -2709,10 +2717,8 @@ function main($argc, $argv)
 
     unlockCronJob($lock);
 
-    echo "\nExecute pending jobs.";
     runJobProcessorQueue();
-    echo "\nDone";
-    
+
     echo "\n";
     showMaintananceMode();
     echo "\n";
