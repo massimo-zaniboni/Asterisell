@@ -1034,7 +1034,7 @@ Fixed Line</td>
 <h3>Reseller Instance Configuration<a class="headerlink" href="#reseller-instance-configuration" title="Permalink to this headline">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
-<li>Install Asterisell for the reseller.</li>
+<li>Install Asterisell for the reseller, following the normal steps. In particular use a different/dedicated database for the reseller, and add his jobs to the cron.</li>
 <li>Set <cite>external_asterisell_voip_provider</cite> options inside <a class="reference internal" href="#main-configurations"><em>Main Configurations</em></a>. If the two instances are put on separated computers/network, you must create some script copying new CSV files in the main Asterisell instance, in a local directory of the reseller instance.</li>
 <li>Make sure that in <cite>always_scheduled_jobs</cite>, the jobs <cite>ImportCDRFromAsterisellProvider</cite> and <cite>CompareProviderCostWithCalculatedCost</cite> are active.</li>
 <li>Set vendor rates equal to the rates you apply to reseller on the main Asterisell instance. Note: CDRs imported on the reseller  instance will be checked, and the reseller will be informed if there is some difference between the cost of VoIP calls calculated from main  instance, and the cost calculated from reseller  instance, applying the vendor rates.</li>

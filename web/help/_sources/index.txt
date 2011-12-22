@@ -1070,7 +1070,7 @@ Asterisell will produce a unique invoice with all the calls of the VoIP accounts
 Reseller Instance Configuration
 -------------------------------
 
-  * Install Asterisell for the reseller.
+  * Install Asterisell for the reseller, following the normal steps. In particular use a different/dedicated database for the reseller, and add his jobs to the cron.
   * Set `external_asterisell_voip_provider` options inside :ref:`main_configurations`. If the two instances are put on separated computers/network, you must create some script copying new CSV files in the main Asterisell instance, in a local directory of the reseller instance.
   * Make sure that in `always_scheduled_jobs`, the jobs `ImportCDRFromAsterisellProvider` and `CompareProviderCostWithCalculatedCost` are active.
   * Set vendor rates equal to the rates you apply to reseller on the main Asterisell instance. Note: CDRs imported on the reseller  instance will be checked, and the reseller will be informed if there is some difference between the cost of VoIP calls calculated from main  instance, and the cost calculated from reseller  instance, applying the vendor rates. 
