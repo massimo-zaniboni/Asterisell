@@ -12,18 +12,9 @@ if [ "$BASE" = "scripts" ]; then
   ./symfony propel-build-model
   ./symfony propel-build-sql
 
-  echo ""
-  echo "WARNING: Replace manually occurrences of "
-  echo ""
-  echo "   'Type=InnoDB;'"
-  echo ""
-  echo " with "
-  echo ""
-  echo "   'Engine=InnoDB;'"
-  echo ""
-  echo "inside 'data/sql/lib.model.schema.sql'"
-  echo "for supporting recent versions of MySQL."
-    
+  # For supporting recent versions of MySQL
+  sed -i -e 's/Type=/Engine=/g' data/sql/lib.model.schema.sql
+
 else
   echo "Execute inside scripts directory."
 fi
