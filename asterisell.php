@@ -38,6 +38,11 @@ sfContext::getInstance();
 
 define('WEB_DIR', SF_ROOT_DIR . DIRECTORY_SEPARATOR . 'web');
 
+/**
+ * Special file where read user input.
+ */
+$input_line = fopen('php://stdin', 'r');
+
 main($argc, $argv);
 
 //////////////////////
@@ -54,6 +59,8 @@ main($argc, $argv);
  */
 function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
 {
+    global $input_line;
+
     // commands to apply
     $r = array();
     $i = 1;
@@ -242,6 +249,8 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
 
 function markUpgradeCommand($key)
 {
+    global $input_line;
+
     $c = new Criteria();
     $c->add(ArDatabaseVersionPeer::VERSION, $key);
     $rs = ArDatabaseVersionPeer::doSelectOne($c);
@@ -260,6 +269,8 @@ function markUpgradeCommand($key)
  */
 function isUpgradeFromVeryOldVersion()
 {
+    global $input_line;
+
 
     $connection = Propel::getConnection();
     $query = 'SELECT id FROM ar_database_version LIMIT 1';
@@ -291,6 +302,8 @@ function isUpgradeFromVeryOldVersion()
  */
 function isUpgradeFromOldVersion()
 {
+    global $input_line;
+
 
     $connection = Propel::getConnection();
     $query = 'SELECT id FROM ar_database_version LIMIT 1';
@@ -320,6 +333,8 @@ function isUpgradeFromOldVersion()
  */
 function isSafeReadConnection()
 {
+    global $input_line;
+
     $connection = Propel::getConnection();
     $query = 'SELECT id FROM cdr LIMIT 1';
 
@@ -341,6 +356,8 @@ function isSafeReadConnection()
  */
 function isSafeAlterConnection()
 {
+    global $input_line;
+
     $connection = Propel::getConnection();
     $stm = $connection->createStatement();
 
@@ -374,14 +391,14 @@ function isSafeAlterConnection()
  */
 function explicitConfirmForDeletion($isInteractive = TRUE)
 {
-    if ($isInteractive) {
-        $fh = fopen('php://stdin', 'r');
+    global $input_line;
 
+    if ($isInteractive) {
         list($database, $user, $password) = getDatabaseNameUserAndPassword();
 
         echo "\nWARNING: all data in database '$database' will be deleted. Are you sure? [y/N]";
 
-        $next_line = trim(fgets($fh, 1024));
+        $next_line = trim(fgets($input_line, 1024));
         if ($next_line === "y" || $next_line === "Y") {
         } else {
             echo "\nStop execution: database was not modified.\n";
@@ -392,6 +409,8 @@ function explicitConfirmForDeletion($isInteractive = TRUE)
 
 function myExecute($comment, $cmd)
 {
+    global $input_line;
+
     echo "\n$comment";
     echo "\nexecute> $cmd\n";
     system($cmd, $result);
@@ -399,23 +418,22 @@ function myExecute($comment, $cmd)
 
 function explicitContinue()
 {
-    $fh = fopen('php://stdin', 'r');
+    global $input_line;
 
     echo "\nPress Enter to continue...";
     echo "\n";
 
-    $next_line = trim(fgets($fh, 1024));
+    $next_line = trim(fgets($input_line, 1024));
 }
 
 function makeInstallCreateDatabase()
 {
-
-    $fh = fopen('php://stdin', 'r');
+    global $input_line;
 
     list($database, $user, $password) = getDatabaseNameUserAndPassword();
 
     echo "\nConfirm you want create database '$database', user '$user', with password '$password', as specified in file 'configure/databases.yms' [y/N]";
-    $next_line = trim(fgets($fh, 1024));
+    $next_line = trim(fgets($input_line, 1024));
     if ($next_line === "y" || $next_line === "Y") {
     } else {
         echo "\nStop execution: database data was not confirmed.\n";
@@ -423,10 +441,10 @@ function makeInstallCreateDatabase()
     }
 
     echo "\nEnter the name of MySQL administrator user, or another MySQL user that can create new databases: ";
-    $rootUser = trim(fgets($fh, 1024));
+    $rootUser = trim(fgets($input_line, 1024));
 
     echo "\nEnter the MySQL password of the administrator user $rootUser:  ";
-    $rootPassword = trim(fgets($fh, 1024));
+    $rootPassword = trim(fgets($input_line, 1024));
 
     myExecute("Drop '$database' database", "mysqladmin -u $rootUser --password=$rootPassword drop --force $database");
     myExecute("Create '$database' database", "mysqladmin -u $rootUser --password=$rootPassword create $database");
@@ -439,6 +457,8 @@ function makeInstallCreateDatabase()
 
 function makeInstallData()
 {
+    global $input_line;
+
 
     // this in the first installation of the database, so all upgrades are already applied, and mark them according
     // this simplify other pass of uprade.
@@ -455,6 +475,8 @@ function makeInstallData()
 
 function makeDatabaseBackup($isInteractive = TRUE)
 {
+    global $input_line;
+
 
     list($database, $user, $password) = getDatabaseNameUserAndPassword();
 
@@ -465,8 +487,7 @@ function makeDatabaseBackup($isInteractive = TRUE)
     if ($isInteractive) {
         echo "\nThe database can be backuped using the command\n   > $cmd";
         echo "\nCould I perform first a backup of the current database, without locking it? [Y/n]";
-        $fh = fopen('php://stdin', 'r');
-        $next_line = trim(fgets($fh, 1024));
+        $next_line = trim(fgets($input_line, 1024));
         if ($next_line === "n" || $next_line === "N") {
             $makeBackup = FALSE;
         }
@@ -485,7 +506,7 @@ function makeDatabaseBackup($isInteractive = TRUE)
  */
 function makeAppUpgrade()
 {
-    $fh = fopen('php://stdin', 'r');
+    global $input_line;
 
     echo "\nLock the application access to users, so code can be upgraded safely.";
     MyUser::lockCronForMaintanance();
@@ -493,7 +514,7 @@ function makeAppUpgrade()
 
     $cmd = sfConfig::get('app_git_upgrade_command');
     echo "\nConfirm the execution of `$cmd` for upgrading the source code? [y/N]";
-    $next_line = trim(fgets($fh, 1024));
+    $next_line = trim(fgets($input_line, 1024));
     if ($next_line === "y" || $next_line === "Y") {
         $continue = TRUE;
     }
@@ -508,12 +529,12 @@ function makeAppUpgrade()
 
 /**
  * Manage in a complete way the data upgrade procedure.
- * 
+ *
  * @return void
  */
 function makeDataUpgrade()
 {
-    $fh = fopen('php://stdin', 'r');
+    global $input_line;
 
     // Advise if the CDR table is involved
     $continue = FALSE;
@@ -528,7 +549,7 @@ function makeDataUpgrade()
         echo "\nThis command will display the starting and ending time, when the CDR table were locked.";
         echo "\n ";
         echo "\nContinue upgrading? [y/N]";
-        $next_line = trim(fgets($fh, 1024));
+        $next_line = trim(fgets($input_line, 1024));
         if ($next_line === "y" || $next_line === "Y") {
             $continue = TRUE;
         }
@@ -536,7 +557,7 @@ function makeDataUpgrade()
         echo "\nThis upgrading does not involve the CDR table, so there is no dangerous locking, or interruption of service.";
         echo "\n ";
         echo "\nContinue upgrading? [y/N]";
-        $next_line = trim(fgets($fh, 1024));
+        $next_line = trim(fgets($input_line, 1024));
         if ($next_line === "y" || $next_line === "Y") {
             $continue = TRUE;
         }
@@ -561,6 +582,8 @@ function makeDataUpgrade()
 
 function makeActivate()
 {
+    global $input_line;
+
     myExecute("Create default directories", "mkdir -p cache");
     myExecute("Create default directories", "mkdir -p log");
     myExecute("Create default directories", "mkdir -p web/generated_graphs");
@@ -581,8 +604,7 @@ function makeActivate()
     $user = sfConfig::get('app_web_server_user');
     $cmd = 'chown -R :' . $user . ' . ';
     echo "\nFix files ownership with command `$cmd`, assuming you are running as super user? [y/N] ";
-    $fh = fopen('php://stdin', 'r');
-    $next_line = trim(fgets($fh, 1024));
+    $next_line = trim(fgets($input_line, 1024));
     if ($next_line === "y" || $next_line === "Y") {
         myExecute("Fix ownerships", $cmd);
         explicitContinue();
@@ -606,6 +628,8 @@ function makeActivate()
  */
 function getDatabaseNameUserAndPassword()
 {
+    global $input_line;
+
     $value = sfYaml::load(file_get_contents(SF_ROOT_DIR . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'databases.yml'));
     $r = $value['all']['propel']['param'];
 
@@ -626,6 +650,8 @@ function getDatabaseNameUserAndPassword()
  */
 function runJobProcessorQueue()
 {
+    global $input_line;
+
     $webDir = realpath(WEB_DIR);
 
     $culture = sfConfig::get('app_culture');
@@ -643,7 +669,7 @@ function runJobProcessorQueue()
     }
 
     if (is_null($r)) {
-      echo "\nWARNING: Jobs were not processed, because lock can not be acquired. You should manually lanch job processor.";
+        echo "\nWARNING: Jobs were not processed, because lock can not be acquired. You should manually lanch job processor.";
     } else {
         echo "\nJobs were executed.";
     }
@@ -657,6 +683,8 @@ function myDelete($c, $t)
 
 function deleteAllData()
 {
+    global $input_line;
+
     echo "Deleting all data inside database.\n";
 
     // Delete all data from database, except upgrade table
@@ -782,6 +810,8 @@ function addNewTelephonePrefixes()
  */
 function createDefaultParams()
 {
+    global $input_line;
+
     $params = new ArParams();
     $params->setIsDefault(TRUE);
     $params->setName("Default");
@@ -826,6 +856,8 @@ function createDefaultParams()
  */
 function initWithDefaultData()
 {
+    global $input_line;
+
     try {
         deleteAllData();
 
@@ -1808,6 +1840,8 @@ function initWithRegressionData()
  */
 function checkRegressionData()
 {
+    global $input_line;
+
 
     // Rate all calls
     //
@@ -1852,6 +1886,8 @@ function checkRegressionData()
  */
 function initWithDemoData($recordsToAdd)
 {
+    global $input_line;
+
     try {
         deleteAllData();
 
@@ -2349,54 +2385,54 @@ function initWithDemoData($recordsToAdd)
         //////////////
 
         $telephone_numbers = array("3905956565656",
-                                   "3905194234234",
-                                   "3932894234234",
-                                   "3933394234234",
-                                   "3944894234234",
-                                   "545494234234234",
-                                   "54544234234234",
-                                   "54541111122333",
-                                   "545491234333",
-                                   "559872342333",
-                                   "5599721234333",
-                                   "559993423423423",
-                                   "559993423423423",
-                                   "55999342342423",
-                                   "559993422368",
-                                   "5599934239999",
-                                   "17094234234234",
-                                   "17077824234234",
-                                   "17077824234234",
-                                   "17077824666544",
-                                   "17077824456453",
-                                   "861893345345345",
-                                   "861893345234234",
-                                   "861893343333",
-                                   "86189334534434",
-                                   "8622242342344",
-                                   "8623423442444",
-                                   "86234234424234",
-                                   "8623423442898",
-                                   "8623423442978",
-                                   "454288234234",
-                                   "454288234234",
-                                   "4542882344563",
-                                   "45428823466467",
-                                   "45428823426868",
-                                   "454253811231234",
-                                   "454253811231234",
-                                   "4542538112334534",
-                                   "33607345345345",
-                                   "3360734534523423",
-                                   "336073453453345",
-                                   "33607345345666",
-                                   "33607345348887",
-                                   "3360734534598989",
-                                   "33607345345385645",
-                                   "33677222343434",
-                                   "3367722555664",
-                                   "33677222366546",
-                                   "336772223466565");
+            "3905194234234",
+            "3932894234234",
+            "3933394234234",
+            "3944894234234",
+            "545494234234234",
+            "54544234234234",
+            "54541111122333",
+            "545491234333",
+            "559872342333",
+            "5599721234333",
+            "559993423423423",
+            "559993423423423",
+            "55999342342423",
+            "559993422368",
+            "5599934239999",
+            "17094234234234",
+            "17077824234234",
+            "17077824234234",
+            "17077824666544",
+            "17077824456453",
+            "861893345345345",
+            "861893345234234",
+            "861893343333",
+            "86189334534434",
+            "8622242342344",
+            "8623423442444",
+            "86234234424234",
+            "8623423442898",
+            "8623423442978",
+            "454288234234",
+            "454288234234",
+            "4542882344563",
+            "45428823466467",
+            "45428823426868",
+            "454253811231234",
+            "454253811231234",
+            "4542538112334534",
+            "33607345345345",
+            "3360734534523423",
+            "336073453453345",
+            "33607345345666",
+            "33607345348887",
+            "3360734534598989",
+            "33607345345385645",
+            "33677222343434",
+            "3367722555664",
+            "33677222366546",
+            "336772223466565");
 
         $ar_asterisk_accounts = array("alpha1", "beta1", "beta2", "gamma1", "gamma2", "gamma3");
         $ar_channels = array("incoming", "outgoing", "internal");
@@ -2475,6 +2511,7 @@ function addRandomCDR(
  */
 function waitCronJob()
 {
+    global $input_line;
 
     $waitSeconds = 5;
 
@@ -2526,7 +2563,10 @@ function unlockHaltedJobs()
     $processor->forceUnlockOfHaltedWebProcess();
 }
 
-function showMaintananceMode() {
+function showMaintananceMode()
+{
+
+    global $input_line;
 
     if (MyUser::isCronLockedForMaintanance()) {
         echo "\nWARNING:";
@@ -2547,6 +2587,8 @@ function showMaintananceMode() {
 
 function displayUsage()
 {
+    global $input_line;
+
     echo "\nUsage:\n";
     echo "\nphp asterisell.php help";
     echo "\n  this help";
@@ -2612,6 +2654,7 @@ function displayUsage()
 
 function main($argc, $argv)
 {
+    global $input_line;
 
     $mainCommand = trim($argv[1]);
     $subCommand = trim($argv[2]);
@@ -2672,7 +2715,7 @@ function main($argc, $argv)
     if ($mainCommand === "install") {
         // perform the second step of installation
         makeInstallData();
-    } else  if ($mainCommand === "activate") {
+    } else if ($mainCommand === "activate") {
         makeActivate();
     } else if ($mainCommand === "app") {
         if ($subCommand === "enable") {
