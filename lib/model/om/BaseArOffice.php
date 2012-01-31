@@ -46,6 +46,12 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 	protected $lastArWebAccountCriteria = null;
 
 	
+	protected $collArAsteriskAccounRangeCreations;
+
+	
+	protected $lastArAsteriskAccounRangeCreationCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -283,6 +289,14 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collArAsteriskAccounRangeCreations !== null) {
+				foreach($this->collArAsteriskAccounRangeCreations as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -348,6 +362,14 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 
 				if ($this->collArWebAccounts !== null) {
 					foreach($this->collArWebAccounts as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collArAsteriskAccounRangeCreations !== null) {
+					foreach($this->collArAsteriskAccounRangeCreations as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -504,6 +526,10 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 
 			foreach($this->getArWebAccounts() as $relObj) {
 				$copyObj->addArWebAccount($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getArAsteriskAccounRangeCreations() as $relObj) {
+				$copyObj->addArAsteriskAccounRangeCreation($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -832,6 +858,76 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 		$this->lastArWebAccountCriteria = $criteria;
 
 		return $this->collArWebAccounts;
+	}
+
+	
+	public function initArAsteriskAccounRangeCreations()
+	{
+		if ($this->collArAsteriskAccounRangeCreations === null) {
+			$this->collArAsteriskAccounRangeCreations = array();
+		}
+	}
+
+	
+	public function getArAsteriskAccounRangeCreations($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArAsteriskAccounRangeCreationPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArAsteriskAccounRangeCreations === null) {
+			if ($this->isNew()) {
+			   $this->collArAsteriskAccounRangeCreations = array();
+			} else {
+
+				$criteria->add(ArAsteriskAccounRangeCreationPeer::AR_OFFICE_ID, $this->getId());
+
+				ArAsteriskAccounRangeCreationPeer::addSelectColumns($criteria);
+				$this->collArAsteriskAccounRangeCreations = ArAsteriskAccounRangeCreationPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArAsteriskAccounRangeCreationPeer::AR_OFFICE_ID, $this->getId());
+
+				ArAsteriskAccounRangeCreationPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArAsteriskAccounRangeCreationCriteria) || !$this->lastArAsteriskAccounRangeCreationCriteria->equals($criteria)) {
+					$this->collArAsteriskAccounRangeCreations = ArAsteriskAccounRangeCreationPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArAsteriskAccounRangeCreationCriteria = $criteria;
+		return $this->collArAsteriskAccounRangeCreations;
+	}
+
+	
+	public function countArAsteriskAccounRangeCreations($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArAsteriskAccounRangeCreationPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArAsteriskAccounRangeCreationPeer::AR_OFFICE_ID, $this->getId());
+
+		return ArAsteriskAccounRangeCreationPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArAsteriskAccounRangeCreation(ArAsteriskAccounRangeCreation $l)
+	{
+		$this->collArAsteriskAccounRangeCreations[] = $l;
+		$l->setArOffice($this);
 	}
 
 } 

@@ -10,6 +10,6 @@ all:
       #   * scripts/initdb.sh
       #
       database:   asterisell3
-      username:   root
-      password:   root
+      username:   asterisellfree
+      password:   free
       encoding:   utf8

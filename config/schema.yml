@@ -896,4 +896,26 @@ propel:
     
     installation_date: timestamp
     
-    
+  ar_asterisk_accoun_range_creation:
+  #
+  # requests of voip range creation, made from the users
+
+    id:
+
+    ar_office_id:
+
+    prefix: varchar(255)
+
+    suffix: varchar(255)
+
+    start_range: { type: integer, size: 10, required: true }
+
+    end_range: { type: integer, size: 10, required: true}
+
+    leading_zero: { type: integer, size: 3, required: true}
+
+    is_delete: { type: boolean, required: true, default: false }
+
+    is_physical_delete: { type: boolean, required: true, default: false }
+
+    user_note: longvarchar
