@@ -46,10 +46,10 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 	protected $lastArWebAccountCriteria = null;
 
 	
-	protected $collArAsteriskAccounRangeCreations;
+	protected $collArAsteriskAccountRangeCreations;
 
 	
-	protected $lastArAsteriskAccounRangeCreationCriteria = null;
+	protected $lastArAsteriskAccountRangeCreationCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -289,8 +289,8 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collArAsteriskAccounRangeCreations !== null) {
-				foreach($this->collArAsteriskAccounRangeCreations as $referrerFK) {
+			if ($this->collArAsteriskAccountRangeCreations !== null) {
+				foreach($this->collArAsteriskAccountRangeCreations as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -368,8 +368,8 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collArAsteriskAccounRangeCreations !== null) {
-					foreach($this->collArAsteriskAccounRangeCreations as $referrerFK) {
+				if ($this->collArAsteriskAccountRangeCreations !== null) {
+					foreach($this->collArAsteriskAccountRangeCreations as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -528,8 +528,8 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 				$copyObj->addArWebAccount($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getArAsteriskAccounRangeCreations() as $relObj) {
-				$copyObj->addArAsteriskAccounRangeCreation($relObj->copy($deepCopy));
+			foreach($this->getArAsteriskAccountRangeCreations() as $relObj) {
+				$copyObj->addArAsteriskAccountRangeCreation($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -861,17 +861,17 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initArAsteriskAccounRangeCreations()
+	public function initArAsteriskAccountRangeCreations()
 	{
-		if ($this->collArAsteriskAccounRangeCreations === null) {
-			$this->collArAsteriskAccounRangeCreations = array();
+		if ($this->collArAsteriskAccountRangeCreations === null) {
+			$this->collArAsteriskAccountRangeCreations = array();
 		}
 	}
 
 	
-	public function getArAsteriskAccounRangeCreations($criteria = null, $con = null)
+	public function getArAsteriskAccountRangeCreations($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseArAsteriskAccounRangeCreationPeer.php';
+				include_once 'lib/model/om/BaseArAsteriskAccountRangeCreationPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -880,36 +880,36 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collArAsteriskAccounRangeCreations === null) {
+		if ($this->collArAsteriskAccountRangeCreations === null) {
 			if ($this->isNew()) {
-			   $this->collArAsteriskAccounRangeCreations = array();
+			   $this->collArAsteriskAccountRangeCreations = array();
 			} else {
 
-				$criteria->add(ArAsteriskAccounRangeCreationPeer::AR_OFFICE_ID, $this->getId());
+				$criteria->add(ArAsteriskAccountRangeCreationPeer::AR_OFFICE_ID, $this->getId());
 
-				ArAsteriskAccounRangeCreationPeer::addSelectColumns($criteria);
-				$this->collArAsteriskAccounRangeCreations = ArAsteriskAccounRangeCreationPeer::doSelect($criteria, $con);
+				ArAsteriskAccountRangeCreationPeer::addSelectColumns($criteria);
+				$this->collArAsteriskAccountRangeCreations = ArAsteriskAccountRangeCreationPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(ArAsteriskAccounRangeCreationPeer::AR_OFFICE_ID, $this->getId());
+				$criteria->add(ArAsteriskAccountRangeCreationPeer::AR_OFFICE_ID, $this->getId());
 
-				ArAsteriskAccounRangeCreationPeer::addSelectColumns($criteria);
-				if (!isset($this->lastArAsteriskAccounRangeCreationCriteria) || !$this->lastArAsteriskAccounRangeCreationCriteria->equals($criteria)) {
-					$this->collArAsteriskAccounRangeCreations = ArAsteriskAccounRangeCreationPeer::doSelect($criteria, $con);
+				ArAsteriskAccountRangeCreationPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArAsteriskAccountRangeCreationCriteria) || !$this->lastArAsteriskAccountRangeCreationCriteria->equals($criteria)) {
+					$this->collArAsteriskAccountRangeCreations = ArAsteriskAccountRangeCreationPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastArAsteriskAccounRangeCreationCriteria = $criteria;
-		return $this->collArAsteriskAccounRangeCreations;
+		$this->lastArAsteriskAccountRangeCreationCriteria = $criteria;
+		return $this->collArAsteriskAccountRangeCreations;
 	}
 
 	
-	public function countArAsteriskAccounRangeCreations($criteria = null, $distinct = false, $con = null)
+	public function countArAsteriskAccountRangeCreations($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseArAsteriskAccounRangeCreationPeer.php';
+				include_once 'lib/model/om/BaseArAsteriskAccountRangeCreationPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -918,15 +918,15 @@ abstract class BaseArOffice extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(ArAsteriskAccounRangeCreationPeer::AR_OFFICE_ID, $this->getId());
+		$criteria->add(ArAsteriskAccountRangeCreationPeer::AR_OFFICE_ID, $this->getId());
 
-		return ArAsteriskAccounRangeCreationPeer::doCount($criteria, $distinct, $con);
+		return ArAsteriskAccountRangeCreationPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addArAsteriskAccounRangeCreation(ArAsteriskAccounRangeCreation $l)
+	public function addArAsteriskAccountRangeCreation(ArAsteriskAccountRangeCreation $l)
 	{
-		$this->collArAsteriskAccounRangeCreations[] = $l;
+		$this->collArAsteriskAccountRangeCreations[] = $l;
 		$l->setArOffice($this);
 	}
 

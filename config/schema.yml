@@ -896,7 +896,7 @@ propel:
     
     installation_date: timestamp
     
-  ar_asterisk_accoun_range_creation:
+  ar_asterisk_account_range_creation:
   #
   # requests of voip range creation, made from the users
 

@@ -569,13 +569,13 @@ CREATE TABLE `ar_database_version`
 )Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- ar_asterisk_accoun_range_creation
+#-- ar_asterisk_account_range_creation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `ar_asterisk_accoun_range_creation`;
+DROP TABLE IF EXISTS `ar_asterisk_account_range_creation`;
 
 
-CREATE TABLE `ar_asterisk_accoun_range_creation`
+CREATE TABLE `ar_asterisk_account_range_creation`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`ar_office_id` INTEGER,
@@ -588,8 +588,8 @@ CREATE TABLE `ar_asterisk_accoun_range_creation`
 	`is_physical_delete` INTEGER default 0 NOT NULL,
 	`user_note` TEXT,
 	PRIMARY KEY (`id`),
-	INDEX `ar_asterisk_accoun_range_creation_FI_1` (`ar_office_id`),
-	CONSTRAINT `ar_asterisk_accoun_range_creation_FK_1`
+	INDEX `ar_asterisk_account_range_creation_FI_1` (`ar_office_id`),
+	CONSTRAINT `ar_asterisk_account_range_creation_FK_1`
 		FOREIGN KEY (`ar_office_id`)
 		REFERENCES `ar_office` (`id`)
 )Engine=InnoDB;
