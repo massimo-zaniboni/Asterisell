@@ -8,7 +8,7 @@ generator:
       destination_type:        { name: Type }
       iscurrent:               { name: Is current, help: "The rate is applicable to new calls." }
       my_customer_or_vendor:   { name: On call performed by, help: "Rate is applicable on calls performed by customers of the specified category or routed from the specified vendor." }
-      my_customer:             { name: On Customer, help: "Rate is applicable on customers of the specified price category." }
+      my_customer:             { name: On price category, help: "Rate is applicable on customers of the specified price category." }
       my_vendor:               { name: For Vendor, help: "Rate is applicated from the specified vendor." }
       ar_rate_category_id:     { name: Price Category }
       ar_party:                { name: Vendor }
