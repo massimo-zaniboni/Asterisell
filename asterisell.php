@@ -161,6 +161,7 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
 
     $secondRunIndex = $i;
     $r[$i++] = "UPDATE ar_invoice SET displayed_online = 1 WHERE already_sent = 1;";
+    $r[$i++] = "CREATE TABLE `ar_asterisk_account_range` (	`id` INTEGER  NOT NULL AUTO_INCREMENT,	`ar_office_id` INTEGER,	`system_prefix` VARCHAR(255),	`system_suffix` VARCHAR(255),	`system_start_range` INTEGER(10)  NOT NULL,	`system_end_range` INTEGER(10)  NOT NULL,	`system_leading_zero` INTEGER(3)  NOT NULL,	`is_delete` INTEGER default 0 NOT NULL,	`is_physical_delete` INTEGER default 0 NOT NULL,	`user_prefix` VARCHAR(255),	`user_suffix` VARCHAR(255),	`user_start_range` INTEGER(10)  NOT NULL,	`generate_range_for_users` INTEGER default 1 NOT NULL,	`user_leading_zero` INTEGER(3)  NOT NULL,	`user_note` TEXT,	PRIMARY KEY (`id`),	INDEX `ar_asterisk_account_range_FI_1` (`ar_office_id`),	CONSTRAINT `ar_asterisk_account_range_FK_1`		FOREIGN KEY (`ar_office_id`)		REFERENCES `ar_office` (`id`))Engine=InnoDB;";
 
     // recent installation, with already upgrade table, but with a bug in notification process
 
@@ -691,6 +692,7 @@ function deleteAllData()
     //
     $connection = Propel::getConnection();
     myDelete($connection, "ar_job_queue");
+    myDelete($connection, "ar_asterisk_account_range");
     myDelete($connection, "ar_invoice_creation");
     myDelete($connection, "ar_invoice");
     myDelete($connection, "ar_problem");

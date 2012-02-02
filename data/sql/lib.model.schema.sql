@@ -569,27 +569,32 @@ CREATE TABLE `ar_database_version`
 )Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- ar_asterisk_account_range_creation
+#-- ar_asterisk_account_range
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `ar_asterisk_account_range_creation`;
+DROP TABLE IF EXISTS `ar_asterisk_account_range`;
 
 
-CREATE TABLE `ar_asterisk_account_range_creation`
+CREATE TABLE `ar_asterisk_account_range`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`ar_office_id` INTEGER,
-	`prefix` VARCHAR(255),
-	`suffix` VARCHAR(255),
-	`start_range` INTEGER(10)  NOT NULL,
-	`end_range` INTEGER(10)  NOT NULL,
-	`leading_zero` INTEGER(3)  NOT NULL,
+	`system_prefix` VARCHAR(255),
+	`system_suffix` VARCHAR(255),
+	`system_start_range` INTEGER(10)  NOT NULL,
+	`system_end_range` INTEGER(10)  NOT NULL,
+	`system_leading_zero` INTEGER(3)  NOT NULL,
 	`is_delete` INTEGER default 0 NOT NULL,
 	`is_physical_delete` INTEGER default 0 NOT NULL,
+	`user_prefix` VARCHAR(255),
+	`user_suffix` VARCHAR(255),
+	`user_start_range` INTEGER(10)  NOT NULL,
+	`generate_range_for_users` INTEGER default 1 NOT NULL,
+	`user_leading_zero` INTEGER(3)  NOT NULL,
 	`user_note` TEXT,
 	PRIMARY KEY (`id`),
-	INDEX `ar_asterisk_account_range_creation_FI_1` (`ar_office_id`),
-	CONSTRAINT `ar_asterisk_account_range_creation_FK_1`
+	INDEX `ar_asterisk_account_range_FI_1` (`ar_office_id`),
+	CONSTRAINT `ar_asterisk_account_range_FK_1`
 		FOREIGN KEY (`ar_office_id`)
 		REFERENCES `ar_office` (`id`)
 )Engine=InnoDB;

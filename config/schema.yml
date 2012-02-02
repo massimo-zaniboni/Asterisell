@@ -895,27 +895,38 @@ propel:
     version: varchar(255)
     
     installation_date: timestamp
-    
-  ar_asterisk_account_range_creation:
+
+  ar_asterisk_account_range:
   #
   # requests of voip range creation, made from the users
+  # NOTE: the _creation ending name causes internal problems with symfony...
 
     id:
 
     ar_office_id:
 
-    prefix: varchar(255)
+    system_prefix: varchar(255)
 
-    suffix: varchar(255)
+    system_suffix: varchar(255)
 
-    start_range: { type: integer, size: 10, required: true }
+    system_start_range: { type: integer, size: 10, required: true }
 
-    end_range: { type: integer, size: 10, required: true}
+    system_end_range: { type: integer, size: 10, required: true}
 
-    leading_zero: { type: integer, size: 3, required: true}
+    system_leading_zero: { type: integer, size: 3, required: true}
 
     is_delete: { type: boolean, required: true, default: false }
 
     is_physical_delete: { type: boolean, required: true, default: false }
+
+    user_prefix: varchar(255)
+
+    user_suffix: varchar(255)
+
+    user_start_range: { type: integer, size: 10, required: true }
+
+    generate_range_for_users: { type: boolean, required: true, default: true }
+
+    user_leading_zero: { type: integer, size: 3, required: true}
 
     user_note: longvarchar
