@@ -909,11 +909,11 @@ propel:
 
     system_suffix: varchar(255)
 
-    system_start_range: { type: integer, size: 10, required: true }
+    system_start_range: { type: integer, size: 18, required: true }
 
-    system_end_range: { type: integer, size: 10, required: true}
+    system_end_range: { type: integer, size: 18, required: true}
 
-    system_leading_zero: { type: integer, size: 3, required: true}
+    system_leading_zero: { type: integer, size: 4, required: true}
 
     is_delete: { type: boolean, required: true, default: false }
 
@@ -923,10 +923,10 @@ propel:
 
     user_suffix: varchar(255)
 
-    user_start_range: { type: integer, size: 10, required: true }
+    user_start_range: { type: integer, size: 18, required: true }
 
     generate_range_for_users: { type: boolean, required: true, default: true }
 
-    user_leading_zero: { type: integer, size: 3, required: true}
+    user_leading_zero: { type: integer, size: 4, required: true}
 
-    user_note: longvarchar
+    user_note: varchar(6048)

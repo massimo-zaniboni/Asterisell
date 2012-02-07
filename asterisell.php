@@ -1,8 +1,8 @@
 <?php
 
-/* $LICENSE 2011:
+/* $LICENSE 2011, 2012:
  *
- * Copyright (C) 2011 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
+ * Copyright (C) 2011, 2012 Massimo Zaniboni <massimo.zaniboni@profitoss.com>
  *
  * This file is part of Asterisell.
  *
@@ -162,6 +162,13 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
     $secondRunIndex = $i;
     $r[$i++] = "UPDATE ar_invoice SET displayed_online = 1 WHERE already_sent = 1;";
     $r[$i++] = "CREATE TABLE `ar_asterisk_account_range` (	`id` INTEGER  NOT NULL AUTO_INCREMENT,	`ar_office_id` INTEGER,	`system_prefix` VARCHAR(255),	`system_suffix` VARCHAR(255),	`system_start_range` INTEGER(10)  NOT NULL,	`system_end_range` INTEGER(10)  NOT NULL,	`system_leading_zero` INTEGER(3)  NOT NULL,	`is_delete` INTEGER default 0 NOT NULL,	`is_physical_delete` INTEGER default 0 NOT NULL,	`user_prefix` VARCHAR(255),	`user_suffix` VARCHAR(255),	`user_start_range` INTEGER(10)  NOT NULL,	`generate_range_for_users` INTEGER default 1 NOT NULL,	`user_leading_zero` INTEGER(3)  NOT NULL,	`user_note` TEXT,	PRIMARY KEY (`id`),	INDEX `ar_asterisk_account_range_FI_1` (`ar_office_id`),	CONSTRAINT `ar_asterisk_account_range_FK_1`		FOREIGN KEY (`ar_office_id`)		REFERENCES `ar_office` (`id`))Engine=InnoDB;";
+    $r[$i++] = "ALTER TABLE `ar_asterisk_account_range` MODIFY COLUMN system_start_range INTEGER(18) NOT NULL, MODIFY COLUMN system_end_range INTEGER(18) NOT NULL, MODIFY COLUMN
+     `system_leading_zero` INTEGER(4)  NOT NULL, MODIFY COLUMN `user_start_range` INTEGER(18)  NOT NULL, MODIFY COLUMN `generate_range_for_users` INTEGER default 1 NOT NULL, MODIFY COLUMN 	`user_leading_zero` INTEGER(4)  NOT NULL, MODIFY COLUMN	`user_note` VARCHAR(6048);";
+
+    // END OF UPGRADES //
+    /////////////////////
+
+    $totCommands = $i;
 
     // recent installation, with already upgrade table, but with a bug in notification process
 
@@ -173,10 +180,11 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
     // Upgrade the database
     $time1 = time();
 
-    $cdrModified = FALSE;
+    $cdrTableModified = FALSE;
 
     $connection = Propel::getConnection();
 
+    $countCommands = 0;
     foreach ($r as $key => $cmd) {
         $cmd_alreadyApplied = FALSE;
         $cmd_apply = $applyCommands;
@@ -209,13 +217,14 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
 
         if ($cmd_testForModifiedCDR) {
             if (array_key_exists($key, $cdrCommandIndexes)) {
-                $cdrModified = TRUE;
+                $cdrTableModified = TRUE;
             }
         }
 
         $cmd_store = $storeCommands;
 
         if ($cmd_apply) {
+            $countCommands++;
             echo "\n$key:\n$cmd";
 
             try {
@@ -230,6 +239,7 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
                     echo "\nERROR: if you execute upgrade again, this command will be retried again. ";
                 }
                 echo "\nThe error message is: " . $e->getMessage() . "\n";
+                explicitContinue();
             }
         }
 
@@ -242,10 +252,10 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
     $time2 = time();
 
     if ($applyCommands) {
-        echo "\n\nUpgrading started at " . date("r", $time1) . " and completed at " . date("r", $time2) . "\nDuring this time the dabase was locked.\n";
+        echo "\n\nUpgrading started at " . date("r", $time1) . " and completed at " . date("r", $time2) . "\nDuring this time the dabase was locked.\nApplied $countCommands upgrade commands.";
     }
 
-    return $cdrModified;
+    return $cdrTableModified;
 }
 
 function markUpgradeCommand($key)
@@ -271,7 +281,6 @@ function markUpgradeCommand($key)
 function isUpgradeFromVeryOldVersion()
 {
     global $input_line;
-
 
     $connection = Propel::getConnection();
     $query = 'SELECT id FROM ar_database_version LIMIT 1';
@@ -561,6 +570,8 @@ function makeDataUpgrade()
         $next_line = trim(fgets($input_line, 1024));
         if ($next_line === "y" || $next_line === "Y") {
             $continue = TRUE;
+        } else {
+            echo "\nWARNING: Upgrading procedure STOPPED.\n";
         }
     }
 
