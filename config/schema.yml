@@ -909,9 +909,11 @@ propel:
 
     system_suffix: varchar(255)
 
-    system_start_range: { type: integer, size: 18, required: true }
+    system_start_range: { type: varchar(18), required: true }
+    # use varchar because otherwise with integer there are errors during conversion, for big size
 
-    system_end_range: { type: integer, size: 18, required: true}
+    system_end_range: { type: varchar(18), required: true }
+    # use varchar because otherwise with integer there are errors during conversion, for big size
 
     system_leading_zero: { type: integer, size: 4, required: true}
 
@@ -923,7 +925,8 @@ propel:
 
     user_suffix: varchar(255)
 
-    user_start_range: { type: integer, size: 18, required: true }
+    user_start_range: { type: varchar(18), required: true }
+    # use varchar because otherwise with integer there are errors during conversion, for big size
 
     generate_range_for_users: { type: boolean, required: true, default: true }
 
