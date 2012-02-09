@@ -833,8 +833,6 @@ function createDefaultParams()
         $params->setIsDefault(TRUE);
         $params->setName("Default");
         $params->setIsDefault(TRUE);
-        $params->setIsAdministrator(TRUE);
-        $params->setCanViewCosts(TRUE);
         $params->setServiceName("Asterisell");
         $params->setServiceProviderWebsite("http://voipinfo.example.com");
         $params->setLegalWebsite("http://www.example.com");
