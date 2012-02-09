@@ -614,6 +614,7 @@ CREATE TABLE `ar_document`
 	`document_date` DATE,
 	`document` LONGBLOB,
 	`mime_type` VARCHAR(256),
+	`already_opened` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `ar_document_FI_1` (`ar_party_id`),
 	CONSTRAINT `ar_document_FK_1`

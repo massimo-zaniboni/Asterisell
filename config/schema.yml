@@ -950,3 +950,5 @@ propel:
 
     mime_type: varchar(256)
 
+    already_opened: { type: boolean, required: true, default: false }
+
