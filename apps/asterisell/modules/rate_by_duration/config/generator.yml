@@ -21,7 +21,7 @@ generator:
 
       internal_telephone_prefix: { name: Internal telephone number, help: "This rate will be applied only to calls having an internal telephone number with the specified prefix. Read general Asterisell instructions, about the precise meaning of internal and external telephone numbers." }
 
-      external_telephone_prefix: { name: External telephone number, help: "This rate will be applied only to calls, having an external telephone number starting with the specified prefix. Read general Asterisell instructions, about the precise meaning of internal and external telephone numbers." }
+      external_telephone_prefix: { name: External telephone number, help: "This rate will be applied only to calls, having an external telephone number starting with the specified prefix. The rate with the best match is selected. Read general Asterisell instructions, about the precise meaning of internal and external telephone numbers." }
       
       cost_on_call: { name: Cost on call, help: "The initial cost of the call, indipendently from the call duration." }
  
