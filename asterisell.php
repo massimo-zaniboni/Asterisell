@@ -169,12 +169,6 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
 
     $totCommands = $i;
 
-    $r[$i++] = "ALTER TABLE ar_params ADD `is_administrator` INTEGER default 0 NOT NULL, ADD `can_view_costs` INTEGER default 0 NOT NULL;";
-
-    // old ar_params have by defuault all the privileges
-    $r[$i++] = "UPDATE ar_params SET `is_administrator` = 1;";
-    $r[$i++] = "UPDATE ar_params SET `can_view_costs` = 1;";
-
     // recent installation, with already upgrade table, but with a bug in notification process
 
     $firstRun = isUpgradeFromVeryOldVersion();
