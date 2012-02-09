@@ -169,6 +169,12 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
 
     $totCommands = $i;
 
+    $r[$i++] = "ALTER TABLE ar_params ADD `is_administrator` INTEGER default 0 NOT NULL, ADD `can_view_costs` INTEGER default 0 NOT NULL;";
+
+    // old ar_params have by defuault all the privileges
+    $r[$i++] = "UPDATE ar_params SET `is_administrator` = 1;";
+    $r[$i++] = "UPDATE ar_params SET `can_view_costs` = 1;";
+
     // recent installation, with already upgrade table, but with a bug in notification process
 
     $firstRun = isUpgradeFromVeryOldVersion();
@@ -824,41 +830,49 @@ function createDefaultParams()
 {
     global $input_line;
 
-    $params = new ArParams();
-    $params->setIsDefault(TRUE);
-    $params->setName("Default");
-    $params->setServiceName("Asterisell");
-    $params->setServiceProviderWebsite("http://voipinfo.example.com");
-    $params->setLegalWebsite("http://www.example.com");
-    $params->setServiceProviderEmail("info@example.com");
-    $params->setLogoImage("asterisell.png");
-    $params->setLogoImageInInvoices("asterisell.jpeg");
-    $params->setSlogan("web application for rating, displaying, and billing VoIP calls.");
-    $params->setFooter("<center>For info contact:<a href=\"mailto:info@example.com\">info@example.com</a></center>");
-    $params->setUserMessage("");
+    $c = new Criteria();
+    $c->add(ArParamsPeer::IS_DEFAULT, TRUE);
+    $params = ArParamsPeer::doSelectOne($c);
 
-    $params->setVatTaxPercAsPhpDecimal("20");
+    if (is_null($params)) {
+        $params = new ArParams();
+        $params->setIsDefault(TRUE);
+        $params->setName("Default");
+        $params->setIsDefault(TRUE);
+        $params->setIsAdministrator(TRUE);
+        $params->setCanViewCosts(TRUE);
+        $params->setServiceName("Asterisell");
+        $params->setServiceProviderWebsite("http://voipinfo.example.com");
+        $params->setLegalWebsite("http://www.example.com");
+        $params->setServiceProviderEmail("info@example.com");
+        $params->setLogoImage("asterisell.png");
+        $params->setLogoImageInInvoices("asterisell.jpeg");
+        $params->setSlogan("open source web application for rating, showing to customers, and billing Asterisk VoIP calls.");
+        $params->setFooter("<center>For info contact:<a href=\"mailto:info@example.com\">info@example.com</a></center>");
+        $params->setUserMessage("");
+        $params->setVatTaxPercAsPhpDecimal("20");
 
-    $params->setLegalName("ACME Example VoIP Corporation");
-    $params->setVat("WRLD12345678909876");
-    $params->setLegalAddress("Street By Example");
-    $params->setLegalCity("Soliera");
-    $params->setLegalZipcode("41019");
-    $params->setLegalStateProvince("Modena");
-    $params->setLegalCountry("Italy");
-    $params->setLegalEmail("acme@example.com");
-    $params->setLegalPhone("+0 000-0000");
+        $params->setLegalName("ACME Example VoIP Corporation");
+        $params->setVat("WRLD12345678909876");
+        $params->setLegalAddress("Street By Example");
+        $params->setLegalCity("Soliera");
+        $params->setLegalZipcode("41019");
+        $params->setLegalStateProvince("Modena");
+        $params->setLegalCountry("Italy");
+        $params->setLegalEmail("acme@example.com");
+        $params->setLegalPhone("+0 000-0000");
 
-    $params->setSenderNameOnInvoicingEmails("ACME Corporation");
-    $params->setInvoicingEmailAddress("sales@acme.example.com");
-    $params->setSmtpHost("");
-    $params->setSmtpPort("");
-    $params->setSmtpUsername("");
-    $params->setSmtpPassword("");
-    $params->setSmtpEncryption("");
-    $params->setSmtpReconnectAfterNrOfMessages("");
-    $params->setSmtpSecondsOfPauseAfterReconnection(0);
-    $params->save();
+        $params->setSenderNameOnInvoicingEmails("ACME Corporation");
+        $params->setInvoicingEmailAddress("sales@acme.example.com");
+        $params->setSmtpHost("");
+        $params->setSmtpPort("");
+        $params->setSmtpUsername("");
+        $params->setSmtpPassword("");
+        $params->setSmtpEncryption("");
+        $params->setSmtpReconnectAfterNrOfMessages("");
+        $params->setSmtpSecondsOfPauseAfterReconnection(0);
+        $params->save();
+    }
 
     return $params->getId();
 }
@@ -868,8 +882,6 @@ function createDefaultParams()
  */
 function initWithDefaultData()
 {
-    global $input_line;
-
     try {
         deleteAllData();
 
@@ -1093,6 +1105,12 @@ function initWithDefaultData()
 
 function addRootUser($password, $defaultParamsId)
 {
+    // Delete old root users
+    $conn = Propel::getConnection();
+    $sql = "DELETE FROM ar_web_account WHERE login = 'root';";
+    $conn->executeUpdate($sql);
+
+    // Add new root user
     $w = new ArWebAccount();
     $w->setLogin("root");
     $w->setPassword($password);
@@ -1105,7 +1123,6 @@ function addRootUser($password, $defaultParamsId)
 
     echo "\nCreated root user with name \"root\" and password \"$password\".\n";
 }
-
 
 /**
  * Insert regression data

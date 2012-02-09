@@ -130,5 +130,9 @@ class ArParamsMapBuilder {
 
 		$tMap->addColumn('LOGIN_URN', 'LoginUrn', 'string', CreoleTypes::VARCHAR, false, 512);
 
+		$tMap->addColumn('IS_ADMINISTRATOR', 'IsAdministrator', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
+		$tMap->addColumn('CAN_VIEW_COSTS', 'CanViewCosts', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
 	} 
 } 
