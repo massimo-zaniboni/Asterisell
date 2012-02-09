@@ -599,5 +599,27 @@ CREATE TABLE `ar_asterisk_account_range`
 		REFERENCES `ar_office` (`id`)
 )Engine=InnoDB;
 
+#-----------------------------------------------------------------------------
+#-- ar_document
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `ar_document`;
+
+
+CREATE TABLE `ar_document`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`ar_party_id` INTEGER,
+	`document_name` VARCHAR(128),
+	`document_date` DATE,
+	`document` LONGBLOB,
+	`mime_type` VARCHAR(256),
+	PRIMARY KEY (`id`),
+	INDEX `ar_document_FI_1` (`ar_party_id`),
+	CONSTRAINT `ar_document_FK_1`
+		FOREIGN KEY (`ar_party_id`)
+		REFERENCES `ar_party` (`id`)
+)Engine=InnoDB;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

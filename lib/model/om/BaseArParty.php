@@ -134,6 +134,12 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 	protected $lastArRateIncrementalInfoCriteria = null;
 
 	
+	protected $collArDocuments;
+
+	
+	protected $lastArDocumentCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -781,6 +787,14 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collArDocuments !== null) {
+				foreach($this->collArDocuments as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -878,6 +892,14 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 				if ($this->collArRateIncrementalInfos !== null) {
 					foreach($this->collArRateIncrementalInfos as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collArDocuments !== null) {
+					foreach($this->collArDocuments as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1226,6 +1248,10 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 
 			foreach($this->getArRateIncrementalInfos() as $relObj) {
 				$copyObj->addArRateIncrementalInfo($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getArDocuments() as $relObj) {
+				$copyObj->addArDocument($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1939,6 +1965,76 @@ abstract class BaseArParty extends BaseObject  implements Persistent {
 		$this->lastArRateIncrementalInfoCriteria = $criteria;
 
 		return $this->collArRateIncrementalInfos;
+	}
+
+	
+	public function initArDocuments()
+	{
+		if ($this->collArDocuments === null) {
+			$this->collArDocuments = array();
+		}
+	}
+
+	
+	public function getArDocuments($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseArDocumentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collArDocuments === null) {
+			if ($this->isNew()) {
+			   $this->collArDocuments = array();
+			} else {
+
+				$criteria->add(ArDocumentPeer::AR_PARTY_ID, $this->getId());
+
+				ArDocumentPeer::addSelectColumns($criteria);
+				$this->collArDocuments = ArDocumentPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(ArDocumentPeer::AR_PARTY_ID, $this->getId());
+
+				ArDocumentPeer::addSelectColumns($criteria);
+				if (!isset($this->lastArDocumentCriteria) || !$this->lastArDocumentCriteria->equals($criteria)) {
+					$this->collArDocuments = ArDocumentPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastArDocumentCriteria = $criteria;
+		return $this->collArDocuments;
+	}
+
+	
+	public function countArDocuments($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseArDocumentPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(ArDocumentPeer::AR_PARTY_ID, $this->getId());
+
+		return ArDocumentPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addArDocument(ArDocument $l)
+	{
+		$this->collArDocuments[] = $l;
+		$l->setArParty($this);
 	}
 
 } 

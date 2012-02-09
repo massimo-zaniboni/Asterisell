@@ -933,3 +933,20 @@ propel:
     user_leading_zero: { type: integer, size: 4, required: true}
 
     user_note: varchar(6048)
+
+  ar_document:
+  #
+  # documents that can be downloaded from customers with the proper right
+
+    id:
+
+    ar_party_id:
+
+    document_name: varchar(128)
+
+    document_date: date
+
+    document: blob
+
+    mime_type: varchar(256)
+
