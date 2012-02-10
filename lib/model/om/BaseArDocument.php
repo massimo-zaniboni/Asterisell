@@ -29,6 +29,10 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 
 
 	
+	protected $file_name;
+
+
+	
 	protected $mime_type;
 
 
@@ -92,6 +96,13 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 	{
 
 		return $this->document;
+	}
+
+	
+	public function getFileName()
+	{
+
+		return $this->file_name;
 	}
 
 	
@@ -193,6 +204,20 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setFileName($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->file_name !== $v) {
+			$this->file_name = $v;
+			$this->modifiedColumns[] = ArDocumentPeer::FILE_NAME;
+		}
+
+	} 
+	
 	public function setMimeType($v)
 	{
 
@@ -231,15 +256,17 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 
 			$this->document = $rs->getBlob($startcol + 4);
 
-			$this->mime_type = $rs->getString($startcol + 5);
+			$this->file_name = $rs->getString($startcol + 5);
 
-			$this->already_opened = $rs->getBoolean($startcol + 6);
+			$this->mime_type = $rs->getString($startcol + 6);
+
+			$this->already_opened = $rs->getBoolean($startcol + 7);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 7; 
+						return $startcol + 8; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArDocument object", $e);
 		}
@@ -399,9 +426,12 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 				return $this->getDocument();
 				break;
 			case 5:
-				return $this->getMimeType();
+				return $this->getFileName();
 				break;
 			case 6:
+				return $this->getMimeType();
+				break;
+			case 7:
 				return $this->getAlreadyOpened();
 				break;
 			default:
@@ -419,8 +449,9 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 			$keys[2] => $this->getDocumentName(),
 			$keys[3] => $this->getDocumentDate(),
 			$keys[4] => $this->getDocument(),
-			$keys[5] => $this->getMimeType(),
-			$keys[6] => $this->getAlreadyOpened(),
+			$keys[5] => $this->getFileName(),
+			$keys[6] => $this->getMimeType(),
+			$keys[7] => $this->getAlreadyOpened(),
 		);
 		return $result;
 	}
@@ -452,9 +483,12 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 				$this->setDocument($value);
 				break;
 			case 5:
-				$this->setMimeType($value);
+				$this->setFileName($value);
 				break;
 			case 6:
+				$this->setMimeType($value);
+				break;
+			case 7:
 				$this->setAlreadyOpened($value);
 				break;
 		} 	}
@@ -469,8 +503,9 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[2], $arr)) $this->setDocumentName($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setDocumentDate($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setDocument($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setMimeType($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setAlreadyOpened($arr[$keys[6]]);
+		if (array_key_exists($keys[5], $arr)) $this->setFileName($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setMimeType($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setAlreadyOpened($arr[$keys[7]]);
 	}
 
 	
@@ -483,6 +518,7 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArDocumentPeer::DOCUMENT_NAME)) $criteria->add(ArDocumentPeer::DOCUMENT_NAME, $this->document_name);
 		if ($this->isColumnModified(ArDocumentPeer::DOCUMENT_DATE)) $criteria->add(ArDocumentPeer::DOCUMENT_DATE, $this->document_date);
 		if ($this->isColumnModified(ArDocumentPeer::DOCUMENT)) $criteria->add(ArDocumentPeer::DOCUMENT, $this->document);
+		if ($this->isColumnModified(ArDocumentPeer::FILE_NAME)) $criteria->add(ArDocumentPeer::FILE_NAME, $this->file_name);
 		if ($this->isColumnModified(ArDocumentPeer::MIME_TYPE)) $criteria->add(ArDocumentPeer::MIME_TYPE, $this->mime_type);
 		if ($this->isColumnModified(ArDocumentPeer::ALREADY_OPENED)) $criteria->add(ArDocumentPeer::ALREADY_OPENED, $this->already_opened);
 
@@ -522,6 +558,8 @@ abstract class BaseArDocument extends BaseObject  implements Persistent {
 		$copyObj->setDocumentDate($this->document_date);
 
 		$copyObj->setDocument($this->document);
+
+		$copyObj->setFileName($this->file_name);
 
 		$copyObj->setMimeType($this->mime_type);
 

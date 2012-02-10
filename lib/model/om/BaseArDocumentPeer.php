@@ -13,7 +13,7 @@ abstract class BaseArDocumentPeer {
 	const CLASS_DEFAULT = 'lib.model.ArDocument';
 
 	
-	const NUM_COLUMNS = 7;
+	const NUM_COLUMNS = 8;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -35,6 +35,9 @@ abstract class BaseArDocumentPeer {
 	const DOCUMENT = 'ar_document.DOCUMENT';
 
 	
+	const FILE_NAME = 'ar_document.FILE_NAME';
+
+	
 	const MIME_TYPE = 'ar_document.MIME_TYPE';
 
 	
@@ -46,18 +49,18 @@ abstract class BaseArDocumentPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'ArPartyId', 'DocumentName', 'DocumentDate', 'Document', 'MimeType', 'AlreadyOpened', ),
-		BasePeer::TYPE_COLNAME => array (ArDocumentPeer::ID, ArDocumentPeer::AR_PARTY_ID, ArDocumentPeer::DOCUMENT_NAME, ArDocumentPeer::DOCUMENT_DATE, ArDocumentPeer::DOCUMENT, ArDocumentPeer::MIME_TYPE, ArDocumentPeer::ALREADY_OPENED, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'ar_party_id', 'document_name', 'document_date', 'document', 'mime_type', 'already_opened', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'ArPartyId', 'DocumentName', 'DocumentDate', 'Document', 'FileName', 'MimeType', 'AlreadyOpened', ),
+		BasePeer::TYPE_COLNAME => array (ArDocumentPeer::ID, ArDocumentPeer::AR_PARTY_ID, ArDocumentPeer::DOCUMENT_NAME, ArDocumentPeer::DOCUMENT_DATE, ArDocumentPeer::DOCUMENT, ArDocumentPeer::FILE_NAME, ArDocumentPeer::MIME_TYPE, ArDocumentPeer::ALREADY_OPENED, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'ar_party_id', 'document_name', 'document_date', 'document', 'file_name', 'mime_type', 'already_opened', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ArPartyId' => 1, 'DocumentName' => 2, 'DocumentDate' => 3, 'Document' => 4, 'MimeType' => 5, 'AlreadyOpened' => 6, ),
-		BasePeer::TYPE_COLNAME => array (ArDocumentPeer::ID => 0, ArDocumentPeer::AR_PARTY_ID => 1, ArDocumentPeer::DOCUMENT_NAME => 2, ArDocumentPeer::DOCUMENT_DATE => 3, ArDocumentPeer::DOCUMENT => 4, ArDocumentPeer::MIME_TYPE => 5, ArDocumentPeer::ALREADY_OPENED => 6, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'ar_party_id' => 1, 'document_name' => 2, 'document_date' => 3, 'document' => 4, 'mime_type' => 5, 'already_opened' => 6, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ArPartyId' => 1, 'DocumentName' => 2, 'DocumentDate' => 3, 'Document' => 4, 'FileName' => 5, 'MimeType' => 6, 'AlreadyOpened' => 7, ),
+		BasePeer::TYPE_COLNAME => array (ArDocumentPeer::ID => 0, ArDocumentPeer::AR_PARTY_ID => 1, ArDocumentPeer::DOCUMENT_NAME => 2, ArDocumentPeer::DOCUMENT_DATE => 3, ArDocumentPeer::DOCUMENT => 4, ArDocumentPeer::FILE_NAME => 5, ArDocumentPeer::MIME_TYPE => 6, ArDocumentPeer::ALREADY_OPENED => 7, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'ar_party_id' => 1, 'document_name' => 2, 'document_date' => 3, 'document' => 4, 'file_name' => 5, 'mime_type' => 6, 'already_opened' => 7, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
 	);
 
 	
@@ -120,6 +123,8 @@ abstract class BaseArDocumentPeer {
 		$criteria->addSelectColumn(ArDocumentPeer::DOCUMENT_DATE);
 
 		$criteria->addSelectColumn(ArDocumentPeer::DOCUMENT);
+
+		$criteria->addSelectColumn(ArDocumentPeer::FILE_NAME);
 
 		$criteria->addSelectColumn(ArDocumentPeer::MIME_TYPE);
 

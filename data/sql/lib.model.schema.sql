@@ -613,6 +613,7 @@ CREATE TABLE `ar_document`
 	`document_name` VARCHAR(128),
 	`document_date` DATE,
 	`document` LONGBLOB,
+	`file_name` VARCHAR(128),
 	`mime_type` VARCHAR(256),
 	`already_opened` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),

@@ -42,6 +42,8 @@ class ArDocumentMapBuilder {
 
 		$tMap->addColumn('DOCUMENT', 'Document', 'string', CreoleTypes::BLOB, false, null);
 
+		$tMap->addColumn('FILE_NAME', 'FileName', 'string', CreoleTypes::VARCHAR, false, 128);
+
 		$tMap->addColumn('MIME_TYPE', 'MimeType', 'string', CreoleTypes::VARCHAR, false, 256);
 
 		$tMap->addColumn('ALREADY_OPENED', 'AlreadyOpened', 'boolean', CreoleTypes::BOOLEAN, true, null);
