@@ -70,6 +70,7 @@ if ($sf_user->hasCredential('admin')) {
   echo '<li>' . link_to(__('Customer Offices'), 'office/list') . '</li>'. "\n";
   echo '<li>' . link_to(__('VoIP Accounts'), 'asterisk_account/list') . '</li>'. "\n";
   echo '<li>' . link_to(__('Website Accounts'), 'web_account/list') . '</li>'. "\n";
+  echo '<li>' . link_to(__('Show Documents to Customers'), 'commercial_feature/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('VoIP Batch Creation'), 'commercial_feature/index') . '</li>'. "\n";
   echo '<li>' . link_to(__('VoIP Range Creation'), 'commercial_feature/index') . '</li>'. "\n";
   echo '</ul>'. "\n";
