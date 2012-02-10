@@ -344,12 +344,12 @@ function isSafeReadConnection()
 {
     global $input_line;
 
-    $connection = Propel::getConnection();
-    $query = 'SELECT id FROM cdr LIMIT 1';
-
-    $stm = $connection->createStatement();
-
     try {
+        $connection = Propel::getConnection();
+        $query = 'SELECT id FROM cdr LIMIT 1';
+
+        $stm = $connection->createStatement();
+
         $rs = $stm->executeQuery($query);
 
         while ($rs->next()) {
@@ -367,14 +367,14 @@ function isSafeAlterConnection()
 {
     global $input_line;
 
-    $connection = Propel::getConnection();
-    $stm = $connection->createStatement();
-
-    $s1 = "CREATE TABLE IF NOT EXISTS ar_check_upgrade_script (id INTEGER(1)) ENGINE=InnoDB;";
-    $s2 = "ALTER TABLE ar_check_upgrade_script MODIFY COLUMN id INTEGER(5);";
-    $s3 = "ALTER TABLE ar_check_upgrade_script MODIFY COLUMN id INTEGER(4);";
-
     try {
+        $connection = Propel::getConnection();
+        $stm = $connection->createStatement();
+
+        $s1 = "CREATE TABLE IF NOT EXISTS ar_check_upgrade_script (id INTEGER(1)) ENGINE=InnoDB;";
+        $s2 = "ALTER TABLE ar_check_upgrade_script MODIFY COLUMN id INTEGER(5);";
+        $s3 = "ALTER TABLE ar_check_upgrade_script MODIFY COLUMN id INTEGER(4);";
+
         $stm = $connection->prepareStatement($s1);
         $stm->executeUpdate();
 
@@ -621,17 +621,25 @@ function makeActivate()
         explicitContinue();
     }
 
-    myExecute("Clear symfony cache, in order to enable new settings.", "./symfony cc");
+    executeSymfonyCC();
     myExecute("Fix Permissions", "./symfony fix-perms");
     myExecute("Fix Web Server Permissions", "chmod -R ug+rwx web/");
     myExecute("Fix Permissions", "chmod -R ug+rx ext_libs/ apps/ scripts/");
     myExecute("Remove old lock files", "rm -f web/*.lock");
 
     myExecute("Regenerate modules depending from the new cache values.", "cd module_templates; php generate.php");
-    myExecute("Clear symfony cache, in order to enable new settings.", "./symfony cc");
+    executeSymfonyCC();
 
     echo "\n\nGenerated VERSION $version";
     echo "\n";
+}
+
+/**
+ * Clear symfony cache.
+ */
+function executeSymfonyCC()
+{
+    myExecute("Clear symfony cache, in order to enable new settings.", "./symfony cc");
 }
 
 /**
@@ -2689,18 +2697,23 @@ function main($argc, $argv)
     if ($mainCommand === "install") {
         explicitConfirmForDeletion();
         makeInstallCreateDatabase();
+        executeSymfonyCC();
     }
 
     ///////////////////
     // INITIAL TESTS //
     ///////////////////
 
-    $connectionError = "\nMySQL database user have no alter table privileges, or read privileges. Follow installation instructions of the manual. Check your database configurations inside `config/databases.yml` file. ";
+    $connectionError = "\nERROR: MySQL database user have no alter table privileges, or read privileges.\nCheck your database configurations inside `config/databases.yml` file.\nProbably Asterisell is not installed. In this case the command to do is `php asterisell.php install`, but it is better following installation instructions of the manual.\n";
 
     if (!isSafeAlterConnection()) {
-        // signal that the connection is not ok
-        echo $connectionError;
-        exit(1);
+        // sometimes there are simply caching problems
+        executeSymfonyCC();
+        if (!isSafeAlterConnection()) {
+            // signal that the connection is not ok
+            echo $connectionError;
+            exit(1);
+        }
     }
 
     if (!isSafeReadConnection()) {
