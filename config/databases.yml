@@ -5,10 +5,6 @@ all:
       phptype:    mysql
       host:       localhost
 
-      # NOTE: if you change this name update also:
-      #   * config/propel.ini
-      #   * scripts/initdb.sh
-      #
       database:   asterisell3
       username:   asterisellfree
       password:   free
