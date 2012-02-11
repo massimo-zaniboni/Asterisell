@@ -710,6 +710,7 @@ function deleteAllData()
     // Delete all data from database, except upgrade table
     //
     $connection = Propel::getConnection();
+    myDelete($connection, "ar_document");
     myDelete($connection, "ar_job_queue");
     myDelete($connection, "ar_asterisk_account_range");
     myDelete($connection, "ar_invoice_creation");
