@@ -61,7 +61,7 @@ abstract class PhpRateOnlyCalc extends PhpRate {
   public function getShortDescription() {
     return self::calcShortDescription($this->costForMinute, $this->costOnCall, $this->rateByMinute, $this->atLeastXSeconds, $this->whenRound_0_59);
   }
-  static public function calcShortDescription($costForMinute, $costOnCall, $rateByMinute, $atLeastXSeconds, $whenRound_0_59, $discreteIncrements) {
+  static public function calcShortDescription($costForMinute, $costOnCall, $rateByMinute, $atLeastXSeconds, $whenRound_0_59, $discreteIncrements = 0) {
     $r = "";
     if ($costOnCall > 0 || $costOnCall < 0) {
       $r = $r . formatCostAccordingCurrency($costOnCall) . ' + ';
