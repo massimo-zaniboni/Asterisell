@@ -315,7 +315,7 @@ class RateCalls extends FixedJobProcessor {
             // NOTE: it is initializated outside of `try`,
             //  because errors on load-cache must suspend completely the rating process
             if (is_null($this->rateCache)) {
-              $this->rateCache_loadAll($cdr->getCallDate());
+              $this->rateCache_loadAll($cdr->getCalldate());
             }
             
             // Try to process the $cdr.

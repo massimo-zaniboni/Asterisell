@@ -189,7 +189,12 @@ class JobQueueProcessor
             if ($t === FALSE) {
                 $t = 60;
             }
-            self::$MAX_EXECUTION_TIME = strtotime("+$t seconds");
+            if ($t == 0) {
+                // infinite time
+                self::$MAX_EXECUTION_TIME = strtotime("+1 year");
+            } else {
+                self::$MAX_EXECUTION_TIME = strtotime("+$t seconds");
+            }
         }
 
         $isLocked = $this->lock($isCronProcess);
@@ -394,6 +399,4 @@ class JobQueueProcessor
 
 
 }
-
-
 ?>
