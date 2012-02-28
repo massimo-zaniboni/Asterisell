@@ -716,18 +716,26 @@ function html2rgb($color)
 /**
  * Test if $prefix is prefix of $number in case insensitive mode.
  *
- * @return true if $prefix is a prefix of $number, false otherwise.
+ * @return bool true if $prefix is a prefix of $number, false otherwise.
  */
 function isPrefixOf($prefix, $number)
 {
     $prefix = trim($prefix);
     $prefixLen = strlen($prefix);
 
+    $numberLen = strlen($number);
+
+    if ($prefixLen > $numberLen) {
+        return false;
+    }
+
     if ($prefixLen == 0) {
         return true;
     }
 
-    if (substr_compare($prefix, $number, 0, $prefixLen, TRUE) == 0) {
+    $numberPrefix = substr($number, 0, $prefixLen);
+
+    if (substr_compare($prefix, $numberPrefix, 0, $prefixLen, TRUE) == 0) {
         return true;
     } else {
         return false;
