@@ -2748,11 +2748,16 @@ function main($argc, $argv)
 
     $suggestion = "";
 
+
+    $startJobProcessor = true;
+
     if ($mainCommand === "install") {
         // perform the second step of installation
         makeInstallData();
     } else if ($mainCommand === "activate") {
         makeActivate();
+        $startJobProcessor = false;
+        // because new params are seen only at the next activation
     } else if ($mainCommand === "app") {
         if ($subCommand === "enable") {
             MyUser::unlockAppForMaintanance();
@@ -2818,9 +2823,10 @@ function main($argc, $argv)
         exit(1);
     }
 
-    unlockCronJob($lock);
-
-    runJobProcessorQueue();
+    if ($startJobProcessor) {
+      unlockCronJob($lock);
+      runJobProcessorQueue();
+    }
 
     echo "\n";
     showMaintananceMode();
