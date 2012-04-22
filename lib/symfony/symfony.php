@@ -129,7 +129,17 @@ try
   sfLoader::loadPluginConfig();
 
   // compress output
-  ob_start(sfConfig::get('sf_compressed') ? 'ob_gzhandler' : '');
+  if (sfConfig::get('sf_compressed') && (stripos(php_sapi_name(), "cli") === false)) {
+      ob_start('ob_gzhandler');
+  } else {
+      if (stripos(php_sapi_name(), "cli") === false) {
+          // Massimo Zaniboni: for showing the output on CLI...
+          ob_start();
+      } else {
+          // Massimo Zaniboni: for showing the output on CLI...
+          ob_start('');
+      }
+  }
 }
 catch (sfException $e)
 {
