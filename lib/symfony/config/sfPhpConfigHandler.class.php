@@ -49,6 +49,11 @@ class sfPhpConfigHandler extends sfYamlConfigHandler
       {
         $key = strtolower($key);
 
+        // Massimo Zaniboni: skip magic_quotes_runtime, that it is deprecated in PHP 5.4
+        if (($key == 'magic_quotes_runtime') && (version_compare(PHP_VERSION, '5.4.0') >= 0)) {
+            continue;
+        }
+
         // key exists?
         if (!array_key_exists($key, $configs))
         {
@@ -102,7 +107,12 @@ class sfPhpConfigHandler extends sfYamlConfigHandler
       {
         $key = strtolower($key);
 
-        // key exists?
+        // Massimo Zaniboni: skip some settings, that are deprecated in PHP 5.4
+        if (($key == 'magic_quotes_gpc' || $key == 'register_globals') && (version_compare(PHP_VERSION, '5.4.0') >= 0)) {
+              continue;
+        }
+
+          // key exists?
         if (!array_key_exists($key, $configs))
         {
           $error = sprintf('Configuration file "%s" specifies key "%s" which is not a php.ini directive.', $configFiles[0], $key);
