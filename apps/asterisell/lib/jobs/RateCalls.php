@@ -492,7 +492,7 @@ class RateCalls extends FixedJobProcessor {
                 // Associate masked external telephone number
                 if (is_null($cdr->getCachedMaskedExternalTelephoneNumber())) {
                     $nonMasked = $cdr->getCachedExternalTelephoneNumber();
-                    $cdr->setCachedMaskedExternalTelephoneNumber($cdr->calcMaskedTelephoneNumber($nonMasked));
+                    $cdr->setCachedMaskedExternalTelephoneNumber($cdr->calcMaskedTelephoneNumber($nonMasked, VariableFrame::getTelephonePrefixCache()->isIdToNeverMask($telephonePrefixId)));
                 }
 
                 // calc cost

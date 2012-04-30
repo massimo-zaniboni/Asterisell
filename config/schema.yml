@@ -767,6 +767,7 @@ propel:
   ar_telephone_prefix:
   #
   # A telephone prefix identifing a certain area or telephone operator.
+
     id:
   
     prefix: { type: varchar(255), required: true, unique: true, index: unique }
@@ -785,6 +786,10 @@ propel:
     # associated to the prefix.
     # NULL if there is more than one type of connection
     # associated to the prefix.
+
+    never_mask_number: { type: boolean, required: true, default: false }
+    #
+    # TRUE if the number must not be masked
 
   ar_problem:
   #

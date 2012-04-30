@@ -28,86 +28,121 @@
  * Prefixes are read during initialization of the cache using a query
  * on all elements of ar_telephone_prefix table.
  */
-class PhpTelephonePrefixesCache {
-  /**
-   * Associate a Prefix to the telephone_operator.id
-   */
-  protected $prefixes;
+class PhpTelephonePrefixesCache
+{
+    /**
+     * Associate a Prefix to the telephone_operator.id
+     *
+     * @var array
+     */
+    protected $prefixes;
 
-  /**
-   * Read all prefixes from the table
-   */
-  function __construct() {
-    $l =0;
-    $this->prefixes = array();
-    $c = new Criteria();
-    $rs = ArTelephonePrefixPeer::doSelectRS($c);
-    while ($rs->next()) {
-      $r = new ArTelephonePrefix();
-      $r->hydrate($rs);
-      $key = $r->getPrefix();
-      if (is_null($key)) {
-        $key = '';
-      }
-      // add the prefix to the table.
-      //
-      $this->prefixes[$key] = $r->getId();
-      $l++;
-    }
-    log_message("Loaded $l telephone prefixes on cache", 'debug');
-  }
+    /**
+     * Contains as index, the prefix id with `never_mask_number` to true
+     *
+     * @var array
+     */
+    protected $prefixIdNeverToMask;
 
-  public function existsPrefix($number) {
-    return array_key_exists($number, $this->prefixes);
-  }
-  /**
-   * @param $arr an array of prefixes
-   * @param $number the complete number
-   * @return the best matching prefix/index inside the $arr,
-   *         or NULL if it does not exists
-   */
-  static public function getPrefixMatch($arr, $number) {
-    if (is_null($arr)) {
-      return NULL;
-    }
+    /**
+     * Read all prefixes from the table
+     */
+    function __construct()
+    {
+        $l = 0;
+        $this->prefixes = array();
+        $this->prefixIdNeverToMask = array();
 
-    if (is_null($number)) {
-      return NULL;
-    }
+        $c = new Criteria();
+        $rs = ArTelephonePrefixPeer::doSelectRS($c);
+        while ($rs->next()) {
+            $r = new ArTelephonePrefix();
+            $r->hydrate($rs);
+            $key = $r->getPrefix();
+            if (is_null($key)) {
+                $key = '';
+            }
+            // add the prefix to the table.
+            //
+            $this->prefixes[$key] = $r->getId();
 
-    if (strlen($number)==0) {
-      return NULL;
-    }
+            if ($r->getNeverMaskNumber()) {
+                $this->prefixIdNeverToMask[$r->getId()] = true;
+            }
 
-    $c = strlen($number);
-    $r = null;
-    $again = true;
-    while ($again) {
-      if ($c < 0) {
-        $again = false;
-      } else {
-        $i = substr($number, 0, $c);
-        $c--;
-        if (array_key_exists($i, $arr)) {
-          $r = $i;
-          $again = false;
+            $l++;
         }
-      }
+        log_message("Loaded $l telephone prefixes on cache", 'debug');
     }
-    return $r;
-  }
-  /**
-   * @param $number a telephone number
-   * @return the value associated to the best prefix match
-   * or NULL if it does not exists
-   */
-  public function getTelephonePrefixId($number) {
-    $i = PhpTelephonePrefixesCache::getPrefixMatch($this->prefixes, $number);
-    if (is_null($i)) {
-      return null;
-    } else {
-      return $this->prefixes[$i];
+
+    /**
+     * @param string $number
+     * @return bool
+     */
+    public function existsPrefix($number)
+    {
+        return array_key_exists($number, $this->prefixes);
     }
-  }
+
+    /**
+     * @param array $arr an array of prefixes
+     * @param string $number the complete number
+     * @return string|null the best matching prefix/index inside the $arr, or NULL if it does not exists
+     */
+    static public function getPrefixMatch($arr, $number)
+    {
+        if (is_null($arr)) {
+            return NULL;
+        }
+
+        if (is_null($number)) {
+            return NULL;
+        }
+
+        if (strlen($number) == 0) {
+            return NULL;
+        }
+
+        $c = strlen($number);
+        $r = null;
+        $again = true;
+        while ($again) {
+            if ($c < 0) {
+                $again = false;
+            } else {
+                $i = substr($number, 0, $c);
+                $c--;
+                if (array_key_exists($i, $arr)) {
+                    $r = $i;
+                    $again = false;
+                }
+            }
+        }
+        return $r;
+    }
+
+    /**
+     * @param string $number a telephone number
+     * @return mixed|null the value associated to the best prefix match, or NULL if it does not exists
+     */
+    public function getTelephonePrefixId($number)
+    {
+        $i = PhpTelephonePrefixesCache::getPrefixMatch($this->prefixes, $number);
+        if (is_null($i)) {
+            return null;
+        } else {
+            return $this->prefixes[$i];
+        }
+    }
+
+    /**
+     * @param int $id
+     * @return boolean
+     */
+    public function isIdToNeverMask($id)
+    {
+        return array_key_exists($id, $this->prefixIdNeverToMask);
+    }
 }
+
 ?>

@@ -121,6 +121,10 @@ class VariableFrame {
 
   protected static $telephonePrefixCache= null;
 
+    /**
+     * @static
+     * @return PhpTelephonePrefixesCache
+     */
     static public function getTelephonePrefixCache() {
       if (is_null(VariableFrame::$telephonePrefixCache)) {
         VariableFrame::$telephonePrefixCache = new PhpTelephonePrefixesCache();

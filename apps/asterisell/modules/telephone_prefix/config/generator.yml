@@ -13,6 +13,8 @@ generator:
       
       geographic_location: { name: Geographic Location }
 
+      never_mask_number: { name: Never Mask, help: "True for displaying the associated telephone number, without mask of last digits. Note that there is a global option in `app.yml` file for enabling or disabling masking of all telephone numbers, so this field is only for local special exclusions. " }
+
     list:
       title: Telephone Prefixes
 
@@ -23,4 +25,4 @@ generator:
 
     edit:
       title: Telephone Prefix
-      fields: [prefix, operator_type, name, geographic_location]
+      fields: [prefix, operator_type, name, geographic_location, never_mask_number]

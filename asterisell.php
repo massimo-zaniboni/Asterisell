@@ -165,6 +165,8 @@ function upgradeDatabase($findNewCommands, $applyCommands, $storeCommands)
     $r[$i++] = "ALTER TABLE `ar_asterisk_account_range` MODIFY COLUMN system_start_range VARCHAR(18)  NOT NULL, MODIFY COLUMN system_end_range VARCHAR(18)  NOT NULL, MODIFY COLUMN `system_leading_zero` INTEGER(4)  NOT NULL, MODIFY COLUMN `user_start_range` VARCHAR(18)  NOT NULL, MODIFY COLUMN `generate_range_for_users` INTEGER default 1 NOT NULL, MODIFY COLUMN `user_leading_zero` INTEGER(4)  NOT NULL, MODIFY COLUMN	`user_note` VARCHAR(6048);";
     $r[$i++] = "CREATE TABLE `ar_document` (`id` INTEGER  NOT NULL AUTO_INCREMENT, `ar_party_id` INTEGER, `document_name` VARCHAR(128), `document_date` DATE, `document` LONGBLOB, `file_name` VARCHAR(128), `mime_type` VARCHAR(256), `already_opened` INTEGER default 0 NOT NULL, PRIMARY KEY (`id`), INDEX `ar_document_FI_1` (`ar_party_id`), CONSTRAINT `ar_document_FK_1` FOREIGN KEY (`ar_party_id`) REFERENCES `ar_party` (`id`) )Engine=InnoDB;";
 
+    $r[$i++] = "ALTER TABLE ar_telephone_prefix ADD COLUMN never_mask_number INTEGER default 0 NOT NULL;";
+
     // END OF UPGRADES //
     /////////////////////
 

@@ -469,6 +469,7 @@ CREATE TABLE `ar_telephone_prefix`
 	`name` VARCHAR(255),
 	`geographic_location` VARCHAR(255),
 	`operator_type` VARCHAR(255),
+	`never_mask_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `ar_telephone_prefix_prefix_unique` (`prefix`),
 	KEY `ar_telephone_prefix_operator_type_index`(`operator_type`)

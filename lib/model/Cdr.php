@@ -93,7 +93,12 @@ class Cdr extends BaseCdr {
   }
 
 
-  public function calcMaskedTelephoneNumber($unmasked) {
+    /**
+     * @param string $unmasked
+     * @param bool $isNeverToMask
+     * @return string
+     */
+  public function calcMaskedTelephoneNumber($unmasked, $isNeverToMask = false) {
     $destinationType = $this->getDestinationType();
     
     // Remove common/default prefix
@@ -114,6 +119,10 @@ class Cdr extends BaseCdr {
     if ($destinationType == DestinationType::internal) {
       return $unmasked;
     }
+
+   if ($isNeverToMask) {
+     return $unmasked;
+   }
 
     if (!is_null($unmasked)) {
       $unmasked = trim($unmasked);

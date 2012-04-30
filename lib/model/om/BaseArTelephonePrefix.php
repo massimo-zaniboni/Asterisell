@@ -27,6 +27,10 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 	
 	protected $operator_type;
 
+
+	
+	protected $never_mask_number = false;
+
 	
 	protected $collCdrs;
 
@@ -72,6 +76,13 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 	{
 
 		return $this->operator_type;
+	}
+
+	
+	public function getNeverMaskNumber()
+	{
+
+		return $this->never_mask_number;
 	}
 
 	
@@ -145,6 +156,16 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setNeverMaskNumber($v)
+	{
+
+		if ($this->never_mask_number !== $v || $v === false) {
+			$this->never_mask_number = $v;
+			$this->modifiedColumns[] = ArTelephonePrefixPeer::NEVER_MASK_NUMBER;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -159,11 +180,13 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 
 			$this->operator_type = $rs->getString($startcol + 4);
 
+			$this->never_mask_number = $rs->getBoolean($startcol + 5);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 5; 
+						return $startcol + 6; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating ArTelephonePrefix object", $e);
 		}
@@ -321,6 +344,9 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 			case 4:
 				return $this->getOperatorType();
 				break;
+			case 5:
+				return $this->getNeverMaskNumber();
+				break;
 			default:
 				return null;
 				break;
@@ -336,6 +362,7 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 			$keys[2] => $this->getName(),
 			$keys[3] => $this->getGeographicLocation(),
 			$keys[4] => $this->getOperatorType(),
+			$keys[5] => $this->getNeverMaskNumber(),
 		);
 		return $result;
 	}
@@ -366,6 +393,9 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 			case 4:
 				$this->setOperatorType($value);
 				break;
+			case 5:
+				$this->setNeverMaskNumber($value);
+				break;
 		} 	}
 
 	
@@ -378,6 +408,7 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[2], $arr)) $this->setName($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setGeographicLocation($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setOperatorType($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setNeverMaskNumber($arr[$keys[5]]);
 	}
 
 	
@@ -390,6 +421,7 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(ArTelephonePrefixPeer::NAME)) $criteria->add(ArTelephonePrefixPeer::NAME, $this->name);
 		if ($this->isColumnModified(ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION)) $criteria->add(ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION, $this->geographic_location);
 		if ($this->isColumnModified(ArTelephonePrefixPeer::OPERATOR_TYPE)) $criteria->add(ArTelephonePrefixPeer::OPERATOR_TYPE, $this->operator_type);
+		if ($this->isColumnModified(ArTelephonePrefixPeer::NEVER_MASK_NUMBER)) $criteria->add(ArTelephonePrefixPeer::NEVER_MASK_NUMBER, $this->never_mask_number);
 
 		return $criteria;
 	}
@@ -427,6 +459,8 @@ abstract class BaseArTelephonePrefix extends BaseObject  implements Persistent {
 		$copyObj->setGeographicLocation($this->geographic_location);
 
 		$copyObj->setOperatorType($this->operator_type);
+
+		$copyObj->setNeverMaskNumber($this->never_mask_number);
 
 
 		if ($deepCopy) {

@@ -13,7 +13,7 @@ abstract class BaseArTelephonePrefixPeer {
 	const CLASS_DEFAULT = 'lib.model.ArTelephonePrefix';
 
 	
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 6;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -35,23 +35,26 @@ abstract class BaseArTelephonePrefixPeer {
 	const OPERATOR_TYPE = 'ar_telephone_prefix.OPERATOR_TYPE';
 
 	
+	const NEVER_MASK_NUMBER = 'ar_telephone_prefix.NEVER_MASK_NUMBER';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Prefix', 'Name', 'GeographicLocation', 'OperatorType', ),
-		BasePeer::TYPE_COLNAME => array (ArTelephonePrefixPeer::ID, ArTelephonePrefixPeer::PREFIX, ArTelephonePrefixPeer::NAME, ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION, ArTelephonePrefixPeer::OPERATOR_TYPE, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'prefix', 'name', 'geographic_location', 'operator_type', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Prefix', 'Name', 'GeographicLocation', 'OperatorType', 'NeverMaskNumber', ),
+		BasePeer::TYPE_COLNAME => array (ArTelephonePrefixPeer::ID, ArTelephonePrefixPeer::PREFIX, ArTelephonePrefixPeer::NAME, ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION, ArTelephonePrefixPeer::OPERATOR_TYPE, ArTelephonePrefixPeer::NEVER_MASK_NUMBER, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'prefix', 'name', 'geographic_location', 'operator_type', 'never_mask_number', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Prefix' => 1, 'Name' => 2, 'GeographicLocation' => 3, 'OperatorType' => 4, ),
-		BasePeer::TYPE_COLNAME => array (ArTelephonePrefixPeer::ID => 0, ArTelephonePrefixPeer::PREFIX => 1, ArTelephonePrefixPeer::NAME => 2, ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION => 3, ArTelephonePrefixPeer::OPERATOR_TYPE => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'prefix' => 1, 'name' => 2, 'geographic_location' => 3, 'operator_type' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Prefix' => 1, 'Name' => 2, 'GeographicLocation' => 3, 'OperatorType' => 4, 'NeverMaskNumber' => 5, ),
+		BasePeer::TYPE_COLNAME => array (ArTelephonePrefixPeer::ID => 0, ArTelephonePrefixPeer::PREFIX => 1, ArTelephonePrefixPeer::NAME => 2, ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION => 3, ArTelephonePrefixPeer::OPERATOR_TYPE => 4, ArTelephonePrefixPeer::NEVER_MASK_NUMBER => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'prefix' => 1, 'name' => 2, 'geographic_location' => 3, 'operator_type' => 4, 'never_mask_number' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
@@ -114,6 +117,8 @@ abstract class BaseArTelephonePrefixPeer {
 		$criteria->addSelectColumn(ArTelephonePrefixPeer::GEOGRAPHIC_LOCATION);
 
 		$criteria->addSelectColumn(ArTelephonePrefixPeer::OPERATOR_TYPE);
+
+		$criteria->addSelectColumn(ArTelephonePrefixPeer::NEVER_MASK_NUMBER);
 
 	}
 

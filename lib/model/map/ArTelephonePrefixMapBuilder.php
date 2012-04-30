@@ -42,5 +42,7 @@ class ArTelephonePrefixMapBuilder {
 
 		$tMap->addColumn('OPERATOR_TYPE', 'OperatorType', 'string', CreoleTypes::VARCHAR, false, 255);
 
+		$tMap->addColumn('NEVER_MASK_NUMBER', 'NeverMaskNumber', 'boolean', CreoleTypes::BOOLEAN, true, null);
+
 	} 
 } 
