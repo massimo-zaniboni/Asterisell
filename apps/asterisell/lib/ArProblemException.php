@@ -77,21 +77,28 @@ class ArProblemException extends Exception {
    */
   static public function addProblemIntoDBOnlyIfNew(ArProblem $p) {
 
-    if (ArProblemException::$disableNotifications == 1) {
-      // add the problem, but does not advise admin of the problem via mail
+      if (ArProblemException::$disableNotifications == 1) {
+          // add the problem, but does not advise admin of the problem via mail
+          //
+          $p->setSignaledToAdmin(1);
+      }
+
+      $c = new Criteria();
+      $c->add(ArProblemPeer::DUPLICATION_KEY, $p->getDuplicationKey());
+      $oldProblem = ArProblemPeer::doSelectOne($c);
+
+      // save the problem only if not present.
       //
-      $p->setSignaledToAdmin(1);
-    }
+      if (is_null($oldProblem)) {
+          if (!$p->isNew()) {
+              // NOTE: after a rollback a problem is not saved anymore in the database,
+              // so force its saving status again to true
 
-    $c = new Criteria();
-    $c->add(ArProblemPeer::DUPLICATION_KEY, $p->getDuplicationKey());
-    $result = ArProblemPeer::doSelect($c);
-
-    // save the problem only if not present.
-    //
-    if (empty($result)) {
-      $p->save();
-    }
+              $n = $p->copy();
+              $n->save();
+          } else {
+              $p->save();
+          }
+      }
   }
 }
-?>
