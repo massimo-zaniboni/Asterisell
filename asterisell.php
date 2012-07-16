@@ -460,6 +460,7 @@ function makeInstallCreateDatabase()
 
     myExecute("Drop '$database' database", "mysqladmin -u $rootUser --password=$rootPassword drop --force $database");
     myExecute("Create '$database' database", "mysqladmin -u $rootUser --password=$rootPassword create $database");
+    myExecute("Drop database user '$user'", "mysql -u $rootUser --password=$rootPassword mysql -e \"DROP USER $user@localhost;\" ");
     myExecute("Create database user '$user'", "mysql -u $rootUser --password=$rootPassword mysql -e \"CREATE USER $user@localhost IDENTIFIED BY '$password';\" ");
     myExecute("Grant Access", "mysql -u $rootUser --password=$rootPassword mysql -e 'GRANT ALL ON $database.* TO $user@localhost;'");
     myExecute("Init '$database' database", "mysql -u $rootUser --password=$rootPassword $database < data/sql/lib.model.schema.sql");
