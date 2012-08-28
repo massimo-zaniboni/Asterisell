@@ -2764,8 +2764,10 @@ function main($argc, $argv)
     } else if ($mainCommand === "app") {
         if ($subCommand === "enable") {
             MyUser::unlockAppForMaintanance();
+            $startJobProcessor = false;
         } else if ($subCommand === "disable") {
             MyUser::lockAppForMaintanance();
+            $startJobProcessor = false;
         } else if ($subCommand === "upgrade") {
             $suggestion = makeAppUpgrade();
         } else {
@@ -2775,8 +2777,10 @@ function main($argc, $argv)
     } else if ($mainCommand === "cron") {
         if ($subCommand === "enable") {
             MyUser::unlockCronForMaintanance();
+            $startJobProcessor = false;
         } else if ($subCommand === "disable") {
             MyUser::lockCronForMaintanance();
+            $startJobProcessor = false;
         } else {
             displayUsage();
             exit(1);
@@ -2837,5 +2841,3 @@ function main($argc, $argv)
 
     echo $suggestion;
 }
-
-?>
