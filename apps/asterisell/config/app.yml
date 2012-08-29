@@ -287,6 +287,10 @@ all:
   # 
   use_inclusive_end_date_in_invoice: false
 
+  # Set to false for not generating invoices with zero income.
+  #
+  generate_invoices_when_total_is_zero: false
+
   # the default currency used for rates, cost and incomes.
   #
   currency: EUR
