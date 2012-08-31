@@ -305,7 +305,7 @@ function getFiltersOnCallReport($filters) {
             // Test if the office was an old filter associated to a different party
             if (!is_null($officeId)) {
               $office = ArOfficePeer::retrieveByPK($officeId);
-              if ($office->getArPartyId() != $partyId) {
+              if (is_null($office) || $office->getArPartyId() != $partyId) {
                   $officeId = NULL;
               }
             }
