@@ -136,5 +136,16 @@ class rateActions extends autorateActions {
 
     parent::addFiltersCriteria($c);
   }
-  
+
+
+
+    protected function addSortCriteria($c)
+    {
+        // force a sort on ID for viewing all the calls in the LIMIT pagination
+
+        parent::addSortCriteria($c);
+        $c->addAscendingOrderByColumn(ArRatePeer::ID);
+    }
+
+
 }
