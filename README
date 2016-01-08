@@ -3,12 +3,10 @@ billing, and showing to costumers VoIP calls.
 
 Asterisell is released under GPLv3 license.
 
-For more details, see <https://www.asterisell.com> website,
-or consult the included manual: `web/help/index.html`.
+For more details, visit https://www.asterisell.com/open-source.html
 
 Execute
 
 > php asterisell.php help
 
 for a list of installation and related commands.
-
